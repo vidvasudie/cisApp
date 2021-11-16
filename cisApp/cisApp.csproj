@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\cisApp.Core\cisApp.Core.csproj" />
     <ProjectReference Include="..\cisApp.library\cisApp.library.csproj" />
   </ItemGroup>
 
