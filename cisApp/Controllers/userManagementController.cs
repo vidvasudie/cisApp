@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using cisApp.Function;
 
 namespace cisApp.Controllers
 {
@@ -10,6 +11,7 @@ namespace cisApp.Controllers
     {
         public IActionResult Index()
         {
+            //var users = GetUser.Get.GetAll();
             return View();
         }
         public IActionResult manage(string Mode)

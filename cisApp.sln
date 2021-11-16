@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cisApp", "cisApp\cisApp.csproj", "{C98DB361-457D-4044-BE31-3D94E9B4D3D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp", "cisApp\cisApp.csproj", "{C98DB361-457D-4044-BE31-3D94E9B4D3D0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp.Common", "cisApp.Common\cisApp.Common.csproj", "{8F8B4299-4732-4AB2-9081-99C353AF4550}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp.library", "cisApp.library\cisApp.library.csproj", "{37FE7CF1-A34A-4278-9185-0D2F6D33CB33}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp.Service", "cisApp.Service\cisApp.Service.csproj", "{DCC1C3C3-E02E-4BDA-AF10-CFD8CCFED88B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cisApp.Function", "cisApp.Function\cisApp.Function.csproj", "{B95905B0-5048-4900-976A-5530B3EF8F2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{DCC1C3C3-E02E-4BDA-AF10-CFD8CCFED88B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCC1C3C3-E02E-4BDA-AF10-CFD8CCFED88B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCC1C3C3-E02E-4BDA-AF10-CFD8CCFED88B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B95905B0-5048-4900-976A-5530B3EF8F2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B95905B0-5048-4900-976A-5530B3EF8F2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B95905B0-5048-4900-976A-5530B3EF8F2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B95905B0-5048-4900-976A-5530B3EF8F2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
