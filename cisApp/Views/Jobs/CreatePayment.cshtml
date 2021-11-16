@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewData["Title"] = "สร้างรายการชำระเงิน";
+}
+
+
+
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Details-->
+            <div class="d-flex align-items-center flex-wrap mr-2">
+                <!--begin::Title-->
+                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">@ViewData["Title"]</h5>
+                <!--end::Title-->
+                <!--begin::Separator-->
+                <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
+                <!--end::Separator-->
+                <!--begin::Search Form-->
+                <div class="d-flex align-items-center" id="kt_subheader_search">
+                    <span class="text-dark-50 font-weight-bold" id="kt_subheader_total">Sandra Stone</span>
+                </div>
+                <!--end::Search Form-->
+            </div>
+            <!--end::Details-->
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center">
+                <!--begin::Button-->
+                <a href="#" class="btn btn-default font-weight-bold">Back</a>
+                <!--end::Button-->
+            </div>
+            <!--end::Toolbar-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+
+
+
+            <!--begin::Card-->
+            @{await Html.RenderPartialAsync("~/Views/Shared/Common/JobsDetail.cshtml");}
+            <!--end::Card-->
+            <!--begin::Row-->
+            <div class="row">
+                <div class="col-xl-4">
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b">
+                        <div class="card-header h-auto py-3 border-0">
+                            <div class="card-title">
+                                <h3 class="card-label text-danger">
+                                    แนบหลักฐานการชำระเงิน
+                                    
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="card-body pt-2 text-center">
+
+                            <div class="dropzone dropzone-default" id="kt_dropzone_1">
+                                <div class="dropzone-msg dz-message needsclick">
+                                    <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
+                                    <span class="dropzone-msg-desc">
+                                        This is just a demo dropzone. Selected files are
+                                        <strong>not</strong>actually uploaded.
+                                    </span>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+
+                @{await Html.RenderPartialAsync("~/Views/Shared/Common/PaymentDescription.cshtml");}
+
+
+            </div>
+            <!--end::Row-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->

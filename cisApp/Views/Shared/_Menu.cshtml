@@ -1,0 +1,325 @@
+﻿  <!--begin::Menu Container-->
+<div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
+    <!--begin::Menu Nav-->
+    <ul class="menu-nav">
+        <li class="menu-item menu-item-active" aria-haspopup="true">
+            <a href="@Url.Action("index","dashbaord")" class="menu-link">
+                <i class="menu-icon far fa-money-bill-alt"></i>
+                <span class="menu-text">Payment</span>
+            </a>
+        </li>
+        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+            <a href="javascript:;" class="menu-link menu-toggle">
+                <i class="menu-icon flaticon2-paper"></i>
+                <span class="menu-text">Job</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="menu-submenu">
+                <i class="menu-arrow"></i>
+                <ul class="menu-subnav">
+                    <li class="menu-item menu-item-parent" aria-haspopup="true">
+                        <span class="menu-link">
+                            <span class="menu-text">Actions</span>
+                        </span>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("index","Jobs")" class="menu-link">
+                            <i class="menu-bullet menu-bullet-line">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">ใบงาน</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("Payment","Jobs")" class="menu-link">
+                            <i class="menu-bullet menu-bullet-line">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">รอชำระเงิน</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-line">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">ยุติ</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-line">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">รายงาน</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+            <a href="javascript:;" class="menu-link menu-toggle">
+                <i class="menu-icon flaticon2-laptop"></i>
+                <span class="menu-text">Customer</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="menu-submenu">
+                <i class="menu-arrow"></i>
+                <ul class="menu-subnav">
+                    <li class="menu-item menu-item-parent" aria-haspopup="true">
+                        <span class="menu-link">
+                            <span class="menu-text">Pages</span>
+                        </span>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Reports</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Apps</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Downloads</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Tasks</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Events</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+            <a href="javascript:;" class="menu-link menu-toggle">
+                <i class="menu-icon flaticon2-laptop"></i>
+                <span class="menu-text">Designer</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="menu-submenu">
+                <i class="menu-arrow"></i>
+                <ul class="menu-subnav"> 
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("index","userApprove")" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">คำขอสมัครนักออกแบบ</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("index","Files")" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">ผลงาน</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("Index","Designer")" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">ประวัติ</span> 
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Tasks</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Events</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+            <a href="javascript:;" class="menu-link menu-toggle">
+                <i class="menu-icon flaticon2-browser-2"></i>
+                <span class="menu-text">User</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="menu-submenu">
+                <i class="menu-arrow"></i>
+                <ul class="menu-subnav">
+                    <li class="menu-item menu-item-parent" aria-haspopup="true">
+                        <span class="menu-link">
+                            <span class="menu-text">Reports</span>
+                        </span>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("index","userApprove")" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Upgrade ผู้ใช้งาน</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("index","userManagement")" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">จัดการผู้ใช้งาน</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("index","employee")" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">ข้อมูลเจ้าหน้าที่</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("index","GroupManagement") " class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">สิทธิ์การใช้งาน</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+    
+
+
+        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+            <a href="javascript:;" class="menu-link menu-toggle">
+                <i class="menu-icon fab fa-rocketchat"></i>
+                <span class="menu-text">Chat</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="menu-submenu">
+                <i class="menu-arrow"></i>
+                <ul class="menu-subnav">
+                 
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("Private","Chats")" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">รายบุคคล</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("Group","Chats")" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">กลุ่ม</span>
+                        </a>
+                    </li>
+                 </ul>
+            </div>
+        </li>
+
+
+
+
+
+
+        <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+            <a href="javascript:;" class="menu-link menu-toggle">
+                <i class="menu-icon flaticon2-console"></i>
+                <span class="menu-text">Setting</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="menu-submenu">
+                <i class="menu-arrow"></i>
+                <ul class="menu-subnav">
+                    <li class="menu-item menu-item-parent" aria-haspopup="true">
+                        <span class="menu-link">
+                            <span class="menu-text">Reports</span>
+                        </span>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Cases</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Messages</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Reports</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">Calendar</span>
+                        </a>
+                    </li>
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="#" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">FAQ</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="menu-item" aria-haspopup="true">
+            <a href="#" class="menu-link">
+                <i class="menu-icon flaticon2-graph-1"></i>
+                <span class="menu-text">Logs</span>
+            </a>
+        </li>
+    </ul>
+    <!--end::Menu Nav-->
+</div>
+<!--end::Menu Container-->
