@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cisApp", "cisApp\cisApp.csproj", "{C98DB361-457D-4044-BE31-3D94E9B4D3D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp", "cisApp\cisApp.csproj", "{C98DB361-457D-4044-BE31-3D94E9B4D3D0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp.Common", "cisApp.Common\cisApp.Common.csproj", "{8F8B4299-4732-4AB2-9081-99C353AF4550}"
 EndProject

@@ -8,4 +8,8 @@
     <Folder Include="html\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\cisApp.library\cisApp.library.csproj" />
+  </ItemGroup>
+
 </Project>
