@@ -12,4 +12,8 @@
     <ProjectReference Include="..\cisApp.library\cisApp.library.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\cisApp.Function\cisApp.Function.csproj" />
+  </ItemGroup>
+
 </Project>
