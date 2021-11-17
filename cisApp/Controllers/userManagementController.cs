@@ -4,19 +4,54 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using cisApp.Function;
+using cisApp.Models;
+using cisApp.library;
 
 namespace cisApp.Controllers
 {
     public class userManagementController : Controller
     {
-        public IActionResult Index()
+        private List<UserModel> _model = new List<UserModel>(){
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+                new UserModel(),
+            };
+        public IActionResult Index(int pageIndex = 1)
         {
-            //var users = GetUser.Get.GetAll();
-            return View();
+            return View(new PaginatedList<UserModel>(_model, _model.Count, pageIndex, 2));
         }
-        public IActionResult manage(string Mode)
+
+        [HttpPost]
+        public PartialViewResult ItemList(int currentPage, int pageSize)
         {
-            return View("manage", Mode);
+            return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, _model.Count, currentPage, pageSize));
+        }
+
+        public IActionResult Manage(string Mode)
+        {
+            return View("Manage", Mode);
         }
     }
 

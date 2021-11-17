@@ -26,5 +26,45 @@ namespace cisApp.Function
                 }
             }
         }
+
+        public class Manage
+        {
+            public static Users Update(Users data)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        //using var transaction = context.Database.BeginTransaction();
+                        Users obj = new Users();
+
+                        if (data.UserId != null)
+                        {
+                            obj = context.Users.Find(data.UserId.Value);
+                        }
+                        else
+                        {
+
+                        }
+
+                        obj.Fname = data.Fname;
+                        obj.Lname = data.Lname;
+                        obj.UserType = data.UserType;
+                        obj.Tel = data.Tel;
+                        obj.Email = data.Email;
+
+                        context.Users.Update(obj);
+
+                        context.SaveChanges();
+
+                        return obj;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
     }
 }
