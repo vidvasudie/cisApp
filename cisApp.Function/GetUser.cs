@@ -25,6 +25,25 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
+            public static List<UserDesigner> GetDesignerAll()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.UserDesigner.ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+             
         }
 
         public class Manage
