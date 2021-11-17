@@ -201,7 +201,7 @@
         var err = function (e) {
             alert('error paging', e);
         }
-        CallAjax('@Url.Action("ItemList", "userApprove")', 'POST', { pageIndex: index }, suc, err);
+        CallAjax('@Url.Action("ItemList", "userApprove")', 'POST', { currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
     }
     function CallAjax(url, method, data, success, error) {
         if (data != null && data !== undefined) {
@@ -222,6 +222,12 @@
             });
         }
     }
+    
+    $(function () {
+        $('body').on('change', '#pageSize', function () { 
+            PagerClick(1);
+        });
+    });
 </script>
 
 }

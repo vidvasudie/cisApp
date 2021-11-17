@@ -10,16 +10,19 @@ namespace cisApp.library
     {
         public int CurrentPage { get; private set; }
         public int TotalPages { get; private set; }
+        public int TotalCurrentPage { get; private set; }
         public int PageSize { get; private set; }
         public int TotalCount { get; private set; }
         public bool HasPrevious => CurrentPage > 1;
         public bool HasNext => CurrentPage < TotalPages;
+        public List<int> PageList = new List<int>() { 10, 20, 30, 50 };
         public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
         {
-            TotalCount = count;
+            TotalCount = count; //จำนวนทั้งหมด
+            TotalCurrentPage = items.Count;
             PageSize = pageSize;
             CurrentPage = pageIndex;
-            TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+            TotalPages = (int)Math.Ceiling(count / (double)pageSize); //จำนวนหน้าทั้งหมด
             AddRange(items);
         }  
         public static PaginatedList<T> ToPaginatedList(List<T> items, int count, int pageIndex, int pageSize)

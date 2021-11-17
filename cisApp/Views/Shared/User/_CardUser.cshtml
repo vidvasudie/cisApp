@@ -1,4 +1,4 @@
-﻿
+﻿@model UserModel
 @{
 }
 
@@ -16,14 +16,14 @@
                 <!--end::Pic-->
                 <!--begin: Info-->
                 <div class="flex-grow-1">
-                    <!--begin::Title-->
+                    <!--begin::Basic data-->
                     <div class="d-flex align-items-center justify-content-between flex-wrap mt-2">
                         <!--begin::User-->
                         <div class="mr-3">
                             <!--begin::Name-->
                             <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">
-                                อลิสลา ไล่ศัตรูไกล
-                                <i class="flaticon2-correct text-success icon-md ml-2"></i>
+                                @Html.Raw(Model.Fname + " " + Model.Lname)
+                                <i class="flaticon2-contract text-success icon-md ml-2"></i>
                             </a>
                             <!--end::Name-->
                             <!--begin::Contacts-->
@@ -37,7 +37,7 @@
                                                 <path d="M12.9835977,18 C12.7263047,14.0909841 9.47412135,11 5.5,11 C4.98630124,11 4.48466491,11.0516454 4,11.1500272 L4,7 C4,5.8954305 4.8954305,5 6,5 L20,5 C21.1045695,5 22,5.8954305 22,7 L22,16 C22,17.1045695 21.1045695,18 20,18 L12.9835977,18 Z M19.1444251,6.83964668 L13,10.1481833 L6.85557487,6.83964668 C6.4908718,6.6432681 6.03602525,6.77972206 5.83964668,7.14442513 C5.6432681,7.5091282 5.77972206,7.96397475 6.14442513,8.16035332 L12.6444251,11.6603533 C12.8664074,11.7798822 13.1335926,11.7798822 13.3555749,11.6603533 L19.8555749,8.16035332 C20.2202779,7.96397475 20.3567319,7.5091282 20.1603533,7.14442513 C19.9639747,6.77972206 19.5091282,6.6432681 19.1444251,6.83964668 Z" fill="#000000" />
                                             </g>
                                         </svg><!--end::Svg Icon-->
-                                    </span>ผู้ใช้งานทั่วไป
+                                    </span>@Html.Raw(Model.UserTypeDesc)
                                 </a>
 
 
@@ -52,7 +52,7 @@
                                             </g>
                                         </svg>
                                         <!--end::Svg Icon-->
-                                    </span>yu@gmail.com
+                                    </span>@Html.Raw(Model.Email)
                                 </a>
                                 <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
                                     <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
@@ -66,7 +66,7 @@
                                             </g>
                                         </svg><!--end::Svg Icon-->
                                         <!--end::Svg Icon-->
-                                    </span>085 0356032
+                                    </span>@Html.Raw(Model.Tel)
                                 </a>
                             </div>
                             <!--end::Contacts-->
@@ -74,87 +74,88 @@
                         <!--begin::User-->
                         <!--begin::Actions-->
                         <div class="my-lg-0 my-1">
-                            <a href="#" class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2">เอกสาร</a>
+                            @*<a href="#" class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2">เอกสาร</a>*@
                             <a href="#" class="btn btn-sm btn-primary font-weight-bolder text-uppercase">ตรวจสอบ</a>
                         </div>
                         <!--end::Actions-->
                     </div>
-                    <!--end::Title-->
-                    <!--begin::Title-->
-                    <div class="d-flex align-items-center justify-content-between flex-wrap mt-2">
-                        <!--begin::User-->
-                        <div class="mr-3">
-                            <!--begin::Contacts-->
-                            <div class="d-flex flex-wrap my-2">
-                                <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
-                                    <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
-                                        <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo13\dist/../src/media/svg/icons\Communication\Contact1.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
-                                                <path d="M12,11 C10.8954305,11 10,10.1045695 10,9 C10,7.8954305 10.8954305,7 12,7 C13.1045695,7 14,7.8954305 14,9 C14,10.1045695 13.1045695,11 12,11 Z M7.00036205,16.4995035 C7.21569918,13.5165724 9.36772908,12 11.9907452,12 C14.6506758,12 16.8360465,13.4332455 16.9988413,16.5 C17.0053266,16.6221713 16.9988413,17 16.5815,17 L7.4041679,17 C7.26484009,17 6.98863236,16.6619875 7.00036205,16.4995035 Z" fill="#000000" opacity="0.3" />
-                                            </g>
-                                        </svg><!--end::Svg Icon-->
-                                    </span>1739900148XXXXX
-                                </a>
+                    <!--end::Basic data-->
+                    @if (Model.UserType == 2 && Model.designer != null)
+                    {
+                        <!--begin::Designer data-->
+                        <div class="d-flex align-items-center justify-content-between flex-wrap mt-2">
+                            <!--begin::User-->
+                            <div class="mr-3">
+                                <!--begin::Contacts-->
+                                <div class="d-flex flex-wrap my-2">
+                                    <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+                                        <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
+                                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo13\dist/../src/media/svg/icons\Communication\Contact1.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                                    <path d="M12,11 C10.8954305,11 10,10.1045695 10,9 C10,7.8954305 10.8954305,7 12,7 C13.1045695,7 14,7.8954305 14,9 C14,10.1045695 13.1045695,11 12,11 Z M7.00036205,16.4995035 C7.21569918,13.5165724 9.36772908,12 11.9907452,12 C14.6506758,12 16.8360465,13.4332455 16.9988413,16.5 C17.0053266,16.6221713 16.9988413,17 16.5815,17 L7.4041679,17 C7.26484009,17 6.98863236,16.6619875 7.00036205,16.4995035 Z" fill="#000000" opacity="0.3" />
+                                                </g>
+                                            </svg><!--end::Svg Icon-->
+                                        </span>@Html.Raw(Model.designer.PersonalId.Substring(0, 10) + "xxx")
+                                    </a>
 
 
-                                <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
-                                    <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
-                                        <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo13\dist/../src/media/svg/icons\Shopping\Wallet.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <circle fill="#000000" opacity="0.3" cx="20.5" cy="12.5" r="1.5" />
-                                                <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 6.500000) rotate(-15.000000) translate(-12.000000, -6.500000) " x="3" y="3" width="18" height="7" rx="1" />
-                                                <path d="M22,9.33681558 C21.5453723,9.12084552 21.0367986,9 20.5,9 C18.5670034,9 17,10.5670034 17,12.5 C17,14.4329966 18.5670034,16 20.5,16 C21.0367986,16 21.5453723,15.8791545 22,15.6631844 L22,18 C22,19.1045695 21.1045695,20 20,20 L4,20 C2.8954305,20 2,19.1045695 2,18 L2,6 C2,4.8954305 2.8954305,4 4,4 L20,4 C21.1045695,4 22,4.8954305 22,6 L22,9.33681558 Z" fill="#000000" />
-                                            </g>
-                                        </svg><!--end::Svg Icon-->
-                                    </span>กรุงเพท - ออมทรัพย์
-                                </a>
-                                <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
-                                    <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
-                                        <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo13\dist/../src/media/svg/icons\Shopping\Credit-card.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <rect fill="#000000" opacity="0.3" x="2" y="5" width="20" height="14" rx="2" />
-                                                <rect fill="#000000" x="2" y="8" width="20" height="3" />
-                                                <rect fill="#000000" opacity="0.3" x="16" y="14" width="4" height="2" rx="1" />
-                                            </g>
-                                        </svg><!--end::Svg Icon-->
-                                    </span>0850356032
-                                </a>
+                                    <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+                                        <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
+                                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo13\dist/../src/media/svg/icons\Shopping\Wallet.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <circle fill="#000000" opacity="0.3" cx="20.5" cy="12.5" r="1.5" />
+                                                    <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 6.500000) rotate(-15.000000) translate(-12.000000, -6.500000) " x="3" y="3" width="18" height="7" rx="1" />
+                                                    <path d="M22,9.33681558 C21.5453723,9.12084552 21.0367986,9 20.5,9 C18.5670034,9 17,10.5670034 17,12.5 C17,14.4329966 18.5670034,16 20.5,16 C21.0367986,16 21.5453723,15.8791545 22,15.6631844 L22,18 C22,19.1045695 21.1045695,20 20,20 L4,20 C2.8954305,20 2,19.1045695 2,18 L2,6 C2,4.8954305 2.8954305,4 4,4 L20,4 C21.1045695,4 22,4.8954305 22,6 L22,9.33681558 Z" fill="#000000" />
+                                                </g>
+                                            </svg><!--end::Svg Icon-->
+                                        </span>@Html.Raw(Model.BankName+" - "+Model.AccountTypeDesc)
+                                    </a>
+                                    <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+                                        <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
+                                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo13\dist/../src/media/svg/icons\Shopping\Credit-card.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <rect fill="#000000" opacity="0.3" x="2" y="5" width="20" height="14" rx="2" />
+                                                    <rect fill="#000000" x="2" y="8" width="20" height="3" />
+                                                    <rect fill="#000000" opacity="0.3" x="16" y="14" width="4" height="2" rx="1" />
+                                                </g>
+                                            </svg><!--end::Svg Icon-->
+                                        </span>@Html.Raw(Model.designer.AccountNumber)
+                                    </a>
+                                </div>
+                                <!--end::Contacts-->
                             </div>
-                            <!--end::Contacts-->
-                        </div>
-                        <!--begin::User-->
+                            <!--begin::User-->
 
-                    </div>
-                    <!--end::Title-->
-                    <!--begin::Content-->
-                    <div class="d-flex align-items-center flex-wrap justify-content-between">
-
-                        <!--begin::Description-->
-                        <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
-                            ที่อยู่ xxxxxx ถนนxxxx ตำบลxxxxxxxxxxx อำเภอxxxxxxx จังหวัดxxxxxxxxx
                         </div>
-                        <!--end::Description-->
-                        <!--begin::Progress-->
-                        <div class="d-flex mt-4 mt-sm-0">
-                            <span class="font-weight-bold mr-4">Progress</span>
-                            <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        <!--end::Designer data-->
+                        <!--begin::Content-->
+                        <div class="d-flex align-items-center flex-wrap justify-content-between">
+
+                            <!--begin::Description-->
+                            <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
+                                @Html.Raw(Model.designer.Address+" ตำบล"+Model.SubDistrictDesc+" อำเภอ"+Model.DistrictDesc+" จังหวัด"+Model.ProvinceDesc+" "+Model.designer.PostCode)
                             </div>
-                            <span class="font-weight-bolder text-dark ml-4">78%</span>
+                            <!--end::Description-->
+                            <!--begin::Progress-->
+                            @*<div class="d-flex mt-4 mt-sm-0">
+                                <span class="font-weight-bold mr-4">Progress</span>
+                                <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="font-weight-bolder text-dark ml-4">78%</span>
+                            </div>*@
+                            <!--end::Progress-->
                         </div>
-                        <!--end::Progress-->
-                    </div>
-                    <!--end::Content-->
+                        <!--end::Content-->
+                    }
+
                 </div>
                 <!--end::Info-->
             </div>
-            <!--end::Top-->
-            <!--begin::Separator-->
-            <div class="separator separator-solid my-7"></div>
-            <!--end::Separator-->
+            <!--end::Top--> 
         </div>
     </div>

@@ -364,14 +364,22 @@
                     <i class="ki ki-bold-double-arrow-next icon-xs"></i>
                 </a>
             </div>
-            <div class="d-flex align-items-center">
-                <select class="form-control form-control-sm text-primary font-weight-bold mr-4 border-0 bg-light-primary" style="width: 75px;">
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option value="50">50</option> 
+            <div class="d-flex align-items-center"> 
+                @Html.HiddenFor(m => m.CurrentPage)
+                <select id="pageSize" class="form-control form-control-sm text-primary font-weight-bold mr-4 border-0 bg-light-primary" style="width: 75px;">
+                    @foreach (var val in Model.PageList)
+                    { 
+                        if (val == Model.PageSize)
+                        {
+                            <option value="@val" selected>@val</option>
+                        }
+                        else
+                        {
+                            <option value="@val">@val</option>
+                        } 
+                    }
                 </select>
-                <span class="text-muted">Displaying @Model.PageSize of @Model.TotalCount records</span>
+                <span class="text-muted">Displaying @Model.TotalCurrentPage of @Model.TotalCount records</span>
             </div>
         </div>
         <!--end:: Pagination-->

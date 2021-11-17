@@ -43,9 +43,9 @@ namespace cisApp.Controllers
             return View(new PaginatedList<UserModel>(_model, _model.Count, pageIndex, 2));
         }
         [HttpPost]
-        public PartialViewResult ItemList(int pageIndex = 1)
+        public PartialViewResult ItemList(int currentPage, int pageSize)
         { 
-            return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, _model.Count, pageIndex, 2)); 
+            return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, _model.Count, currentPage, pageSize)); 
         }
 
         public IActionResult Manage()

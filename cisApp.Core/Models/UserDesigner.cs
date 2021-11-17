@@ -6,7 +6,46 @@ namespace cisApp.Core
 {
     public partial class UserDesigner
     {
+        /// <summary>
+        /// รหัสผู้ออกแบบ
+        /// </summary>
         public Guid UserDesignerId { get; set; }
+        /// <summary>
+        /// รหัสผู้ใช้งาน
+        /// </summary>
         public Guid? UserId { get; set; }
+        /// <summary>
+        /// เลขประจำตัวประชาชน
+        /// </summary>
+        public string PersonalId { get; set; }
+        /// <summary>
+        /// รหัสธนาคาร
+        /// </summary>
+        public int? BankId { get; set; }
+        /// <summary>
+        /// เลขที่บัญชี
+        /// </summary>
+        public string AccountNumber { get; set; }
+        /// <summary>
+        /// ประเภทบัญชี: 1=ออมทรัพย์, 2=ประจำ, 3=กระแสรายวัน
+        /// </summary>
+        public int? AccountType { get; set; }
+        public string Address { get; set; }
+        /// <summary>
+        /// code ตำบล
+        /// </summary>
+        public int? SubDistrictId { get; set; }
+        /// <summary>
+        /// code อำเภอ
+        /// </summary>
+        public int? DistrictId { get; set; }
+        /// <summary>
+        /// code จังหวัด
+        /// </summary>
+        public int? ProvinceId { get; set; }
+        /// <summary>
+        /// รหัสไปรษณีย์
+        /// </summary>
+        public string PostCode { get; set; }
     }
 }

@@ -15,5 +15,7 @@ namespace cisApp.Core
         /// ,3 = เจ้าหน้าที่
         /// </summary>
         public int? UserType { get; set; }
+        public string Tel { get; set; }
+        public string Email { get; set; }
     }
 }
