@@ -182,7 +182,7 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container" id="box_update">
-            @await Html.PartialAsync("~/Views/userApprove/PT/_ItemList.cshtml", Model)
+            @*@await Html.PartialAsync("~/Views/userApprove/PT/_ItemList.cshtml", Model)*@
         </div>
         <!--end::Container-->
     </div>
@@ -227,6 +227,7 @@
         $('body').on('change', '#pageSize', function () { 
             PagerClick(1);
         });
+        PagerClick(1);
     });
 </script>
 

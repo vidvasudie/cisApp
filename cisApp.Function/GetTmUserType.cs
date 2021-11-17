@@ -5,17 +5,17 @@ using cisApp.Core;
 
 namespace cisApp.Function
 {
-    public static class GetUser
+    public static class GetTmUserType
     {
         public class Get
         {
-            public static List<Users> GetAll()
+            public static List<TmUserType> GetAll()
             {
                 try
                 {
                     using (var context = new CAppContext())
                     {
-                        var data = context.Users.ToList();
+                        var data = context.TmUserType.ToList();
 
                         return data;
                     }
@@ -26,13 +26,13 @@ namespace cisApp.Function
                 }
             }
 
-            public static List<UserDesigner> GetDesignerAll()
+            public static TmUserType GetById(int id)
             {
                 try
                 {
                     using (var context = new CAppContext())
                     {
-                        var data = context.UserDesigner.ToList();
+                        var data = context.TmUserType.Where(o => o.Id == id).FirstOrDefault();
 
                         return data;
                     }
@@ -42,8 +42,6 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
-
-             
         }
     }
 }

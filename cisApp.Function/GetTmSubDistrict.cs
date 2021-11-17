@@ -5,17 +5,33 @@ using cisApp.Core;
 
 namespace cisApp.Function
 {
-    public static class GetUser
+    public static class GetTmSubDistrict
     {
         public class Get
         {
-            public static List<Users> GetAll()
+            public static List<TmSubdistrict> GetAll()
             {
                 try
                 {
                     using (var context = new CAppContext())
                     {
-                        var data = context.Users.ToList();
+                        var data = context.TmSubdistrict.ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            public static TmSubdistrict GetById(int id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.TmSubdistrict.Where(o => o.Id == id).FirstOrDefault();
 
                         return data;
                     }
@@ -26,24 +42,6 @@ namespace cisApp.Function
                 }
             }
 
-            public static List<UserDesigner> GetDesignerAll()
-            {
-                try
-                {
-                    using (var context = new CAppContext())
-                    {
-                        var data = context.UserDesigner.ToList();
-
-                        return data;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
-
-             
         }
     }
 }

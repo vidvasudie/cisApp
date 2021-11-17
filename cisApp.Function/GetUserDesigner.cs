@@ -5,28 +5,11 @@ using cisApp.Core;
 
 namespace cisApp.Function
 {
-    public static class GetUser
+    public static class GetUserDesigner
     {
         public class Get
         {
-            public static List<Users> GetAll()
-            {
-                try
-                {
-                    using (var context = new CAppContext())
-                    {
-                        var data = context.Users.ToList();
-
-                        return data;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
-
-            public static List<UserDesigner> GetDesignerAll()
+            public static List<UserDesigner> GetAll()
             {
                 try
                 {
@@ -42,8 +25,39 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+            public static UserDesigner GetById(Guid id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.UserDesigner.Where(o => o.UserDesignerId == id).FirstOrDefault();
 
-             
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            public static UserDesigner GetByUserId(Guid userid)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.UserDesigner.Where(o => o.UserId == userid).FirstOrDefault();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
         }
     }
 }
