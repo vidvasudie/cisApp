@@ -26,6 +26,25 @@ namespace cisApp.Function
                 }
             }
 
+            public static Users GetById(Guid id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.Users.Find(id);
+
+                        if (data == null) return new Users();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
             public static List<UserDesigner> GetDesignerAll()
             {
                 try

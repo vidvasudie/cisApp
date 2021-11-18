@@ -58,7 +58,7 @@ namespace cisApp.Controllers
                     UserType = u.UserType,
                     Tel = u.Tel,
                     Email = u.Email,
-                    designer = GetUserDesigner.Get.GetByUserId(u.UserId)
+                    designer = GetUserDesigner.Get.GetByUserId(u.UserId.Value)
                 });;
             }
             foreach (var um in _model)
