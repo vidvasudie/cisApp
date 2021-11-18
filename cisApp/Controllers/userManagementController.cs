@@ -33,6 +33,52 @@ namespace cisApp.Controllers
 
             return View(data);
         }
+
+
+        [HttpPost]
+        public JsonResult Manage(Users data)
+        {
+            try
+            {
+                var user = GetUser.Manage.Update(data);
+
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Active(Guid id, bool active)
+        {
+            try
+            {
+                var user = GetUser.Manage.Active(id, active);
+
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
+
+        [HttpPost]
+        public JsonResult Delete(Guid id)
+        {
+            try
+            {
+                var user = GetUser.Manage.Delete(id);
+
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
     }
 
 

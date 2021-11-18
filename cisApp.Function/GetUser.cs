@@ -70,7 +70,7 @@ namespace cisApp.Function
                         }
                         else
                         {
-
+                            obj.CreatedDate = DateTime.Now;
                         }
 
                         obj.Fname = data.Fname;
@@ -78,6 +78,60 @@ namespace cisApp.Function
                         obj.UserType = data.UserType;
                         obj.Tel = data.Tel;
                         obj.Email = data.Email;
+                        obj.IsActive = data.IsActive;
+
+                        obj.UpdatedDate = DateTime.Now;
+                        obj.IsDeleted = false;
+
+                        context.Users.Update(obj);
+
+                        context.SaveChanges();
+
+                        return obj;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static Users Active(Guid id, bool active)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        Users obj = context.Users.Find(id);
+
+                        obj.IsActive = active;
+
+                        obj.UpdatedDate = DateTime.Now;
+
+                        context.Users.Update(obj);
+
+                        context.SaveChanges();
+
+                        return obj;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static Users Delete(Guid id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        Users obj = context.Users.Find(id);
+
+                        obj.IsDeleted = true;
+
+                        obj.DeletedDate = DateTime.Now;
 
                         context.Users.Update(obj);
 

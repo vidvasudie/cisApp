@@ -3,6 +3,7 @@
 @{
     //ViewData["Title"] = "จัดการข้อมูลผู้ใช้งาน" + (!string.IsNullOrEmpty(Model)?"ดีไซต์เนอร์": "ทั่วไป");
     ViewData["Title"] = "จัดการข้อมูลผู้ใช้งาน" + (Model.UserType != 1 ? "ดีไซต์เนอร์": "ทั่วไป");
+    ViewData["ControllerName"] = "userManagement";
 }
 
 <!--begin::Content-->
@@ -131,7 +132,7 @@
                             <i class="ki ki-long-arrow-back icon-sm"></i>ย้อนกลับ
                         </a>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary font-weight-bolder">
+                            <button type="button" class="btn btn-primary font-weight-bolder btn-submit">
                                 <i class="ki ki-check icon-sm"></i>บันทึก
                             </button>
                             <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -162,7 +163,7 @@
                 </div>
                 <div class="card-body">
                     <!--begin::Form-->
-                    <form class="form" id="kt_form">
+                    <form class="form" id="kt_form" asp-action="Manage" asp-controller=@ViewData["ControllerName"] method="post" data-ajax-confirm="@MessageCommon.Confirm" data-ajax="true" data-ajax-success="redirect">
                         <div class="row">
                             <div class="col-xl-2"></div>
                             <div class="col-xl-8">
@@ -170,15 +171,19 @@
                                     <h3 class="text-dark font-weight-bold mb-10">ข้อมูลผู้ใช้งาน:</h3>
                                     <div class="form-group row">
                                         @Html.LabelFor(m => m.Fname, "", new {@class="col-3"})
-                                        <div class="col-9">                                            
-                                            @Html.TextBoxFor(m => m.Fname, "", new {@class= "form-control form-control-solid", @placeholder = "กรุณากรอกชื่อ" })
+                                        <div class="col-9">
+                                            @Html.TextBoxFor(m => m.Fname, "", new { @class = "form-control form-control-solid", @placeholder = "กรุณากรอกชื่อ", @autocomplete = "off" })
+                                            @Html.ValidationMessageFor(m => m.Fname, "", new { @class = "text-danger" })
                                         </div>
+                                        
                                     </div>
                                     <div class="form-group row">
                                         @Html.LabelFor(m => m.Lname, "", new { @class = "col-3" })
                                         <div class="col-9">
-                                            @Html.TextBoxFor(m => m.Lname, "", new { @class = "form-control form-control-solid", @placeholder = "กรุณากรอกนามสกุล" })
+                                            @Html.TextBoxFor(m => m.Lname, "", new { @class = "form-control form-control-solid", @placeholder = "กรุณากรอกนามสกุล", @autocomplete = "off" })
+                                            @Html.ValidationMessageFor(m => m.Lname, "", new { @class = "text-danger" })
                                         </div>
+                                        
                                     </div>
                                     <div class="form-group row">
                                         @Html.LabelFor(m => m.Tel, "", new { @class = "col-3" })
@@ -189,8 +194,9 @@
                                                         <i class="la la-phone"></i>
                                                     </span>
                                                 </div>
-                                                @Html.TextBoxFor(m => m.Lname, "", new { @class = "form-control form-control-solid", @placeholder="Phone" })
+                                                @Html.TextBoxFor(m => m.Tel, "", new { @class = "form-control form-control-solid", @placeholder = "Phone", @autocomplete = "off" })
                                             </div>
+                                            @Html.ValidationMessageFor(m => m.Tel, "", new { @class = "text-danger" })
                                             <span class="form-text text-muted">We'll never share your email with anyone else.</span>
                                         </div>
                                     </div>
@@ -203,8 +209,9 @@
                                                         <i class="la la-at"></i>
                                                     </span>
                                                 </div>
-                                                @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control form-control-solid", @placeholder = "Email" })
+                                                @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control form-control-solid", @placeholder = "Email", @autocomplete = "off" })
                                             </div>
+                                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                     @*<div class="form-group row">
@@ -220,7 +227,7 @@
             </div>*@
                                 </div>
                              
-
+                                <button>click</button>
 
                                 @if(false)
                                 {
