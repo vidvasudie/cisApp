@@ -25,6 +25,22 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+            public static List<TmBank> GetByActive()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.TmBank.Where(o => o.IsActive == true).ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
             public static TmBank GetById(int id)
             {
                 try

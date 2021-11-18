@@ -9,6 +9,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\cisApp.Common\cisApp.Common.csproj" />
     <ProjectReference Include="..\cisApp.Core\cisApp.Core.csproj" />
     <ProjectReference Include="..\cisApp.library\cisApp.library.csproj" />

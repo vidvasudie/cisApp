@@ -42,6 +42,22 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+            public static List<TmProvince> GetByActive()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.TmProvince.Where(o => o.IsActive == true).ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
     }
 }

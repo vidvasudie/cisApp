@@ -1,0 +1,99 @@
+﻿@using cisApp.Function
+@model UserModel
+@{
+}
+
+<div class="separator separator-dashed my-10"></div>
+<div class="my-5">
+    <h3 class="text-dark font-weight-bold mb-10">ข้อมูลยืนยันตัวตน :</h3>
+    <div class="form-group row">
+        <label class="col-3">เลขบัตรประชาชน</label>
+        <div class="col-9">
+            @Html.TextBoxFor(m => m.PersonalId, new { @class = "form-control form-control-solid is-number-only valid-pid", @placeholder = "เลขบัตรประชาชน", @Required = "Required", @maxlength = "13", @onblur = "GetValidatePersonalId(" + Url.Action("GetValidateIdentity", "Base") + ")" })
+            @Html.ValidationMessageFor(m => m.PersonalId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-3">ธนาคาร</label>
+        <div class="col-9">
+            @{
+                SelectList bankList = new SelectList(GetTmBank.Get.GetByActive(), "Id", "Name");
+            }
+            @Html.DropDownListFor(m => m.BankId, bankList, "กรุณาเลือกธนาคาร", new { @class = "form-control", @Required = "Required" })
+            @Html.ValidationMessageFor(m => m.BankId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-3">หมายเลขบัญชี</label>
+        <div class="col-9">
+            @Html.TextBoxFor(m => m.AccountNumber, new { @class = "form-control form-control-solid is-number-only", @placeholder = "หมายเลขบัญชี", @Required = "Required", @maxlength = "10" })
+            @Html.ValidationMessageFor(m => m.AccountNumber, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-3">ประเภทบัญชี</label>
+        <div class="col-9">
+            @{
+                SelectList accTypeList = new SelectList(GetTmBankAccountType.Get.GetByActive(), "Id", "Name");
+            }
+            @Html.DropDownListFor(m => m.AccountType, accTypeList, "กรุณาเลือกประเภทบัญชี", new { @class = "form-control", @Required = "Required" })
+            @Html.ValidationMessageFor(m => m.AccountType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>
+
+<div class="separator separator-dashed my-10"></div>
+<div class="my-5">
+    <h3 class="text-dark font-weight-bold mb-10">ที่อยู่ :</h3>
+    <div class="form-group row">
+        <label class="col-3">ที่อยู่</label>
+        <div class="col-9">
+            @*<input class="form-control form-control-solid" type="text" value="District 6 1352 W. Olive Ave" />*@
+            @Html.TextAreaFor(m => m.Address, 5, 500, new { @class = "form-control form-control-solid" })
+            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*<div class="form-group row">
+            <label class="col-3">ที่อยู่ บรรทัดที่ 1</label>
+            <div class="col-9">
+                <input class="form-control form-control-solid" type="text" value="Fresno 559-488-4020" />
+            </div>
+        </div>*@
+    <div class="form-group row">
+        <label class="col-3">จังหวัด</label>
+        <div class="col-9">
+            @{
+                SelectList provinceList = new SelectList(GetTmProvince.Get.GetByActive(), "Id", "NameTh");
+            }
+            @Html.DropDownListFor(m => m.ProvinceId, provinceList, "กรุณาเลือกจังหวัด", new { @class = "form-control", @Required = "Required" })
+            @Html.ValidationMessageFor(m => m.ProvinceId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-3">อำเภอ</label>
+        <div class="col-9">
+            @{
+                SelectList distList = new SelectList(GetTmDistrict.Get.GetByActive(), "Id", "NameTh");
+            }
+            @Html.DropDownListFor(m => m.DistrictId, distList, "กรุณาเลือกอำเภอ", new { @class = "form-control", @Required = "Required" })
+            @Html.ValidationMessageFor(m => m.DistrictId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-3">ตำบล</label>
+        <div class="col-9">
+            @{
+                SelectList subdistList = new SelectList(GetTmSubDistrict.Get.GetByActive(), "Id", "NameTh");
+            }
+            @Html.DropDownListFor(m => m.SubDistrictId, subdistList, "กรุณาเลือกตำบล", new { @class = "form-control", @Required = "Required" })
+            @Html.ValidationMessageFor(m => m.SubDistrictId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-3">รหัสไปรษณีย์</label>
+        <div class="col-9">
+            @Html.TextBoxFor(m => m.PostCode, new { @class = "form-control form-control-solid is-number-only", @placeholder = "รหัสไปรษณีย์", @Required = "Required", @maxlength = "5", @readonly = "readonly" })
+            @Html.ValidationMessageFor(m => m.PostCode, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

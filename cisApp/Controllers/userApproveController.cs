@@ -27,7 +27,7 @@ namespace cisApp.Controllers
 
         public IActionResult Manage()
         {
-            return View();
+            return View(new UserModel() { UserType=2 });
         }
     }
 }

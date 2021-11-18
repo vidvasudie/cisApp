@@ -25,6 +25,22 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+            public static List<TmSubdistrict> GetByActive()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.TmSubdistrict.Where(o => o.IsActive == true).ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
             public static TmSubdistrict GetById(int id)
             {
                 try
