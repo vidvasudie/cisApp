@@ -9,7 +9,7 @@ using System.Text;
 
 namespace cisApp.Core
 {
-    public static class StoreadProcedure
+    public static class StoreProcedure
     {
         static IConfigurationRoot configuration = new ConfigurationBuilder().AddJsonFile(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json")).Build();
         public static List<T> GetAllStored<T>(string nameProd, SqlParameter[] parameter) where T : new()

@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using cisApp.library;
 using cisApp.Core;
-using cisApp.Function;
-using cisApp.Models;
+using cisApp.Function; 
 
 namespace cisApp.Controllers
 {
