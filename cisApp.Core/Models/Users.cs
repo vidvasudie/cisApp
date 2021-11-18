@@ -23,7 +23,7 @@ namespace cisApp.Core
         /// </summary>
         /// 
         [Display(Name = "ประเภทผู้ใช้งาน")]
-        public int? UserType { get; set; }
+        public int? UserType { get; set; } = 1;
 
         [Display(Name = "เบอร์โทรศัพท์")]
         [Required(ErrorMessage = "กรุณากรอกเบอร์โทรศัพท์")]

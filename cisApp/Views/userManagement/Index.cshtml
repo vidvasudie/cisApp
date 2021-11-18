@@ -3,7 +3,7 @@
 @model PaginatedList<UserModel>
 @{
     ViewData["Title"] = "เพิ่มผู้ใช้งานระบบ";
-    ViewData["Controller"] = "userManagement";
+    ViewData["ControllerName"] = "userManagement";
 }
 
 
@@ -101,7 +101,7 @@
                 <a href="#" class=""></a>
                 <!--end::Button-->
                 <!--begin::Button-->
-                <a href="@Url.Action("manage",ViewData["Controller"])" class="btn btn-light-primary font-weight-bold ml-2">เพิ่มผู้ใช้งาน</a>
+                <a href="@Url.Action("manage",ViewData["ControllerName"])" class="btn btn-light-primary font-weight-bold ml-2">เพิ่มผู้ใช้งาน</a>
                 <!--end::Button-->
                 <!--begin::Dropdown-->
                 <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="Quick actions" data-placement="left">
@@ -259,7 +259,7 @@
         var err = function (e) {
             alert('error paging', e);
         }
-        CallAjax('@Url.Action("ItemList", ViewData["Controller"])', 'POST', { currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
+        CallAjax('@Url.Action("ItemList", ViewData["ControllerName"])', 'POST', { currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
     }
     function CallAjax(url, method, data, success, error) {
         if (data != null && data !== undefined) {

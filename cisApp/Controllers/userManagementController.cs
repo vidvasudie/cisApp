@@ -87,6 +87,22 @@ namespace cisApp.Controllers
 
             return View(data);
         }
+
+
+        [HttpPost]
+        public JsonResult Manage(Users data)
+        {
+            try
+            {
+                var user = GetUser.Manage.Update(data);
+
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
     }
 
 
