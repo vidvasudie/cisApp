@@ -19,10 +19,10 @@ namespace cisApp.Controllers
         [HttpPost]
         public PartialViewResult ItemList(SearchModel model)
         { 
-            List<UserModel> _model = new List<UserModel>();
-             
+            List<UserModel> _model = GetUser.Get.GetUserModels(model);
+            int count = GetUser.Get.GetUserModelsTotal(model);
 
-            return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, _model.Count, model.currentPage.Value, model.pageSize.Value)); 
+            return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, count, model.currentPage.Value, model.pageSize.Value)); 
         }
 
         public IActionResult Manage()

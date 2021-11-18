@@ -197,6 +197,7 @@
     function PagerClick(index) {
         var suc = function (html) {
             $('#box_update').html(html);
+            $('#kt_subheader_total').html($('#TotalCount').val());
         }
         var err = function (e) {
             alert('error paging', e);
@@ -208,7 +209,7 @@
         if (text.length > 0) {
             var suc = function (html) {
                 $('#box_update').html(html);
-                $('#kt_subheader_total').val($('#TotalCount').val());
+                $('#kt_subheader_total').html($('#TotalCount').val());
             }
             var err = function (e) {
                 alert('error search', e);

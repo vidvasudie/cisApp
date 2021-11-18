@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using cisApp.Core;
 
@@ -45,12 +46,41 @@ namespace cisApp.Function
                 }
             }
             
-            public static List<UserModel> GetUserModels(string textsearch)
+            public static List<UserModel> GetUserModels(SearchModel model)
             {
-                return null;
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text : (object)DBNull.Value),
+                       new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
+                       new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
+                    };
+                     
+                    return StoreProcedure.GetAllStored<UserModel>("GetUserModels", parameter); 
+                }
+                catch (Exception ex)
+                {
+                    return new List<UserModel>();
+                } 
             }
 
-             
+            public static int GetUserModelsTotal(SearchModel model)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text : (object)DBNull.Value)
+                    };
+                    var dt = StoreProcedure.GetAllStoredDataTable("GetUserModelsTotal", parameter);
+                    return (int)dt.Rows[0]["TotalCount"];
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+
+
         }
 
         public class Manage
