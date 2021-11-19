@@ -38,5 +38,14 @@ namespace cisApp.library
             else
                 return true;
         }
+
+        public static string GenerateRequestCode(int number)
+        {
+            //request pattern USDyyMMxxx1
+            string prefix = "UDS";
+            string year = DateTime.Now.Year < 2500 ? String.Format("{0}", DateTime.Now.Year + 543).Substring(2, 2) : String.Format("{0}", DateTime.Now.Year).Substring(2, 2);
+            string month = DateTime.Now.Month.ToString("00");
+            return String.Format("{0}{1}{2}{3}", prefix, year, month, number.ToString("0000"));
+        }
     }
 }

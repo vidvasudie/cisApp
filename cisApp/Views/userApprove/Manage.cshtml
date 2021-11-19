@@ -218,6 +218,11 @@
         function submit() {
             $('#kt_form_req').submit();
         }
+        $(function () {
+            const uppy = Uppy.Core({ autoProceed: false })
+            uppy.use(Uppy.Dashboard, { target: '#kt_dropzone_1', inline: true, height: 450 })
+            uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' })
+        });
     </script>
 
 

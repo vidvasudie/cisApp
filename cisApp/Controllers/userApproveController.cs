@@ -34,7 +34,8 @@ namespace cisApp.Controllers
         public JsonResult Manage(UserModel data)
         {
             try
-            { 
+            {
+                string code = Utility.GenerateRequestCode(1);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userApprove")));
             }
             catch (Exception ex)
@@ -42,5 +43,12 @@ namespace cisApp.Controllers
                 return Json(new ResponseModel().ResponseError());
             }
         }
+
+        public IActionResult ManageRequest()
+        {
+            return View();
+        }
+
+        
     }
 }
