@@ -18,9 +18,10 @@ namespace cisApp.Controllers
         }
         [HttpPost]
         public PartialViewResult ItemList(SearchModel model)
-        { 
-            List<UserModel> _model = GetUser.Get.GetUserModels(model);
-            int count = GetUser.Get.GetUserModelsTotal(model);
+        {
+            model.status = 1;//ค้นหาเอาเฉพาะ สถานะรอดำเนินการ = 1
+            List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model);
+            int count = GetUserDesignerRequest.Get.GetUserDesignerRequestModelTotal(model);
 
             return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, count, model.currentPage.Value, model.pageSize.Value)); 
         }
@@ -35,7 +36,14 @@ namespace cisApp.Controllers
         {
             try
             {
-                string code = Utility.GenerateRequestCode(1);
+                data.UserType = 1;
+                var user = GetUser.Manage.Update(data);
+                data.UserId = user.UserId;
+                string code = Utility.GenerateRequestCode(GetUserDesignerRequest.Get.GetLastNumber());
+                data.Code = code;
+                data.Status = 1;//1=รอดำเนินการ
+                var ureq = GetUserDesignerRequest.Manage.Update(data);
+
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userApprove")));
             }
             catch (Exception ex)

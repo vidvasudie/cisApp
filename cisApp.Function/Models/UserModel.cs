@@ -35,10 +35,11 @@ namespace cisApp.Function
         /// <summary>
         /// รหัสผู้ออกแบบ
         /// </summary>
-        public Guid UserDesignerId { get; set; } 
+        public Guid UserDesignerId { get; set; }
         /// <summary>
         /// เลขประจำตัวประชาชน
         /// </summary>
+        [MinLength(13, ErrorMessage = "กรุณากรอกเลขประจำตัวประชาชนให้ถูกต้อง")]
         public string PersonalId { get; set; }
         /// <summary>
         /// รหัสธนาคาร
@@ -84,5 +85,10 @@ namespace cisApp.Function
         public Guid? CreatedBy { get; set; }
         public Guid? UpdatedBy { get; set; }
         public Guid? DeletedBy { get; set; }
+
+        public string Code { get; set; }
+        public int? Status { get; set; }
+        public string StatusDesc { get; set; }
+        public string Remark { get; set; }
     }
 }

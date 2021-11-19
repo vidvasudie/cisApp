@@ -34,9 +34,35 @@ namespace cisApp.Core
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<UsersPassword> UsersPassword { get; set; }
         public virtual DbSet<TmUserType> TmUserType { get; set; }
-
+        public virtual DbSet<UserDesignerRequest> UserDesignerRequest { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<UserDesignerRequest>(entity =>
+            {
+                entity.Property(e => e.AccountNumber).HasMaxLength(10);
+
+                entity.Property(e => e.BankId).HasColumnName("BankID");
+
+                entity.Property(e => e.Code)
+                    .IsRequired()
+                    .HasMaxLength(11);
+
+                entity.Property(e => e.DistrictId).HasColumnName("DistrictID");
+
+                entity.Property(e => e.PersonalId)
+                    .HasColumnName("PersonalID")
+                    .HasMaxLength(13);
+
+                entity.Property(e => e.PostCode).HasMaxLength(5);
+
+                entity.Property(e => e.ProvinceId).HasColumnName("ProvinceID");
+
+                entity.Property(e => e.Status).HasComment("1=รอดำเนินการ, 2=อนุมัติ, 3=ไม่อนุมัติ");
+
+                entity.Property(e => e.SubDistrictId).HasColumnName("SubDistrictID");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+            });
             modelBuilder.Entity<TmBank>(entity =>
             {
                 entity.ToTable("Tm_Bank");

@@ -9,7 +9,7 @@ namespace cisApp.Function
         public string text { get; set; }
         public int? currentPage { get; set; } = 1;
         public int? pageSize { get; set; } = 10;
-
+        public int status { get; set; } = 0;
 
     }
 }
