@@ -30,8 +30,8 @@ namespace cisApp.Controllers
             if (id != null) {
                 data = GetUser.Get.GetById(id.Value);
             }
-
-            return View(data);
+            return View(new UserModel() { UserType = 1 });
+            //return View(data);
         }
 
 
