@@ -75,5 +75,14 @@ namespace cisApp.Function
         public string SubDistrictDesc { get; set; }
         public string BankName { get; set; }
         public string AccountTypeDesc { get; set; }
+
+        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
+        public DateTime DeletedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public Guid? UpdatedBy { get; set; }
+        public Guid? DeletedBy { get; set; }
     }
 }

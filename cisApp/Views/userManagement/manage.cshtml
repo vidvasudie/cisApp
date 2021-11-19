@@ -1,5 +1,6 @@
-﻿@model Users
+﻿@model UserModel
 @using cisApp.Core
+@using cisApp.Function
 @{
     //ViewData["Title"] = "จัดการข้อมูลผู้ใช้งาน" + (!string.IsNullOrEmpty(Model)?"ดีไซต์เนอร์": "ทั่วไป");
     ViewData["Title"] = "จัดการข้อมูลผู้ใช้งาน" + (Model.UserType != 1 ? "ดีไซต์เนอร์": "ทั่วไป");
@@ -167,133 +168,14 @@
                         <div class="row">
                             <div class="col-xl-2"></div>
                             <div class="col-xl-8">
-                                <div class="my-5">
-                                    <h3 class="text-dark font-weight-bold mb-10">ข้อมูลผู้ใช้งาน:</h3>
-                                    <div class="form-group row">
-                                        @Html.LabelFor(m => m.Fname, "", new {@class="col-3"})
-                                        <div class="col-9">
-                                            @Html.TextBoxFor(m => m.Fname, "", new { @class = "form-control form-control-solid", @placeholder = "กรุณากรอกชื่อ", @autocomplete = "off" })
-                                            @Html.ValidationMessageFor(m => m.Fname, "", new { @class = "text-danger" })
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="form-group row">
-                                        @Html.LabelFor(m => m.Lname, "", new { @class = "col-3" })
-                                        <div class="col-9">
-                                            @Html.TextBoxFor(m => m.Lname, "", new { @class = "form-control form-control-solid", @placeholder = "กรุณากรอกนามสกุล", @autocomplete = "off" })
-                                            @Html.ValidationMessageFor(m => m.Lname, "", new { @class = "text-danger" })
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="form-group row">
-                                        @Html.LabelFor(m => m.Tel, "", new { @class = "col-3" })
-                                        <div class="col-9">
-                                            <div class="input-group input-group-solid">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="la la-phone"></i>
-                                                    </span>
-                                                </div>
-                                                @Html.TextBoxFor(m => m.Tel, "", new { @class = "form-control form-control-solid", @placeholder = "Phone", @autocomplete = "off" })
-                                            </div>
-                                            @Html.ValidationMessageFor(m => m.Tel, "", new { @class = "text-danger" })
-                                            <span class="form-text text-muted">We'll never share your email with anyone else.</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        @Html.LabelFor(m => m.Email, "", new { @class = "col-3" })
-                                        <div class="col-9">
-                                            <div class="input-group input-group-solid">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="la la-at"></i>
-                                                    </span>
-                                                </div>
-                                                @Html.TextBoxFor(m => m.Email, "", new { @class = "form-control form-control-solid", @placeholder = "Email", @autocomplete = "off" })
-                                            </div>
-                                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                    @*<div class="form-group row">
-                <label class="col-3">Company Site</label>
-                <div class="col-9">
-                    <div class="input-group input-group-solid">
-                        <input type="text" class="form-control form-control-solid" placeholder="Username" value="loop" />
-                        <div class="input-group-append">
-                            <span class="input-group-text">.com</span>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
-                                </div>
-                             
-                                <button>click</button>
 
-                                @if(false)
+
+                                @await Html.PartialAsync("~/Views/Shared/User/_UserCustomer.cshtml", Model)
+
+
+                                @if (Model.UserType == 2)
                                 {
-                                <div class="separator separator-dashed my-10"></div>
-                                <div class="my-5">
-                                    <h3 class="text-dark font-weight-bold mb-10">ข้อมูลยืนยันตัวตน :</h3>
-                                    <div class="form-group row">
-                                        <label class="col-3">เลขบัตรประชาชน</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="1234567890" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">ธนาคาร</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="กรุงเทพ" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">หมายเลขบัญชี</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="1234567890" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">ประเภทบัญชี</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="ออมทรัพย์" />
-                                        </div>
-                                    </div>
-                                 </div>
-
-                                <div class="separator separator-dashed my-10"></div>
-                                <div class="my-5">
-                                    <h3 class="text-dark font-weight-bold mb-10">ที่อยู่ :</h3>
-                                    <div class="form-group row">
-                                        <label class="col-3">ที่อยู่ บรรทัดที่ 1</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="District 6 1352 W. Olive Ave" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">ที่อยู่ บรรทัดที่ 1</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="Fresno 559-488-4020" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">อำเภอ</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="Polo Alto" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">จังหวัด</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="Los Angeles" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">รหัสไปรษณีย์</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="780456" />
-                                        </div>
-                                    </div>
-                                </div>
+                                    @await Html.PartialAsync("~/Views/Shared/User/_UserDesigner.cshtml", Model)
                                 }
 
                                 <div class="separator separator-dashed my-10"></div>
@@ -311,7 +193,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div> 
+                                    </div>
                                 </div>
 
 

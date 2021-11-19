@@ -129,8 +129,8 @@ namespace cisApp.Core
 
                 entity.Property(e => e.UserDesignerId)
                     .HasColumnName("UserDesignerID")
-                    .HasComment("รหัสผู้ออกแบบ")
-                    .ValueGeneratedNever();
+                    .HasDefaultValueSql("(newid())")
+                    .HasComment("รหัสผู้ออกแบบ");
 
                 entity.Property(e => e.AccountNumber)
                     .HasMaxLength(10)
@@ -180,7 +180,6 @@ namespace cisApp.Core
                 entity.Property(e => e.Tel).HasMaxLength(10);
 
                 entity.Property(e => e.UserType)
-                    .HasColumnName("User_Type")
                     .HasComment(@"1 = ผู้ใข้งาน,
 2 = นักออกแบบ
 ,3 = เจ้าหน้าที่");

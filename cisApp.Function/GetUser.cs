@@ -27,18 +27,23 @@ namespace cisApp.Function
                 }
             }
 
-            public static Users GetById(Guid id)
+            public static UserModel GetById(Guid id)
             {
                 try
                 {
-                    using (var context = new CAppContext())
+                    SqlParameter[] parameter = new SqlParameter[]
                     {
-                        var data = context.Users.Find(id);
+                        new SqlParameter("@id", id)
+                    };
 
-                        if (data == null) return new Users();
+                    var data = StoreProcedure.GetAllStored<UserModel>("GetUserById", parameter);
 
-                        return data;
+                    if (data.Count > 0)
+                    {
+                        return data.FirstOrDefault();
                     }
+
+                    return new UserModel();
                 }
                 catch (Exception ex)
                 {
@@ -85,7 +90,7 @@ namespace cisApp.Function
 
         public class Manage
         {
-            public static Users Update(Users data)
+            public static Users Update(UserModel data)
             {
                 try
                 {
@@ -100,6 +105,7 @@ namespace cisApp.Function
                         }
                         else
                         {
+                            obj.IsActive = true;
                             obj.CreatedDate = DateTime.Now;
                         }
 
@@ -116,6 +122,37 @@ namespace cisApp.Function
                         context.Users.Update(obj);
 
                         context.SaveChanges();
+
+                        if (obj.UserType != 1)
+                        {
+                            // user designer 
+                            UserDesigner objSub = new UserDesigner();
+
+                            if (data.UserDesignerId != null && data.UserDesignerId != Guid.Empty)
+                            {
+                                objSub = context.UserDesigner.Find(data.UserDesignerId);
+                            }
+                            else
+                            {
+                                // ถ้าเพิ่ม designer จะต้องเพิ่ม log คำขอเป็น designer ที่สำเร็จแล้วด้วย
+                            }
+
+                            objSub.UserId = obj.UserId;
+                            objSub.PersonalId = data.PersonalId;
+                            objSub.BankId = data.BankId;
+                            objSub.AccountNumber = data.AccountNumber;
+                            objSub.AccountType = data.AccountType;
+                            objSub.Address = data.Address;
+                            objSub.SubDistrictId = data.SubDistrictId;
+                            objSub.DistrictId = data.DistrictId;
+                            objSub.ProvinceId = data.ProvinceId;
+                            objSub.PostCode = data.PostCode;
+
+                            context.UserDesigner.Update(objSub);
+
+                            context.SaveChanges();
+                        }
+                        
 
                         return obj;
                     }

@@ -19,24 +19,31 @@ namespace cisApp.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult ItemList(int? currentPage = 1, int? pageSize = 10)
-        { 
-            return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, _model.Count, currentPage.Value, pageSize.Value));
+        public PartialViewResult ItemList(SearchModel model)
+        {
+            List<UserModel> _model = GetUser.Get.GetUserModels(model);
+            int count = GetUser.Get.GetUserModelsTotal(model);
+
+            return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
 
-        public IActionResult Manage(Guid? id)
+        public IActionResult Manage(Guid? id, int type = 1)
         {
-            Users data = new Users();
+            UserModel data = new UserModel();
             if (id != null) {
                 data = GetUser.Get.GetById(id.Value);
             }
-
+            else
+            {
+                data.UserType = type;
+            }
+            
             return View(data);
         }
 
 
         [HttpPost]
-        public JsonResult Manage(Users data)
+        public JsonResult Manage(UserModel data)
         {
             try
             {

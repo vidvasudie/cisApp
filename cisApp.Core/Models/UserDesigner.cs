@@ -9,7 +9,7 @@ namespace cisApp.Core
         /// <summary>
         /// รหัสผู้ออกแบบ
         /// </summary>
-        public Guid UserDesignerId { get; set; }
+        public Guid? UserDesignerId { get; set; }
         /// <summary>
         /// รหัสผู้ใช้งาน
         /// </summary>
