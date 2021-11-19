@@ -57,6 +57,22 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+            public static List<TmSubdistrict> GetByDistrictId(int id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.TmSubdistrict.Where(o => o.DistrictId == id).ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
 
         }
     }

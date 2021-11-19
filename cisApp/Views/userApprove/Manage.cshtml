@@ -3,7 +3,7 @@
 
 @{
     //ViewData["Title"] = "จัดการข้อมูลผู้ใช้งาน" + (!string.IsNullOrEmpty(Model)?"ดีไซต์เนอร์": "ทั่วไป");
-    ViewData["Title"] = "จัดการข้อมูลผู้ใช้งาน" + (Model.UserType != 1 ? "ดีไซต์เนอร์" : "ทั่วไป");
+    ViewData["Title"] = "เพิ่มข้อมูลผู้ใช้งาน" + (Model.UserType != 1 ? "ดีไซต์เนอร์" : "ทั่วไป");
     ViewData["ControllerName"] = "userApprove";
 }
 
@@ -23,10 +23,7 @@
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
                             <a href="" class="text-muted">Dashbaord</a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="" class="text-muted">รายการ</a>
-                        </li>
+                        </li> 
                         <li class="breadcrumb-item">
                             <a href="" class="text-muted">@ViewData["Title"]</a>
                         </li>
@@ -129,14 +126,14 @@
                         </h3>
                     </div>
                     <div class="card-toolbar">
-                        <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
+                        <a href="@Url.Action("Index", "userApprove")" class="btn btn-light-primary font-weight-bolder mr-2">
                             <i class="ki ki-long-arrow-back icon-sm"></i>ย้อนกลับ
                         </a>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary font-weight-bolder btn-submit">
+                            <button type="button" class="btn btn-primary font-weight-bolder btn-submit" onclick="submit();">
                                 <i class="ki ki-check icon-sm"></i>บันทึก
                             </button>
-                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                            @*<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
                             <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                                 <ul class="nav nav-hover flex-column">
                                     <li class="nav-item">
@@ -158,21 +155,20 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
+                            </div>*@
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <!--begin::Form-->
-                    <form class="form" id="kt_form" asp-action="Manage" asp-controller=@ViewData["ControllerName"] method="post" data-ajax-confirm="@MessageCommon.Confirm" data-ajax="true" data-ajax-success="redirect">
+                    <form class="form" id="kt_form_req" asp-action="Manage" asp-controller=@ViewData["ControllerName"] method="post" data-ajax-confirm="@MessageCommon.Confirm" data-ajax="true" data-ajax-success="redirect">
                         <div class="row">
                             <div class="col-xl-2"></div>
                             <div class="col-xl-8">
+                                @Html.HiddenFor(m => m.UserType, new { @value="2" })
 
                                 @await Html.PartialAsync("~/Views/Shared/User/_UserCustomer.cshtml", Model)
-
-                                <button>click</button>
-
+                                 
                                 @if (Model.UserType == 2)
                                 {
                                     @await Html.PartialAsync("~/Views/Shared/User/_UserDesigner.cshtml", Model)
@@ -217,6 +213,12 @@
     <script src="@Url.Content("~/assets/plugins/custom/uppy/uppy.bundle.js")"></script>
     <script src="@Url.Content("~/assets/js/pages/crud/file-upload/uppy.js")"></script>
 
+
+    <script>
+        function submit() {
+            $('#kt_form_req').submit();
+        }
+    </script>
 
 
 }

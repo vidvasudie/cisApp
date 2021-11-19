@@ -45,6 +45,95 @@ function GetValidatePersonalId(urlAction) {
         })
     }
 }
+function GetDataDistrict(urlAction) {
+    var valueProvice = $('.province').val();
+    var optionEmpty = '<option value="">' + 'เลือกข้อมูล' + '</option>';
+    var attdistrict = ".district";
+    $(attdistrict).empty().append(optionEmpty);
+    $('.subdistrict').empty().append(optionEmpty);
+    $('.postcode').val('');
+    if (valueProvice !== '' && valueProvice !== null) {
+        var url = urlAction + '?provinceId=' + valueProvice;
+        $.ajax({
+            url: url,
+            method: 'GET',
+            contentType: 'application/json; charset=utf-8',
+            success: function (res) {
+                if (res.status == true) { 
+                    if (res.data.length > 0) {
+                        for (let i = 0; i < res.data.length; i++) {
+                            $(attdistrict).append("<option value='" + res.data[i].id + "'>" + res.data[i].nameTh + "</option>");
+                        }
+                        //$(attdistrict).trigger("chosen:updated");
+                    }
+                }
+                else {
+                    alertError("เกิดข้อผิดพลาด กรุณาลองใหม่!");
+                }
+            },
+            error: function (err) {
+                alertError("เกิดข้อผิดพลาด กรุณาลองใหม่!");
+            }
+        })
+    }
+}
+function GetDataSubDistrict(urlAction) {
+    var valueDistrict = $('.district').val();
+    var optionEmpty = '<option value="">' + 'เลือกข้อมูล' + '</option>';
+    var attsubdistrict = ".subdistrict";
+    $(attsubdistrict).empty().append(optionEmpty);
+    $('.postcode').val('');
+    if (valueDistrict !== '' && valueDistrict !== null) {
+        var url = urlAction + '?districtId=' + valueDistrict;  
+        $.ajax({
+            url: url,
+            method: 'GET',
+            contentType: 'application/json; charset=utf-8',
+            success: function (res) {
+                if (res.status == true) {
+                    if (res.data.length > 0) {
+                        for (let i = 0; i < res.data.length; i++) {
+                            $(attsubdistrict).append("<option value='" + res.data[i].id + "'>" + res.data[i].nameTh + "</option>");
+                        }
+                        //$(attsubdistrict).trigger("chosen:updated");
+                    }
+                }
+                else {
+                    alertError("เกิดข้อผิดพลาด กรุณาลองใหม่!");
+                }
+            },
+            error: function (err) {
+                alertError("เกิดข้อผิดพลาด กรุณาลองใหม่!");
+            }
+        })
+    }
+}
+function GetDataPostCode(urlAction) {
+    var valueSubDistrict = $('.subdistrict').val();
+    var attzipcode = ".postcode";
+    $(attzipcode).val('');
+    if (valueSubDistrict !== '' && valueSubDistrict !== null) {
+        var url = urlAction + '?subdistrictId=' + valueSubDistrict;
+        $.ajax({
+            url: url,
+            method: 'GET',
+            contentType: 'application/json; charset=utf-8',
+            success: function (res) {
+                if (res.status == true) {
+                    if (res.data != null) {
+                        $(attzipcode).val(res.data.postCode);
+                    }
+                }
+                else {
+                    alertError("เกิดข้อผิดพลาด กรุณาลองใหม่!");
+                }
+            },
+            error: function (err) {
+                alertError("เกิดข้อผิดพลาด กรุณาลองใหม่!");
+            }
+        })
+    }
+}
 
 $('body').on('click', '.btn-submit', function () {
     $('#kt_form').submit();

@@ -29,5 +29,18 @@ namespace cisApp.Controllers
         {
             return View(new UserModel() { UserType=2 });
         }
+
+        [HttpPost]
+        public JsonResult Manage(UserModel data)
+        {
+            try
+            { 
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userApprove")));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
     }
 }

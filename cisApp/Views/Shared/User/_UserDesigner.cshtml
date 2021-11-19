@@ -65,7 +65,7 @@
             @{
                 SelectList provinceList = new SelectList(GetTmProvince.Get.GetByActive(), "Id", "NameTh");
             }
-            @Html.DropDownListFor(m => m.ProvinceId, provinceList, "กรุณาเลือกจังหวัด", new { @class = "form-control", @Required = "Required" })
+            @Html.DropDownListFor(m => m.ProvinceId, provinceList, "กรุณาเลือกจังหวัด", new { @class = "form-control province", @Required = "Required", @onchange = "GetDataDistrict('"+Url.Action("GetDistrict", "Base")+"')" })
             @Html.ValidationMessageFor(m => m.ProvinceId, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -75,7 +75,7 @@
             @{
                 SelectList distList = new SelectList(GetTmDistrict.Get.GetByActive(), "Id", "NameTh");
             }
-            @Html.DropDownListFor(m => m.DistrictId, distList, "กรุณาเลือกอำเภอ", new { @class = "form-control", @Required = "Required" })
+            @Html.DropDownListFor(m => m.DistrictId, distList, "กรุณาเลือกอำเภอ", new { @class = "form-control district", @Required = "Required", @onchange="GetDataSubDistrict('"+Url.Action("GetSubDistrict", "Base")+"')" })
             @Html.ValidationMessageFor(m => m.DistrictId, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -85,14 +85,14 @@
             @{
                 SelectList subdistList = new SelectList(GetTmSubDistrict.Get.GetByActive(), "Id", "NameTh");
             }
-            @Html.DropDownListFor(m => m.SubDistrictId, subdistList, "กรุณาเลือกตำบล", new { @class = "form-control", @Required = "Required" })
+            @Html.DropDownListFor(m => m.SubDistrictId, subdistList, "กรุณาเลือกตำบล", new { @class = "form-control subdistrict", @Required = "Required", @onchange="GetDataPostCode('"+Url.Action("GetPostCode", "Base")+"')" })
             @Html.ValidationMessageFor(m => m.SubDistrictId, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group row">
         <label class="col-3">รหัสไปรษณีย์</label>
         <div class="col-9">
-            @Html.TextBoxFor(m => m.PostCode, new { @class = "form-control form-control-solid is-number-only", @placeholder = "รหัสไปรษณีย์", @Required = "Required", @maxlength = "5", @readonly = "readonly" })
+            @Html.TextBoxFor(m => m.PostCode, new { @class = "form-control form-control-solid is-number-only postcode", @placeholder = "รหัสไปรษณีย์", @Required = "Required", @maxlength = "5", @readonly = "readonly" })
             @Html.ValidationMessageFor(m => m.PostCode, "", new { @class = "text-danger" })
         </div>
     </div>
