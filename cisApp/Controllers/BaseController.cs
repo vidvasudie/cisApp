@@ -6,15 +6,35 @@ using cisApp.library;
 using cisApp.Function;
 using cisApp.Core;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace cisApp.Controllers
 {
     public class BaseController : Controller
     {
-        public IActionResult Index()
+
+        public static Guid? _UserId {get; set;}
+
+        public class Authorized : ActionFilterAttribute
         {
-            return View();
+            public override void OnActionExecuting(ActionExecutingContext context)
+            {
+
+                Guid fixGuid = new Guid("F71758CF-3F30-432B-8361-5754CDE8BF26");
+
+                _UserId = fixGuid;
+
+                base.OnActionExecuting(context);
+            }
+
+            public override void OnActionExecuted(ActionExecutedContext context)
+            {
+                base.OnActionExecuted(context);
+            }
         }
+
+        
+
         [HttpGet]
         public JsonResult GetValidateIdentity(string pid)
         {
