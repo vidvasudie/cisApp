@@ -1,6 +1,8 @@
-﻿
+﻿@using cisApp.Function
+@model UserModel
 @{
     ViewData["Title"] = "ตรวจสอบคำขอ";
+    ViewData["ControllerName"] = "userApprove";
 }
 
 <!--begin::Content-->
@@ -21,10 +23,10 @@
                             <a href="" class="text-muted">Dashbaord</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="" class="text-muted">รายการ</a>
+                            <a href="@Url.Action("Index", "userApprove")" class="text-muted">รายการคำขอ</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="" class="text-muted">@ViewData["Title"]</a>
+                            <a href="javascript:void(0)" class="text-muted">@ViewData["Title"]</a>
                         </li>
                     </ul>
                     <!--end::Breadcrumb-->
@@ -125,184 +127,80 @@
                         </h3>
                     </div>
                     <div class="card-toolbar">
-                        <a href="#" class="btn btn-light-primary font-weight-bolder mr-2">
+                        <a href="@Url.Action("Index", "userApprove")" class="btn btn-light-primary font-weight-bolder mr-2">
                             <i class="ki ki-long-arrow-back icon-sm"></i>ย้อนกลับ
                         </a>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary font-weight-bolder">
+                            <button type="button" class="btn btn-primary font-weight-bolder" onclick="submit();">
                                 <i class="ki ki-check icon-sm"></i>บันทึก
                             </button>
-                            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                                <ul class="nav nav-hover flex-column">
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="nav-icon flaticon2-reload"></i>
-                                            <span class="nav-text">Save &amp; continue</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="nav-icon flaticon2-add-1"></i>
-                                            <span class="nav-text">Save &amp; add new</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="nav-icon flaticon2-power"></i>
-                                            <span class="nav-text">Save &amp; exit</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                            @*<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                    <ul class="nav nav-hover flex-column">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon flaticon2-reload"></i>
+                                                <span class="nav-text">Save &amp; continue</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon flaticon2-add-1"></i>
+                                                <span class="nav-text">Save &amp; add new</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon flaticon2-power"></i>
+                                                <span class="nav-text">Save &amp; exit</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>*@
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <!--begin::Form-->
-                    <form class="form" id="kt_form">
+                    <form class="form" id="kt_form_req" asp-action="ManageRequest" asp-controller=@ViewData["ControllerName"] method="post" data-ajax-confirm="@MessageCommon.Confirm" data-ajax="true" data-ajax-success="redirect">
                         <div class="row">
                             <div class="col-xl-2"></div>
                             <div class="col-xl-8">
-                                <div class="my-5">
-                                    <h3 class="text-dark font-weight-bold mb-10">ข้อมูลผู้ใช้งาน:</h3>
-                                    <div class="form-group row">
-                                        <label class="col-3">ชื่อ</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="Nick" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">นามสกุล</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="Watson" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">เบอร์โทรศัพท์</label>
-                                        <div class="col-9">
-                                            <div class="input-group input-group-solid">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="la la-phone"></i>
-                                                    </span>
-                                                </div>
-                                                <input type="text" class="form-control form-control-solid" value="+45678967456" placeholder="Phone" />
-                                            </div>
-                                            <span class="form-text text-muted">We'll never share your email with anyone else.</span>
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">Email Address</label>
-                                        <div class="col-9">
-                                            <div class="input-group input-group-solid">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">
-                                                        <i class="la la-at"></i>
-                                                    </span>
-                                                </div>
-                                                <input type="text" class="form-control form-control-solid" value="nick.watson@loop.com" placeholder="Email" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @*<div class="form-group row">
-                <label class="col-3">Company Site</label>
-                <div class="col-9">
-                    <div class="input-group input-group-solid">
-                        <input type="text" class="form-control form-control-solid" placeholder="Username" value="loop" />
-                        <div class="input-group-append">
-                            <span class="input-group-text">.com</span>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
-                                </div>
-                                <div class="separator separator-dashed my-10"></div>
-                                <div class="my-5">
-                                    <h3 class="text-dark font-weight-bold mb-10">ข้อมูลยืนยันตัวตน :</h3>
-                                    <div class="form-group row">
-                                        <label class="col-3">เลขบัตรประชาชน</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="1234567890" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">ธนาคาร</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="กรุงเทพ" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">หมายเลขบัญชี</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="1234567890" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">ประเภทบัญชี</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="ออมทรัพย์" />
-                                        </div>
-                                    </div>
+                                @Html.HiddenFor(m => m.UserType, new { @value = "2" })
+                                @Html.HiddenFor(m => m.Code)
+                                <div class="req-approve">
+                                    @await Html.PartialAsync("~/Views/Shared/User/_UserCustomer.cshtml", Model)
+
+                                    @if (Model.UserType == 2 || (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc)))
+                                    {
+                                        @await Html.PartialAsync("~/Views/Shared/User/_UserDesigner.cshtml", Model)
+                                    }
                                 </div>
 
-                                <div class="separator separator-dashed my-10"></div>
-                                <div class="my-5">
-                                    <h3 class="text-dark font-weight-bold mb-10">ที่อยู่ :</h3>
-                                    <div class="form-group row">
-                                        <label class="col-3">ที่อยู่ บรรทัดที่ 1</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="District 6 1352 W. Olive Ave" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">ที่อยู่ บรรทัดที่ 1</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="Fresno 559-488-4020" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">อำเภอ</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="Polo Alto" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">จังหวัด</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="Los Angeles" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-3">รหัสไปรษณีย์</label>
-                                        <div class="col-9">
-                                            <input class="form-control form-control-solid" type="text" value="780456" />
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="separator separator-dashed my-10"></div>
                                 <div class="my-5">
                                     <div class="form-group row">
                                         <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">เอกสารประกอบคำขอ</label>
-                                    @{ 
-                                        int i = 0;
-                                    }
+
+                                        @{
+                                            int i = 0;
+                                        }
                                         @while (i < 4)
-                                            {
-                                               
-                                        <div class="col-lg-6 col-md-6 col-sm-12">
+                                        {
 
-                                            <div class="d-flex flex-column align-items-center">
-                                                <!--begin: Icon-->
-                                                @*<img alt="" class="max-h-65px" src="" />*@
-                                                <img src="https://picsum.photos/300/500?random=@i" alt="..." class="img-thumbnail">
-                                                <!--end: Icon-->
-                                                <!--begin: Tite-->
-                                                <a href="#" class="text-dark-75 font-weight-bold mt-15 font-size-lg">@utilityFunc.GenerateName(10) .jpg</a>
-                                                <!--end: Tite-->
+                                            <div class="col-lg-6 col-md-6 col-sm-12">
+
+                                                <div class="d-flex flex-column align-items-center">
+                                                    <!--begin: Icon-->
+                                                    @*<img alt="" class="max-h-65px" src="" />*@
+                                                    <img src="https://picsum.photos/300/500?random=@i" alt="..." class="img-thumbnail">
+                                                    <!--end: Icon-->
+                                                    <!--begin: Tite-->
+                                                    <a href="#" class="text-dark-75 font-weight-bold mt-15 font-size-lg">@utilityFunc.GenerateName(10) .jpg</a>
+                                                    <!--end: Tite-->
+                                                </div>
+
                                             </div>
-
-                                        </div>
                                             i++;
                                         }
 
@@ -310,22 +208,22 @@
                                 </div>
 
                                 <div class="separator separator-dashed my-10"></div>
-                                <div class="my-5">
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">รูปภาพประจำตัว</label>
-                                        <div class="col-lg-4 col-md-9 col-sm-12">
-                                            <div class="dropzone dropzone-default" id="kt_dropzone_1">
-                                                <div class="dropzone-msg dz-message needsclick">
-                                                    <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
-                                                    <span class="dropzone-msg-desc">
-                                                        This is just a demo dropzone. Selected files are
-                                                        <strong>not</strong>actually uploaded.
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @*<div class="my-5">
+            <div class="form-group row">
+                <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">รูปภาพประจำตัว</label>
+                <div class="col-lg-4 col-md-9 col-sm-12">
+                    <div class="dropzone dropzone-default" id="kt_dropzone_1">
+                        <div class="dropzone-msg dz-message needsclick">
+                            <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
+                            <span class="dropzone-msg-desc">
+                                This is just a demo dropzone. Selected files are
+                                <strong>not</strong>actually uploaded.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
 
                                 <div class="my-5">
                                     <div class="form-group row">
@@ -333,17 +231,17 @@
                                         <div class="col-lg-7 col-form-label">
                                             <div class="radio-inline">
                                                 <label class="radio radio-warning">
-                                                    <input type="radio" name="radios11" checked="checked" />
+                                                    <input type="radio" id="Status1" name="Status" value="1" checked="checked" />
                                                     <span></span>
                                                     รอดำเนินการ
                                                 </label>
-                                                <label class="radio radio-primary">
-                                                    <input type="radio" name="radios11" />
+                                                <label class="radio radio-success">
+                                                    <input type="radio" id="Status2" name="Status" value="2" />
                                                     <span></span>
                                                     อนุมัติ
                                                 </label>
                                                 <label class="radio radio-danger  ">
-                                                    <input type="radio" name="radios11" disabled="disabled" />
+                                                    <input type="radio" id="Status3" name="Status" value="3" />
                                                     <span></span>
                                                     ไม่อนุมัติ
                                                 </label>
@@ -353,13 +251,16 @@
                                     <div class="form-group row">
                                         <label class="col-lg-3 col-form-label text-lg-right">หมายเหตุ:</label>
                                         <div class="col-lg-7">
-                                            <textarea class="form-control" rows="3" placeholder="Please enter your message"></textarea>
+                                            @Html.TextAreaFor(m => m.Remark, 5, 500, new { @class = "form-control form-control-solid", @autocomplete = "off" })
+                                            @Html.ValidationMessageFor(m => m.Remark, "", new { @class = "text-danger" })
                                             <span class="form-text text-muted">ใส่รายละเอียดเพื่อแจ้งกลับคำขอ</span>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-xl-2"></div>
+
                             </div>
+                        </div>
                     </form>
                     <!--end::Form-->
                 </div>
@@ -372,8 +273,20 @@
 </div>
 <!--end::Content-->
 @section scripts{
-    <!--begin::Page Scripts(used by this page)--> 
-    <script src="@Url.Content("~/assets/plugins/custom/uppy/uppy.bundle.js")"></script>
-    <script src="@Url.Content("~/assets/js/pages/crud/file-upload/uppy.js")"></script>
-     
+    <!--begin::Page Scripts(used by this page)-->
+
+
+    <script>
+        function submit() {
+            $('#kt_form_req').submit();
+        }
+        $(function () {
+            $('.req-approve input').attr('readonly', true);
+            $('.req-approve textarea').attr('readonly', true);
+            $('.req-approve select').on('select2:opening', function (e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+
 }

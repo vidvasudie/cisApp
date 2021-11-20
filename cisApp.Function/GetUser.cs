@@ -132,6 +132,10 @@ namespace cisApp.Function
                             {
                                 objSub = context.UserDesigner.Find(data.UserDesignerId);
                             }
+                            else if (data.UserId != null && data.UserId != Guid.Empty)
+                            {
+                                objSub = context.UserDesigner.Where(o => o.UserId == data.UserId).FirstOrDefault();
+                            }
                             else
                             {
                                 // ถ้าเพิ่ม designer จะต้องเพิ่ม log คำขอเป็น designer ที่สำเร็จแล้วด้วย
