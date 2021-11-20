@@ -21,14 +21,18 @@ namespace cisApp.Controllers
         public PartialViewResult ItemList(SearchModel model)
         {
             model.status = 1;//ค้นหาเอาเฉพาะ สถานะรอดำเนินการ = 1
+            model.mode = 0;
             List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model);
             int count = GetUserDesignerRequest.Get.GetUserDesignerRequestModelTotal(model);
 
             return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, count, model.currentPage.Value, model.pageSize.Value)); 
         }
 
-        public IActionResult Manage()
+        public IActionResult Manage(SearchModel model)
         {
+            List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model);
+            if (_model != null)
+                return View(_model.FirstOrDefault());
             return View(new UserModel() { UserType=2 });
         }
 
@@ -37,13 +41,10 @@ namespace cisApp.Controllers
         {
             try
             {
-                data.UserType = 1;
-                //var user = GetUser.Manage.Update(data);
-                //data.UserId = user.UserId;
-                //string code = Utility.GenerateRequestCode(GetUserDesignerRequest.Get.GetLastNumber()+1);
-                //data.Code = code;
-                data.Status = 1;//1=รอดำเนินการ
-                //var ureq = GetUserDesignerRequest.Manage.Update(data);
+                data.UserType = 1; 
+                data.Status = 1;//1=รอดำเนินการ 
+                data.CreatedBy = _UserId.Value;
+                data.UpdatedBy = _UserId.Value;
                 int result = GetUserDesignerRequest.Manage.AddNewRequest(data);
                 if(result > 0)
                 {
@@ -74,8 +75,8 @@ namespace cisApp.Controllers
             try
             {
                 data.UserType = 2;
-                //var user = GetUser.Manage.Update(data); 
-                //var ureq = GetUserDesignerRequest.Manage.Active(data);
+                data.CreatedBy = _UserId.Value;
+                data.UpdatedBy = _UserId.Value;
                 var result = GetUserDesignerRequest.Manage.UpdateRequestStatus(data);
                 if(result > 0)
                 {

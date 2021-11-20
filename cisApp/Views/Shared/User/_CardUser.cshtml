@@ -21,7 +21,7 @@
                     <!--begin::User-->
                     <div class="mr-3">
                         <!--begin::Name-->
-                        <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">
+                        <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3" onclick="return false;">
                             @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
                             {
                                 @Html.Raw("["+Model.Code+"] "+Model.Fname + " " + Model.Lname)
@@ -33,7 +33,20 @@
                             <i class="flaticon2-contract text-success icon-md ml-2"></i>
                             @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
                             {
-                                <span class="btn btn-light-warning px-6 font-weight-bold ml-5">@Html.Raw(Model.StatusDesc)</span>
+                                var btn_color = "btn-light-warning";
+                                if(Model.Status == 1)
+                                {
+                                    btn_color = "btn-light-warning";
+                                }
+                                else if(Model.Status == 2)
+                                {
+                                    btn_color = "btn-light-success";
+                                }
+                                else if(Model.Status == 3)
+                                {
+                                    btn_color = "btn-light-danger";
+                                }
+                                <span class="btn @btn_color  px-6 font-weight-bold ml-5">@Html.Raw(Model.StatusDesc)</span>
                             }
                         </a>
                         <!--end::Name-->
@@ -90,7 +103,15 @@
                         @{
                             @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
                             {
-                                <a href="@Url.Action("ManageRequest", "userApprove", new { Code=Model.Code })" class="btn btn-sm btn-primary font-weight-bolder text-uppercase">ตรวจสอบ</a>
+                                if (Model.Status == 1)
+                                {
+                                    <a href="@Url.Action("Manage", "userApprove", new { text = Model.Code })" class="btn btn-sm btn-warning font-weight-bolder text-uppercase" target="_blank">แก้ไขคำขอ</a>
+                                    <a href="@Url.Action("ManageRequest", "userApprove", new { text=Model.Code })" class="btn btn-sm btn-primary font-weight-bolder text-uppercase" target="_blank">ตรวจสอบ</a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("Manage", "UserRequestHistory", new { text=Model.Code })" class="btn btn-sm btn-primary font-weight-bolder text-uppercase" target="_blank">รายละเอียด</a>
+                                }
                             }
                             else
                             {

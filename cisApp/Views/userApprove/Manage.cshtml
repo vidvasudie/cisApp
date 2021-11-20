@@ -25,7 +25,7 @@
                             <a href="" class="text-muted">Dashbaord</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="@Url.Action("Index", "userApprove")" class="text-muted">รายการคำขอ</a>
+                            <a href="@Url.Action("Index", "userApprove")" class="text-muted">รายการคำขอสมัครนักออกแบบ</a>
                         </li>
                         <li class="breadcrumb-item">
                             <a href="javascript:void(0)" class="text-muted">@ViewData["Title"]</a>
@@ -172,7 +172,7 @@
 
                                 @await Html.PartialAsync("~/Views/Shared/User/_UserCustomer.cshtml", Model)
 
-                                @if (Model.UserType == 2)
+                                @if (Model.UserType == 2 || (!String.IsNullOrEmpty(Model.Code) && Model.Status == 1))
                                 {
                                     @await Html.PartialAsync("~/Views/Shared/User/_UserDesigner.cshtml", Model)
                                 }
