@@ -90,7 +90,7 @@ namespace cisApp.Function
 
         public class Manage
         {
-            public static Users Update(UserModel data)
+            public static Users Update(UserModel data, Guid userId)
             {
                 try
                 {
@@ -107,6 +107,7 @@ namespace cisApp.Function
                         {
                             obj.IsActive = true;
                             obj.CreatedDate = DateTime.Now;
+                            obj.CreatedBy = userId;
                         }
 
                         obj.Fname = data.Fname;
@@ -117,6 +118,7 @@ namespace cisApp.Function
                         obj.IsActive = data.IsActive;
 
                         obj.UpdatedDate = DateTime.Now;
+                        obj.UpdatedBy = userId;
                         obj.IsDeleted = false;
 
                         context.Users.Update(obj);
@@ -167,7 +169,7 @@ namespace cisApp.Function
                 }
             }
 
-            public static Users Active(Guid id, bool active)
+            public static Users Active(Guid id, bool active, Guid userId)
             {
                 try
                 {
@@ -178,6 +180,7 @@ namespace cisApp.Function
                         obj.IsActive = active;
 
                         obj.UpdatedDate = DateTime.Now;
+                        obj.UpdatedBy = userId;
 
                         context.Users.Update(obj);
 
@@ -192,7 +195,7 @@ namespace cisApp.Function
                 }
             }
 
-            public static Users Delete(Guid id)
+            public static Users Delete(Guid id, Guid userId)
             {
                 try
                 {
@@ -203,6 +206,7 @@ namespace cisApp.Function
                         obj.IsDeleted = true;
 
                         obj.DeletedDate = DateTime.Now;
+                        obj.DeletedBy = userId;
 
                         context.Users.Update(obj);
 

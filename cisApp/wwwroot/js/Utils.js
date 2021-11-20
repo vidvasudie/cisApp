@@ -1,4 +1,7 @@
-﻿function redirect(data) {
+﻿const _dataUrlAttr = 'data-url'
+const _dataGuidAttr = 'data-guid'
+
+function redirect(data) {
     if (data.success) {
         // Display a success toast, with a title
         //toastr.success('บันทึกข้อมูลสำเร็จ', 'ดำเนินการบันทึกข้อมูลเรียบร้อยแล้ว', { fadeIn: 300 })
@@ -147,3 +150,59 @@ $('body').on('keyup', '.is-number-only', function (e) {
     keys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     return keys.indexOf(event.key) > -1
 })
+
+$('body').on('click', '.bt-delete', function (e) {
+
+    var elem = $(this);
+
+    Swal.fire({
+        title: "ลบข้อมูล",
+        text: "ยืนยันการลบรายการนี้ใช่หรือไม่",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "ใช่, ยืนยัน",
+        cancelButtonText: "ไม่, ยกเลิก",
+        reverseButtons: true
+    }).then(function (result) {
+        if (result.value) {
+            var url = $(elem).attr(_dataUrlAttr)
+            $.ajax({
+                url: url,
+                method: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) {
+                    redirect(res)                    
+                },
+                error: function (err) {
+                    redirect(err)                    
+                }
+            })
+            
+        } else if (result.dismiss === "cancel") {
+            
+        }
+    });
+});
+
+$('body').on('click', '.bt-update', function (e) {
+
+    var elem = $(this);
+
+    Swal.fire({
+        title: "แก้ไขข้อมูล",
+        text: "ยืนยันการแก้ไขข้อมูล",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "ใช่, ยืนยัน",
+        cancelButtonText: "ไม่, ยกเลิก",
+        reverseButtons: true
+    }).then(function (result) {
+        if (result.value) {
+            var url = $(elem).attr(_dataUrlAttr)
+            window.location = url;
+
+        } else if (result.dismiss === "cancel") {
+
+        }
+    });
+});

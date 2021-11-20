@@ -94,6 +94,11 @@
                             }
                         }
 
+                        <a href="#" class="btn btn-sm btn-primary font-weight-bolder text-uppercase">ตรวจสอบ</a>
+                        <a href="#" data-url="@Url.Action("Manage", "UserManagement", new { id = Model.UserId })"
+                           class="btn btn-sm btn-warning font-weight-bolder text-uppercase bt-update">แก้ไขข้อมูลผู้ใช้งาน</a>
+                        <a href="#" data-url="@Url.Action("Delete", "UserManagement", new { id = Model.UserId })"
+                           class="btn btn-sm btn-danger font-weight-bolder text-uppercase bt-delete">ลบผู้ใช้งาน</a>
                     </div>
                     <!--end::Actions-->
                 </div>

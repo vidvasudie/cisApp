@@ -9,7 +9,8 @@ using cisApp.Function;
 
 namespace cisApp.Controllers
 {
-    public class userApproveController : Controller
+    [Authorized]
+    public class userApproveController : BaseController
     { 
         public IActionResult Index()
         { 
