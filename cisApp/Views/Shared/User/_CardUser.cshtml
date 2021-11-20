@@ -22,10 +22,22 @@
                     <div class="mr-3">
                         <!--begin::Name-->
                         <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">
-                            @Html.Raw(Model.Fname + " " + Model.Lname)
+                            @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
+                            {
+                                @Html.Raw("["+Model.Code+"] "+Model.Fname + " " + Model.Lname)
+                            }
+                            else
+                            {
+                                @Html.Raw(Model.Fname + " " + Model.Lname)
+                            }
                             <i class="flaticon2-contract text-success icon-md ml-2"></i>
+                            @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
+                            {
+                                <span class="btn btn-light-warning px-6 font-weight-bold ml-5">@Html.Raw(Model.StatusDesc)</span>
+                            }
                         </a>
                         <!--end::Name-->
+                       
                         <!--begin::Contacts-->
                         <div class="d-flex flex-wrap my-2">
                             <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
@@ -75,11 +87,20 @@
                     <!--begin::Actions-->
                     <div class="my-lg-0 my-1">
                         @*<a href="#" class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2">เอกสาร</a>*@
-                        <a href="#" class="btn btn-sm btn-primary font-weight-bolder text-uppercase">ตรวจสอบ</a>
-                        <a href="#" data-url="@Url.Action("Manage", "UserManagement", new { id = Model.UserId })"
-                           class="btn btn-sm btn-warning font-weight-bolder text-uppercase bt-update">แก้ไขข้อมูลผู้ใช้งาน</a>
-                        <a href="#" data-url="@Url.Action("Delete", "UserManagement", new { id = Model.UserId })"
-                           class="btn btn-sm btn-danger font-weight-bolder text-uppercase bt-delete">ลบผู้ใช้งาน</a>
+                        @{
+                            @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
+                            {
+                                <a href="@Url.Action("ManageRequest", "userApprove", new { Code=Model.Code })" class="btn btn-sm btn-primary font-weight-bolder text-uppercase">ตรวจสอบ</a>
+                            }
+                            else
+                            {
+                                <a href="#" data-url="@Url.Action("Manage", "UserManagement", new { id = Model.UserId })"
+                                   class="btn btn-sm btn-warning font-weight-bolder text-uppercase bt-update">แก้ไขข้อมูลผู้ใช้งาน</a>
+                                <a href="#" data-url="@Url.Action("Delete", "UserManagement", new { id = Model.UserId })"
+                                   class="btn btn-sm btn-danger font-weight-bolder text-uppercase bt-delete">ลบผู้ใช้งาน</a>
+                            }
+                        }
+
                     </div>
                     <!--end::Actions-->
                 </div>

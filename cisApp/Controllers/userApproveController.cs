@@ -38,14 +38,21 @@ namespace cisApp.Controllers
             try
             {
                 data.UserType = 1;
-                var user = GetUser.Manage.Update(data, _UserId.Value);
-                data.UserId = user.UserId;
-                string code = Utility.GenerateRequestCode(GetUserDesignerRequest.Get.GetLastNumber());
-                data.Code = code;
+                //var user = GetUser.Manage.Update(data);
+                //data.UserId = user.UserId;
+                //string code = Utility.GenerateRequestCode(GetUserDesignerRequest.Get.GetLastNumber()+1);
+                //data.Code = code;
                 data.Status = 1;//1=รอดำเนินการ
-                var ureq = GetUserDesignerRequest.Manage.Update(data);
-
-                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userApprove")));
+                //var ureq = GetUserDesignerRequest.Manage.Update(data);
+                int result = GetUserDesignerRequest.Manage.AddNewRequest(data);
+                if(result > 0)
+                {
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userApprove")));
+                }
+                else
+                {
+                    return Json(new ResponseModel().ResponseError());
+                }
             }
             catch (Exception ex)
             {
@@ -53,11 +60,38 @@ namespace cisApp.Controllers
             }
         }
 
-        public IActionResult ManageRequest()
-        {
-            return View();
+        public IActionResult ManageRequest(SearchModel model)
+        { 
+            List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model);
+            if(_model != null)
+                return View(_model.FirstOrDefault());
+            return View(new UserModel()); 
         }
 
-        
+        [HttpPost]
+        public JsonResult ManageRequest(UserModel data)
+        {
+            try
+            {
+                data.UserType = 2;
+                //var user = GetUser.Manage.Update(data); 
+                //var ureq = GetUserDesignerRequest.Manage.Active(data);
+                var result = GetUserDesignerRequest.Manage.UpdateRequestStatus(data);
+                if(result > 0)
+                {
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userApprove")));
+                }
+                else
+                {
+                    return Json(new ResponseModel().ResponseError());
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
+
+
     }
 }

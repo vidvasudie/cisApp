@@ -21,7 +21,7 @@
             @{
                 SelectList bankList = new SelectList(GetTmBank.Get.GetByActive(), "Id", "Name");
             }
-            @Html.DropDownListFor(m => m.BankId, bankList, "กรุณาเลือกธนาคาร", new { @class = "form-control", @Required = "Required" })
+            @Html.DropDownListFor(m => m.BankId, bankList, "กรุณาเลือก", new { @class = "form-control", @Required = "Required" })
             @Html.ValidationMessageFor(m => m.BankId, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -38,7 +38,7 @@
             @{
                 SelectList accTypeList = new SelectList(GetTmBankAccountType.Get.GetByActive(), "Id", "Name");
             }
-            @Html.DropDownListFor(m => m.AccountType, accTypeList, "กรุณาเลือกประเภทบัญชี", new { @class = "form-control", @Required = "Required" })
+            @Html.DropDownListFor(m => m.AccountType, accTypeList, "กรุณาเลือก", new { @class = "form-control", @Required = "Required" })
             @Html.ValidationMessageFor(m => m.AccountType, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -67,7 +67,7 @@
             @{
                 SelectList provinceList = new SelectList(GetTmProvince.Get.GetByActive(), "Id", "NameTh");
             }
-            @Html.DropDownListFor(m => m.ProvinceId, provinceList, "กรุณาเลือกจังหวัด", new { @class = "form-control province", @Required = "Required", @onchange = "GetDataDistrict('"+Url.Action("GetDistrict", "Base")+"')" })
+            @Html.DropDownListFor(m => m.ProvinceId, provinceList, "เลือกข้อมูล", new { @class = "form-control province  form-control-solid", @Required = "Required", @onchange = "GetDataDistrict('"+Url.Action("GetDistrict", "Base")+"')" })
             @Html.ValidationMessageFor(m => m.ProvinceId, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -78,7 +78,7 @@
                 var alist = GetTmDistrict.Get.GetByProvinceId(Model.ProvinceId != null ? Model.ProvinceId.Value : 0);
                 SelectList distList = new SelectList(alist, "Id", "NameTh");
             }
-            @Html.DropDownListFor(m => m.DistrictId, distList, "กรุณาเลือกอำเภอ", new { @class = "form-control district", @Required = "Required", @onchange="GetDataSubDistrict('"+Url.Action("GetSubDistrict", "Base")+"')" })
+            @Html.DropDownListFor(m => m.DistrictId, distList, "เลือกข้อมูล", new { @class = "form-control district  form-control-solid", @Required = "Required", @onchange="GetDataSubDistrict('"+Url.Action("GetSubDistrict", "Base")+"')" })
             @Html.ValidationMessageFor(m => m.DistrictId, "", new { @class = "text-danger" })
         </div>
     </div>
@@ -89,7 +89,7 @@
                 var tlist = GetTmSubDistrict.Get.GetByDistrictId(Model.DistrictId != null ? Model.DistrictId.Value : 0);
                 SelectList subdistList = new SelectList(tlist, "Id", "NameTh");
             }
-            @Html.DropDownListFor(m => m.SubDistrictId, subdistList, "กรุณาเลือกตำบล", new { @class = "form-control subdistrict", @Required = "Required", @onchange="GetDataPostCode('"+Url.Action("GetPostCode", "Base")+"')" })
+            @Html.DropDownListFor(m => m.SubDistrictId, subdistList, "เลือกข้อมูล", new { @class = "form-control subdistrict  form-control-solid", @Required = "Required", @onchange="GetDataPostCode('"+Url.Action("GetPostCode", "Base")+"')" })
             @Html.ValidationMessageFor(m => m.SubDistrictId, "", new { @class = "text-danger" })
         </div>
     </div>
