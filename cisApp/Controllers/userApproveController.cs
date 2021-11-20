@@ -9,7 +9,8 @@ using cisApp.Function;
 
 namespace cisApp.Controllers
 {
-    public class userApproveController : Controller
+    [Authorized]
+    public class userApproveController : BaseController
     { 
         public IActionResult Index()
         { 
@@ -37,7 +38,7 @@ namespace cisApp.Controllers
             try
             {
                 data.UserType = 1;
-                var user = GetUser.Manage.Update(data);
+                var user = GetUser.Manage.Update(data, _UserId.Value);
                 data.UserId = user.UserId;
                 string code = Utility.GenerateRequestCode(GetUserDesignerRequest.Get.GetLastNumber());
                 data.Code = code;

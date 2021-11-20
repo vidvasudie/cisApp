@@ -10,7 +10,8 @@ using cisApp.Core;
 
 namespace cisApp.Controllers
 {
-    public class userManagementController : Controller
+    [Authorized]
+    public class UserManagementController : BaseController
     {
         private List<UserModel> _model = new List<UserModel>();
         public IActionResult Index(int pageIndex = 1)
@@ -47,7 +48,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetUser.Manage.Update(data);
+                var user = GetUser.Manage.Update(data, _UserId.Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
             }
@@ -62,7 +63,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetUser.Manage.Active(id, active);
+                var user = GetUser.Manage.Active(id, active, _UserId.Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
             }
@@ -77,7 +78,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetUser.Manage.Delete(id);
+                var user = GetUser.Manage.Delete(id, _UserId.Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
             }
