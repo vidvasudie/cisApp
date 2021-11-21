@@ -14,7 +14,10 @@ namespace cisApp.Controllers
     {
 
         public static Guid? _UserId {get; set;}
+        public static int? _UserType { get; set; }
         public static Guid? _RoleId { get; set; }
+        public static string _UserName { get; set; }
+        public static string _FullName { get; set; }
         public static int? _RoleMenuType { get; set; }
 
         public class CustomActionExecuteAttribute : ActionFilterAttribute
@@ -26,18 +29,24 @@ namespace cisApp.Controllers
                 _menuid = Guid.Parse(menuId); 
             }
             public override void OnActionExecuting(ActionExecutingContext context)
-            {
-
-                Guid fixUserGuid = new Guid("F71758CF-3F30-432B-8361-5754CDE8BF26");
-                Guid fixRoleGuid = new Guid("0A36BB48-C69B-4B3B-9E2E-F486918A5352"); //admin
-
-                _UserId = fixUserGuid;
-                //var roleId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "RoleId")?.Value;
-                //if (!String.IsNullOrEmpty(roleId))
-                //{
-                //    _RoleId = Guid.Parse(roleId);
-                //}
-                _RoleId = fixRoleGuid;
+            { 
+                _FullName = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
+                var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
+                if (!String.IsNullOrEmpty(userId))
+                {
+                    _UserId = Guid.Parse(userId);
+                } 
+                var roleId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "RoleId")?.Value;
+                if (!String.IsNullOrEmpty(roleId))
+                {
+                    _RoleId = Guid.Parse(roleId);
+                }
+                var userType = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserType")?.Value;
+                if (!String.IsNullOrEmpty(userType))
+                {
+                    _UserType = int.Parse(userType);
+                }
+                _UserName = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserName")?.Value;
                 var roleMenu = GetRoleMenu.Get.GetByRoleIdAndMenuId(_RoleId.Value, _menuid);
                 _RoleMenuType = roleMenu.Type;
 

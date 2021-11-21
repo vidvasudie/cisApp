@@ -271,7 +271,7 @@ namespace cisApp.Core
 
                 entity.Property(e => e.PasswordId)
                     .HasColumnName("PasswordID")
-                    .ValueGeneratedNever();
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
             });

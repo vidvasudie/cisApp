@@ -8,5 +8,6 @@ namespace cisApp.Core
     {
         public Guid PasswordId { get; set; }
         public Guid? UserId { get; set; }
+        public string Password { get; set; }
     }
 }

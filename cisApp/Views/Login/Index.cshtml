@@ -1,7 +1,8 @@
-﻿
+﻿@model cisApp.Function.LoginModel
 @{
     ViewData["Title"] = "เข้าสู่ระบบ CIS APP";
     Layout = null;
+    ViewData["ControllerName"] = "Login";
 }
 
 
@@ -52,31 +53,30 @@
                     <!--begin::Login Sign in form-->
                     <div class="login-signin">
                         <div class="mb-20">
-                            <h3 class="opacity-40 font-weight-normal">Sign In To Admin  CIS APP</h3>
-                            <p class="opacity-40">Enter your details to login to your account:</p>
+                            <h3 class="opacity-40 font-weight-normal">ระบบจัดการ CIS APP</h3>
                         </div>
-                        <form class="form" id="kt_login_signin_form">
+                        <form class="form" id="kt_form" asp-action="Login" asp-controller=@ViewData["ControllerName"] method="post" data-ajax-confirm="@MessageCommon.LoginSuccess" data-ajax="true" data-ajax-success="redirect">
                             <div class="form-group">
-                                <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="text" placeholder="Email" name="username" autocomplete="off" />
+                                @Html.TextBoxFor(m => m.username, new { @class = "form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8", @placeholder = "Email", @autocomplete = "off" })
                             </div>
                             <div class="form-group">
-                                <input class="form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8" type="password" placeholder="Password" name="password" />
+                                @Html.TextBoxFor(m => m.password, new { @class = "form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8", @type = "password", @placeholder = "Password" })
                             </div>
-                            <div class="form-group d-flex flex-wrap justify-content-between align-items-center px-8 opacity-60">
-                                <div class="checkbox-inline">
-                                    <label class="checkbox checkbox-outline checkbox-white text-white m-0">
-                                        <input type="checkbox" name="remember" />
-                                        <span></span>Remember me
-                                    </label>
-                                </div>
-                             </div>
+                            @*<div class="form-group d-flex flex-wrap justify-content-between align-items-center px-8 opacity-60">
+                                   <div class="checkbox-inline">
+                                       <label class="checkbox checkbox-outline checkbox-white text-white m-0">
+                                           <input type="checkbox" name="remember" />
+                                           <span></span>Remember me
+                                       </label>
+                                   </div>
+                                </div>*@
                             <div class="form-group text-center mt-10">
-                                <button id="kt_login_signin_submit" class="btn btn-pill btn-primary opacity-90 px-15 py-3">Sign In</button>
+                                <button class="btn btn-pill btn-primary opacity-90 px-15 py-3 btn-submit">เข้าสู่ระบบ</button>
                             </div>
-                        </form> 
+                        </form>
                     </div>
                     <!--end::Login Sign in form-->
-             
+
                 </div>
             </div>
         </div>
@@ -93,7 +93,8 @@
     <script src="@Url.Content("~/assets/js/scripts.bundle.js")"></script>
     <!--end::Global Theme Bundle-->
     <!--begin::Page Scripts(used by this page)-->
-    <script src="@Url.Content("~/assets/js/pages/custom/login/login-general.js")"></script>
+    @*<script src="@Url.Content("~/assets/js/pages/custom/login/login-general.js")"></script>*@
+    <script type="text/javascript" src="@Url.Content("~/js/Utils.js")"></script>
     <!--end::Page Scripts-->
 </body>
 <!--end::Body-->
