@@ -7,8 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace cisApp.Controllers
-{
-    [Authorized]
+{ 
     public class EmployeeController : BaseController
     {
         static int _EmployeeType = 3;
