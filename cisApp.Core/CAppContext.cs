@@ -35,8 +35,59 @@ namespace cisApp.Core
         public virtual DbSet<UsersPassword> UsersPassword { get; set; }
         public virtual DbSet<TmUserType> TmUserType { get; set; }
         public virtual DbSet<UserDesignerRequest> UserDesignerRequest { get; set; }
+        public virtual DbSet<Menu> Menu { get; set; }
+        public virtual DbSet<Role> Role { get; set; }
+        public virtual DbSet<RoleMenu> RoleMenu { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Menu>(entity =>
+            {
+                entity.Property(e => e.MenuId)
+                    .HasColumnName("MenuID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Action).HasMaxLength(255);
+
+                entity.Property(e => e.Controller).HasMaxLength(255);
+
+                entity.Property(e => e.Icon).HasMaxLength(255);
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.MenuName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.MenuNameEn).HasMaxLength(100);
+
+                entity.Property(e => e.MenuUrl)
+                    .HasColumnName("MenuURL")
+                    .HasMaxLength(1000);
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.Property(e => e.RoleId)
+                    .HasColumnName("RoleID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.RoleName)
+                    .IsRequired()
+                    .HasMaxLength(100);
+            });
+
+            modelBuilder.Entity<RoleMenu>(entity =>
+            {
+                entity.Property(e => e.RoleMenuId)
+                    .HasColumnName("RoleMenuID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.MenuId).HasColumnName("MenuID");
+
+                entity.Property(e => e.RoleId).HasColumnName("RoleID");
+            });
             modelBuilder.Entity<UserDesignerRequest>(entity =>
             {
                 entity.Property(e => e.AccountNumber).HasMaxLength(10);
