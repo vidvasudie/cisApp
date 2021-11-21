@@ -56,7 +56,7 @@ namespace cisApp.Function
                 try
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
-                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text : (object)DBNull.Value),
+                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
                        new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
                        new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
                     };
@@ -74,7 +74,7 @@ namespace cisApp.Function
                 try
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
-                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text : (object)DBNull.Value)
+                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value)
                     };
                     var dt = StoreProcedure.GetAllStoredDataTable("GetUserModelsTotal", parameter);
                     return (int)dt.Rows[0]["TotalCount"];

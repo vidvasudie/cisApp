@@ -1,0 +1,66 @@
+﻿@using cisApp.Core
+@using cisApp.Controllers
+@model Role
+@{
+    ViewData["ControllerName"] = "GroupManagement";
+}
+
+<!--begin::Card-->
+<div class="card card-custom gutter-b">
+    <div class="card-body">
+        <!--begin::Top-->
+        <div class="d-flex"> 
+            <!--begin: Info-->
+            <div class="flex-grow-1">
+                <!--begin::Basic data-->
+                <div class="d-flex align-items-center justify-content-between flex-wrap mt-2">
+                    <!--begin::User-->
+                    <div class="mr-3">
+                        <!--begin::Name-->
+                        <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3" onclick="return false;">
+                            @Html.Raw("กลุ่มสิทธิ์: "+Model.RoleName) 
+                        </a>
+                        <!--end::Name--> 
+                    </div>
+                    <!--begin::User-->
+                    <!--begin::Actions-->
+                    <div class="my-lg-0 my-1">
+                        @{
+                            var ischecked = Model.IsActive ? "checked" : "";
+                             var textedit = BaseController._RoleMenuType == 2 ? "แก้ไข" : "รายละเอียด";
+                        }
+                        @if (BaseController._RoleMenuType == 2)
+                        {
+                            <input type="checkbox" @ischecked data-toggle="toggle" data-onstyle="primary" data-size="small" data-offstyle="secondary" data-on="ใช้งาน" data-off="ไม่ใช้งาน" data-href="@Url.Action("Active", ViewData["ControllerName"].ToString())" data-id="@Model.RoleId" class="btt-status ">
+                        }
+                        else
+                        {
+                            var btn_color = "btn-light-secondary";
+                            var textdesc = Model.IsActive ? "ใช้งาน" : "ไม่ใช้งาน";
+                            if (Model.IsActive)
+                            {
+                                btn_color = "btn-light-primary";
+                            }
+                            else
+                            {
+                                btn_color = "btn-light-secondary";
+                            }
+                            <span class="btn @btn_color btn-sm px-6 font-weight-bold ml-5">@textdesc</span>
+                        }
+                        <a href="@Url.Action("Manage", "GroupManagement", new { gId = Model.RoleId })" class="btn btn-sm btn-warning font-weight-bolder text-uppercase mr-3 ml-3" target="_blank">@textedit</a>
+                        @if (BaseController._RoleMenuType == 2)
+                        {
+                            <a href="#" data-url="@Url.Action("Delete", "GroupManagement", new { id = Model.RoleId })" class="btn btn-sm btn-danger font-weight-bolder text-uppercase bt-delete">ลบ</a>
+                        }
+
+                    </div>
+                    <!--end::Actions-->
+                </div>
+                <!--end::Basic data--> 
+            </div>
+            <!--end::Info-->
+        </div>
+        <!--end::Top-->
+    </div>
+</div>
+<!--end::Card-->

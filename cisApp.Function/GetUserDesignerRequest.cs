@@ -39,7 +39,7 @@ namespace cisApp.Function
                 try
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
-                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text : (object)DBNull.Value),
+                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
                        new SqlParameter("@status", model.status),
                        new SqlParameter("@mode", model.mode),
                        new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
@@ -59,7 +59,7 @@ namespace cisApp.Function
                 try
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
-                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text : (object)DBNull.Value),
+                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
                        new SqlParameter("@status", model.status),
                        new SqlParameter("@mode", model.mode)
                     };

@@ -1,4 +1,5 @@
-﻿@model cisApp.Function.UserModel
+﻿@using cisApp.Controllers
+@model cisApp.Function.UserModel
 @{
 }
 
@@ -24,7 +25,7 @@
                         <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3" onclick="return false;">
                             @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
                             {
-                                @Html.Raw("["+Model.Code+"] "+Model.Fname + " " + Model.Lname)
+                                @Html.Raw("[" + Model.Code + "] " + Model.Fname + " " + Model.Lname)
                             }
                             else
                             {
@@ -34,23 +35,22 @@
                             @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
                             {
                                 var btn_color = "btn-light-warning";
-                                if(Model.Status == 1)
+                                if (Model.Status == 1)
                                 {
                                     btn_color = "btn-light-warning";
                                 }
-                                else if(Model.Status == 2)
+                                else if (Model.Status == 2)
                                 {
                                     btn_color = "btn-light-success";
                                 }
-                                else if(Model.Status == 3)
+                                else if (Model.Status == 3)
                                 {
                                     btn_color = "btn-light-danger";
                                 }
-                                <span class="btn @btn_color  px-6 font-weight-bold ml-5">@Html.Raw(Model.StatusDesc)</span>
+                                <span class="btn @btn_color btn-sm px-6 font-weight-bold ml-5">@Html.Raw(Model.StatusDesc)</span>
                             }
                         </a>
                         <!--end::Name-->
-                       
                         <!--begin::Contacts-->
                         <div class="d-flex flex-wrap my-2">
                             <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
@@ -105,8 +105,16 @@
                             {
                                 if (Model.Status == 1)
                                 {
-                                    <a href="@Url.Action("Manage", "userApprove", new { text = Model.Code })" class="btn btn-sm btn-warning font-weight-bolder text-uppercase" target="_blank">แก้ไขคำขอ</a>
-                                    <a href="@Url.Action("ManageRequest", "userApprove", new { text=Model.Code })" class="btn btn-sm btn-primary font-weight-bolder text-uppercase" target="_blank">ตรวจสอบ</a>
+
+                                    @if (BaseController._RoleMenuType == 2)
+                                    {
+                                        <a href="@Url.Action("Manage", "UserApprove", new { text = Model.Code })" class="btn btn-sm btn-warning font-weight-bolder text-uppercase" target="_blank">แก้ไขคำขอ</a>
+                                        <a href="@Url.Action("ManageRequest", "UserApprove", new { text=Model.Code })" class="btn btn-sm btn-primary font-weight-bolder text-uppercase" target="_blank">ตรวจสอบ</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("Manage", "UserRequestHistory", new { text=Model.Code, goBack=Url.Action("Index", "UserApprove") })" class="btn btn-sm btn-primary font-weight-bolder text-uppercase" target="_blank">รายละเอียด</a>
+                                    }
                                 }
                                 else
                                 {

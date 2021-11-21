@@ -1,6 +1,6 @@
 ﻿@using cisApp.Controllers
 @{
-    ViewData["Title"] = "ประวัติคำขอสมัครนักออกแบบ";
+    ViewData["Title"] = "กลุ่มสิทธิ์การใช้งาน";
 }
 
 
@@ -102,9 +102,9 @@
                 @if (BaseController._RoleMenuType == 2)
                 {
                     <!--begin::Button-->
-                    <a href="@Url.Action("Manage","UserApprove")" class="btn btn-light-primary font-weight-bold ml-2" target="_blank">เพิ่ม designer</a>
+                    <a href="@Url.Action("Manage","GroupManagement")" class="btn btn-light-primary font-weight-bold ml-2" target="_blank">เพิ่มกลุ่มสิทธิ์การใช้งาน</a>
                     <!--end::Button-->
-                }
+                } 
                 <!--begin::Dropdown-->
                 <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="Quick actions" data-placement="left">
                     <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -194,7 +194,54 @@
 <!--end::Content-->
 
 @section Scripts {
+    <style>
+        .switch input {
+            display: none;
+        }
 
+        .switch {
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            margin: 8px;
+            transform: translateY(50%);
+            position: relative;
+        }
+        /* Style Wired */
+        .slider {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-radius: 30px;
+            box-shadow: 0 0 0 2px #777, 0 0 4px #777;
+            cursor: pointer;
+            border: 4px solid transparent;
+            overflow: hidden;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                width: 100%;
+                height: 100%;
+                background: #777;
+                border-radius: 30px;
+                transform: translateX(-30px);
+                transition: .4s;
+            }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+            background: limeGreen;
+        }
+
+        input:checked + .slider {
+            box-shadow: 0 0 0 2px limeGreen,0 0 2px limeGreen;
+        }
+    </style>
     <script>
     var _callback=null
     function PagerClick(index) {
@@ -205,7 +252,7 @@
         var err = function (e) {
             alert('error paging', e);
         }
-        CallAjax('@Url.Action("ItemList", "UserRequestHistory")', 'POST', { currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
+        CallAjax('@Url.Action("ItemList", "GroupManagement")', 'POST', { currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
     }
     function Search() {
         var text = $('#kt_subheader_search_form').val();
@@ -217,7 +264,7 @@
             var err = function (e) {
                 alert('error search', e);
             }
-            CallAjax('@Url.Action("ItemList", "UserRequestHistory")', 'POST', { text: text, pageSize: $('#pageSize').val() }, suc, err);
+            CallAjax('@Url.Action("ItemList", "GroupManagement")', 'POST', { text: text, pageSize: $('#pageSize').val() }, suc, err);
         }
     }
 

@@ -206,3 +206,18 @@ $('body').on('click', '.bt-update', function (e) {
         }
     });
 });
+
+$('body').on('change', '.btt-status', function () {
+    var $this = $(this);
+    var value = $this.prop('checked');
+    var id = $this.attr('data-id');
+    $.post($this.attr('data-href') + "?id=" + id+ "&active=" + value, function (res) {
+        if (res.success) {
+            toastr.success(res.message, { fadeIn: 300 })
+        }
+        else {
+            toastr.error(res.message); 
+        }
+    });
+
+}); 

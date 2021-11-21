@@ -1,4 +1,4 @@
-﻿ 
+﻿@using cisApp.Controllers
 @{
     ViewData["Title"] = "คำขอสมัครนักออกแบบ";
 }
@@ -19,12 +19,12 @@
                 <!--end::Separator-->
                 <!--begin::Search Form-->
                 <div class="d-flex align-items-center" id="kt_subheader_search">
-                    <span class="text-dark-50 font-weight-bold" >ทั้งหมด <span id="kt_subheader_total">0</span> รายการ</span>
+                    <span class="text-dark-50 font-weight-bold">ทั้งหมด <span id="kt_subheader_total">0</span> รายการ</span>
                     <form class="ml-5">
                         <div class="input-group input-group-sm input-group-solid" style="max-width: 175px">
                             <input type="text" class="form-control" id="kt_subheader_search_form" placeholder="ค้นหา..." />
                             <div class="input-group-append">
-                                <a href="javascript: Search();" class="navi-link" >
+                                <a href="javascript: Search();" class="navi-link">
                                     <span class="input-group-text">
                                         <span class="svg-icon">
                                             <!--begin::Svg Icon | path:assets/media/svg/icons/General/Search.svg-->
@@ -99,9 +99,12 @@
                 <!--begin::Button-->
                 <a href="#" class=""></a>
                 <!--end::Button-->
-                <!--begin::Button-->
-                <a href="@Url.Action("Manage","userApprove")" class="btn btn-light-primary font-weight-bold ml-2" target="_blank">เพิ่ม designer</a>
-                <!--end::Button-->
+                @if (BaseController._RoleMenuType == 2)
+                {
+                    <!--begin::Button-->
+                    <a href="@Url.Action("Manage","UserApprove")" class="btn btn-light-primary font-weight-bold ml-2" target="_blank">เพิ่ม designer</a>
+                    <!--end::Button-->
+                } 
                 <!--begin::Dropdown-->
                 <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="Quick actions" data-placement="left">
                     <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -182,7 +185,7 @@
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
         <div class="container" id="box_update">
-            @*@await Html.PartialAsync("~/Views/userApprove/PT/_ItemList.cshtml", Model)*@
+
         </div>
         <!--end::Container-->
     </div>
@@ -192,8 +195,8 @@
 
 @section Scripts {
 
-<script>
-    var _callback=null 
+    <script>
+    var _callback=null
     function PagerClick(index) {
         var suc = function (html) {
             $('#box_update').html(html);
@@ -202,7 +205,7 @@
         var err = function (e) {
             alert('error paging', e);
         }
-        CallAjax('@Url.Action("ItemList", "userApprove")', 'POST', { currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
+        CallAjax('@Url.Action("ItemList", "UserApprove")', 'POST', { currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
     }
     function Search() {
         var text = $('#kt_subheader_search_form').val();
@@ -214,7 +217,7 @@
             var err = function (e) {
                 alert('error search', e);
             }
-            CallAjax('@Url.Action("ItemList", "userApprove")', 'POST', { text: text, pageSize: $('#pageSize').val() }, suc, err);
+            CallAjax('@Url.Action("ItemList", "UserApprove")', 'POST', { text: text, pageSize: $('#pageSize').val() }, suc, err);
         }
     }
 
@@ -237,13 +240,13 @@
             });
         }
     }
-    
+
     $(function () {
-        $('body').on('change', '#pageSize', function () { 
+        $('body').on('change', '#pageSize', function () {
             PagerClick(1);
-        }); 
+        });
         PagerClick(1);
     });
-</script>
+    </script>
 
 }

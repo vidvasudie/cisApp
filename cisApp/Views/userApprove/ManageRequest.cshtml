@@ -2,7 +2,7 @@
 @model UserModel
 @{
     ViewData["Title"] = "ตรวจสอบคำขอสมัครนักออกแบบ";
-    ViewData["ControllerName"] = "userApprove";
+    ViewData["ControllerName"] = "UserApprove";
 }
 
 <!--begin::Content-->
@@ -23,7 +23,7 @@
                             <a href="" class="text-muted">Dashbaord</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="@Url.Action("Index", "userApprove")" class="text-muted">รายการคำขอสมัครนักออกแบบ</a>
+                            <a href="@Url.Action("Index", "UserApprove")" class="text-muted">รายการคำขอสมัครนักออกแบบ</a>
                         </li>
                         <li class="breadcrumb-item">
                             <a href="javascript:void(0)" class="text-muted">@ViewData["Title"]</a>
@@ -127,11 +127,11 @@
                         </h3>
                     </div>
                     <div class="card-toolbar">
-                        <a href="@Url.Action("Index", "userApprove")" class="btn btn-light-primary font-weight-bolder mr-2">
+                        <a href="@Url.Action("Index", "UserApprove")" class="btn btn-light-primary font-weight-bolder mr-2">
                             <i class="ki ki-long-arrow-back icon-sm"></i>ย้อนกลับ
                         </a>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary font-weight-bolder" onclick="submit();">
+                            <button type="button" class="btn btn-primary font-weight-bolder btn-submit" >
                                 <i class="ki ki-check icon-sm"></i>บันทึก
                             </button>
                             @*<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -162,7 +162,7 @@
                 </div>
                 <div class="card-body">
                     <!--begin::Form-->
-                    <form class="form" id="kt_form_req" asp-action="ManageRequest" asp-controller=@ViewData["ControllerName"] method="post" data-ajax-confirm="@MessageCommon.Confirm" data-ajax="true" data-ajax-success="redirect">
+                    <form class="form" id="kt_form" asp-action="ManageRequest" asp-controller=@ViewData["ControllerName"] method="post" data-ajax-confirm="@MessageCommon.Confirm" data-ajax="true" data-ajax-success="redirect">
                         <div class="row">
                             <div class="col-xl-2"></div>
                             <div class="col-xl-8">
@@ -277,9 +277,7 @@
 
 
     <script>
-        function submit() {
-            $('#kt_form_req').submit();
-        }
+      
         $(function () {
             $('.req-approve input').attr('readonly', true);
             $('.req-approve textarea').attr('readonly', true);

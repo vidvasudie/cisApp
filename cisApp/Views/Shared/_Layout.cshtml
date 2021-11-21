@@ -75,13 +75,17 @@
     <!--begin::Layout Themes(used by all pages)-->
     <!--end::Layout Themes-->
     <link rel="shortcut icon" href="@Url.Content("~/assets/media/logos/favicon.ico")" />
+
+    <!-- bootstrap-toggle -->
+    <link href="@Url.Content("~/lib/bootstrap-toggle/bootstrap-toggle.min.css")" rel="stylesheet" type="text/css" /> 
+
     <style>
          span.select2-selection__rendered {
             background-color: #f3f6f9 !important;
          }
-         .aside {
+         @*.aside {
              width: 200px !important;
-         }
+         }*@
     </style>
 </head>
 <!--end::Head-->
@@ -832,6 +836,9 @@
     <script type="text/javascript" src="@Url.Content("~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js")"></script>
 
     <script src="@Url.Content("~/assets/js/pages/crud/forms/widgets/select2.js")"></script>
+
+    <!-- bootstrap-toggle --> 
+    <script src="@Url.Content("~/lib/bootstrap-toggle/bootstrap-toggle.min.js")"></script>
 
     <script type="text/javascript" src="@Url.Content("~/js/Utils.js")"></script>
 

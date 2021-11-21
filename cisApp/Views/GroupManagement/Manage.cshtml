@@ -1,10 +1,12 @@
-﻿@using cisApp.Function
-@model UserModel
+﻿@using cisApp.Core
+@using cisApp.Function
+@using cisApp.Controllers
+@model Role
 
 @{
     //ViewData["Title"] = "จัดการข้อมูลผู้ใช้งาน" + (!string.IsNullOrEmpty(Model)?"ดีไซต์เนอร์": "ทั่วไป");
-    ViewData["Title"] = "เพิ่มข้อมูลผู้ใช้งาน" + (Model.UserType != 1 ? "ดีไซต์เนอร์" : "ทั่วไป");
-    ViewData["ControllerName"] = "UserApprove";
+    ViewData["Title"] = "เพิ่ม-แก้ไขข้อมูลกลุ่มสิทธิ์การใช้งาน";
+    ViewData["ControllerName"] = "GroupManagement";
 }
 
 <!--begin::Content-->
@@ -25,7 +27,7 @@
                             <a href="" class="text-muted">Dashbaord</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="@Url.Action("Index", "UserApprove")" class="text-muted">รายการคำขอสมัครนักออกแบบ</a>
+                            <a href="@Url.Action("Index", "GroupManagement")" class="text-muted">รายการกลุ่มสิทธิ์การใช้งาน</a>
                         </li>
                         <li class="breadcrumb-item">
                             <a href="javascript:void(0)" class="text-muted">@ViewData["Title"]</a>
@@ -129,11 +131,13 @@
                         </h3>
                     </div>
                     <div class="card-toolbar">
-                        <a href="@Url.Action("Index", "UserApprove")" class="btn btn-light-primary font-weight-bolder mr-2">
+                        <a href="@Url.Action("Index", "GroupManagement")" class="btn btn-light-primary font-weight-bolder mr-2">
                             <i class="ki ki-long-arrow-back icon-sm"></i>ย้อนกลับ
                         </a>
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-primary font-weight-bolder btn-submit" >
+                        @if (BaseController._RoleMenuType == 2)
+                        {
+                            <div class="btn-group">
+                            <button type="button" class="btn btn-primary font-weight-bolder btn-submit">
                                 <i class="ki ki-check icon-sm"></i>บันทึก
                             </button>
                             @*<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -160,6 +164,8 @@
                                     </ul>
                                 </div>*@
                         </div>
+                        }
+                        
                     </div>
                 </div>
                 <div class="card-body">
@@ -168,44 +174,104 @@
                         <div class="row">
                             <div class="col-xl-2"></div>
                             <div class="col-xl-8">
-                                @Html.HiddenFor(m => m.UserType, new { @value = "2" })
+                                @Html.HiddenFor(m => m.RoleId)
 
-                                @await Html.PartialAsync("~/Views/Shared/User/_UserCustomer.cshtml", Model)
-
-                                @if (Model.UserType == 2 || (!String.IsNullOrEmpty(Model.Code) && Model.Status == 1))
-                                {
-                                    @await Html.PartialAsync("~/Views/Shared/User/_UserDesigner.cshtml", Model)
-                                }
-
-                                <div class="separator separator-dashed my-10"></div>
                                 <div class="my-5">
                                     <div class="form-group row">
-                                        <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">เอกสารประกอบคำขอ</label>
-                                        
-                                        <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
+                                        @Html.LabelFor(m => m.RoleName, "", new { @class = "col-3" })
+                                        <div class="col-9">
+                                            @Html.TextBoxFor(m => m.RoleName, "", new { @class = "form-control form-control-solid", @placeholder = "กรุณากรอกชื่อกลุ่มสิทธิ์", @autocomplete = "off" })
+                                            @Html.ValidationMessageFor(m => m.RoleName, "", new { @class = "text-danger" })
+                                        </div>
 
                                     </div>
-                                </div>
+                                    @{
+                                        var checkedOne = Model.IsActive ? "checked" : "";
+                                        var checkedTwo = !Model.IsActive ? "checked" : "";
 
-                                <div class="separator separator-dashed my-10"></div>
-                                <div class="my-5">
+                                    }
                                     <div class="form-group row">
-                                        <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">รูปภาพประจำตัว</label>
-                                        <div class="col-lg-4 col-md-9 col-sm-12">
-                                            <div class="dropzone dropzone-default" id="kt_dropzone_1">
-                                                <div class="dropzone-msg dz-message needsclick">
-                                                    <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
-                                                    <span class="dropzone-msg-desc">
-                                                        This is just a demo dropzone. Selected files are
-                                                        <strong>not</strong>actually uploaded.
-                                                    </span>
-                                                </div>
+                                        @Html.LabelFor(m => m.IsActive, "", new { @class = "col-lg-3 col-form-label text-lg-right" })
+                                        <div class="col-lg-7 col-form-label">
+                                            <div class="radio-inline">
+                                                <label class="radio radio-primary">
+                                                    <input type="radio" id="Status1" name="IsActive" value="1" @checkedOne />
+                                                    <span></span>
+                                                    ใช้งาน
+                                                </label>
+                                                <label class="radio radio-primary">
+                                                    <input type="radio" id="Status2" name="IsActive" value="2" @checkedTwo />
+                                                    <span></span>
+                                                    ไม่ใช้งาน
+                                                </label>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
 
+                                <div class="separator separator-dashed my-10"></div>
+                                <div class="my-5">
+                                    <div class="form-group row">
+                                        <div class="col-12 col-md-12 mb-7 text-center">
+                                            <b class="col-form-label col-lg-3 col-sm-12 h2">จัดการสิทธิ์การใช้งานระบบ</b>
+                                        </div>
 
+                                        @foreach (var item in GetMenu.Get.GetByActive().Where(o => o.Parent == null).OrderBy(o => o.Sequence).ToList())
+                                        {
+
+                                            RoleManageModel objRole = new RoleManageModel();
+                                            objRole.Level = 0;
+                                            objRole.Type = 0;
+                                            objRole.MenuName = item.MenuName;
+                                            objRole.MenuId = item.MenuId;
+                                            objRole.IsLock = false;
+                                            objRole.IsUser = false;
+                                            var roleMenu = GetRoleMenu.Get.GetByMenuId(item.MenuId).FirstOrDefault();
+                                            if (roleMenu != null)
+                                            {
+                                                objRole.Type = roleMenu.Type;
+                                            }
+                                            @await Html.PartialAsync("~/Views/GroupManagement/PT/_Submenu.cshtml", objRole)
+                                            var tempMenuLevel1 = GetMenu.Get.GetByParentId(item.MenuId).OrderBy(o => o.Sequence).ToList();
+                                            foreach (var itemL1 in tempMenuLevel1)
+                                            {
+                                                RoleManageModel objRoleLevel1 = new RoleManageModel();
+                                                objRoleLevel1.Level = 1;
+                                                objRoleLevel1.Type = 0;
+                                                objRoleLevel1.MenuName = itemL1.MenuName;
+                                                objRoleLevel1.MenuId = itemL1.MenuId;
+                                                objRoleLevel1.IsLock = false;
+                                                objRoleLevel1.IsUser = false;
+                                                var roleMenu1 = GetRoleMenu.Get.GetByMenuId(itemL1.MenuId).FirstOrDefault();
+                                                if (roleMenu1 != null)
+                                                {
+                                                    objRoleLevel1.Type = roleMenu1.Type;
+                                                }
+                                                @await Html.PartialAsync("~/Views/GroupManagement/PT/_Submenu.cshtml", objRoleLevel1)
+                                                var tempMenuLevel2 = GetMenu.Get.GetByParentId(itemL1.MenuId).OrderBy(o => o.Sequence).ToList();
+                                                foreach (var itemL2 in tempMenuLevel2)
+                                                {
+                                                    RoleManageModel objRoleLevel2 = new RoleManageModel();
+                                                    objRoleLevel2.Level = 2;
+                                                    objRoleLevel2.Type = 0;
+                                                    objRoleLevel2.MenuName = itemL2.MenuName;
+                                                    objRoleLevel2.MenuId = itemL2.MenuId;
+                                                    objRoleLevel2.IsLock = false;
+                                                    objRoleLevel2.IsUser = false;
+                                                    var roleMenu2 = GetRoleMenu.Get.GetByMenuId(itemL2.MenuId).FirstOrDefault();
+                                                    if (roleMenu2 != null)
+                                                    {
+                                                        objRoleLevel2.Type = roleMenu2.Type;
+                                                    }
+                                                    @await Html.PartialAsync("~/Views/GroupManagement/PT/_Submenu.cshtml", objRoleLevel2)
+                                                }
+                                            }
+                                        }
+
+                                    </div>
+
+                                </div>
 
                             </div>
                             <div class="col-xl-2"></div>
@@ -227,16 +293,24 @@
         <script src="@Url.Content("~/assets/js/pages/crud/file-upload/uppy/uppy.min.js")"></script>
         <script src="@Url.Content("~/assets/plugins/custom/uppy/uppy.bundle.js")"></script>
         <script src="@Url.Content("~/assets/js/pages/crud/file-upload/uppy.js")"></script>*@
-     
 
-    <script>
-        
+
+<script> 
         $(function () {
-            const uppy = Uppy.Core({ autoProceed: false })
-            uppy.use(Uppy.Dashboard, { target: '#drag-drop-area', inline: true, height: 450 })
-            uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' })
+             @if (BaseController._RoleMenuType != 2)
+             {
+                @:$('input').attr('readonly', true);
+                @:$('textarea').attr('readonly', true);
+                @:$('select').on('select2:opening', function (e) {
+                @:    e.preventDefault();
+                @:});
+                @:$('input[type=radio]').on('click', function (e) {
+                @:    e.preventDefault();
+                @:});
+                @:$('.btn-group.btn-group-sm.btn-group-toggle').attr('data-toggle', '#')
+             }
         });
-    </script>
+</script>
 
 
 }

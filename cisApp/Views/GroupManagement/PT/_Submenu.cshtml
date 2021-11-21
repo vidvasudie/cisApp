@@ -1,0 +1,44 @@
+﻿@using HtmlHelpers.BeginCollectionItemCore;
+@using cisApp.Function
+@model RoleManageModel
+@{
+	string _P = (Model.Level == 0 ? "<b style=\"padding-left:20px\">" + Model.MenuName + "</b>" : "<font style=\"padding-left:50px\">" + Model.MenuName + "</font>");
+	string _L = (Model.IsLock) ? "disableddiv" : "";
+	string _CB = (Model.IsUser) ? "btn btn-danger" : "btn btn-primary";
+	switch (Model.Level)
+	{
+		case 0:
+			_P = "<b style=\"padding-left:20px\">" + Model.MenuName + "</b>";
+			break;
+		case 1:
+			_P = "<font style=\"padding-left:50px\">" + Model.MenuName + "</font>";
+			break;
+		default:
+			_P = "<font style=\"padding-left:70px\">" + Model.MenuName + "</font>";
+			break;
+	}
+}
+@using (Html.BeginCollectionItem("menulist"))
+{
+<div class="row col-12 col-md-12 mb-2">
+	@Html.HiddenFor(m => m.MenuId)
+	@Html.HiddenFor(m => m.IsLock)
+	@Html.HiddenFor(m => m.IsUser)
+	<div class="col-md-8">
+		@Html.Raw(_P)
+	</div>
+	<div class="col-md-4 justify-content-end">
+		<div class="btn-group btn-group-sm btn-group-toggle @_L" data-toggle="buttons">
+			<label class="@_CB  active">
+				@Html.RadioButtonFor(model => model.Type, 0, new { @autocomplete = "off" })   ไม่มีสิทธิ์
+			</label>
+			<label class="@_CB">
+				@Html.RadioButtonFor(model => model.Type, 1, new { @autocomplete = "off" }) ดูเท่านั้น
+			</label>
+			<label class="@_CB">
+				@Html.RadioButtonFor(model => model.Type, 2, new { @autocomplete = "off" }) จัดการ
+			</label>
+		</div>
+	</div>
+</div>
+}

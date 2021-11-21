@@ -7,13 +7,23 @@ using cisApp.Function;
 using cisApp.Models;
 using cisApp.library;
 using cisApp.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace cisApp.Controllers
 {
-    [Authorized]
+    [Authorize]
+    [CustomActionExecute("CA06E5CC-691E-4BE7-A8EF-3F9EE8400B1A")]
     public class UserManagementController : BaseController
     {
         private List<UserModel> _model = new List<UserModel>();
+        private Guid _PermissionMenuId;
+        private int _PermissionManage;
+        public UserManagementController()
+        {
+            _PermissionMenuId = Guid.Parse("CA06E5CC-691E-4BE7-A8EF-3F9EE8400B1A");
+            _PermissionManage = 2;// สิทธิ์ผู้ใช้งาน
+        }
+
         public IActionResult Index(int pageIndex = 1)
         {
             return View(new PaginatedList<UserModel>(_model, _model.Count, pageIndex, 2));

@@ -5,16 +5,24 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using cisApp.library;
 using cisApp.Core;
-using cisApp.Function; 
+using cisApp.Function;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Logging;
 
 namespace cisApp.Controllers
-{
-    [Authorized]
-    public class userApproveController : BaseController
+{ 
+    [CustomActionExecute("33A0E193-2812-4783-9A7C-480762AC5A54")]
+    public class UserApproveController : BaseController
     { 
-        public IActionResult Index()
+        private Guid _PermissionMenuId;
+        private int _PermissionManage;
+        public UserApproveController()
         { 
-
+            _PermissionMenuId = Guid.Parse("33A0E193-2812-4783-9A7C-480762AC5A54"); 
+            _PermissionManage = 2;// สิทธิ์ผู้ใช้งาน
+        }
+        public IActionResult Index()
+        {  
             return View();
         }
         [HttpPost]
@@ -48,7 +56,7 @@ namespace cisApp.Controllers
                 int result = GetUserDesignerRequest.Manage.AddNewRequest(data);
                 if(result > 0)
                 {
-                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userApprove")));
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "UserApprove")));
                 }
                 else
                 {
@@ -80,7 +88,7 @@ namespace cisApp.Controllers
                 var result = GetUserDesignerRequest.Manage.UpdateRequestStatus(data);
                 if(result > 0)
                 {
-                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userApprove")));
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "UserApprove")));
                 }
                 else
                 {
