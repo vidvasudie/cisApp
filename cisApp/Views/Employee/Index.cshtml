@@ -2,8 +2,8 @@
 @using cisApp.Function;
 @model PaginatedList<UserModel>
 @{
-    ViewData["Title"] = "เพิ่มผู้ใช้งานระบบ";
-    ViewData["ControllerName"] = "UserManagement";
+    ViewData["Title"] = "จัดการเจ้าหน้าที่";
+    ViewData["ControllerName"] = "Employee";
 }
 
 
@@ -101,10 +101,7 @@
                 <a href="#" class=""></a>
                 <!--end::Button-->
                 <!--begin::Button-->
-                <a href="@Url.Action("manage",ViewData["ControllerName"])" class="btn btn-light-primary font-weight-bold ml-2">เพิ่มผู้ใช้งาน</a>
-                <!--end::Button-->
-                <!--begin::Button-->
-                <a href="@Url.Action("manage",ViewData["ControllerName"].ToString(), new { type = 2 })" class="btn btn-light-success font-weight-bold ml-2">เพิ่มดีไซน์เนอร์</a>
+                <a href="@Url.Action("manage",ViewData["ControllerName"])" class="btn btn-light-primary font-weight-bold ml-2">เพิ่มเจ้าหน้าที่</a>
                 <!--end::Button-->
                 <!--begin::Dropdown-->
                 <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="Quick actions" data-placement="left">
@@ -292,6 +289,7 @@
     });
     </script>
 
+    
 
 
 }
