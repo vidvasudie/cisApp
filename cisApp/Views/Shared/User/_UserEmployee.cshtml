@@ -1,0 +1,21 @@
+﻿@using cisApp.Function
+@model UserModel
+@{
+}
+
+@Html.HiddenFor(m => m.UserDesignerId)
+
+<div class="separator separator-dashed my-10"></div>
+<div class="my-5">
+    <h3 class="text-dark font-weight-bold mb-10">ส่วนของเจ้าหน้าที่ :</h3>
+    <div class="form-group row">
+        <label class="col-3">กลุ่มสิทธิ์การใช้งาน</label>
+        <div class="col-9">
+            @{
+                SelectList accTypeList = new SelectList(GetRole.Get.GetDropdown(), "RoleId", "RoleName");
+            }
+            @Html.DropDownListFor(m => m.RoleId, accTypeList, new { @class = "form-control", @Required = "Required" })
+            @Html.ValidationMessageFor(m => m.RoleId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+</div>

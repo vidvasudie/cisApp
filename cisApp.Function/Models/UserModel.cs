@@ -32,6 +32,8 @@ namespace cisApp.Function
         [Display(Name = "อีเมล")]
         [Required(ErrorMessage = "กรุณากรอกอีเมล")]
         public string Email { get; set; }
+
+        public Guid? RoleId { get; set; }
         /// <summary>
         /// รหัสผู้ออกแบบ
         /// </summary>

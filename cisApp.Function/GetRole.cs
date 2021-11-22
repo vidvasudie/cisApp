@@ -43,6 +43,23 @@ namespace cisApp.Function
                 }
             }
 
+            public static List<Role> GetDropdown()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.Role.Where(o => o.IsActive == true && o.IsDeleted == false).ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
             public static List<Role> GetRole(SearchModel model)
             {
                 try

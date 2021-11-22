@@ -50,13 +50,81 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
-            
+
+            public static UserModel GetByEmail(string email)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[]
+                    {
+                        new SqlParameter("@stext", email)
+                    };
+
+                    var data = StoreProcedure.GetAllStored<UserModel>("GetUserByEmail", parameter);
+
+                    return data.FirstOrDefault();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static bool IsEmailAlreadyUseInsert(string email)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[]
+                    {
+                        new SqlParameter("@stext", email)
+                    };
+
+                    var data = StoreProcedure.GetAllStored<UserModel>("GetUserByEmail", parameter);
+
+                    if (data.Count > 0)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static bool IsEmailAlreadyUseUpdate(string email)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[]
+                    {
+                        new SqlParameter("@stext", email)
+                    };
+
+                    var data = StoreProcedure.GetAllStored<UserModel>("GetUserByEmail", parameter);
+
+                    if (data.Count > 1)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
             public static List<UserModel> GetUserModels(SearchModel model)
             {
                 try
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@type", model.userType != null ? model.userType : (object)DBNull.Value),
                        new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
                        new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
                     };
@@ -74,7 +142,8 @@ namespace cisApp.Function
                 try
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
-                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value)
+                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@type", model.userType != null ? model.userType : (object)DBNull.Value)
                     };
                     var dt = StoreProcedure.GetAllStoredDataTable("GetUserModelsTotal", parameter);
                     return (int)dt.Rows[0]["TotalCount"];
@@ -118,12 +187,21 @@ namespace cisApp.Function
                         if (data.UserId != null)
                         {
                             obj = context.Users.Find(data.UserId.Value);
+                            if (!Get.IsEmailAlreadyUseUpdate(data.Email))
+                            {
+                                throw new Exception("Email ดังกล่าวถูกใช้งานไปแล้ว");
+                            }
                         }
                         else
                         {
                             obj.IsActive = true;
                             obj.CreatedDate = DateTime.Now;
                             obj.CreatedBy = userId;
+
+                            if (!Get.IsEmailAlreadyUseInsert(data.Email))
+                            {
+                                throw new Exception("Email ดังกล่าวถูกใช้งานไปแล้ว");
+                            }
                         }
 
                         obj.Fname = data.Fname;
@@ -131,6 +209,7 @@ namespace cisApp.Function
                         obj.UserType = data.UserType;
                         obj.Tel = data.Tel;
                         obj.Email = data.Email;
+                        obj.RoleId = data.RoleId;
                         obj.IsActive = data.IsActive;
 
                         obj.UpdatedDate = DateTime.Now;
@@ -171,6 +250,22 @@ namespace cisApp.Function
                             objSub.PostCode = data.PostCode;
 
                             context.UserDesigner.Update(objSub);
+
+                            context.SaveChanges();
+                        }
+
+                        // check ว่าควรจะต้อง gen passwrod ให้ไหม
+                        var password = context.UsersPassword.Where(o => o.UserId == obj.UserId).FirstOrDefault();
+
+                        if (password == null)
+                        {
+                            UsersPassword objPassword = new UsersPassword()
+                            {
+                                UserId = obj.UserId.Value,
+                                Password = "12345678"
+                            };
+
+                            context.UsersPassword.Update(objPassword);
 
                             context.SaveChanges();
                         }

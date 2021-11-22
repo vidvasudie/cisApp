@@ -173,8 +173,10 @@
                                 @await Html.PartialAsync("~/Views/Shared/User/_UserCustomer.cshtml", Model)
 
 
-                                @if (Model.UserType == 2)
+                                @if (Model.UserType == 2 || Model.UserType == 3)
                                 {
+                                    @await Html.PartialAsync("~/Views/Shared/User/_UserEmployee.cshtml", Model)
+
                                     @await Html.PartialAsync("~/Views/Shared/User/_UserDesigner.cshtml", Model)
                                 }
 

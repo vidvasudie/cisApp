@@ -33,6 +33,8 @@ namespace cisApp.Core
         [Required(ErrorMessage = "กรุณากรอกอีเมล")]
         public string Email { get; set; }
 
+        public Guid? RoleId { get; set; }
+
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime CreatedDate { get; set; }
