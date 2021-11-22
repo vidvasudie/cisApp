@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 using cisApp.Function;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using cisApp.library;
+using Microsoft.AspNetCore.Hosting;
 
 namespace cisApp.Controllers
 {
     public class LoginController : BaseController
     {
+        private readonly IWebHostEnvironment _HostingEnvironment;
+        public LoginController(IWebHostEnvironment environment)
+        {
+            _HostingEnvironment = environment;
+        }
         public IActionResult Index()
         {
             return View(new LoginModel() { username= "admin@gmail.com", password="12345" });
@@ -24,7 +31,14 @@ namespace cisApp.Controllers
             {
                 if(obj.username == "admin@gmail.com" && obj.password == "12345")
                 {
-                    return LoginTest(new UserModel() { UserId= Guid.Parse("F71758CF-3F30-432B-8361-5754CDE8BF26"), Email= "admin@gmail.com", Fname= "ทดสอบ", Lname= "ระบบ", UserType=3 });
+                    return LoginTest(new UserModel() { 
+                        UserId= Guid.Parse("F71758CF-3F30-432B-8361-5754CDE8BF26")
+                        , Email= "admin@gmail.com"
+                        , Fname= "ทดสอบ"
+                        , Lname= "ระบบ"
+                        , UserType=3
+                        , RoleId = Guid.Parse("0A36BB48-C69B-4B3B-9E2E-F486918A5352")
+                    });;
                 }
                 if (string.IsNullOrEmpty(obj.username) || string.IsNullOrEmpty(obj.password))
                 {
@@ -61,6 +75,36 @@ namespace cisApp.Controllers
                 return Json(new ResponseModel().ResponseError(messageError));
             } 
         }
+        [HttpGet]
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult ForgetPassword(LoginModel obj)
+        {
+            try
+            {
+                var user = GetUser.Get.GetByEmail(obj.username);
+
+                if (user == null)
+                {
+                    return Json(new ResponseModel().ResponseError("ไม่พบชื่อผู้ใช้ดังกล่าวในระบบ"));
+                }
+
+                SendMail.SendMailResetPassword(user.Email, user.Email, "12345678", _HostingEnvironment.WebRootPath);
+
+                return Json(new ResponseModel().ResponseSuccess("ระบบได้ทำการส่งรหัสผ่านใหม่ไปยังอีเมลของท่านแล้ว", Url.Action("Index", "LogiN")));
+            }
+            catch (Exception ex)
+            {
+                string messageError = "พบข้อผิดพลาด กรุณาลองใหม่";
+                return Json(new ResponseModel().ResponseError(messageError));
+            }
+        }
+
 
         private void SetCookie(UserModel model)
         {
