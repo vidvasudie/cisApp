@@ -60,7 +60,7 @@
         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
             <a href="javascript:;" class="menu-link menu-toggle">
                 <i class="menu-icon flaticon2-laptop"></i>
-                <span class="menu-text">Customer</span>
+                <span class="menu-text">ลูกค้า</span>
                 <i class="menu-arrow"></i>
             </a>
             <div class="menu-submenu">
@@ -68,15 +68,15 @@
                 <ul class="menu-subnav">
                     <li class="menu-item menu-item-parent" aria-haspopup="true">
                         <span class="menu-link">
-                            <span class="menu-text">Pages</span>
+                            <span class="menu-text">ลูกค้า</span>
                         </span>
                     </li>
                     <li class="menu-item" aria-haspopup="true">
-                        <a href="#" class="menu-link">
+                        <a href="@Url.Action("index","customer")" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
-                            <span class="menu-text">Reports</span>
+                            <span class="menu-text">รายชื่อ</span>
                         </a>
                     </li>
                     <li class="menu-item" aria-haspopup="true">
@@ -84,7 +84,7 @@
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
-                            <span class="menu-text">Apps</span>
+                            <span class="menu-text">ใบงานทั้งหมด</span>
                         </a>
                     </li>
                     <li class="menu-item" aria-haspopup="true">
@@ -92,23 +92,7 @@
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
-                            <span class="menu-text">Downloads</span>
-                        </a>
-                    </li>
-                    <li class="menu-item" aria-haspopup="true">
-                        <a href="#" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">Tasks</span>
-                        </a>
-                    </li>
-                    <li class="menu-item" aria-haspopup="true">
-                        <a href="#" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">Events</span>
+                            <span class="menu-text">รายงาน</span>
                         </a>
                     </li>
                 </ul>
@@ -124,7 +108,7 @@
                 <i class="menu-arrow"></i>
                 <ul class="menu-subnav">
                     <li class="menu-item" aria-haspopup="true">
-                        <a href="@Url.Action("index","UserApprove")" class="menu-link">
+                        <a href="@Url.Action("index","userApprove")" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
@@ -132,11 +116,11 @@
                         </a>
                     </li>
                     <li class="menu-item" aria-haspopup="true">
-                        <a href="@Url.Action("Index","UserRequestHistory")" class="menu-link">
+                        <a href="@Url.Action("History","userApprove")" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
-                            <span class="menu-text">ประวัติคำขอสมัครนักออกแบบ</span>
+                            <span class="menu-text">ประวัติคำขอ</span>
                         </a>
                     </li>
                     <li class="menu-item" aria-haspopup="true">
@@ -147,21 +131,12 @@
                             <span class="menu-text">ผลงาน</span>
                         </a>
                     </li>
-
                     <li class="menu-item" aria-haspopup="true">
-                        <a href="#" class="menu-link">
+                        <a href="@Url.Action("Index","Designer")" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
-                            <span class="menu-text">Tasks</span>
-                        </a>
-                    </li>
-                    <li class="menu-item" aria-haspopup="true">
-                        <a href="#" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">Events</span>
+                            <span class="menu-text">ประวัติ</span>
                         </a>
                     </li>
                 </ul>
@@ -183,7 +158,7 @@
                         </span>
                     </li>
                     <li class="menu-item" aria-haspopup="true">
-                        <a href="@Url.Action("index","UserApprove")" class="menu-link">
+                        <a href="@Url.Action("index","userApprove")" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
@@ -211,14 +186,14 @@
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
-                            <span class="menu-text">กลุ่มสิทธิ์การใช้งาน</span>
+                            <span class="menu-text">สิทธิ์การใช้งาน</span>
                         </a>
                     </li>
                 </ul>
             </div>
         </li>
 
-    
+
 
 
         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
@@ -230,7 +205,7 @@
             <div class="menu-submenu">
                 <i class="menu-arrow"></i>
                 <ul class="menu-subnav">
-                 
+
                     <li class="menu-item" aria-haspopup="true">
                         <a href="@Url.Action("Private","Chats")" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
@@ -247,7 +222,7 @@
                             <span class="menu-text">กลุ่ม</span>
                         </a>
                     </li>
-                 </ul>
+                </ul>
             </div>
         </li>
 
