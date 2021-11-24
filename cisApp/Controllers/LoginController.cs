@@ -94,7 +94,11 @@ namespace cisApp.Controllers
                     return Json(new ResponseModel().ResponseError("ไม่พบชื่อผู้ใช้ดังกล่าวในระบบ"));
                 }
 
-                SendMail.SendMailResetPassword(user.Email, user.Email, "12345678", _HostingEnvironment.WebRootPath);
+                string newPassword = UtilsLib.RandomPassword();
+
+                GetUser.Manage.ResetPassWord(user.UserId.Value, Encryption.Encrypt(newPassword));
+
+                SendMail.SendMailResetPassword(user.Email, user.Email, newPassword, _HostingEnvironment.WebRootPath);
 
                 return Json(new ResponseModel().ResponseSuccess("ระบบได้ทำการส่งรหัสผ่านใหม่ไปยังอีเมลของท่านแล้ว", Url.Action("Index", "LogiN")));
             }
