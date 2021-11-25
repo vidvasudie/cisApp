@@ -7,6 +7,7 @@ using cisApp.Function;
 using cisApp.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Http;
 
 namespace cisApp.Controllers
 {
@@ -108,6 +109,11 @@ namespace cisApp.Controllers
             {
                 return Json(new { status = false, data = data });
             }
+        }
+
+        public ActionResult UploadFile(IFormFile upload_file)
+        {
+            return Ok();
         }
     }
 }

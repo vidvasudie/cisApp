@@ -41,6 +41,7 @@ namespace cisApp.Function
 
                     if (data.Count > 0)
                     {
+                        data.FirstOrDefault().AttachFileImage = GetAttachFile.Get.GetByRefId(data.FirstOrDefault().UserId.Value);
                         return data.FirstOrDefault();
                     }
 
@@ -270,7 +271,19 @@ namespace cisApp.Function
                             context.UserDesigner.Update(objSub);
 
                             context.SaveChanges();
-                        }                 
+                        }
+
+                        // save profile
+                        if (!String.IsNullOrEmpty(data.FileBase64)) // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
+                        {
+                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId);
+
+                            GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), data.UserId.Value, userId);
+                        }
+                        else if (data.FileRemove) // ถ้าลบไฟล์ออก แล้วไม่ได้อัพไฟล์ใหม่ขึ้นมาจะเข้า เงื่อนไขนี้
+                        {
+                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId);
+                        }
 
                         return obj;
                     }
