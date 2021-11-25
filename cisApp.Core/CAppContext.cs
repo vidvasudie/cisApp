@@ -25,6 +25,7 @@ namespace cisApp.Core
             }
         }
 
+        public virtual DbSet<AttachFile> AttachFile { get; set; }
         public virtual DbSet<TmBank> TmBank { get; set; }
         public virtual DbSet<TmBankAccountType> TmBankAccountType { get; set; }
         public virtual DbSet<TmDistrict> TmDistrict { get; set; }
@@ -40,6 +41,23 @@ namespace cisApp.Core
         public virtual DbSet<RoleMenu> RoleMenu { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<AttachFile>(entity =>
+            {
+                entity.Property(e => e.AttachFileId)
+                    .HasColumnName("AttachFileID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.FileName)
+                    .HasMaxLength(255);
+
+                entity.Property(e => e.Path);
+
+                entity.Property(e => e.RefId)
+                    .HasColumnName("RefID")
+                    .HasComment("รหัสอ้างอิงตัวไฟล์");
+            });
+
             modelBuilder.Entity<Menu>(entity =>
             {
                 entity.Property(e => e.MenuId)
