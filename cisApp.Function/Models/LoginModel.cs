@@ -8,6 +8,6 @@ namespace cisApp.Function
     {
         public string username { get; set; }
         public string password { get; set; }
-        public int userType { get; set; } = 3;
+        public int? userType { get; set; } = 3;
     }
 }

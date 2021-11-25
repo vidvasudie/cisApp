@@ -100,7 +100,10 @@ namespace cisApp.Controllers
                 return Json(new ResponseModel().ResponseError());
             }
         }
-
+        public IActionResult History()
+        {
+            return View();
+        }
 
     }
 }

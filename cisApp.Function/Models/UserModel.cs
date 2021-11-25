@@ -5,17 +5,18 @@ using System.Text;
 
 namespace cisApp.Function
 {
-    public class UserModel
+    public class UserModel: UserModelCommon
     {
         public Guid? UserId { get; set; }
 
-        [Display(Name = "ชื่อ")]
-        [Required(ErrorMessage = "กรุณากรอกชื่อ")]
-        public string Fname { get; set; }
 
-        [Display(Name = "นามสกุล")]
-        [Required(ErrorMessage = "กรุณากรอกนามสกุล")]
-        public string Lname { get; set; }
+
+      
+
+
+
+
+
         /// <summary>
         /// 1 = ผู้ใข้งาน,
         /// 2 = นักออกแบบ
@@ -25,13 +26,8 @@ namespace cisApp.Function
         [Display(Name = "ประเภทผู้ใช้งาน")]
         public int? UserType { get; set; }
 
-        [Display(Name = "เบอร์โทรศัพท์")]
-        [Required(ErrorMessage = "กรุณากรอกเบอร์โทรศัพท์")]
-        public string Tel { get; set; }
+       
 
-        [Display(Name = "อีเมล")]
-        [Required(ErrorMessage = "กรุณากรอกอีเมล")]
-        public string Email { get; set; }
 
         public Guid? RoleId { get; set; }
         /// <summary>

@@ -5,10 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\WeatherForecastController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.OpenApi" Version="1.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.2.3" />
     <PackageReference Include="Swashbuckle.Core" Version="5.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\cisApp.Common\cisApp.Common.csproj" />
+    <ProjectReference Include="..\cisApp.Core\cisApp.Core.csproj" />
+    <ProjectReference Include="..\cisApp.Function\cisApp.Function.csproj" />
+    <ProjectReference Include="..\cisApp.library\cisApp.library.csproj" />
   </ItemGroup>
 
 

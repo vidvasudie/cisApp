@@ -175,7 +175,7 @@ namespace cisApp.Function
 
         public class Manage
         {
-            public static Users Update(UserModel data, Guid userId)
+            public static Users Update(UserModel data, Guid? userId =null)
             {
                 try
                 {
@@ -202,8 +202,7 @@ namespace cisApp.Function
                             {
                                 throw new Exception("Email ดังกล่าวถูกใช้งานไปแล้ว");
                             }
-                        }
-
+                        } 
                         obj.Fname = data.Fname;
                         obj.Lname = data.Lname;
                         obj.UserType = data.UserType;
