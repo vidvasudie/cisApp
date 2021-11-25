@@ -12,7 +12,7 @@ namespace cisApp.Function
         public int? pageSize { get; set; } = 10;
         public int status { get; set; } = 1;
         public int mode { get; set; } = 0; 
-        public int? userType { get; set; }
+        public int? type { get; set; }
         public string goBack { get; set; }
     }
 }
