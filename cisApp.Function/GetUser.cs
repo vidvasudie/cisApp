@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using cisApp.Core;
+using cisApp.library;
 
 namespace cisApp.Function
 {
@@ -69,6 +70,8 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
+            
 
             public static bool IsEmailAlreadyUseInsert(string email)
             {
@@ -160,7 +163,7 @@ namespace cisApp.Function
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@username", !String.IsNullOrEmpty(model.username) ? model.username.Trim() : (object)DBNull.Value),
-                       new SqlParameter("@password", !String.IsNullOrEmpty(model.password) ? model.password.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@password", !String.IsNullOrEmpty(model.password) ? Encryption.Encrypt(model.password.Trim()) : (object)DBNull.Value),
                        new SqlParameter("@usertype", model.userType)
                     };
 
@@ -202,7 +205,23 @@ namespace cisApp.Function
                             {
                                 throw new Exception("Email ดังกล่าวถูกใช้งานไปแล้ว");
                             }
-                        } 
+
+                            // in case insert we need insert new password
+                            string newPassword = UtilsLib.RandomPassword();
+                            newPassword = Encryption.Encrypt(newPassword);
+                            UsersPassword usersPassword = new UsersPassword()
+                            {
+                                Password = newPassword
+                            };
+
+                            context.UsersPassword.Update(usersPassword);
+
+                            context.SaveChanges();
+
+                            obj.PasswordId = usersPassword.PasswordId.Value;
+
+                        }
+
                         obj.Fname = data.Fname;
                         obj.Lname = data.Lname;
                         obj.UserType = data.UserType;
@@ -251,24 +270,7 @@ namespace cisApp.Function
                             context.UserDesigner.Update(objSub);
 
                             context.SaveChanges();
-                        }
-
-                        // check ว่าควรจะต้อง gen passwrod ให้ไหม
-                        var password = context.UsersPassword.Where(o => o.UserId == obj.UserId).FirstOrDefault();
-
-                        if (password == null)
-                        {
-                            UsersPassword objPassword = new UsersPassword()
-                            {
-                                UserId = obj.UserId.Value,
-                                Password = "12345678"
-                            };
-
-                            context.UsersPassword.Update(objPassword);
-
-                            context.SaveChanges();
-                        }
-                        
+                        }                 
 
                         return obj;
                     }
@@ -317,6 +319,38 @@ namespace cisApp.Function
 
                         obj.DeletedDate = DateTime.Now;
                         obj.DeletedBy = userId;
+
+                        context.Users.Update(obj);
+
+                        context.SaveChanges();
+
+                        return obj;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static Users ResetPassWord(Guid id, string newPassword)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        Users obj = context.Users.Find(id);
+
+                        UsersPassword usersPassword = new UsersPassword()
+                        {
+                            Password = newPassword
+                        };
+
+                        context.UsersPassword.Update(usersPassword);
+
+                        context.SaveChanges();
+
+                        obj.PasswordId = usersPassword.PasswordId.Value;
 
                         context.Users.Update(obj);
 

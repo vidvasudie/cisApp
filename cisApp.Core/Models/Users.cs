@@ -34,6 +34,7 @@ namespace cisApp.Core
         public string Email { get; set; }
 
         public Guid? RoleId { get; set; }
+        public Guid? PasswordId { get; set; }
 
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
