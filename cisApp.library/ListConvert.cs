@@ -98,8 +98,15 @@ namespace cisApp.library
 
             foreach (var row in table.Rows)
             {
-                var item = CreateItemFromRow<T>((DataRow)row, properties);
-                result.Add(item);
+                try
+                {
+                    var item = CreateItemFromRow<T>((DataRow)row, properties);
+                    result.Add(item);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
             }
 
             return result;

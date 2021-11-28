@@ -39,13 +39,49 @@ namespace cisApp.library
                 return true;
         }
 
-        public static string GenerateRequestCode(int number)
+        public static string GenerateRequestCode(string format, int number, bool reRun = false)
         {
-            //request pattern USDyyMMxxx1
-            string prefix = "UDS";
+            //request pattern UDSyyMMxxx1 
             string year = DateTime.Now.Year < 2500 ? String.Format("{0}", DateTime.Now.Year + 543).Substring(2, 2) : String.Format("{0}", DateTime.Now.Year).Substring(2, 2);
             string month = DateTime.Now.Month.ToString("00");
-            return String.Format("{0}{1}{2}{3}", prefix, year, month, number.ToString("0000"));
+            if (reRun)
+            {
+                number = 1;
+            }
+            return String.Format(format, year, month, number.ToString("00000"));
         }
+
+
+        public static string RandomPassword(int size = 0)
+        {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(RandomString(2, true));
+            builder.Append(RandomNumber(1000, 9999));
+            builder.Append(RandomString(2, false));
+            return builder.ToString();
+        }
+
+        public static string RandomString(int size, bool lowerCase)
+        {
+            StringBuilder builder = new StringBuilder();
+            Random random = new Random();
+            char ch;
+            for (int i = 0; i < size; i++)
+            {
+                ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                builder.Append(ch);
+            }
+            if (lowerCase)
+                return builder.ToString().ToLower();
+            return builder.ToString();
+        }
+
+        public static int RandomNumber(int min, int max)
+        {
+            Random random = new Random();
+            return random.Next(min, max);
+        }
+
+
     }
 }
