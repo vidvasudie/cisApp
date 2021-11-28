@@ -254,7 +254,7 @@
 @section scripts {
 
     <script>
-    var _callback=null
+   
     function PagerClick(index) {
         var suc = function (html) {
             $('#box_update').html(html);
@@ -263,25 +263,6 @@
             alert('error paging', e);
         }
         CallAjax('@Url.Action("ItemList", ViewData["ControllerName"])', 'POST', { currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
-    }
-    function CallAjax(url, method, data, success, error) {
-        if (data != null && data !== undefined) {
-            $.ajax({
-                method: method,
-                url: $("<div/>").html(url).text(),
-                data: data,
-                success: success,
-                error: error
-            });
-        }
-        else {
-            $.ajax({
-                method: method,
-                url: $("<div/>").html(url).text(),
-                success: success,
-                error: error
-            });
-        }
     }
 
     $(function () {
