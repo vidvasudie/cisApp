@@ -25,6 +25,9 @@ namespace cisApp.Core
             }
         }
 
+        public virtual DbSet<AttachFile> AttachFile { get; set; }
+        public virtual DbSet<JobPayment> JobPayment { get; set; }
+        public virtual DbSet<JobPaymentImg> JobPaymentImg { get; set; }
         public virtual DbSet<TmBank> TmBank { get; set; }
         public virtual DbSet<TmBankAccountType> TmBankAccountType { get; set; }
         public virtual DbSet<TmDistrict> TmDistrict { get; set; }
@@ -111,8 +114,7 @@ namespace cisApp.Core
                 entity.ToTable("Job_Payment");
 
                 entity.Property(e => e.JobPayId)
-                    .HasColumnName("JobPayID")
-                    .ValueGeneratedNever();
+                    .HasColumnName("JobPayID");
 
                 entity.Property(e => e.JobId).HasColumnName("JobID");
 
@@ -130,7 +132,7 @@ namespace cisApp.Core
 
                 entity.Property(e => e.JobPayimgId)
                     .HasColumnName("JobPayimgID")
-                    .ValueGeneratedNever();
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.JobPayId).HasColumnName("JobPayID");
             });

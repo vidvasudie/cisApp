@@ -6,7 +6,7 @@ namespace cisApp.Core
 {
     public partial class JobPaymentImg
     {
-        public Guid JobPayimgId { get; set; }
+        public Guid? JobPayimgId { get; set; }
         public int? JobPayId { get; set; }
     }
 }

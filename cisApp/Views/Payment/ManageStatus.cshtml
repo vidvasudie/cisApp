@@ -1,4 +1,6 @@
-﻿
+﻿@using cisApp.Core
+
+@model JobPayment
 @{
     ViewData["Title"] = "รายละเอียดการชำระเงิน";
 }
@@ -41,7 +43,7 @@
 
 
             <!--begin::Card-->
-            @{await Html.RenderPartialAsync("~/Views/Shared/Common/_JobsDetail.cshtml");}
+            @{await Html.RenderPartialAsync("~/Views/Shared/Common/_JobsDetail.cshtml", "");}
             <!--end::Card-->
             <!--begin::Row-->
             <div class="row">
@@ -52,18 +54,30 @@
                             <div class="card-title">
                                 <h3 class="card-label text-danger">
                                     เอกสารแนบ
-                                    <span class="d-block text-muted pt-2 font-size-sm">upload 10 / 10 / 2564 18:18:12 น.</span>
+                                    @if (Model.AttachFileImage?.CreatedDate != null)
+                                    {
+                                        <span class="d-block text-muted pt-2 font-size-sm">upload @Model.AttachFileImage.CreatedDate</span>
+                                    }
+
                                 </h3>
                             </div>
                         </div>
                         <div class="card-body pt-2 text-center">
-                            <img src="https://pbs.twimg.com/media/EvKEGvcUYAE_1oQ.jpg" class="img-thumbnail" alt="...">
+                            @if (!string.IsNullOrEmpty(Model.AttachFileImage?.UrlPath))
+                            {
+                                <img src="@Url.Content(Model.AttachFileImage.UrlPath)" class="img-thumbnail" alt="...">
+                            }
+                            else
+                            {
+                                <img src="https://pbs.twimg.com/media/EvKEGvcUYAE_1oQ.jpg" class="img-thumbnail" alt="...">
+                            }
+
                         </div>
                     </div>
                     <!--end::Card-->
                 </div>
 
-                @{await Html.RenderPartialAsync("~/Views/Shared/Common/_PaymentDescription.cshtml");}
+                @{await Html.RenderPartialAsync("~/Views/Shared/Common/_PaymentDescription.cshtml", Model);}
 
             </div>
             <!--end::Row-->
