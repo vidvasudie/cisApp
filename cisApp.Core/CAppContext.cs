@@ -26,6 +26,8 @@ namespace cisApp.Core
         }
 
         public virtual DbSet<AttachFile> AttachFile { get; set; }
+        public virtual DbSet<JobPayment> JobPayment { get; set; }
+        public virtual DbSet<JobPaymentImg> JobPaymentImg { get; set; }
         public virtual DbSet<TmBank> TmBank { get; set; }
         public virtual DbSet<TmBankAccountType> TmBankAccountType { get; set; }
         public virtual DbSet<TmDistrict> TmDistrict { get; set; }
@@ -56,6 +58,37 @@ namespace cisApp.Core
                 entity.Property(e => e.RefId)
                     .HasColumnName("RefID")
                     .HasComment("รหัสอ้างอิงตัวไฟล์");
+            });
+
+            modelBuilder.Entity<JobPayment>(entity =>
+            {
+                entity.HasKey(e => e.JobPayId)
+                    .HasName("PK__Job_Paym__F3714D8B4B32CD06");
+
+                entity.ToTable("Job_Payment");
+
+                entity.Property(e => e.JobPayId)
+                    .HasColumnName("JobPayID");
+
+                entity.Property(e => e.JobId).HasColumnName("JobID");
+
+                entity.Property(e => e.PayDate).HasColumnType("datetime");
+
+                entity.Property(e => e.PayStatus).HasComment("รอชำระเงิน =1 , อยู่ระหว่างตรวจสอบ =2 , สำเร็จ  = 3 , ไม่อนุมัติ/คืนเงิน  = 4 ");
+            });
+
+            modelBuilder.Entity<JobPaymentImg>(entity =>
+            {
+                entity.HasKey(e => e.JobPayimgId)
+                    .HasName("PK__Job_Paym__FF2C09F07FD0487C");
+
+                entity.ToTable("Job_Payment_img");
+
+                entity.Property(e => e.JobPayimgId)
+                    .HasColumnName("JobPayimgID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.JobPayId).HasColumnName("JobPayID");
             });
 
             modelBuilder.Entity<Menu>(entity =>

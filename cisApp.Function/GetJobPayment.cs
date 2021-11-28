@@ -1,0 +1,242 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using cisApp.Core;
+
+namespace cisApp.Function
+{
+    public static class GetJobPayment
+    { 
+        public class Get
+        {
+            public static List<JobPayment> GetAll()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.JobPayment.ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            public static List<JobPayment> GetBySearch(SearchModel model)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                        new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@jobId", model.JobId != null ? model.JobId : (object)DBNull.Value),
+                       new SqlParameter("@jobStatus", model.JobStatus != null ? model.JobStatus : (object)DBNull.Value),
+                       new SqlParameter("@jobType", model.jobType != null ? model.jobType : (object)DBNull.Value),
+                       new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
+                       new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
+                    };
+
+                    return StoreProcedure.GetAllStored<JobPayment>("GetJobPayment", parameter);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static int GetBySearchTotal(SearchModel model)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                        new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@jobId", model.JobId != null ? model.JobId : (object)DBNull.Value),
+                       new SqlParameter("@jobStatus", model.JobStatus != null ? model.JobStatus : (object)DBNull.Value),
+                       new SqlParameter("@jobType", model.jobType != null ? model.jobType : (object)DBNull.Value)                       
+                    };
+                    var dt = StoreProcedure.GetAllStoredDataTable("GetJobPaymentTotal", parameter);
+                    return (int)dt.Rows[0]["TotalCount"];
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+
+            public static JobPayment GetById(int id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.JobPayment.Where(o => o.JobPayId == id).FirstOrDefault();
+
+                        // get payment_img id
+                        var paymentImg = Get.GetJobPaymentImgs(data.JobPayId.Value);
+
+                        if (paymentImg.Count > 0)
+                        {
+                            data.AttachFileImage = GetAttachFile.Get.GetByRefId(paymentImg.FirstOrDefault().JobPayimgId.Value);
+                        }
+
+                        
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            public static List<JobPayment> GetByJobId(Guid id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.JobPayment.Where(o => o.JobId == id).OrderByDescending(o => o.PayDate).ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static List<JobPaymentImg> GetJobPaymentImgs(int paymentId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.JobPaymentImg.Where(o => o.JobPayId == paymentId).ToList();
+
+                        data = (from p in data
+                                join a in context.AttachFile on p.JobPayimgId equals a.RefId
+                                where a.IsActive == true
+                                select p).ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+        }
+
+        public class Manage
+        {
+            public static JobPayment Update(JobPayment data, Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        //using var transaction = context.Database.BeginTransaction();
+                        JobPayment obj = new JobPayment();
+
+                        if (data.JobPayId != null)
+                        {
+                            obj = context.JobPayment.Find(data.JobPayId);
+                            obj.PayDate = data.PayDate;
+                        }
+                        else
+                        {
+                            obj.PayDate = DateTime.Now;
+                            obj.JobId = data.JobId;
+                            obj.OrderId = "IDE-0001";
+                            obj.CreatedBy = userId;
+                            obj.CreatedDate = DateTime.Now;
+                        }
+
+
+                        obj.PayStatus = data.PayStatus;
+                        obj.Comment = data.Comment;
+                        obj.UpdatedBy = userId;
+                        obj.UpdatedDate = DateTime.Now;
+
+                        context.JobPayment.Update(obj);
+
+                        context.SaveChanges();
+                                                
+
+                        // save profile
+                        if (!String.IsNullOrEmpty(data.FileBase64)) // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
+                        {
+                            // remove previous img
+                            var activePaymentImg = Get.GetJobPaymentImgs(obj.JobPayId.Value);
+
+                            if (activePaymentImg.Count > 0)
+                            {
+                                foreach (var item in activePaymentImg)
+                                {
+                                    GetAttachFile.Manage.UpdateStatusByRefId(item.JobPayimgId.Value, false, userId);
+                                }
+                            }
+
+                            // insert new paymentImg
+                            JobPaymentImg jobPaymentImg = new JobPaymentImg()
+                            {
+                                JobPayId = obj.JobPayId
+                            };
+
+                            context.JobPaymentImg.Update(jobPaymentImg);
+
+                            context.SaveChanges();
+
+                            GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), jobPaymentImg.JobPayimgId.Value, userId);
+                        }
+                        else if (data.FileRemove) // ถ้าลบไฟล์ออก แล้วไม่ได้อัพไฟล์ใหม่ขึ้นมาจะเข้า เงื่อนไขนี้
+                        {
+                            var paymentImg = context.JobPaymentImg.Where(o => o.JobPayId == obj.JobPayId).FirstOrDefault();
+
+                            GetAttachFile.Manage.UpdateStatusByRefId(paymentImg.JobPayimgId.Value, false, userId);
+                        }
+
+                        return obj;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static JobPayment Status(int id, int status, string comment, Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        JobPayment obj = context.JobPayment.Find(id);
+
+                        obj.PayStatus = status;
+                        obj.Comment = comment;
+                        obj.UpdatedBy = userId;
+                        obj.UpdatedDate = DateTime.Now;                        
+
+                        context.JobPayment.Update(obj);
+
+                        context.SaveChanges();
+
+                        return obj;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+        }
+    }
+}
