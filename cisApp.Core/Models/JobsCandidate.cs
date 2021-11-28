@@ -10,5 +10,13 @@ namespace cisApp.Core
         public Guid? JobId { get; set; }
         public Guid? UserId { get; set; }
         public int? CaStatusId { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public Guid? UpdatedBy { get; set; }
+        public DateTime? DeletedDate { get; set; }
+        public Guid? DeletedBy { get; set; }
+        public bool? IsActive { get; set; }
+        public bool? IsDeleted { get; set; }
     }
 }

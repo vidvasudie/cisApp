@@ -1,0 +1,49 @@
+﻿@using cisApp.Core
+@using cisApp.Function
+@model JobCandidateModel
+@{
+    var users = GetJobsCandidate.Get.GetUserCandidateModels(new SearchModel() { gId=Model.JobId });
+}
+
+
+<table id="kt_datatable_ca" class="table table-head-custom table-head-bg table-borderless table-vertical-center">
+    <thead>
+        <tr class="text-uppercase">
+            @*<th style="min-width: 250px" class="pl-7">
+                <span class="text-dark-75">ลำดับ</span>
+            </th>*@
+            <th class="text-center" style="min-width: 100px">ชื่อนักออกแบบ</th>
+            <th class="text-center" style="min-width: 100px">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (users != null && users.Count > 0)
+            {
+                int number = 1;
+                foreach (var item in users)
+                {
+                <tr>
+                    @*<td class="text-center">
+                        @number
+                    </td>*@
+                    <td>
+                        @Html.Raw(item.UserFullName)
+                    </td>
+                    <td class="text-center">
+                        <a href="#" class="btn btn-icon btn-primary btn-hover-light-primary btn-sm mr-3 btn-add-new-ca"
+                           data-url="@Url.Action("AddCandidateUser", "Jobs")" 
+                           data-uid="@item.UserId" 
+                           data-fullname="@item.UserFullName" 
+                           data-jid="@Model.JobId" 
+                           >
+                            <i class="flaticon2-add-square"></i>
+                        </a>
+                    </td>
+                </tr>
+                    number++;
+                }
+            } 
+        }
+    </tbody>
+</table>

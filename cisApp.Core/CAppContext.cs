@@ -142,8 +142,8 @@ namespace cisApp.Core
                     .HasName("PK__Jobs__056690E281404330");
 
                 entity.Property(e => e.JobId)
-                    .HasColumnName("JobID")
-                    .ValueGeneratedNever();
+                    .HasColumnName("JobID") 
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.JobAreaSize)
                     .HasColumnType("decimal(10, 2)")
@@ -215,15 +215,17 @@ namespace cisApp.Core
             modelBuilder.Entity<JobsCandidate>(entity =>
             {
                 entity.HasKey(e => e.JobCaId)
-                    .HasName("PK__Jobs_Can__2D2FFC8C3C4C6D7D");
+                    .HasName("PK__Jobs_Can__AC71D945BF445377");
 
                 entity.ToTable("Jobs_Candidate");
 
-                entity.Property(e => e.JobCaId)
-                    .HasColumnName("JobCaID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.JobCaId).HasColumnName("JobCaID");
 
                 entity.Property(e => e.CaStatusId).HasColumnName("CaStatusID");
+
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.JobId).HasColumnName("JobID");
 
