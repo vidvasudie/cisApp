@@ -236,7 +236,7 @@ namespace cisApp.Function
 
                             //add new Request Designer data 
                             var dataList = context.UserDesignerRequest.ToList().OrderBy(o => o.Id).LastOrDefault();
-                            string code = Utility.GenerateRequestCode(Int32.Parse(dataList.Code.Substring(7, 4))+1);
+                            string code = Utility.GenerateRequestCode("UDS{0}{1}{2}", Int32.Parse(dataList.Code.Substring(7, 5))+1, dataList.Code.Substring(5, 2) != DateTime.Now.Month.ToString("00"));
                             UserDesignerRequest objSub = new UserDesignerRequest();
                             objSub.Code = code;
                             objSub.UserId = obj.UserId;

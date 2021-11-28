@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using cisApp.library;
 
 namespace cisApp.Function
 {
@@ -49,10 +50,33 @@ namespace cisApp.Function
         /// </summary>
         public int? JobStatus { get; set; }
         public string JobStatusDesc { get; set; }
-        public DateTime? JobBeginDate { get; set; }
-        public DateTime? JobEndDate { get; set; } 
+        public DateTime? JobBeginDate { get; set; } 
+        public string JobBeginDateStr
+        {
+            get 
+            { 
+                return JobBeginDate.ToStringFormat(); 
+            }
+            set
+            {
+                JobBeginDate = value.ToDateTimeFormat();
+            }
+        }
+        public DateTime? JobEndDate { get; set; }
+        public string JobEndDateStr 
+        {
+            get
+            {
+                return JobEndDate.ToStringFormat();
+            }
+            set
+            {
+                JobEndDate = value.ToDateTimeFormat();
+            }
+        }
         public Guid JobsExImgId { get; set; } 
         public int? JobsExTypeId { get; set; }
         public string JobsExTypeDesc { get; set; }
+
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using cisApp.Core;
+using cisApp.library;
 
 namespace cisApp.Function
 {
@@ -72,7 +73,7 @@ namespace cisApp.Function
                        new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
                        new SqlParameter("@jobId", model.gId != null && model.gId != Guid.Empty ? model?.gId : (object)DBNull.Value),
                        new SqlParameter("@jobType", model.type.HasValue ? model.type : (object)DBNull.Value),
-                       new SqlParameter("@jobStatus", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
+                       new SqlParameter("@jobStatus", model.status != 0 ? model.status : (object)DBNull.Value)
                     };
 
                     var dt = StoreProcedure.GetAllStoredDataTable("GetJobsTotal", parameter);
@@ -89,7 +90,7 @@ namespace cisApp.Function
 
         public class Manage
         {
-            public static Role Update(Role data, List<RoleManageModel> menulist)
+            public static Jobs Update(JobModel data)
             {
                 try
                 {
@@ -97,54 +98,48 @@ namespace cisApp.Function
                     {
                         using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
-                            Role obj = new Role();
+                            Jobs obj = new Jobs();
                             
-                            if (data.RoleId != null && data.RoleId != Guid.Empty)
+                            if (data.JobId != null && data.JobId != Guid.Empty)
                             {
-                                obj = context.Role.Find(data.RoleId);
+                                obj = context.Jobs.Find(data.JobId);
                             }
                             else
                             {
-                                obj.IsActive = true;
-                                obj.CreatedDate = DateTime.Now;
-                                obj.CreatedBy = data.CreatedBy;
-                            }
+                                //obj.CreatedDate = DateTime.Now;
+                                //obj.CreatedBy = data.CreatedBy;
 
-                            obj.RoleName = data.RoleName;
-                            obj.IsDeleted = data.IsDeleted;
-                            obj.UpdatedDate = DateTime.Now;
-                            obj.UpdatedBy = data.UpdatedBy;
+                                //create new JobNo
+                                var dataList = context.Jobs.ToList();
+                                if(dataList != null && dataList.Count > 0)
+                                {
+                                    var dl = dataList.OrderBy(o => o.JobNo).LastOrDefault();
+                                    obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", Int32.Parse(dl.JobNo.Substring(7, 5)) + 1, dl.JobNo.Substring(5, 2) != DateTime.Now.Month.ToString("00"));
+                                }
+                                else
+                                {
+                                    obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", 0, true);
+                                }
+                            } 
+                            obj.UserId = data.UserId; 
+                            obj.JobCaUserId = data.JobCaUserId;
+                            obj.JobTypeId = data.JobTypeId;
+                            obj.JobDescription = data.JobDescription;
+                            obj.JobAreaSize = data.JobAreaSize;
+                            obj.JobPrice = data.JobPrice;
+                            obj.JobPricePerSqM = data.JobPricePerSqM;
+                            obj.JobStatus = data.JobStatus;
+                            obj.JobBeginDate = data.JobBeginDate;
+                            obj.JobEndDate = data.JobEndDate;
+                            //obj.UpdatedDate = DateTime.Now;
+                            //obj.UpdatedBy = data.UpdatedBy;
 
-                            context.Role.Update(obj);
+                            context.Jobs.Update(obj);
                             context.SaveChanges();
-                             
-                            if (menulist.Count > 0)
-                            {
-                                List<RoleMenu> resultListRoleMenuDelete = new List<RoleMenu>();
-                                resultListRoleMenuDelete = context.RoleMenu.Where(o => o.RoleId == data.RoleId).ToList();
+                              
+                            //add job tracking for jobStatus 
 
-                                if(resultListRoleMenuDelete.Count > 0)
-                                {
-                                    context.RoleMenu.RemoveRange(resultListRoleMenuDelete);
-                                    context.SaveChanges();
-                                }
-
-                                List<RoleMenu> objMap = new List<RoleMenu>();
-                                foreach (var item in menulist)
-                                {
-                                    RoleMenu objAdd = new RoleMenu(); 
-                                    objAdd.RoleId = obj.RoleId;
-                                    objAdd.MenuId = item.MenuId;
-                                    objAdd.Type = item.Type;
-                                    objAdd.CreatedBy = obj.UpdatedBy;
-                                    objAdd.CreatedDate = DateTime.Now;
-                                    objMap.Add(objAdd);
-                                }
-
-                                context.RoleMenu.AddRange(objMap);
-                                context.SaveChanges();
-                                 
-                            }
+                            //add job log for every job activity
 
                             dbContextTransaction.Commit();
 
@@ -156,65 +151,7 @@ namespace cisApp.Function
                 {
                     throw ex;
                 }
-            }
-
-            public static Role Active(Guid id, bool active, Guid userId)
-            {
-                try
-                {
-                    using (var context = new CAppContext())
-                    {
-                        using (var dbContextTransaction = context.Database.BeginTransaction())
-                        {
-                            Role obj = context.Role.Find(id); 
-
-                            obj.IsActive = active;
-
-                            obj.UpdatedDate = DateTime.Now;
-                            obj.UpdatedBy = userId;
-
-                            context.Role.Update(obj);
-                            context.SaveChanges();
-
-                            dbContextTransaction.Commit();
-                            return obj;
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
-
-            public static Role Delete(Guid id, Guid userId)
-            {
-                try
-                {
-                    using (var context = new CAppContext())
-                    {
-                        using (var dbContextTransaction = context.Database.BeginTransaction())
-                        {
-                            Role obj = context.Role.Find(id);
-
-                            obj.IsDeleted = true;
-
-                            obj.DeletedDate = DateTime.Now;
-                            obj.DeletedBy = userId;
-
-                            context.Role.Update(obj);
-                            context.SaveChanges();
-
-                            dbContextTransaction.Commit();
-                            return obj;
-                        } 
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
+            } 
 
 
         }
