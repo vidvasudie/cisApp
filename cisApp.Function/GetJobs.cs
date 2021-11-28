@@ -6,17 +6,17 @@ using cisApp.Core;
 
 namespace cisApp.Function
 {
-    public static class GetRole
+    public static class GetJobs
     {
         public class Get
         {
-            public static List<Role> GetAll()
+            public static List<Jobs> GetAll()
             {
                 try
                 {
                     using (var context = new CAppContext())
                     {
-                        var data = context.Role.ToList();
+                        var data = context.Jobs.ToList();
 
                         return data;
                     }
@@ -26,13 +26,13 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
-            public static Role GetById(Guid id)
+            public static Jobs GetById(Guid id)
             {
                 try
                 {
                     using (var context = new CAppContext())
                     {
-                        var data = context.Role.Where(o => o.RoleId == id).FirstOrDefault();
+                        var data = context.Jobs.Where(o => o.JobId == id).FirstOrDefault();
 
                         return data;
                     }
@@ -42,52 +42,40 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+             
 
-            public static List<Role> GetDropdown()
-            {
-                try
-                {
-                    using (var context = new CAppContext())
-                    {
-                        var data = context.Role.Where(o => o.IsActive == true && o.IsDeleted == false).ToList();
-
-                        return data;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
-            }
-
-            public static List<Role> GetRole(SearchModel model)
+            public static List<JobModel> GetJobs(SearchModel model)
             {
                 try
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
-                       new SqlParameter("@roleid", model.gId != null && model.gId != Guid.Empty ? model?.gId : (object)DBNull.Value), 
+                       new SqlParameter("@jobId", model.gId != null && model.gId != Guid.Empty ? model?.gId : (object)DBNull.Value),
+                       new SqlParameter("@jobType", model.type.HasValue ? model.type : (object)DBNull.Value),
+                       new SqlParameter("@jobStatus", model.status != 0 ? model.status : (object)DBNull.Value),
                        new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
                        new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
                     };
 
-                    return StoreProcedure.GetAllStored<Role>("GetRole", parameter);
+                    return StoreProcedure.GetAllStored<JobModel>("GetJobs", parameter);
                 }
                 catch (Exception ex)
                 {
-                    return new List<Role>();
+                    return new List<JobModel>();
                 }
             }
-            public static int GetRoleTotal(SearchModel model)
+            public static int GetJobsTotal(SearchModel model)
             {
                 try
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
-                       new SqlParameter("@roleid", model.gId != null && model.gId != Guid.Empty ? model?.gId : (object)DBNull.Value), 
+                       new SqlParameter("@jobId", model.gId != null && model.gId != Guid.Empty ? model?.gId : (object)DBNull.Value),
+                       new SqlParameter("@jobType", model.type.HasValue ? model.type : (object)DBNull.Value),
+                       new SqlParameter("@jobStatus", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
                     };
 
-                    var dt = StoreProcedure.GetAllStoredDataTable("GetRoleTotal", parameter);
+                    var dt = StoreProcedure.GetAllStoredDataTable("GetJobsTotal", parameter);
                     return (int)dt.Rows[0]["TotalCount"];
                 }
                 catch (Exception ex)

@@ -41,8 +41,53 @@ namespace cisApp.Core
         public virtual DbSet<Menu> Menu { get; set; }
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<RoleMenu> RoleMenu { get; set; }
+        public virtual DbSet<Album> Album { get; set; }
+        public virtual DbSet<AlbumImage> AlbumImage { get; set; }
+        public virtual DbSet<AttachFile> AttachFile { get; set; }
+        public virtual DbSet<JobPayment> JobPayment { get; set; }
+        public virtual DbSet<JobPaymentImg> JobPaymentImg { get; set; }
+        public virtual DbSet<Jobs> Jobs { get; set; }
+        public virtual DbSet<JobsStatus> JobsStatus { get; set; }
+        public virtual DbSet<JobsType> JobsType { get; set; }
+        public virtual DbSet<JobsCandidate> JobsCandidate { get; set; }
+        public virtual DbSet<JobsCandidateStatus> JobsCandidateStatus { get; set; }
+        public virtual DbSet<JobsExamImage> JobsExamImage { get; set; }
+        public virtual DbSet<JobsExamType> JobsExamType { get; set; }
+        public virtual DbSet<JobsLogs> JobsLogs { get; set; }
+        public virtual DbSet<JobsTracking> JobsTracking { get; set; }
+        public virtual DbSet<UserDesignerRequestImage> UserDesignerRequestImage { get; set; }
+        public virtual DbSet<UserDesignerRequestImageType> UserDesignerRequestImageType { get; set; }
+        public virtual DbSet<UserImg> UserImg { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Album>(entity =>
+            {
+                entity.Property(e => e.AlbumId)
+                    .HasColumnName("albumID")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Categoly).HasColumnName("categoly");
+
+                entity.Property(e => e.JobId).HasColumnName("JobID");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+            });
+
+            modelBuilder.Entity<AlbumImage>(entity =>
+            {
+                entity.HasKey(e => e.ImgId)
+                    .HasName("PK__Album_im__C5BC81860D9FF88F");
+
+                entity.ToTable("Album_image");
+
+                entity.Property(e => e.ImgId)
+                    .HasColumnName("imgID")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.AlbumId).HasColumnName("albumID");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+            });
 
             modelBuilder.Entity<AttachFile>(entity =>
             {
@@ -51,9 +96,10 @@ namespace cisApp.Core
                     .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.FileName)
-                    .HasMaxLength(255);
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
 
-                entity.Property(e => e.Path);
+                entity.Property(e => e.Path).IsUnicode(false);
 
                 entity.Property(e => e.RefId)
                     .HasColumnName("RefID")
