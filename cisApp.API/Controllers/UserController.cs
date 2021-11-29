@@ -23,7 +23,7 @@ namespace cisApp.API.Controllers
             var _result = GetUser.Manage.Update(new UserModel() { Fname= value.Fname, Lname = value.Lname, Tel = value.Tel, Email =value.Tel,UserType = 1 , IsActive = true});
            
             
-            return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", _result));
+            return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ","success", _result));
 
         }
 
