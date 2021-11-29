@@ -183,7 +183,7 @@
                                 case 6: progress = 100; break;
                             }
                             }
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="@Html.Raw(progress)" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-success" role="progressbar" style="width: @Html.Raw(progress+"%");" aria-valuenow="@Html.Raw(progress)" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
                         <span class="font-weight-bolder text-dark ml-4">@Html.Raw(progress+"%")</span>
                     </div>

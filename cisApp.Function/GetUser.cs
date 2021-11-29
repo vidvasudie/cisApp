@@ -122,6 +122,8 @@ namespace cisApp.Function
                 }
             }
 
+            
+
             public static List<UserModel> GetUserModels(SearchModel model)
             {
                 try
@@ -208,7 +210,7 @@ namespace cisApp.Function
                             }
 
                             // in case insert we need insert new password
-                            string newPassword = UtilsLib.RandomPassword();
+                            string newPassword = Utility.RandomPassword();
                             newPassword = Encryption.Encrypt(newPassword);
                             UsersPassword usersPassword = new UsersPassword()
                             {

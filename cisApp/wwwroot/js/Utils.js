@@ -1,6 +1,27 @@
 ﻿const _dataUrlAttr = 'data-url'
 const _dataGuidAttr = 'data-guid'
+var _callback = null
+var _delCallback = null
 
+function CallAjax(url, method, data, success, error) {
+    if (data != null && data !== undefined) {
+        $.ajax({
+            method: method,
+            url: $("<div/>").html(url).text(),
+            data: data,
+            success: success,
+            error: error
+        });
+    }
+    else {
+        $.ajax({
+            method: method,
+            url: $("<div/>").html(url).text(),
+            success: success,
+            error: error
+        });
+    }
+}
 function redirect(data) {
     if (data.success) {
         // Display a success toast, with a title
@@ -15,6 +36,12 @@ function redirect(data) {
             if (data.isRedirect) {
                 window.location = data.redirectUrl;
             }
+            else {
+                if (_delCallback)
+                    _delCallback();
+                if (_callback)
+                    _callback();
+            }
         }, 600);
     }
     else {
@@ -22,6 +49,26 @@ function redirect(data) {
         //toastr.error('บันทึกข้อมูลไม่สำเร็จ', data.message)
         Swal.fire(
             "บันทึกข้อมูลไม่สำเร็จ",
+            data.message,
+            "error"
+        )
+    }
+}
+function redirectLogin(data) {
+    if (data.success) { 
+        window.setTimeout(function () {
+            // do whatever you want to do
+            toastr.success('เข้าใช้งานสำเร็จ', 'ยินดีต้อนรับเข้าสูระบบ', { fadeIn: 300 })
+            if (data.isRedirect) {
+                window.location = data.redirectUrl;
+            }
+        }, 600);
+    }
+    else {
+        // Display an error toast, with a title
+        //toastr.error('บันทึกข้อมูลไม่สำเร็จ', data.message)
+        Swal.fire(
+            "ทำรายการไม่สำเร็จ",
             data.message,
             "error"
         )

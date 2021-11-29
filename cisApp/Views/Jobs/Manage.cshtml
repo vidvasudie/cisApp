@@ -1,9 +1,8 @@
-﻿@using cisApp.library;
-@using cisApp.Function;
-@model PaginatedList<UserModel>
+﻿@model JobModel
+@using cisApp.Core
+@using cisApp.Function
 @{
-    ViewData["Title"] = "เพิ่มผู้ใช้งานระบบ";
-    ViewData["ControllerName"] = "UserManagement";
+    ViewData["Title"] = "รายละเอียดใบงาน";
 }
 
 
@@ -19,33 +18,10 @@
                 <!--end::Title-->
                 <!--begin::Separator-->
                 <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
+                <!--begin::Title-->
+                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">@Model.JobNo</h5>
+                <!--end::Title-->
                 <!--end::Separator-->
-                <!--begin::Search Form-->
-                <!--<div class="d-flex align-items-center" id="kt_subheader_search">
-                    <span class="text-dark-50 font-weight-bold" id="kt_subheader_total">450 Total</span>
-                    <form class="ml-5">
-                        <div class="input-group input-group-sm input-group-solid" style="max-width: 175px">
-                            <input type="text" class="form-control" id="kt_subheader_search_form" placeholder="Search..." />
-                            <div class="input-group-append">
-                                <span class="input-group-text">
-                                    <span class="svg-icon">-->
-                <!--begin::Svg Icon | path:assets/media/svg/icons/General/Search.svg-->
-                <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                        <rect x="0" y="0" width="24" height="24" />
-                        <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                        <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero" />
-                    </g>
-                </svg>-->
-                <!--end::Svg Icon-->
-                <!--</span>-->
-                <!--<i class="flaticon2-search-1 icon-sm"></i>-->
-                <!--</span>
-                            </div>
-                        </div>
-                    </form>
-                </div>-->
-                <!--end::Search Form-->
                 <!--begin::Group Actions-->
                 <div class="d-flex- align-items-center flex-wrap mr-2 d-none" id="kt_subheader_group_actions">
                     <div class="text-dark-50 font-weight-bold">
@@ -99,12 +75,6 @@
             <div class="d-flex align-items-center">
                 <!--begin::Button-->
                 <a href="#" class=""></a>
-                <!--end::Button-->
-                <!--begin::Button-->
-                <a href="@Url.Action("manage",ViewData["ControllerName"])" class="btn btn-light-primary font-weight-bold ml-2">เพิ่มผู้ใช้งาน</a>
-                <!--end::Button-->
-                <!--begin::Button-->
-                <a href="@Url.Action("manage",ViewData["ControllerName"].ToString(), new { type = 2 })" class="btn btn-light-success font-weight-bold ml-2">เพิ่มดีไซน์เนอร์</a>
                 <!--end::Button-->
                 <!--begin::Dropdown-->
                 <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="Quick actions" data-placement="left">
@@ -185,91 +155,141 @@
     <!--begin::Entry-->
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
-        <div class="container">
+        <div class="container-fluid">
 
             <!--begin::Card-->
-            <div class="card card-custom gutter-b">
-                <div class="card-body">
-
-                    <!--begin::Search Form-->
-                    <div class="mb-12">
-                        <div class="row align-items-center">
-                            <div class="col-lg-9 col-xl-8">
-                                <div class="row align-items-center">
-                                    <div class="col-md-4 my-2 my-md-0">
-                                        <div class="input-icon">
-                                            <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" />
-                                            <span>
-                                                <i class="flaticon2-search-1 text-muted"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 my-2 my-md-0">
-                                        <div class="d-flex align-items-center">
-                                            <label class="mr-3 mb-0 d-none d-md-block">ประเภท :</label>
-                                            <select class="form-control" id="kt_datatable_search_status">
-                                                <option value="">ทั้งหมด</option>
-                                                <option value="1">ลูกค้า</option>
-                                                <option value="2">นักออกแบบ</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 my-2 my-md-0">
-                                        <div class="d-flex align-items-center">
-                                            <label class="mr-3 mb-0 d-none d-md-block">สถานะ:</label>
-                                            <select class="form-control" id="kt_datatable_search_type">
-                                                <option value="">ทั้งหมด</option>
-                                                <option value="1">ใช้งาน</option>
-                                                <option value="2">ไม่ใช้งาน</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
-                                <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
-                            </div>
-                        </div>
-                    </div>
-                    <!--end::Search Form-->
-                    <!--begin::Separator-->
-                    <div class="separator separator-solid my-7"></div>
-                    <!--end::Separator-->
-                </div>
-            </div>
+            @{
+                //await Html.RenderPartialAsync("~/Views/Shared/Common/JobsDetail.cshtml", Model);
+            }
+            @await Html.PartialAsync("PT/_CardJobInfo.cshtml", Model)
             <!--end::Card-->
-
-            <div class="card card-custom" id="box_update">
-
+            <!--begin::image-->
+            <div class="" id="job_img_info">
+                @await Html.PartialAsync("PT/_CardJobExImages.cshtml", Model)
             </div>
+            <!--end::image-->
+
+            @if (Model.JobStatus != 1)//ร่าง
+            {
+                <!--begin::Row-->
+                <div class="row" id="candidate_list">
+                    @await Html.PartialAsync("PT/_CardJobCandidate.cshtml", Model)
+                </div>
+                <!--end::Row-->
+            }
+            @if (Model.JobStatus > 2)//ประกวด
+            {
+                <!--begin::image-->
+                <div class="" id="contest_list">
+                    @await Html.PartialAsync("PT/_CardJobContest.cshtml")
+                </div>
+                <!--end::image-->
+
+                <div id="job_img_submit">
+                    @await Html.PartialAsync("PT/_CardJobSubmitInfo.cshtml")
+                </div>
+            }
+
         </div>
         <!--end::Container-->
-
     </div>
     <!--end::Entry-->
 </div>
 <!--end::Content-->
 
+@await Html.PartialAsync("~/Views/Shared/Jobs/JobAddCandidateModal.cshtml", new JobCandidateModel() { JobId=Model.JobId })
 
-@section scripts {
+@section Scripts {
+    <link href="@Url.Content("~/assets/plugins/custom/datatables/datatables.bundle.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/assets/plugins/custom/datatables/datatables.bundle.js")"></script>
 
     <script>
-   
-    function PagerClick(index) {
-        var suc = function (html) {
-            $('#box_update').html(html);
+        var _table = null;
+        function complatedModal(data) {
+            if (data.success) {
+                toastr.success(data.message, { fadeIn: 300 }) 
+                $('#addNewCandidateModal').modal("hide");
+                GetCandidateList(); 
+            }
+            else {
+                toastr.error(data.message);
+            }
         }
-        var err = function (e) {
-            alert('error paging', e);
+        function GetCandidateList() {
+            var suc = function (html) {
+                $('#candidate_list').html(html);   
+                initDataTable('#kt_datatable');
+            }
+            var err = function (e) {
+                alert('error ca modal', e);
+            }
+            CallAjax('@Url.Action("CardCandidateList", "Jobs")', 'POST', { JobId:'@Model.JobId' }, suc, err);
         }
-        CallAjax('@Url.Action("ItemList", ViewData["ControllerName"])', 'POST', { currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
-    }
+        function LoadModalBody() {
+            initDataTable('#kt_datatable_ca', 1);//init modal table
+            $('.btn-add-new-ca').on('click', function () {
+                var tr = $(this).parents('tr');
+                var suc = function (html) {
+                    $('#new_ca').show();
+                    $('#addNewCandidateModal .modal-body #selected_user').append(html);
+                    _table.row(tr).remove().draw();
+                }
+                var err = function (e) {
+                    alert('error ca modal', e);
+                }
+                var url = $(this).attr('data-url');
+                var uid = $(this).attr('data-uid');
+                var fullname = $(this).attr('data-fullname');
+                var jid = $(this).attr('data-jid');
+                CallAjax(url, 'POST', { UserId: uid, UserFullName: fullname, JobId: jid }, suc, err);
+            });
+            $('.btn-modal-submit').on('click', function () {
+                $('#kt_form_modal').submit();
+            });
+        }
+        function initDataTable(elementId, style=0) {
+            _table = $(elementId).DataTable({
+                language: {
+                    search: 'ค้นหา:',
+                    emptyTable: 'ไม่พบข้อมูล', 
+                    info: 'แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ',
+                    lengthMenu: 'แสดง _MENU_ รายการ',
+                    infoFiltered: 'กรองจากทั้งหมด _MAX_ รายการ'
+                },
+                lengthChange: false,
+                pageLength : 5,
+                dom: style == 1 ? "<f<t>ip>" : "<lf<t>ip>"
+            });
+        }
 
-    $(function () {
-        $('body').on('change', '#pageSize', function () {
-            PagerClick(1);
+
+        $(function () {
+            _delCallback = function () {
+                var suc = function (html) {
+                $('#candidate_list').html(html);   
+                initDataTable('#kt_datatable');
+                }
+                var err = function (e) {
+                    alert('error ca modal', e);
+                }
+                CallAjax('@Url.Action("CardCandidateList", "Jobs")', 'POST', { JobId:'@Model.JobId' }, suc, err);
+            }
+            initDataTable('#kt_datatable');
+            $('body').on('click', '.btn-modal-add-ca', function () {
+                var suc = function (html) {
+                    $('#addNewCandidateModal .modal-body #table_user').html(html);
+                    $('#addNewCandidateModal .modal-body #selected_user').html('');
+                    LoadModalBody();
+                    $('#new_ca').hide();
+                    $('#addNewCandidateModal').modal("show");
+                }
+                var err = function (e) {
+                    alert('error ca modal', e);
+                }
+                CallAjax('@Url.Action("CandidateUserList", "Jobs")', 'POST', { JobId:'@Model.JobId' }, suc, err);
+                
+            })
         });
-        PagerClick(1);
-    });
     </script>
+
 }

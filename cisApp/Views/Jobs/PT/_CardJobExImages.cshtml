@@ -1,0 +1,77 @@
+﻿@using cisApp.Controllers
+@using cisApp.Function
+@using cisApp.Core
+@model cisApp.Function.JobModel
+@{
+    List<JobsExamImageModel> exImgList = new List<JobsExamImageModel>();
+    List<JobsExamType> exImgTypeList = new List<JobsExamType>();
+    try
+    {
+        exImgList = GetJobsExamImage.Get.GetImageByJobId(Model.JobId);
+        exImgTypeList = GetJobsExamType.Get.GetAll().OrderBy(o => o.JobsExTypeId).ToList();
+    }
+    catch (Exception ex)
+    {
+
+    }
+
+}
+
+<!--begin::image-->
+<div class="card card-custom gutter-b">
+    <div class="card-header h-auto border-0">
+        <div class="card-title py-5">
+            <h3 class="card-label">
+                <span class="d-block text-dark font-weight-bolder">รูปที่ลูกค้าแนบมา</span>
+            </h3>
+        </div>
+    </div>
+
+    <div class="card-body">
+        @{
+            bool first = true;
+            string optionClass = "";
+            foreach (var cat in exImgTypeList)
+            {
+                optionClass = first ? " mt-n8 " : " mt-8 ";
+                <div class="row @optionClass">
+                    <h5 class="col-12 mb-10" style="color: #8408d9;"><strong>❏ @Html.Raw(cat.Description)</strong></h5>
+                    <div class="d-flex">
+                        <!--begin: Info-->
+                        <div class="flex-grow-1">
+                            <!--begin: Content-->
+                            <div class="d-flex align-items-center flex-wrap justify-content-between">
+                                <div class="row mt-n5">
+                                    @{
+                                        var items = exImgList.Where(o => o.JobsExTypeId == cat.JobsExTypeId);
+                                        if (items != null && items.Count() > 0)
+                                        {
+                                            foreach (var item in items)
+                                            {
+                                                <a href="javascript:void(0);" class="col-12 col-md-2">
+                                                    @*<img src="https://picsum.photos/200/300?random=@x" x alt="..." class="img-thumbnail my-3 mx-3">*@
+                                                    <img src="@Html.Raw(item.UrlPath)" x alt="@item.FileName" class="img-thumbnail my-3 mx-3">
+                                                </a>
+                                            }
+                                        }
+                                        else
+                                        { 
+                                            <div class="col-12 text-center pl-15 mt-n10">
+                                                <h2 class=" text-muted my-19"><i class="fas fa-exclamation-triangle fa-1x"></i> ไม่พบข้อมูล</h2>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+
+                            </div>
+                            <!--end: Content-->
+                        </div>
+                        <!--end: Info-->
+                    </div>
+                </div>
+            }
+        }
+
+    </div>
+</div>
+<!--end::image-->

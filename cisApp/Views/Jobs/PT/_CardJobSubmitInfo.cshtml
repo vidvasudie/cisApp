@@ -1,0 +1,60 @@
+﻿@*@using cisApp.Controllers
+    @model List<cisApp.Function.JobModel>*@
+@{
+}
+
+@{
+    //foreach (var img in Model)
+    //{
+
+    //}
+}
+
+
+@{
+    int max = 4;
+    for (int x = 1; x < max; x++)
+    {
+        <!--begin::image-->
+        <div class="card card-custom gutter-b">
+            <div class="card-header h-auto border-0">
+                <div class="card-title py-5">
+                    <h3 class="card-label">
+                        <span class="d-block text-dark font-weight-bolder">ส่งแบบครั้งที่ @x</span>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="d-flex">
+                    <!--begin: Info-->
+                    <div class="flex-grow-1">
+                        <!--begin: Content-->
+                        <div class="d-flex align-items-center flex-wrap justify-content-between">
+                            <div class="row ">
+                                @{ int i = 0;
+                                    int Temp = 10;
+                                }
+                                @while (i < 10)
+                                {
+                                    i++;
+                                    Temp++;
+                                <div class="col-12 col-md-2">
+                                    <img src="https://picsum.photos/200/200?random=@Temp" alt="..." class="img-thumbnail mx-3 my-3">
+                                </div>
+                                }
+                            </div>
+                        </div>
+                        <!--end: Content-->
+                    </div>
+                    <!--end: Info-->
+                </div>
+                @*<div class="separator separator-solid my-7"></div>*@
+            </div>
+        </div>
+        <!--end::image-->
+    }
+}
+
+
+
