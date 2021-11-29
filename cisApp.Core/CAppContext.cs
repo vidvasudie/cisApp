@@ -55,6 +55,7 @@ namespace cisApp.Core
         public virtual DbSet<UserDesignerRequestImage> UserDesignerRequestImage { get; set; }
         public virtual DbSet<UserDesignerRequestImageType> UserDesignerRequestImageType { get; set; }
         public virtual DbSet<UserImg> UserImg { get; set; }
+        public virtual DbSet<Settings> Settings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Album>(entity =>
@@ -342,8 +343,7 @@ namespace cisApp.Core
                 entity.ToTable("User_Img");
 
                 entity.Property(e => e.UserImgId)
-                    .HasColumnName("UserImgID")
-                    .ValueGeneratedNever();
+                    .HasColumnName("UserImgID");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
             });
@@ -596,6 +596,20 @@ namespace cisApp.Core
                     .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Name).HasMaxLength(500);
+            });
+
+            modelBuilder.Entity<Settings>(entity =>
+            {
+                entity.HasKey(e => e.SettingId)
+                    .HasName("PK__Settings__54372B1D096553E5");
+
+                entity.Property(e => e.SettingId).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Keyword)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
             });
 
             OnModelCreatingPartial(modelBuilder);

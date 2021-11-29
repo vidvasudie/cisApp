@@ -11,12 +11,17 @@ using cisApp.Core;
 namespace cisApp.Controllers
 {
     [Authorize]
-    [CustomActionExecute("CA06E5CC-691E-4BE7-A8EF-3F9EE8400B1A")]
+    [CustomActionExecute("0E12C6B9-14B1-4ABA-B220-49D7496EDBD7")]
     public class PaymentController : BaseController
     {
-        private List<JobPayment> _model = new List<JobPayment>();
+        private List<UserModel> _model = new List<UserModel>();
         private Guid _PermissionMenuId;
         private int _PermissionManage;
+        public PaymentController()
+        {
+            _PermissionMenuId = Guid.Parse("0E12C6B9-14B1-4ABA-B220-49D7496EDBD7");
+            _PermissionManage = 2;// สิทธิ์ผู้ใช้งาน
+        }
         public IActionResult Index(SearchModel model)
         {
             return View(model);
