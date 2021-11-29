@@ -1,5 +1,6 @@
 ﻿using cisApp.Function;
 using cisApp.library;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,12 +8,22 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace cisApp.Controllers
-{ 
+{
+    [Authorize]
+    [CustomActionExecute("1BBF28A4-A88C-4A48-B2BF-C9D59C996902")]
     public class EmployeeController : BaseController
     {
         static int _EmployeeType = 3;
 
         private List<UserModel> _model = new List<UserModel>();
+        private Guid _PermissionMenuId;
+        private int _PermissionManage;
+        public EmployeeController()
+        {
+            _PermissionMenuId = Guid.Parse("1BBF28A4-A88C-4A48-B2BF-C9D59C996902");
+            _PermissionManage = 2;// สิทธิ์ผู้ใช้งาน
+        }
+
         public IActionResult Index(int pageIndex = 1)
         {
             return View(new PaginatedList<UserModel>(_model, _model.Count, pageIndex, 2));
