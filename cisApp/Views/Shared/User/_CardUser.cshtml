@@ -123,10 +123,20 @@
                             }
                             else
                             {
-                                <a href="#" data-url="@Url.Action("Manage", "UserManagement", new { id = Model.UserId })"
-                                   class="btn btn-sm btn-warning font-weight-bolder text-uppercase bt-update">แก้ไขข้อมูลผู้ใช้งาน</a>
-                                <a href="#" data-url="@Url.Action("Delete", "UserManagement", new { id = Model.UserId })"
-                                   class="btn btn-sm btn-danger font-weight-bolder text-uppercase bt-delete">ลบผู้ใช้งาน</a>
+                                @if (BaseController._RoleMenuType == 2)
+                                {
+                                    string userController = "UserManagement";
+                                    if (Model.UserType == 3)
+                                    {
+                                        userController = "Employee";
+                                    }
+
+                                    <a href="#" data-url="@Url.Action("Manage", userController, new { id = Model.UserId })"
+                                       class="btn btn-sm btn-warning font-weight-bolder text-uppercase bt-update">แก้ไขข้อมูลผู้ใช้งาน</a>
+                                    <a href="#" data-url="@Url.Action("Delete", userController, new { id = Model.UserId })"
+                                       class="btn btn-sm btn-danger font-weight-bolder text-uppercase bt-delete">ลบผู้ใช้งาน</a>
+                                }
+
                             }
                         }
 

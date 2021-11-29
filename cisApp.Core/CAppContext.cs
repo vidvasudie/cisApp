@@ -43,9 +43,6 @@ namespace cisApp.Core
         public virtual DbSet<RoleMenu> RoleMenu { get; set; }
         public virtual DbSet<Album> Album { get; set; }
         public virtual DbSet<AlbumImage> AlbumImage { get; set; }
-        public virtual DbSet<AttachFile> AttachFile { get; set; }
-        public virtual DbSet<JobPayment> JobPayment { get; set; }
-        public virtual DbSet<JobPaymentImg> JobPaymentImg { get; set; }
         public virtual DbSet<Jobs> Jobs { get; set; }
         public virtual DbSet<JobsStatus> JobsStatus { get; set; }
         public virtual DbSet<JobsType> JobsType { get; set; }
@@ -341,8 +338,7 @@ namespace cisApp.Core
                 entity.ToTable("User_Img");
 
                 entity.Property(e => e.UserImgId)
-                    .HasColumnName("UserImgID")
-                    .ValueGeneratedNever();
+                    .HasColumnName("UserImgID");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
             });

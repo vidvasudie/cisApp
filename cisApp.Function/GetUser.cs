@@ -41,7 +41,14 @@ namespace cisApp.Function
 
                     if (data.Count > 0)
                     {
-                        data.FirstOrDefault().AttachFileImage = GetAttachFile.Get.GetByRefId(data.FirstOrDefault().UserId.Value);
+                        // get payment_img id
+                        var userImg = Get.GetUserImgs(data.FirstOrDefault().UserId.Value);
+
+                        if (userImg.Count > 0)
+                        {
+                            data.FirstOrDefault().AttachFileImage = GetAttachFile.Get.GetByRefId(userImg.FirstOrDefault().UserImgId.Value);
+                        }
+                        //data.FirstOrDefault().AttachFileImage = GetAttachFile.Get.GetByRefId(data.FirstOrDefault().UserId.Value);
                         return data.FirstOrDefault();
                     }
 
@@ -177,6 +184,28 @@ namespace cisApp.Function
                     return new List<UserModel>();
                 }
             }
+
+            public static List<UserImg> GetUserImgs(Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.UserImg.Where(o => o.UserId == userId).ToList();
+
+                        data = (from p in data
+                                join a in context.AttachFile on p.UserImgId equals a.RefId
+                                where a.IsActive == true
+                                select p).ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public class Manage
@@ -231,7 +260,7 @@ namespace cisApp.Function
                         obj.Tel = data.Tel;
                         obj.Email = data.Email;
                         obj.RoleId = data.RoleId;
-                        obj.IsActive = data.IsActive;
+                        //obj.IsActive = data.IsActive;
 
                         obj.UpdatedDate = DateTime.Now;
                         obj.UpdatedBy = userId;
@@ -278,13 +307,34 @@ namespace cisApp.Function
                         // save profile
                         if (!String.IsNullOrEmpty(data.FileBase64)) // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
                         {
-                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId);
+                            // remove previous img
+                            var activeUserImg = Get.GetUserImgs(obj.UserId.Value);
 
-                            GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), data.UserId.Value, userId);
+                            if (activeUserImg.Count > 0)
+                            {
+                                foreach (var item in activeUserImg)
+                                {
+                                    GetAttachFile.Manage.UpdateStatusByRefId(item.UserImgId.Value, false, userId);
+                                }
+                            }
+
+                            // insert new UserImg
+                            UserImg userImg = new UserImg()
+                            {
+                                UserId = obj.UserId.Value
+                            };
+
+                            context.UserImg.Update(userImg);
+
+                            context.SaveChanges();
+
+                            GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), userImg.UserImgId.Value, userId);
                         }
                         else if (data.FileRemove) // ถ้าลบไฟล์ออก แล้วไม่ได้อัพไฟล์ใหม่ขึ้นมาจะเข้า เงื่อนไขนี้
                         {
-                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId);
+                            var userImg = context.UserImg.Where(o => o.UserId == obj.UserId.Value).FirstOrDefault();
+
+                            GetAttachFile.Manage.UpdateStatusByRefId(userImg.UserImgId.Value, false, userId);
                         }
 
                         return obj;

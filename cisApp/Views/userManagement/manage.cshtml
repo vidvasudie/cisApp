@@ -199,28 +199,12 @@
                                 @await Html.PartialAsync("~/Views/Shared/User/_UserCustomer.cshtml", Model)
 
 
-                                @if (Model.UserType == 2)
+                                @if (Model.UserType >= 2)
                                 {
                                     @await Html.PartialAsync("~/Views/Shared/User/_UserDesigner.cshtml", Model)
                                 }
 
-                                <div class="separator separator-dashed my-10"></div>
-                                <div class="my-5">
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">รูปภาพประจำตัว</label>
-                                        <div class="col-lg-4 col-md-9 col-sm-12">
-                                            <div class="dropzone dropzone-default" id="kt_dropzone_1">
-                                                <div class="dropzone-msg dz-message needsclick">
-                                                    <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
-                                                    <span class="dropzone-msg-desc">
-                                                        This is just a demo dropzone. Selected files are
-                                                        <strong>not</strong>actually uploaded.
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @await Html.PartialAsync("Common/_DropzoneSingleFile", "รูปภาพประจำตัว")
 
 
                             </div>
