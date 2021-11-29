@@ -44,5 +44,6 @@ namespace cisApp.Core
         public Guid? CreatedBy { get; set; }
         public Guid? UpdatedBy { get; set; }
         public Guid? DeletedBy { get; set; }
+        public DateTime? LastLogin { get; set; }
     }
 }

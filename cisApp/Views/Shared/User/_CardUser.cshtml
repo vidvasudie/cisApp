@@ -187,23 +187,36 @@
                     </div>
                     <!--end::Designer data-->
                     <!--begin::Content-->
-                    <div class="d-flex align-items-center flex-wrap justify-content-between">
+            <div class="d-flex align-items-center flex-wrap justify-content-between">
 
-                        <!--begin::Description-->
-                        <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
-                            @Html.Raw(Model.Address + " ตำบล" + Model.SubDistrictDesc + " อำเภอ" + Model.DistrictDesc + " จังหวัด" + Model.ProvinceDesc + " " + Model.PostCode)
-                        </div>
-                        <!--end::Description-->
-                        <!--begin::Progress-->
-                        @*<div class="d-flex mt-4 mt-sm-0">
-                                <span class="font-weight-bold mr-4">Progress</span>
-                                <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <span class="font-weight-bolder text-dark ml-4">78%</span>
-                            </div>*@
-                        <!--end::Progress-->
-                    </div>
+                <!--begin::Description-->
+                <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
+                    @Html.Raw(Model.Address + " ตำบล" + Model.SubDistrictDesc + " อำเภอ" + Model.DistrictDesc + " จังหวัด" + Model.ProvinceDesc + " " + Model.PostCode)
+                </div>
+                <!--end::Description-->
+                <!--begin::Progress-->
+                <div class="d-flex mt-4 mt-sm-0">
+                    @if (Model.LastLogin != null)
+                    {
+                        <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด @Model.LastLogin</span>
+                    }
+                    else
+                    {
+                        <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด -</span>
+                    }
+
+                </div>
+                <!--end::Progress-->
+                <!--begin::Progress-->
+                @*<div class="d-flex mt-4 mt-sm-0">
+            <span class="font-weight-bold mr-4">Progress</span>
+            <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <span class="font-weight-bolder text-dark ml-4">78%</span>
+        </div>*@
+                <!--end::Progress-->
+            </div>
                     <!--end::Content-->
                 }
 

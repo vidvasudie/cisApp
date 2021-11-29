@@ -62,7 +62,8 @@ namespace cisApp.Controllers
                         }
                         else
                         {
-                            SetCookie(user);  
+                            SetCookie(user);
+                            GetUser.Manage.LoginStamp(user.UserId.Value);
                             return Json(new ResponseModel().ResponseSuccess(MessageCommon.LoginSuccess, Url.Action("Index", "Home")));
                         }
                     }

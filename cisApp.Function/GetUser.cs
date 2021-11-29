@@ -377,6 +377,29 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
+            public static Users LoginStamp(Guid id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        Users obj = context.Users.Find(id);
+
+                        obj.LastLogin = DateTime.Now;
+
+                        context.Users.Update(obj);
+
+                        context.SaveChanges();
+
+                        return obj;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
     }
 }
