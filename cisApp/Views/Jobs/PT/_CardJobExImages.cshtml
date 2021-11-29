@@ -50,7 +50,7 @@
                                             {
                                                 <a href="javascript:void(0);" class="col-12 col-md-2">
                                                     @*<img src="https://picsum.photos/200/300?random=@x" x alt="..." class="img-thumbnail my-3 mx-3">*@
-                                                    <img src="@Html.Raw(item.UrlPath)" x alt="@item.FileName" class="img-thumbnail my-3 mx-3">
+                                                    <img src="@Url.Content(item.UrlPath)" x alt="@item.FileName" class="img-thumbnail my-3 mx-3">
                                                 </a>
                                             }
                                         }

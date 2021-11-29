@@ -181,13 +181,16 @@
             {
                 <!--begin::image-->
                 <div class="" id="contest_list">
-                    @await Html.PartialAsync("PT/_CardJobContest.cshtml")
+                    @await Html.PartialAsync("PT/_CardJobContest.cshtml", Model)
                 </div>
                 <!--end::image-->
 
-                <div id="job_img_submit">
-                    @await Html.PartialAsync("PT/_CardJobSubmitInfo.cshtml")
-                </div>
+                if (Model.JobCaUserId != null)
+                {
+                    <div id="job_img_submit">
+                        @await Html.PartialAsync("PT/_CardJobSubmitInfo.cshtml")
+                    </div>
+                }
             }
 
         </div>

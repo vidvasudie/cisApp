@@ -42,10 +42,7 @@ namespace cisApp.Core
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<RoleMenu> RoleMenu { get; set; }
         public virtual DbSet<Album> Album { get; set; }
-        public virtual DbSet<AlbumImage> AlbumImage { get; set; }
-        public virtual DbSet<AttachFile> AttachFile { get; set; }
-        public virtual DbSet<JobPayment> JobPayment { get; set; }
-        public virtual DbSet<JobPaymentImg> JobPaymentImg { get; set; }
+        public virtual DbSet<AlbumImage> AlbumImage { get; set; } 
         public virtual DbSet<Jobs> Jobs { get; set; }
         public virtual DbSet<JobsStatus> JobsStatus { get; set; }
         public virtual DbSet<JobsType> JobsType { get; set; }
@@ -62,11 +59,15 @@ namespace cisApp.Core
         {
             modelBuilder.Entity<Album>(entity =>
             {
-                entity.Property(e => e.AlbumId)
-                    .HasColumnName("albumID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.AlbumId).HasColumnName("AlbumID");
 
-                entity.Property(e => e.Categoly).HasColumnName("categoly");
+                entity.Property(e => e.AlbumType).HasComment("แบ่งเป็นเป็น 1=ประกวด,2=ส่งงานงวดที่1,3=ส่งงานงวดที่2,4=ส่งงานงวดที่3");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.JobId).HasColumnName("JobID");
 
@@ -81,10 +82,10 @@ namespace cisApp.Core
                 entity.ToTable("Album_image");
 
                 entity.Property(e => e.ImgId)
-                    .HasColumnName("imgID")
+                    .HasColumnName("ImgID")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.AlbumId).HasColumnName("albumID");
+                entity.Property(e => e.AlbumId).HasColumnName("AlbumID");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
             });
