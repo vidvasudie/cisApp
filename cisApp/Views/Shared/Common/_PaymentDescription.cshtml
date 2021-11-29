@@ -1,4 +1,8 @@
-﻿<div class="col-xl-8">
+﻿@using cisApp.Core
+@using cisApp.Function
+@model JobPayment
+
+<div class="col-xl-8">
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
         <!--begin::Header-->
@@ -33,39 +37,46 @@
                 <!--begin::Tab Content-->
                 <div class="tab-pane active" id="kt_apps_contacts_view_tab_1" role="tabpanel">
                     <div class="container">
-                        <form class="form">
+                        <form class="form" id="kt_form"  asp-action="ManageStatus" asp-controller="Payment" method="post" data-ajax-confirm="@MessageCommon.Confirm" data-ajax="true" data-ajax-success="redirect">
                             <div class="form-group row">
                                 <label class="col-3 col-form-label">สถานะดำเนินการ</label>
                                 <div class="col-9 col-form-label">
+
+                                    @Html.HiddenFor(m => m.JobPayId)
+
                                     <div class="radio-inline">
-                                        <label class="radio radio-Primary">
-                                            <input type="radio" name="radios12" checked="checked">
-                                            <span></span>รอชำระเงิน
-                                        </label>
-                                        <label class="radio radio-Primary">
-                                            <input type="radio" name="radios12">
-                                            <span></span>อยู่ระหว่างตรวจสอบ
-                                        </label>
-                                        <label class="radio radio-success">
-                                            <input type="radio" name="radios12">
-                                            <span></span>สำเร็จ
-                                        </label>
-                                        <label class="radio radio-danger  ">
-                                            <input type="radio" name="radios12">
-                                            <span></span>ไม่อนุมัติ/คืนเงิน
-                                        </label>
+                                        @{
+                                            var radioPaymentStatus = JobPaymentStatus.GetAll();
+                                        }
+
+                                        @foreach (var item in radioPaymentStatus)
+                                        {
+                                            <label class="radio radio-Primary">
+                                                @if (item.key == Model.PayStatus)
+                                                {
+                                                    <input type="radio" name="PayStatus" value="@item.key" checked="checked">
+                                                }
+                                                else
+                                                {
+                                                    <input type="radio" name="PayStatus" value="@item.key">
+                                                }
+
+                                                <span></span>@item.value
+                                            </label>
+                                        }
+
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <textarea class="form-control form-control-lg form-control-solid" id="exampleTextarea" rows="3" placeholder="บันทึกหมายเหตุ"></textarea>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <a href="#" class="btn btn-light-primary font-weight-bold">บันทึก</a>
-                                    <a href="#" class="btn btn-clean font-weight-bold">ยกเลิก</a>
+                                <div class="form-group col-12 d-flex justify-content-end">
+                                    @Html.TextAreaFor(m => m.Comment, new { @class = "form-control form-control-lg form-control-solid", @rows = "3", @placeholder = "บันทึกหมายเหตุ" })
+                                    @*<textarea class="form-control form-control-lg form-control-solid" id="exampleTextarea" rows="3" placeholder="บันทึกหมายเหตุ"></textarea>*@
                                 </div>
-                            </div>
+                                <div class="row col-12">
+                                    <div class="col">
+                                        <a href="#" class="btn btn-light-primary font-weight-bold btn-submit">บันทึก</a>
+                                        <a href="#" class="btn btn-clean font-weight-bold">ยกเลิก</a>
+                                    </div>
+                                </div>
                         </form>
                         <div class="separator separator-dashed my-10"></div>
                     </div>

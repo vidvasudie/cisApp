@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Views\Jobs\V1\Index.cshtml" />
+    <None Include="Views\Jobs\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>

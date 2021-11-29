@@ -55,7 +55,7 @@
                         <div class="mb-20">
                             <h3 class="opacity-40 font-weight-normal">ระบบจัดการ CIS APP</h3>
                         </div>
-                        <form class="form" id="kt_form" asp-action="Login" asp-controller=@ViewData["ControllerName"] method="post" data-ajax="true" data-ajax-success="redirect">
+                        <form class="form" id="kt_form" asp-action="Login" asp-controller=@ViewData["ControllerName"] method="post" data-ajax="true" data-ajax-success="redirectLogin">
                             <div class="form-group">
                                 @Html.TextBoxFor(m => m.username, new { @class = "form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8", @placeholder = "Email", @autocomplete = "off" })
                             </div>

@@ -21,7 +21,7 @@ namespace cisApp.Controllers
         [HttpPost]
         public PartialViewResult ItemList(SearchModel model)
         {
-            model.userType = 3;
+            model.type = 3;
             List<UserModel> _model = GetUser.Get.GetUserModels(model);
             int count = GetUser.Get.GetUserModelsTotal(model);
 

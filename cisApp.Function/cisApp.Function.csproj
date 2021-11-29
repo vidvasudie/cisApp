@@ -8,4 +8,8 @@
     <ProjectReference Include="..\cisApp.Core\cisApp.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.12" />
+  </ItemGroup>
+
 </Project>

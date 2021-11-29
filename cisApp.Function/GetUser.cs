@@ -41,6 +41,7 @@ namespace cisApp.Function
 
                     if (data.Count > 0)
                     {
+                        data.FirstOrDefault().AttachFileImage = GetAttachFile.Get.GetByRefId(data.FirstOrDefault().UserId.Value);
                         return data.FirstOrDefault();
                     }
 
@@ -121,13 +122,15 @@ namespace cisApp.Function
                 }
             }
 
+            
+
             public static List<UserModel> GetUserModels(SearchModel model)
             {
                 try
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
-                       new SqlParameter("@type", model.userType != null ? model.userType : (object)DBNull.Value),
+                       new SqlParameter("@type", model.type != null ? model.type : (object)DBNull.Value),
                        new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
                        new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
                     };
@@ -146,7 +149,7 @@ namespace cisApp.Function
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
-                       new SqlParameter("@type", model.userType != null ? model.userType : (object)DBNull.Value)
+                       new SqlParameter("@type", model.type != null ? model.type : (object)DBNull.Value)
                     };
                     var dt = StoreProcedure.GetAllStoredDataTable("GetUserModelsTotal", parameter);
                     return (int)dt.Rows[0]["TotalCount"];
@@ -207,7 +210,7 @@ namespace cisApp.Function
                             }
 
                             // in case insert we need insert new password
-                            string newPassword = UtilsLib.RandomPassword();
+                            string newPassword = Utility.RandomPassword();
                             newPassword = Encryption.Encrypt(newPassword);
                             UsersPassword usersPassword = new UsersPassword()
                             {
@@ -270,7 +273,19 @@ namespace cisApp.Function
                             context.UserDesigner.Update(objSub);
 
                             context.SaveChanges();
-                        }                 
+                        }
+
+                        // save profile
+                        if (!String.IsNullOrEmpty(data.FileBase64)) // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
+                        {
+                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId);
+
+                            GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), data.UserId.Value, userId);
+                        }
+                        else if (data.FileRemove) // ถ้าลบไฟล์ออก แล้วไม่ได้อัพไฟล์ใหม่ขึ้นมาจะเข้า เงื่อนไขนี้
+                        {
+                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId);
+                        }
 
                         return obj;
                     }
