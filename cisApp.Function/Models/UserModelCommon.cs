@@ -18,8 +18,19 @@ namespace cisApp.Function
         [Display(Name = "อีเมล")]
         [Required(ErrorMessage = "กรุณากรอกอีเมล")]
         public string Email { get; set; }
+
+
         [Display(Name = "เบอร์โทรศัพท์")]
         [Required(ErrorMessage = "กรุณากรอกเบอร์โทรศัพท์")]
         public string Tel { get; set; }
+
+
+
+        public string NewPassword { get; set; } 
+        public string ConfirmPassword { get; set; }
+
+
+        public string OTP { get; set; }
+
     }
 }

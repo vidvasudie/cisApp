@@ -162,8 +162,8 @@ namespace cisApp.Function
 
             public static List<UserModel> GetUserLogin(LoginModel model)
             {
-                try
-                {
+                //try
+                //{
                     SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@username", !String.IsNullOrEmpty(model.username) ? model.username.Trim() : (object)DBNull.Value),
                        new SqlParameter("@password", !String.IsNullOrEmpty(model.password) ? Encryption.Encrypt(model.password.Trim()) : (object)DBNull.Value),
@@ -171,17 +171,17 @@ namespace cisApp.Function
                     };
 
                     return StoreProcedure.GetAllStored<UserModel>("GetUserLogin", parameter);
-                }
-                catch (Exception ex)
-                {
-                    return new List<UserModel>();
-                }
+                //}
+                //catch (Exception ex)
+                //{
+                //    return new List<UserModel>();
+                //}
             }
         }
 
         public class Manage
         {
-            public static Users Update(UserModel data, Guid? userId =null)
+            public static Users Update(UserModel data, Guid? userId = null, string newPassword = null)
             {
                 try
                 {
@@ -210,12 +210,20 @@ namespace cisApp.Function
                             }
 
                             // in case insert we need insert new password
-                            string newPassword = Utility.RandomPassword();
+
+                            if (string.IsNullOrEmpty(newPassword))
+                            {
+                                newPassword = Utility.RandomPassword();
+                            }
+
+
                             newPassword = Encryption.Encrypt(newPassword);
                             UsersPassword usersPassword = new UsersPassword()
                             {
                                 Password = newPassword
                             };
+
+
 
                             context.UsersPassword.Update(usersPassword);
 
@@ -278,13 +286,13 @@ namespace cisApp.Function
                         // save profile
                         if (!String.IsNullOrEmpty(data.FileBase64)) // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
                         {
-                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId);
+                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId.Value);
 
-                            GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), data.UserId.Value, userId);
+                            GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), data.UserId.Value, userId.Value);
                         }
                         else if (data.FileRemove) // ถ้าลบไฟล์ออก แล้วไม่ได้อัพไฟล์ใหม่ขึ้นมาจะเข้า เงื่อนไขนี้
                         {
-                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId);
+                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId.Value);
                         }
 
                         return obj;

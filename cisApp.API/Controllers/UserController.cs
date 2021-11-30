@@ -20,11 +20,32 @@ namespace cisApp.API.Controllers
         public object register([FromBody] UserModelCommon value)
         {
 
-            var _result = GetUser.Manage.Update(new UserModel() { Fname= value.Fname, Lname = value.Lname, Tel = value.Tel, Email =value.Tel,UserType = 1 , IsActive = true});
-           
-            
-            return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ","success", _result));
+            if (string.IsNullOrEmpty(value.OTP))
+            {
+                return Unauthorized(resultJson.errors("OTP ไม่ถูกต้อง", "Incorrect otp ", null));
 
+            }
+            else
+            {
+                // เช็ค otp
+                if (value.OTP == "123456")
+                { 
+                    if ((value.NewPassword != value.ConfirmPassword) && value.NewPassword.Length < 8)
+                    {
+                        return Unauthorized(resultJson.errors("รหัสผ่านไม่ถูกต้อง", "Incorrect password", null));
+                    }
+                    else
+                    {
+                        var _result = GetUser.Manage.Update(new UserModel() { Fname = value.Fname, Lname = value.Lname, Tel = value.Tel, Email = value.Tel, UserType = 1, IsActive = true }, null, value.NewPassword);
+                        return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new { ActivityID = _result.UserId, time = DateTime.Now, expire = DateTime.Now.AddDays(1) }));
+                    }
+                }
+                else
+                { 
+                    return Unauthorized(resultJson.errors("OTP ไม่ถูกต้อง", "Incorrect otp ", null));
+
+                }
+            } 
         }
 
 

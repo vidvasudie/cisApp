@@ -36,16 +36,16 @@ namespace cisApp.API.Controllers
         [HttpPost]
         public object Post([FromBody] LoginModels value)
         {
-
-
+             
             var users = GetUser.Get.GetUserLogin(new LoginModel() { username = value.email, password = value.password, userType = null });
-
-
-            return Ok( resultJson.success("true", null, 10, 15)); 
-
-
-
-
+            if (users.Count > 0)
+            { 
+                return Ok(resultJson.success(null,null, new LoginResult { uSID = users.FirstOrDefault().UserId.Value , Fname = users.FirstOrDefault().Fname , Lname = users.FirstOrDefault().Lname, isDesigner = (users.FirstOrDefault().UserType == 1)?false:true }));
+            }
+            else
+            {
+                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล",null)); 
+            }  
         }
 
 
