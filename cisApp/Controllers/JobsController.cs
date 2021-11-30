@@ -39,23 +39,6 @@ namespace cisApp.Controllers
             if (_model != null && _model.Count > 0)
                 return View(_model.FirstOrDefault());
 
-            //for (var l=1; l<= 5;l++ )
-            //{
-            //    var data = new JobModel()
-            //    {
-            //        UserId = Guid.Parse("D01758CF-3F30-432B-8361-5754CDE8CA13"),
-            //        JobTypeId = 1,
-            //        JobStatus = l,
-            //        JobDescription = "test job status = "+l,
-            //        JobAreaSize = 180+l,
-            //        JobPrice = 123456+(l+10),
-            //        JobPricePerSqM = 500+l,
-            //        JobBeginDate = DateTime.Now.AddMonths(l-1),
-            //        JobEndDate = DateTime.Now.AddMonths(l),
-            //    };
-            //    GetJobs.Manage.Update(data); 
-            //} 
-
             return View(new JobModel());
         }
 
@@ -107,6 +90,12 @@ namespace cisApp.Controllers
         {
             return PartialView("~/Views/Jobs/PT/_CardJobCandidate.cshtml", model);
         }
+
+        #endregion
+
+        #region Contest
+
+
 
         #endregion
 

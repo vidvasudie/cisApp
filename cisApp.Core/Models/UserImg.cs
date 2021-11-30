@@ -6,7 +6,7 @@ namespace cisApp.Core
 {
     public partial class UserImg
     {
-        public Guid UserImgId { get; set; }
-        public Guid? UserId { get; set; }
+        public Guid? UserImgId { get; set; }
+        public Guid UserId { get; set; }
     }
 }
