@@ -178,11 +178,11 @@ namespace cisApp.Function
                     };
 
                     return StoreProcedure.GetAllStored<UserModel>("GetUserLogin", parameter);
-                }
-                catch (Exception ex)
-                {
-                    return new List<UserModel>();
-                }
+                //}
+                //catch (Exception ex)
+                //{
+                //    return new List<UserModel>();
+                //}
             }
 
             public static List<UserImg> GetUserImgs(Guid userId)
@@ -315,13 +315,13 @@ namespace cisApp.Function
                         // save profile
                         if (!String.IsNullOrEmpty(data.FileBase64)) // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
                         {
-                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId);
+                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId.Value);
 
-                            GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), data.UserId.Value, userId);
+                            GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), data.UserId.Value, userId.Value);
                         }
                         else if (data.FileRemove) // ถ้าลบไฟล์ออก แล้วไม่ได้อัพไฟล์ใหม่ขึ้นมาจะเข้า เงื่อนไขนี้
                         {
-                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId);
+                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId.Value);
                         }
 
                         return obj;
