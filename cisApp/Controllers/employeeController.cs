@@ -110,5 +110,20 @@ namespace cisApp.Controllers
                 return Json(new ResponseModel().ResponseError());
             }
         }
+
+        [HttpPost]
+        public JsonResult ResetPassword(Guid id)
+        {
+            try
+            {
+                //var user = GetUser.Manage.Delete(id, _UserId.Value);
+
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Employee")));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
     }
 }

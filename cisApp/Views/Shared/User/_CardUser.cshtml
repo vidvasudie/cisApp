@@ -31,7 +31,11 @@
                             {
                                 @Html.Raw(Model.Fname + " " + Model.Lname)
                             }
-                            <i class="flaticon2-contract text-success icon-md ml-2"></i>
+                            @if (Model.UserType == 2)
+                            {
+                                <i class="flaticon2-correct text-success icon-md ml-2"></i>
+                            }
+
                             @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
                             {
                                 var btn_color = "btn-light-warning";
@@ -131,10 +135,28 @@
                                         userController = "Employee";
                                     }
 
-                                    <a href="#" data-url="@Url.Action("Manage", userController, new { id = Model.UserId })"
-                                       class="btn btn-sm btn-warning font-weight-bolder text-uppercase bt-update">แก้ไขข้อมูลผู้ใช้งาน</a>
-                                    <a href="#" data-url="@Url.Action("Delete", userController, new { id = Model.UserId })"
-                                       class="btn btn-sm btn-danger font-weight-bolder text-uppercase bt-delete">ลบผู้ใช้งาน</a>
+                                    <!--begin::Toolbar-->
+                                    <div class="card-toolbar mb-7">
+                                        <a href="#" data-url="@Url.Action("ResetPassword", "UserManagement", new { id = Model.UserId })"
+                                           class="btn btn-sm btn-light-danger font-weight-bolder text-uppercase mr-2 bt-reset-password">Reset Password</a>
+
+                                        @if (Model.UserType == 1)
+                                        {
+                                            <a href="#" data-url="@Url.Action("Manage", "UserApprove", new { id = Model.UserId })"
+                                               class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2 bt-update">Upgrade</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#" data-url="@Url.Action("Manage", "UserApprove", new { id = Model.UserId })"
+                                               class="btn btn-sm btn-light-warning font-weight-bolder text-uppercase mr-2 bt-downgrade bt-update">Downgrade</a>
+                                        }
+
+
+                                        @{ await Html.RenderPartialAsync("~/Views/userManagement/button/Func.cshtml", 2);
+                                        }
+
+                                    </div>
+                                    <!--end::Toolbar-->
                                 }
 
                             }
@@ -197,36 +219,67 @@
                     </div>
                     <!--end::Designer data-->
                     <!--begin::Content-->
-            <div class="d-flex align-items-center flex-wrap justify-content-between">
+                    <div class="d-flex align-items-center flex-wrap justify-content-between">
 
-                <!--begin::Description-->
-                <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
-                    @Html.Raw(Model.Address + " ตำบล" + Model.SubDistrictDesc + " อำเภอ" + Model.DistrictDesc + " จังหวัด" + Model.ProvinceDesc + " " + Model.PostCode)
-                </div>
-                <!--end::Description-->
-                <!--begin::Progress-->
-                <div class="d-flex mt-4 mt-sm-0">
-                    @if (Model.LastLogin != null)
-                    {
-                        <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด @Model.LastLogin</span>
-                    }
-                    else
-                    {
-                        <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด -</span>
-                    }
+                        <!--begin::Description-->
+                        <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
+                            @Html.Raw(Model.Address + " ตำบล" + Model.SubDistrictDesc + " อำเภอ" + Model.DistrictDesc + " จังหวัด" + Model.ProvinceDesc + " " + Model.PostCode)
+                        </div>
+                        <!--end::Description-->
+                        <!--begin::Progress-->
+                        <div class="d-flex mt-4 mt-sm-0">
+                            @if (Model.LastLogin != null)
+                            {
+                                <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด @Model.LastLogin</span>
+                            }
+                            else
+                            {
+                                <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด -</span>
+                            }
 
-                </div>
-                <!--end::Progress-->
-                <!--begin::Progress-->
-                @*<div class="d-flex mt-4 mt-sm-0">
-            <span class="font-weight-bold mr-4">Progress</span>
-            <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <span class="font-weight-bolder text-dark ml-4">78%</span>
-        </div>*@
-                <!--end::Progress-->
-            </div>
+                        </div>
+                        <!--end::Progress-->
+                        <!--begin::Progress-->
+                        @*<div class="d-flex mt-4 mt-sm-0">
+                                <span class="font-weight-bold mr-4">Progress</span>
+                                <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="font-weight-bolder text-dark ml-4">78%</span>
+                            </div>*@
+                        <!--end::Progress-->
+                    </div>
+                    <!--end::Content-->
+                }
+                else
+                {
+                    <!--begin::Content-->
+                    <div class="d-flex align-items-center flex-wrap justify-content-between">
+
+
+                        <!--begin::Progress-->
+                        <div class="d-flex mt-4 mt-sm-0">
+                            @if (Model.LastLogin != null)
+                            {
+                                <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด @Model.LastLogin</span>
+                            }
+                            else
+                            {
+                                <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด -</span>
+                            }
+
+                        </div>
+                        <!--end::Progress-->
+                        <!--begin::Progress-->
+                        @*<div class="d-flex mt-4 mt-sm-0">
+                                <span class="font-weight-bold mr-4">Progress</span>
+                                <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="font-weight-bolder text-dark ml-4">78%</span>
+                            </div>*@
+                        <!--end::Progress-->
+                    </div>
                     <!--end::Content-->
                 }
 

@@ -254,6 +254,32 @@ $('body').on('click', '.bt-update', function (e) {
     });
 });
 
+$('body').on('click', '.bt-reset-password', function (e) {
+
+    var elem = $(this);
+
+    Swal.fire({
+        title: "reset password",
+        text: "ยืนยันแก้ไขรหัสผ่านผู้ใช้งาน",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "ใช่, ยืนยัน",
+        cancelButtonText: "ไม่, ยกเลิก",
+        reverseButtons: true
+    }).then(function (result) {
+        if (result.value) {
+            Swal.fire(
+                "สำเร็จ!",
+                "รหัสผ่านถูกแก้ไข ระบบทำการส่งรหัสผ่านใหม่ให้ผู้ใช้งาน ทาง Email เรียบร้อยแล้ว!!!",
+                "success"
+            )
+
+        } else if (result.dismiss === "cancel") {
+
+        }
+    });
+});
+
 $('body').on('change', '.btt-status', function () {
     var $this = $(this);
     var value = $this.prop('checked');
