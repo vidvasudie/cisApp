@@ -1,0 +1,34 @@
+﻿@using cisApp.Function
+@model UploadFilesModel
+@{
+}
+
+<div class="separator separator-dashed my-10"></div>
+<div class="my-5"> 
+    <div class="form-group row">
+        <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">@Model.Description</label>
+        <div class="col-lg-4 col-md-9 col-sm-12">
+            <div class="dropzone dropzone-default" id="@Model.ElementId">
+                <div class="dropzone-msg dz-message needsclick">
+                    <h3 class="dropzone-msg-title">ลากไฟล์มาวางเพื่ออัพโหลด</h3>
+                    @*<span class="dropzone-msg-desc">
+                            This is just a demo dropzone. Selected files are
+                            <strong>not</strong>actually uploaded.
+                        </span>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class=" row @Model.ElementId" id="image_previews">
+        @{
+            if (Model.files != null && Model.files.Count > 0)
+            {
+                foreach (var item in Model.files)
+                {
+                    @await Html.PartialAsync("~/Views/Shared/Common/_ImageItem.cshtml", item)
+                }
+            }
+
+        }
+    </div>
+</div>

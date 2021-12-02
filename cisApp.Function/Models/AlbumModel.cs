@@ -27,5 +27,6 @@ namespace cisApp.Function
             }
         }
         public int CandidateSelected { get; set; } 
+        
     }
 }

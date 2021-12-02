@@ -32,7 +32,7 @@ namespace cisApp.Core
         /// </summary>
         public decimal? JobAreaSize { get; set; }
         /// <summary>
-        /// ยอดรวม
+        /// ราคารวมค่างาน
         /// </summary>
         public decimal? JobPrice { get; set; }
         /// <summary>
@@ -45,5 +45,21 @@ namespace cisApp.Core
         public int? JobStatus { get; set; }
         public DateTime? JobBeginDate { get; set; }
         public DateTime? JobEndDate { get; set; }
+        /// <summary>
+        /// ราคารวมค่าบริการ
+        /// </summary>
+        public decimal? JobPriceProceed { get; set; }
+        /// <summary>
+        /// ราคารวมค่าบริการและภาษี
+        /// </summary>
+        public decimal? JobFinalPrice { get; set; }
+        /// <summary>
+        /// %ค่าดำเนินการในใบงาน
+        /// </summary>
+        public int? JobProceedRatio { get; set; }
+        /// <summary>
+        /// %VAT ในใบงาน
+        /// </summary>
+        public int? JobVatratio { get; set; }
     }
 }

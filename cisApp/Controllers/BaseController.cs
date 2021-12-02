@@ -113,7 +113,12 @@ namespace cisApp.Controllers
 
         public ActionResult UploadFile(IFormFile upload_file)
         {
-            return Ok();
+            return Ok(new { ok=true });
+        }
+        [HttpPost]
+        public PartialViewResult UploadPreview(FileAttachModel file)
+        {
+            return PartialView("~/Views/Shared/Common/_ImageItem.cshtml", file);
         }
     }
 }

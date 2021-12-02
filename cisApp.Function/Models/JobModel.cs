@@ -77,6 +77,6 @@ namespace cisApp.Function
         public Guid JobsExImgId { get; set; } 
         public int? JobsExTypeId { get; set; }
         public string JobsExTypeDesc { get; set; }
-
+        public List<FileAttachModel> files { get; set; }
     }
 }

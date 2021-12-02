@@ -146,7 +146,7 @@ namespace cisApp.Core
                     .HasName("PK__Jobs__056690E281404330");
 
                 entity.Property(e => e.JobId)
-                    .HasColumnName("JobID") 
+                    .HasColumnName("JobID")
                     .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.JobAreaSize)
@@ -159,6 +159,10 @@ namespace cisApp.Core
 
                 entity.Property(e => e.JobDescription).HasComment("ขอบเขตงาน");
 
+                entity.Property(e => e.JobFinalPrice)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasComment("ราคารวมค่าบริการและภาษี");
+
                 entity.Property(e => e.JobNo)
                     .HasMaxLength(12)
                     .IsFixedLength()
@@ -166,17 +170,27 @@ namespace cisApp.Core
 
                 entity.Property(e => e.JobPrice)
                     .HasColumnType("decimal(10, 2)")
-                    .HasComment("ยอดรวม");
+                    .HasComment("ราคารวมค่างาน");
 
                 entity.Property(e => e.JobPricePerSqM)
                     .HasColumnType("decimal(10, 2)")
                     .HasComment("ราคา/ตรม");
+
+                entity.Property(e => e.JobPriceProceed)
+                    .HasColumnType("decimal(10, 2)")
+                    .HasComment("ราคารวมค่าบริการ");
+
+                entity.Property(e => e.JobProceedRatio).HasComment("%ค่าดำเนินการในใบงาน");
 
                 entity.Property(e => e.JobStatus).HasComment("สถานะปัจจุบัน");
 
                 entity.Property(e => e.JobTypeId)
                     .HasColumnName("JobTypeID")
                     .HasComment("รหัสประเภทใบงาน");
+
+                entity.Property(e => e.JobVatratio)
+                    .HasColumnName("JobVATRatio")
+                    .HasComment("%VAT ในใบงาน");
 
                 entity.Property(e => e.UserId)
                     .HasColumnName("UserID")
@@ -270,16 +284,20 @@ namespace cisApp.Core
 
             modelBuilder.Entity<JobsExamType>(entity =>
             {
-                entity.HasKey(e => e.JobsExTypeId)
+                entity.HasKey(e => e.JobExTypeId)
                     .HasName("PK__Jobs_Exa__0E22BCC7AB63F2E7");
 
                 entity.ToTable("Jobs_Exam_Type");
 
-                entity.Property(e => e.JobsExTypeId)
-                    .HasColumnName("JobsExTypeID")
+                entity.Property(e => e.JobExTypeId)
+                    .HasColumnName("JobExTypeID")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Description).HasColumnName("description");
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
             });
 
             modelBuilder.Entity<JobsLogs>(entity =>

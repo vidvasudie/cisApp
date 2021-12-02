@@ -8,7 +8,7 @@
     try
     {
         exImgList = GetJobsExamImage.Get.GetImageByJobId(Model.JobId);
-        exImgTypeList = GetJobsExamType.Get.GetAll().OrderBy(o => o.JobsExTypeId).ToList();
+        exImgTypeList = GetJobsExamType.Get.GetActive().OrderBy(o => o.JobExTypeId).ToList();
     }
     catch (Exception ex)
     {
@@ -43,7 +43,7 @@
                             <div class="d-flex align-items-center flex-wrap justify-content-between">
                                 <div class="row mt-n5">
                                     @{
-                                        var items = exImgList.Where(o => o.JobsExTypeId == cat.JobsExTypeId);
+                                        var items = exImgList.Where(o => o.JobsExTypeId == cat.JobExTypeId);
                                         if (items != null && items.Count() > 0)
                                         {
                                             foreach (var item in items)

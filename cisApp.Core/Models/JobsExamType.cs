@@ -6,7 +6,11 @@ namespace cisApp.Core
 {
     public partial class JobsExamType
     {
-        public int JobsExTypeId { get; set; }
+        public int JobExTypeId { get; set; }
         public string Description { get; set; }
+        public bool? IsActive { get; set; }
+        public bool? IsDeleted { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
     }
 }

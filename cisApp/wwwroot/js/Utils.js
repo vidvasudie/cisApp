@@ -233,8 +233,7 @@ $('body').on('click', '.bt-delete', function (e) {
 
 $('body').on('click', '.bt-update', function (e) {
 
-    var elem = $(this);
-
+    var elem = $(this); 
     Swal.fire({
         title: "แก้ไขข้อมูล",
         text: "ยืนยันการแก้ไขข้อมูล",
@@ -268,3 +267,7 @@ $('body').on('change', '.btt-status', function () {
     });
 
 }); 
+
+$('body').on('click', '.bt-img-del', function () { 
+    $(this).parents('.single-img').remove();
+});

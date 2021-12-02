@@ -33,7 +33,7 @@ namespace cisApp.Controllers
             return PartialView("PT/_itemlist", new PaginatedList<JobModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
 
-        public IActionResult Manage(SearchModel model)
+        public IActionResult Detail(SearchModel model)
         {
             List<JobModel> _model = GetJobs.Get.GetJobs(model);
             if (_model != null && _model.Count > 0)
@@ -93,16 +93,29 @@ namespace cisApp.Controllers
 
         #endregion
 
-        #region Contest
-
-
-
-        #endregion
-
-        public IActionResult Detail(string Mode)
+        public IActionResult Manage(SearchModel model)
         {
-            return View("Detail", Mode);
+            List<JobModel> _model = GetJobs.Get.GetJobs(model);
+            if (_model != null && _model.Count > 0)
+                return View(_model.FirstOrDefault());
+
+            return View(new JobModel());
         }
+
+        [HttpPost]
+        public IActionResult Manage(JobModel model)
+        {
+            //List<JobModel> _model = GetJobs.Get.GetJobs(model);
+            //if (_model != null && _model.Count > 0)
+            //    return View(_model.FirstOrDefault());
+
+            return View(new JobModel());
+        }
+
+        //public IActionResult Detail2(string Mode)
+        //{
+        //    return View("Detail", Mode);
+        //}
         public IActionResult Payment()
         {
             return View();
