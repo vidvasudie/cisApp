@@ -27,6 +27,13 @@ namespace cisApp.Controllers
         public IActionResult Index(int pageIndex = 1)
         {
             return View(new PaginatedList<UserModel>(_model, _model.Count, pageIndex, 2));
+            
+        }
+
+        public IActionResult IndexV1(int pageIndex = 1)
+        {
+            //return View(new PaginatedList<UserModel>(_model, _model.Count, pageIndex, 2));
+            return View("V1/Index");
         }
 
         [HttpPost]
@@ -89,6 +96,21 @@ namespace cisApp.Controllers
             try
             {
                 var user = GetUser.Manage.Delete(id, _UserId.Value);
+
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
+
+        [HttpPost]
+        public JsonResult ResetPassword(Guid id)
+        {
+            try
+            {
+                //var user = GetUser.Manage.Delete(id, _UserId.Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
             }
