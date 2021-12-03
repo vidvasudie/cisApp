@@ -79,7 +79,22 @@ namespace cisApp.Function
                 }
             }
 
-            
+            public static List<Users> GetCutomerActive()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.Users.Where(o => o.IsActive == true && o.IsDeleted == false && o.UserType == 1).ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
 
             public static bool IsEmailAlreadyUseInsert(string email)
             {

@@ -7,6 +7,7 @@ namespace cisApp.Function
 {
     public class FileAttachModel : AttachFile
     {
+        public Guid JobId { get; set; }
         public int JobExTypeId { get; set; }
         public string Description { get; set; }
         public string FileBase64 { get; set; }

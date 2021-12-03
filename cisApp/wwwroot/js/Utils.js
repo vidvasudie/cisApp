@@ -188,6 +188,10 @@ function GetDataPostCode(urlAction) {
 $('body').on('click', '.btn-submit', function () {
     $('#kt_form').submit();
 })
+$('body').on('click', '.btn-draft', function () {
+    $('#IsDraft').val(true);
+    $('#kt_form').submit();
+});
 
 $('body').on('keypress', '.is-number-only', function (e) {
     keys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']

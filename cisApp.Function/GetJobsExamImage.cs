@@ -56,6 +56,7 @@ namespace cisApp.Function
                                    from ajmap in amap.DefaultIfEmpty()
                                    select new JobsExamImageModel()
                                    {
+                                       AttachFileId = ajmap.AttachFileId,
                                        JobsExTypeId = jimg.JobsExTypeId,
                                        JobsExTypeDesc = jtmap.Description,
                                        RefId = ajmap.RefId,

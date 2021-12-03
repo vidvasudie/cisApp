@@ -133,7 +133,10 @@
                         <a href="@Url.Action("Index", "Jobs")" class="btn btn-light-primary font-weight-bolder mr-2">
                             <i class="ki ki-long-arrow-back icon-sm"></i>ย้อนกลับ
                         </a>
-                        <div class="btn-group">
+                        <button type="button" class="btn btn-light-info font-weight-bolder btn-draft">
+                                <i class="ki ki-check icon-sm"></i>บันทึกแบบร่าง
+                            </button>
+                        <div class="btn-group ml-2">
                             <button type="button" class="btn btn-primary font-weight-bolder btn-submit">
                                 <i class="ki ki-check icon-sm"></i>บันทึก
                             </button>
@@ -169,9 +172,21 @@
                         <div class="row">
                             <div class="col-xl-2"></div>
                             <div class="col-xl-8">
+                                @Html.HiddenFor(m => m.UserId)
                                 @Html.HiddenFor(m => m.JobNo)
+                                @Html.HiddenFor(m => m.IsDraft)
 
                                 <div class="my-5">
+                                    @*<div class="form-group row">
+                                        <label class="col-3">ลูกค้า <span class="text-danger">*</span></label>
+                                        <div class="col-9">
+                                            @{
+                                                SelectList userList = new SelectList(GetUser.Get.GetCutomerActive().Select(o => new { Id = o.UserId, Name = o.Fname + " " + o.Lname }), "Id", "Name");
+                                            }
+                                            @Html.DropDownListFor(m => m.UserId, userList, "กรุณาเลือก", new { @class = "form-control", @Required = "Required" })
+                                            @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>*@
                                     <div class="form-group row">
                                         <label class="col-3">ประเภทงาน <span class="text-danger">*</span></label>
                                         <div class="col-9">
@@ -234,7 +249,7 @@
                                             // Model.JobExUpload = new UploadFilesModel() { ElementId = "kt_dropzone_multi_" + cat.JobExTypeId, JobExTypeId = cat.JobExTypeId, Description = cat.Description, files = new List<FileAttachModel>() };
                                             var catFiles = Model.files != null ? Model.files.Where(o => o.JobExTypeId == cat.JobExTypeId).ToList() : new List<FileAttachModel>();
                                             <div class="separator separator-dashed my-10"></div>
-                                            @await Html.PartialAsync("~/Views/Shared/Common/_DropzoneMultiFile.cshtml", new UploadFilesModel() { ElementId = "kt_dropzone_multi_" + cat.JobExTypeId, JobExTypeId = cat.JobExTypeId, Description = cat.Description, files = catFiles } )
+                                            @await Html.PartialAsync("~/Views/Shared/Common/_DropzoneMultiFile.cshtml", new UploadFilesModel() { ElementId = "kt_dropzone_multi_" + cat.JobExTypeId, JobExTypeId = cat.JobExTypeId, Description = cat.Description, files = catFiles })
                                         }
                                     }
 

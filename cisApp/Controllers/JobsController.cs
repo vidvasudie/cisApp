@@ -42,6 +42,54 @@ namespace cisApp.Controllers
             return View(new JobModel());
         }
 
+        public IActionResult Manage(SearchModel model)
+        {
+            if(model != null && model.gId != null && model.gId != Guid.Empty)
+            {
+                List<JobModel> _model = GetJobs.Get.GetJobs(model);
+                if (_model != null && _model.Count > 0)
+                    return View(_model.FirstOrDefault());
+            } 
+            return View(new JobModel());
+        }
+
+        [HttpPost]
+        public JsonResult Manage(JobModel data)
+        {
+            try
+            {
+                if(data.JobId == Guid.Empty)
+                {
+                    //new create job 1=ร่าง/2=รอ
+                    data.JobStatus = 2; 
+                }
+                data.JobStatus = data.IsDraft ? 1 : data.JobStatus;
+                data.UserId = Guid.Parse("50BA6DDD-0D68-475B-83E4-EC83C0499BFE");
+                data.JobPrice = data.JobPricePerSqM * data.JobAreaSize;
+                data.JobProceedRatio = GetTmVatratio.Get.GetFirst().Ratio;
+                data.JobPriceProceed = data.JobPrice * data.JobProceedRatio;
+                data.JobVatratio = GetTmProceedRatio.Get.GetFirst().Ratio;
+                data.JobFinalPrice = data.JobPriceProceed * data.JobVatratio; 
+                data.UpdatedBy = _UserId.Value;
+                data.CreatedBy = _UserId.Value;
+
+                var result = GetJobs.Manage.Update(data, Request.HttpContext.Connection.RemoteIpAddress.ToString());
+                if (result != null)
+                {
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Jobs")));
+                }
+                else
+                {
+                    return Json(new ResponseModel().ResponseError());
+                } 
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }   
+             
+        }
+
         #region Candidate
 
         [HttpPost]
@@ -93,24 +141,7 @@ namespace cisApp.Controllers
 
         #endregion
 
-        public IActionResult Manage(SearchModel model)
-        {
-            List<JobModel> _model = GetJobs.Get.GetJobs(model);
-            if (_model != null && _model.Count > 0)
-                return View(_model.FirstOrDefault());
-
-            return View(new JobModel());
-        }
-
-        [HttpPost]
-        public IActionResult Manage(JobModel model)
-        {
-            //List<JobModel> _model = GetJobs.Get.GetJobs(model);
-            //if (_model != null && _model.Count > 0)
-            //    return View(_model.FirstOrDefault());
-
-            return View(new JobModel());
-        }
+        
 
         //public IActionResult Detail2(string Mode)
         //{

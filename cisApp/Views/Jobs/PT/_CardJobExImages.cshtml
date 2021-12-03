@@ -33,7 +33,7 @@
             string optionClass = "";
             foreach (var cat in exImgTypeList)
             {
-                optionClass = first ? " mt-n8 " : " mt-8 ";
+                optionClass = first ? " mt-n8 " : "";
                 <div class="row @optionClass">
                     <h5 class="col-12 mb-10" style="color: #8408d9;"><strong>❏ @Html.Raw(cat.Description)</strong></h5>
                     <div class="d-flex">
@@ -50,7 +50,7 @@
                                             {
                                                 <a href="javascript:void(0);" class="col-12 col-md-2">
                                                     @*<img src="https://picsum.photos/200/300?random=@x" x alt="..." class="img-thumbnail my-3 mx-3">*@
-                                                    <img src="@Url.Content(item.UrlPath)" x alt="@item.FileName" class="img-thumbnail my-3 mx-3">
+                                                    <img src="@Url.Content(item.UrlPath)" x alt="@item.FileName" class="img-thumbnail img-list my-3 mx-3">
                                                 </a>
                                             }
                                         }
@@ -69,6 +69,7 @@
                         <!--end: Info-->
                     </div>
                 </div>
+                first = false;
             }
         }
 

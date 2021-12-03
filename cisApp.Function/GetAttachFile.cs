@@ -11,7 +11,7 @@ namespace cisApp.Function
 {
     public static class GetAttachFile
     {
-        static string _UploadDir = "Uploads";
+        public static string _UploadDir = "Uploads";
         public class Get
         {
             public static AttachFile GetByRefId(Guid refId)

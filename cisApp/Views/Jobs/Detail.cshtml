@@ -188,7 +188,7 @@
                 if (Model.JobCaUserId != null)
                 {
                     <div id="job_img_submit">
-                        @await Html.PartialAsync("PT/_CardJobSubmitInfo.cshtml")
+                        @await Html.PartialAsync("PT/_CardJobSubmitInfo.cshtml", Model)
                     </div>
                 }
             }

@@ -56,8 +56,25 @@ namespace cisApp.Core
         public virtual DbSet<UserDesignerRequestImageType> UserDesignerRequestImageType { get; set; }
         public virtual DbSet<UserImg> UserImg { get; set; }
         public virtual DbSet<Settings> Settings { get; set; }
+        public virtual DbSet<TmProceedRatio> TmProceedRatio { get; set; }
+        public virtual DbSet<TmVatratio> TmVatratio { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<TmProceedRatio>(entity =>
+            {
+                entity.ToTable("Tm_ProceedRatio");
+
+                entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
+            });
+
+            modelBuilder.Entity<TmVatratio>(entity =>
+            {
+                entity.ToTable("Tm_VATRatio");
+
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
+            });
             modelBuilder.Entity<Album>(entity =>
             {
                 entity.Property(e => e.AlbumId).HasColumnName("AlbumID");
@@ -149,6 +166,8 @@ namespace cisApp.Core
                     .HasColumnName("JobID")
                     .HasDefaultValueSql("(newid())");
 
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
                 entity.Property(e => e.JobAreaSize)
                     .HasColumnType("decimal(10, 2)")
                     .HasComment("ขนาดพื้นที่ ");
@@ -157,7 +176,9 @@ namespace cisApp.Core
                     .HasColumnName("JobCaUserID")
                     .HasComment("designer");
 
-                entity.Property(e => e.JobDescription).HasComment("ขอบเขตงาน");
+                entity.Property(e => e.JobDescription)
+                    .IsRequired()
+                    .HasComment("ขอบเขตงาน");
 
                 entity.Property(e => e.JobFinalPrice)
                     .HasColumnType("decimal(10, 2)")
@@ -303,17 +324,15 @@ namespace cisApp.Core
             modelBuilder.Entity<JobsLogs>(entity =>
             {
                 entity.HasKey(e => e.JoblogId)
-                    .HasName("PK__Jobs_log__6B31812E6794B3B3");
+                    .HasName("PK__Jobs_log__6B31812E6A2B4D97");
 
                 entity.ToTable("Jobs_logs");
 
-                entity.Property(e => e.JoblogId)
-                    .HasColumnName("JoblogID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.JoblogId).HasColumnName("JoblogID");
 
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.Desctiption).HasComment("ข้อความอธิบายสถานะ");
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.Ipaddress)
                     .HasColumnName("IPAddress")
@@ -326,13 +345,11 @@ namespace cisApp.Core
             modelBuilder.Entity<JobsTracking>(entity =>
             {
                 entity.HasKey(e => e.JobTrackingId)
-                    .HasName("PK__Jobs_Tra__BA532C702207B82E");
+                    .HasName("PK__Jobs_Tra__8D48BF76B04130C2");
 
                 entity.ToTable("Jobs_Tracking");
 
-                entity.Property(e => e.JobTrackingId)
-                    .HasColumnName("JobTrackingID")
-                    .ValueGeneratedNever();
+                entity.Property(e => e.JobTrackingId).HasColumnName("JobTrackingID");
 
                 entity.Property(e => e.JobId).HasColumnName("JobID");
 

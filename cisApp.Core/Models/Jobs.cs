@@ -10,7 +10,7 @@ namespace cisApp.Core
         /// <summary>
         /// customer
         /// </summary>
-        public Guid? UserId { get; set; }
+        public Guid UserId { get; set; }
         /// <summary>
         /// รหัสงาน
         /// </summary>
@@ -22,7 +22,7 @@ namespace cisApp.Core
         /// <summary>
         /// รหัสประเภทใบงาน
         /// </summary>
-        public int? JobTypeId { get; set; }
+        public int JobTypeId { get; set; }
         /// <summary>
         /// ขอบเขตงาน
         /// </summary>
@@ -30,19 +30,19 @@ namespace cisApp.Core
         /// <summary>
         /// ขนาดพื้นที่ 
         /// </summary>
-        public decimal? JobAreaSize { get; set; }
+        public decimal JobAreaSize { get; set; }
         /// <summary>
         /// ราคารวมค่างาน
         /// </summary>
-        public decimal? JobPrice { get; set; }
+        public decimal JobPrice { get; set; }
         /// <summary>
         /// ราคา/ตรม
         /// </summary>
-        public decimal? JobPricePerSqM { get; set; }
+        public decimal JobPricePerSqM { get; set; }
         /// <summary>
         /// สถานะปัจจุบัน
         /// </summary>
-        public int? JobStatus { get; set; }
+        public int JobStatus { get; set; }
         public DateTime? JobBeginDate { get; set; }
         public DateTime? JobEndDate { get; set; }
         /// <summary>
@@ -61,5 +61,9 @@ namespace cisApp.Core
         /// %VAT ในใบงาน
         /// </summary>
         public int? JobVatratio { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public Guid? CreatedBy { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        public Guid? UpdatedBy { get; set; }
     }
 }
