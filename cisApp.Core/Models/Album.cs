@@ -8,7 +8,7 @@ namespace cisApp.Core
 {
     public partial class Album
     {
-        public int AlbumId { get; set; }
+        public int? AlbumId { get; set; }
         public Guid JobId { get; set; }
         public Guid? UserId { get; set; }
         public string Category { get; set; }

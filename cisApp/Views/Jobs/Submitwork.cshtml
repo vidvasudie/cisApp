@@ -164,6 +164,7 @@
                                     <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
                                         <h4 class="mb-10 font-weight-bold text-dark">ตั้งค่าเนื้อหา รายการข้อมูลทั้งหมดจะถูกนำไปทำเป็น Profile ข้อมูล</h4>
                                         @Html.HiddenFor(m => m.AlbumType)
+                                        @Html.HiddenFor(m => m.UserId)
                                         @Html.HiddenFor(m => m.JobId)
                                         <!--begin::Input-->
                                         <div class="form-group">
@@ -270,7 +271,7 @@
                                             <button type="button" class="btn btn-light-primary font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-prev">ย้อนกลับ</button>
                                         </div>
                                         <div>
-                                            <button type="button" class="btn btn-success font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-submit">นำส่ง</button>
+                                            <a class="btn btn-success font-weight-bolder text-uppercase px-9 py-4  btn-submit">นำส่ง</a>
                                             <button type="button" class="btn btn-primary font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-next">ถัดไป</button>
                                         </div>
                                     </div>
