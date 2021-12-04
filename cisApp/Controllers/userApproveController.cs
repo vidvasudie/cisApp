@@ -41,7 +41,17 @@ namespace cisApp.Controllers
             List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model);
             if (_model != null)
                 return View(_model.FirstOrDefault());
-            return View(new UserModel() { UserType=2 });
+            if(model.Id != null)
+            {
+                var user = GetUser.Get.GetById(model.Id.Value);
+                user.UserType = 2;
+                return View(user);
+            }
+            else
+            {
+                return View(new UserModel() { UserType = 2 });
+            }
+            
         }
 
         [HttpPost]
@@ -102,8 +112,11 @@ namespace cisApp.Controllers
         }
         public IActionResult History()
         {
-            return View();
+            return View("V1/History");
         }
-
+        public IActionResult History2()
+        {
+            return View("V1/History");
+        }
     }
 }

@@ -28,14 +28,21 @@
                 </a>
             </li>
             <li class="navi-item">
-                <a href="@Url.Action("index","Jobs", new { id = Model.UserId })" class="navi-link">
+                <a href="@Url.Action("index","Jobs", new { Id = Model.UserId })" class="navi-link" target="_blank">
                     <span class="navi-icon">
                         <i class="flaticon2-list-3"></i>
                     </span>
                     <span class="navi-text">ใบงาน</span>
                 </a>
             </li>
-
+            <li class="navi-item">
+                <a href="@Url.Action("Manage","Jobs", new { gId = Model.UserId })" class="navi-link" target="_blank">
+                    <span class="navi-icon">
+                        <i class="flaticon-add"></i>
+                    </span>
+                    <span class="navi-text">สร้างใบงาน</span>
+                </a>
+            </li>
             <li class="navi-item">
                 <a href="@Url.Action("Private","Chats", new { id = Model.UserId })" class="navi-link">
                     <span class="navi-icon">

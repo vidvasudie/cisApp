@@ -53,6 +53,7 @@ namespace cisApp.Function
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@userId", model.Id != null && model.Id != Guid.Empty ? model?.Id : (object)DBNull.Value),
                        new SqlParameter("@jobId", model.gId != null && model.gId != Guid.Empty ? model?.gId : (object)DBNull.Value),
                        new SqlParameter("@jobType", model.type.HasValue ? model.type : (object)DBNull.Value),
                        new SqlParameter("@jobStatus", model.status != 0 ? model.status : (object)DBNull.Value),
@@ -73,6 +74,7 @@ namespace cisApp.Function
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@userId", model.Id != null && model.Id != Guid.Empty ? model?.Id : (object)DBNull.Value),
                        new SqlParameter("@jobId", model.gId != null && model.gId != Guid.Empty ? model?.gId : (object)DBNull.Value),
                        new SqlParameter("@jobType", model.type.HasValue ? model.type : (object)DBNull.Value),
                        new SqlParameter("@jobStatus", model.status != 0 ? model.status : (object)DBNull.Value)

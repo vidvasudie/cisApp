@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using cisApp.Core;
+using cisApp.library;
+using static cisApp.library.DateTimeUtil;
 
 namespace cisApp.Function
 {
@@ -11,14 +13,7 @@ namespace cisApp.Function
     {
         public Guid? UserId { get; set; }
 
-
-
-      
-
-
-
-
-
+         
         /// <summary>
         /// 1 = ผู้ใข้งาน,
         /// 2 = นักออกแบบ
@@ -79,7 +74,18 @@ namespace cisApp.Function
 
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string CreatedDateStr
+        {
+            get
+            {
+                return CreatedDate.ToStringFormat(DateTimeFormat.FULL);
+            }
+            set
+            {
+                CreatedDate = value.ToDateTimeFormat();
+            }
+        }
         public DateTime UpdatedDate { get; set; }
         public DateTime DeletedDate { get; set; }
         public DateTime? LastLogin { get; set; }

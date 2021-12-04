@@ -19,9 +19,9 @@ namespace cisApp.Controllers
             _PermissionMenuId = Guid.Parse("434737C0-D543-476A-A7CE-FBD6C4E155EC");
             _PermissionManage = 2;// สิทธิ์ผู้ใช้งาน
         }
-        public IActionResult Index()
+        public IActionResult Index(SearchModel model)
         {
-            return View();
+            return View(model);
         }
 
         [HttpPost]
@@ -50,7 +50,7 @@ namespace cisApp.Controllers
                 if (_model != null && _model.Count > 0)
                     return View(_model.FirstOrDefault());
             } 
-            return View(new JobModel());
+            return View(new JobModel() { UserId= model.gId.Value });
         }
 
         [HttpPost]
