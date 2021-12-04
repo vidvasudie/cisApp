@@ -14,6 +14,7 @@ namespace cisApp.Function
         public int mode { get; set; } = 0; 
         public int? type { get; set; }
         public string goBack { get; set; }
+        public bool? active { get; set; }
 
         public int? jobType { get; set; }
         public int? PaymentStatus { get; set; }

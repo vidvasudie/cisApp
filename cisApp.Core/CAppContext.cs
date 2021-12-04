@@ -100,8 +100,7 @@ namespace cisApp.Core
                 entity.ToTable("Album_image");
 
                 entity.Property(e => e.ImgId)
-                    .HasColumnName("ImgID")
-                    .ValueGeneratedNever();
+                    .HasColumnName("ImgID");
 
                 entity.Property(e => e.AlbumId).HasColumnName("AlbumID");
 

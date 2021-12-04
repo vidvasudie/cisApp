@@ -158,13 +158,14 @@ namespace cisApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Submitwork(Guid id, string AlbumType = "1")
+        public IActionResult Submitwork(Guid id, Guid userId, string AlbumType = "1")
         {
             try
             {
                 AlbumModel model = new AlbumModel()
                 {
                     JobId = id,
+                    UserId = userId,
                     AlbumType = AlbumType
                 };
                 return View(model);

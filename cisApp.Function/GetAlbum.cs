@@ -78,7 +78,7 @@ namespace cisApp.Function
                         using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
                             Album obj = new Album();
-                            if (data.JobId != null && data.JobId != Guid.Empty)
+                            if (data.AlbumId != null)
                             {
                                 
                             }
@@ -93,7 +93,7 @@ namespace cisApp.Function
                             obj.UpdatedDate = DateTime.Now;
 
                             obj.JobId = data.JobId;
-                            obj.UserId = userId;
+                            obj.UserId = data.UserId;
                             obj.Category = data.Category;
                             obj.Tags = data.Tags;
                             obj.AlbumType = data.AlbumType;
@@ -103,7 +103,9 @@ namespace cisApp.Function
                             obj.IsActive = true;
                             obj.IsDeleted = false;
 
-                            context.Album.Update(obj);                           
+                            context.Album.Update(obj);
+
+                            context.SaveChanges();
 
                             //validate insert and remove image 
                             //insert job image ex
@@ -155,7 +157,7 @@ namespace cisApp.Function
                 foreach (var file in imgs.Where(o => o != null && !String.IsNullOrEmpty(o.FileBase64)))
                 {
                     AlbumImage map = new AlbumImage();
-                    map.AlbumId = obj.AlbumId;
+                    map.AlbumId = obj.AlbumId.Value;
                     map.UserId = obj.UserId;
                     context.AlbumImage.Add(map);
                     context.SaveChanges();
