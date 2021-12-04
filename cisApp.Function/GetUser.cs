@@ -231,115 +231,148 @@ namespace cisApp.Function
                 {
                     using (var context = new CAppContext())
                     {
-                        //using var transaction = context.Database.BeginTransaction();
-                        Users obj = new Users();
-
-                        if (data.UserId != null)
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
-                            obj = context.Users.Find(data.UserId.Value);
-                            if (!Get.IsEmailAlreadyUseUpdate(data.Email))
+                            //using var transaction = context.Database.BeginTransaction();
+                            Users obj = new Users();
+
+                            if (data.UserId != null)
                             {
-                                throw new Exception("Email ดังกล่าวถูกใช้งานไปแล้ว");
-                            }
-                        }
-                        else
-                        {
-                            obj.IsActive = true;
-                            obj.CreatedDate = DateTime.Now;
-                            obj.CreatedBy = userId;
-
-                            if (!Get.IsEmailAlreadyUseInsert(data.Email))
-                            {
-                                throw new Exception("Email ดังกล่าวถูกใช้งานไปแล้ว");
-                            }
-
-                            // in case insert we need insert new password
-
-                            if (string.IsNullOrEmpty(newPassword))
-                            {
-                                newPassword = Utility.RandomPassword();
-                            }
-
-
-                            newPassword = Encryption.Encrypt(newPassword);
-                            UsersPassword usersPassword = new UsersPassword()
-                            {
-                                Password = newPassword
-                            };
-
-
-
-                            context.UsersPassword.Update(usersPassword);
-
-                            context.SaveChanges();
-
-                            obj.PasswordId = usersPassword.PasswordId.Value;
-
-                        }
-
-                        obj.Fname = data.Fname;
-                        obj.Lname = data.Lname;
-                        obj.UserType = data.UserType;
-                        obj.Tel = data.Tel;
-                        obj.Email = data.Email;
-                        obj.RoleId = data.RoleId;
-                        //obj.IsActive = data.IsActive;
-
-                        obj.UpdatedDate = DateTime.Now;
-                        obj.UpdatedBy = userId;
-                        obj.IsDeleted = false;
-
-                        context.Users.Update(obj);
-
-                        context.SaveChanges();
-
-                        if (obj.UserType != 1)
-                        {
-                            // user designer 
-                            UserDesigner objSub = new UserDesigner();
-
-                            if (data.UserDesignerId != null && data.UserDesignerId != Guid.Empty)
-                            {
-                                objSub = context.UserDesigner.Find(data.UserDesignerId);
-                            }
-                            else if (data.UserId != null && data.UserId != Guid.Empty)
-                            {
-                                objSub = context.UserDesigner.Where(o => o.UserId == data.UserId).FirstOrDefault();
+                                obj = context.Users.Find(data.UserId.Value);
+                                if (!Get.IsEmailAlreadyUseUpdate(data.Email))
+                                {
+                                    throw new Exception("Email ดังกล่าวถูกใช้งานไปแล้ว");
+                                }
                             }
                             else
                             {
-                                // ถ้าเพิ่ม designer จะต้องเพิ่ม log คำขอเป็น designer ที่สำเร็จแล้วด้วย
+                                obj.IsActive = true;
+                                obj.CreatedDate = DateTime.Now;
+                                obj.CreatedBy = userId;
+
+                                if (!Get.IsEmailAlreadyUseInsert(data.Email))
+                                {
+                                    throw new Exception("Email ดังกล่าวถูกใช้งานไปแล้ว");
+                                }
+
+                                // in case insert we need insert new password
+
+                                if (string.IsNullOrEmpty(newPassword))
+                                {
+                                    newPassword = Utility.RandomPassword();
+                                }
+
+
+                                newPassword = Encryption.Encrypt(newPassword);
+                                UsersPassword usersPassword = new UsersPassword()
+                                {
+                                    Password = newPassword
+                                };
+
+
+
+                                context.UsersPassword.Update(usersPassword);
+
+                                context.SaveChanges();
+
+                                obj.PasswordId = usersPassword.PasswordId.Value;
+
                             }
 
-                            objSub.UserId = obj.UserId;
-                            objSub.PersonalId = data.PersonalId;
-                            objSub.BankId = data.BankId;
-                            objSub.AccountNumber = data.AccountNumber;
-                            objSub.AccountType = data.AccountType;
-                            objSub.Address = data.Address;
-                            objSub.SubDistrictId = data.SubDistrictId;
-                            objSub.DistrictId = data.DistrictId;
-                            objSub.ProvinceId = data.ProvinceId;
-                            objSub.PostCode = data.PostCode;
+                            obj.Fname = data.Fname;
+                            obj.Lname = data.Lname;
+                            obj.UserType = data.UserType;
+                            obj.Tel = data.Tel;
+                            obj.Email = data.Email;
+                            obj.RoleId = data.RoleId;
+                            //obj.IsActive = data.IsActive;
 
-                            context.UserDesigner.Update(objSub);
+                            obj.UpdatedDate = DateTime.Now;
+                            obj.UpdatedBy = userId;
+                            obj.IsDeleted = false;
+
+                            context.Users.Update(obj);
 
                             context.SaveChanges();
-                        }
 
-                        // save profile
-                        if (!String.IsNullOrEmpty(data.FileBase64)) // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
-                        {
-                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId.Value);
+                            if (obj.UserType != 1)
+                            {
+                                // user designer 
+                                UserDesigner objSub = new UserDesigner();
 
-                            GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), data.UserId.Value, userId.Value);
-                        }
-                        else if (data.FileRemove) // ถ้าลบไฟล์ออก แล้วไม่ได้อัพไฟล์ใหม่ขึ้นมาจะเข้า เงื่อนไขนี้
-                        {
-                            GetAttachFile.Manage.UpdateStatusByRefId(data.UserId.Value, false, userId.Value);
-                        }
+                                if (data.UserDesignerId != null && data.UserDesignerId != Guid.Empty)
+                                {
+                                    objSub = context.UserDesigner.Find(data.UserDesignerId);
+                                }
+                                else if (data.UserId != null && data.UserId != Guid.Empty)
+                                {
+                                    objSub = context.UserDesigner.Where(o => o.UserId == data.UserId).FirstOrDefault();
+                                }
+                                else
+                                {
+                                    // ถ้าเพิ่ม designer จะต้องเพิ่ม log คำขอเป็น designer ที่สำเร็จแล้วด้วย
+                                }
 
-                        return obj;
+                                objSub.UserId = obj.UserId;
+                                objSub.PersonalId = data.PersonalId;
+                                objSub.BankId = data.BankId;
+                                objSub.AccountNumber = data.AccountNumber;
+                                objSub.AccountType = data.AccountType;
+                                objSub.Address = data.Address;
+                                objSub.SubDistrictId = data.SubDistrictId;
+                                objSub.DistrictId = data.DistrictId;
+                                objSub.ProvinceId = data.ProvinceId;
+                                objSub.PostCode = data.PostCode;
+
+                                context.UserDesigner.Update(objSub);
+
+                                context.SaveChanges();
+                            }
+
+                            // save profile
+                            if (!String.IsNullOrEmpty(data.FileBase64)) // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
+                            {
+                                // remove previous img
+                                var activeUserImg = Get.GetUserImgs(obj.UserId.Value);
+
+                                if (activeUserImg.Count > 0)
+                                {
+                                    foreach (var item in activeUserImg)
+                                    {
+                                        GetAttachFile.Manage.UpdateStatusByRefId(item.UserImgId.Value, false, userId.Value);
+                                    }
+                                }
+
+                                // insert new UserImg
+                                UserImg userImg = new UserImg()
+                                {
+                                    UserId = obj.UserId.Value
+                                };
+
+                                context.UserImg.Update(userImg);
+
+                                context.SaveChanges();
+
+                                GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), userImg.UserImgId.Value, userId.Value);
+
+                                obj.UserImgId = userImg.UserImgId;
+
+                                context.Users.Update(obj);
+
+                                context.SaveChanges();
+                            }
+                            else if (data.FileRemove) // ถ้าลบไฟล์ออก แล้วไม่ได้อัพไฟล์ใหม่ขึ้นมาจะเข้า เงื่อนไขนี้
+                            {
+                                var userImg = context.UserImg.Where(o => o.UserId == obj.UserId.Value).FirstOrDefault();
+
+                                GetAttachFile.Manage.UpdateStatusByRefId(userImg.UserImgId.Value, false, userId.Value);
+                            }
+
+                            dbContextTransaction.Commit();
+
+                            return obj;
+                        }
+                        
                     }
                 }
                 catch (Exception ex)
@@ -441,6 +474,32 @@ namespace cisApp.Function
                         Users obj = context.Users.Find(id);
 
                         obj.LastLogin = DateTime.Now;
+
+                        context.Users.Update(obj);
+
+                        context.SaveChanges();
+
+                        return obj;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static Users Downgrade(Guid id, Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        Users obj = context.Users.Find(id);
+
+                        obj.UserType = 1;
+
+                        obj.UpdatedDate = DateTime.Now;
+                        obj.UpdatedBy = userId;
 
                         context.Users.Update(obj);
 

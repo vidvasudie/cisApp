@@ -130,6 +130,21 @@ namespace cisApp.Controllers
                 return Json(new ResponseModel().ResponseError(MessageCommon.AdminSendMailPasswordFail));
             }
         }
+
+        [HttpPost]
+        public JsonResult Downgrade(Guid id)
+        {
+            try
+            {
+                var user = GetUser.Manage.Downgrade(id, _UserId.Value);
+                
+                return Json(new ResponseModel().ResponseSuccess("ลดขั้นผู้ใข้งานสำเร็จ", Url.Action("Index", "userManagement")));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
     }
 
 
