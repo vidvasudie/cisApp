@@ -190,7 +190,7 @@ namespace cisApp.Function
                     return 0;
                 }
                 //get old data ที่ไม่อยุ่ในรายการที่ o.FileBase64 ไม่มีค่า = ลบทิ้ง
-                string listId = String.Join(",", imgs.Where(o => o != null && String.IsNullOrEmpty(o.FileBase64)).Select(o => o.JobId.ToString()));
+                string listId = String.Join(",", imgs.Where(o => o != null && String.IsNullOrEmpty(o.FileBase64)).Select(o => o.gId.ToString()));
                 SqlParameter[] parameter = new SqlParameter[] { 
                        new SqlParameter("@jobId", obj.JobId), //jobid
                        new SqlParameter("@imgList", listId), //list
@@ -215,7 +215,7 @@ namespace cisApp.Function
                     //insert JobExImage
                     JobsExamImage map = new JobsExamImage();
                     map.JobsExImgId = Guid.NewGuid();
-                    map.JobsExTypeId = file.JobExTypeId;
+                    map.JobsExTypeId = file.TypeId;
                     map.JobId = obj.JobId;
                     context.JobsExamImage.Add(map); 
                     context.SaveChanges();

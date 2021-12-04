@@ -38,13 +38,25 @@ namespace cisApp.Controllers
 
         public IActionResult Manage(SearchModel model)
         {
-            List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model);
+            //ยังไม่ได้ Get Image Profile
+            List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model); //ใช้ code ในการหารายการข้อมูล
             if (_model != null)
-                return View(_model.FirstOrDefault());
+            {
+                var data = _model.FirstOrDefault();
+                //get data image profile
+
+                //get upgrade file attach
+                var fatchs = GetUserDesignerRequest.Get.GetUserDesignerRequestFiles(data.Id);
+                data.files = fatchs;
+
+                return View(data);
+            }
+                
             if(model.Id != null)
             {
                 var user = GetUser.Get.GetById(model.Id.Value);
                 user.UserType = 2;
+                //var img = GetAttachFile.Get.GetByRefId(user.);
                 return View(user);
             }
             else
@@ -116,7 +128,7 @@ namespace cisApp.Controllers
         }
         public IActionResult History2()
         {
-            return View("V1/History");
+            return View("V1/Index");
         }
     }
 }

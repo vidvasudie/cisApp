@@ -64,7 +64,7 @@ namespace cisApp.Controllers
                     data.JobStatus = 2; 
                 }
                 data.JobStatus = data.IsDraft ? 1 : data.JobStatus;
-                data.UserId = Guid.Parse("50BA6DDD-0D68-475B-83E4-EC83C0499BFE");
+                //data.UserId = Guid.Parse("50BA6DDD-0D68-475B-83E4-EC83C0499BFE");
                 data.JobPrice = data.JobPricePerSqM * data.JobAreaSize;
                 data.JobProceedRatio = GetTmVatratio.Get.GetFirst().Ratio;
                 data.JobPriceProceed = data.JobPrice * data.JobProceedRatio;

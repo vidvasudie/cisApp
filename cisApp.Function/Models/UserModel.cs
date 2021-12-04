@@ -23,9 +23,7 @@ namespace cisApp.Function
         [Display(Name = "ประเภทผู้ใช้งาน")]
         public int? UserType { get; set; }
 
-       
-
-
+        
         public Guid? RoleId { get; set; }
         /// <summary>
         /// รหัสผู้ออกแบบ
@@ -93,10 +91,14 @@ namespace cisApp.Function
         public Guid? UpdatedBy { get; set; }
         public Guid? DeletedBy { get; set; }
 
+        public int Id { get; set; }
         public string Code { get; set; }
         public int? Status { get; set; }
         public string StatusDesc { get; set; }
         public string Remark { get; set; }
+
+        [NotMapped]
+        public List<FileAttachModel> files { get; set; }
 
         [NotMapped]
         public AttachFile AttachFileImage { get; set; }

@@ -87,15 +87,22 @@
                 //console.log(file.dataURL)
                 var _this = this;
                 var suc = function (html) {
-                    $('#image_previews').append(html);
+                    $('.' + elementId).append(html);
                     _this.removeAllFiles();
+
+                    try {
+                        UpdateGallery()
+                    }
+                    catch (ex) {
+
+                    }
                 }
                 var err = function (e) {
                     toastr.error('อัพโหลดรูปไม่สำเร็จกรุณาลองใหม่');
                     console.log(e)
                     _this.removeAllFiles();
                 }
-                CallAjax(_DropzonePreviewUrl, 'POST', { FileName: file.name, Size: file.size, FileBase64: file.dataURL }, suc, err);
+                CallAjax(_DropzonePreviewUrl, 'POST', { FileName: file.name, Size: file.size, FileBase64: file.dataURL, JobExTypeId: obj.type }, suc, err);
             })
         },
         accept: function (file, done) {

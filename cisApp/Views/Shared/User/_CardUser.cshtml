@@ -106,8 +106,7 @@
                                 {
 
                                     @if (BaseController._RoleMenuType == 2)
-                                    {
-                                        <a href="@Url.Action("Manage", "UserApprove", new { text = Model.Code })" class="btn btn-sm btn-warning font-weight-bolder text-uppercase" target="_blank">แก้ไขคำขอ</a>
+                                    { 
                                         <a href="@Url.Action("ManageRequest", "UserApprove", new { text=Model.Code })" class="btn btn-sm btn-primary font-weight-bolder text-uppercase" target="_blank">ตรวจสอบ</a>
                                     }
                                     else
@@ -132,7 +131,7 @@
 
                                         @if (Model.UserType == 1)
                                         {
-                                            <a href="#" data-url="@Url.Action("Manage", "UserApprove", new { id = Model.UserId })"
+                                            <a href="#" data-url="@Url.Action("Manage", "UserApprove", new { Id = Model.UserId })"
                                                class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2 bt-update">Upgrade</a>
                                         }
                                         else
@@ -290,7 +289,7 @@
             <!--end::Info-->
         </div>
         <!--end::Top-->
-         @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
+         @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc) && Model.Status > 1)
          {
             <!--begin::Separator-->
             <div class="separator separator-solid my-7"></div>

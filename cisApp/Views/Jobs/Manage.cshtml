@@ -247,9 +247,9 @@
                                         foreach (var cat in cats)
                                         {
                                             // Model.JobExUpload = new UploadFilesModel() { ElementId = "kt_dropzone_multi_" + cat.JobExTypeId, JobExTypeId = cat.JobExTypeId, Description = cat.Description, files = new List<FileAttachModel>() };
-                                            var catFiles = Model.files != null ? Model.files.Where(o => o.JobExTypeId == cat.JobExTypeId).ToList() : new List<FileAttachModel>();
+                                            var catFiles = Model.files != null ? Model.files.Where(o => o.TypeId == cat.JobExTypeId).ToList() : new List<FileAttachModel>();
                                             <div class="separator separator-dashed my-10"></div>
-                                            @await Html.PartialAsync("~/Views/Shared/Common/_DropzoneMultiFile.cshtml", new UploadFilesModel() { ElementId = "kt_dropzone_multi_" + cat.JobExTypeId, JobExTypeId = cat.JobExTypeId, Description = cat.Description, files = catFiles })
+                                            @await Html.PartialAsync("~/Views/Shared/Common/_DropzoneMultiFile.cshtml", new UploadFilesModel() { ElementId = "kt_dropzone_multi_" + cat.JobExTypeId, TypeId = cat.JobExTypeId, Description = cat.Description, files = catFiles })
                                         }
                                     }
 
