@@ -134,10 +134,10 @@
                                             <a href="#" data-url="@Url.Action("Manage", "UserApprove", new { Id = Model.UserId })"
                                                class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2 bt-update">Upgrade</a>
                                         }
-                                        else
+                                        else if (Model.UserType == 2)
                                         {
-                                            <a href="#" data-url="@Url.Action("Manage", "UserApprove", new { id = Model.UserId })"
-                                               class="btn btn-sm btn-light-warning font-weight-bolder text-uppercase mr-2 bt-downgrade bt-update">Downgrade</a>
+                                            <a href="#" data-url="@Url.Action("Downgrade", "UserManagement", new { id = Model.UserId })"
+                                               class="btn btn-sm btn-light-warning font-weight-bolder text-uppercase mr-2 bt-downgrade bt-delete">Downgrade</a>
                                         }
 
 
