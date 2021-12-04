@@ -271,11 +271,23 @@ $('body').on('click', '.bt-reset-password', function (e) {
         reverseButtons: true
     }).then(function (result) {
         if (result.value) {
-            Swal.fire(
-                "สำเร็จ!",
-                "รหัสผ่านถูกแก้ไข ระบบทำการส่งรหัสผ่านใหม่ให้ผู้ใช้งาน ทาง Email เรียบร้อยแล้ว!!!",
-                "success"
-            )
+            var url = $(elem).attr(_dataUrlAttr)
+            $.ajax({
+                url: url,
+                method: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) {
+                    redirect(res)
+                },
+                error: function (err) {
+                    redirect(err)
+                }
+            })
+            //Swal.fire(
+            //    "สำเร็จ!",
+            //    "รหัสผ่านถูกแก้ไข ระบบทำการส่งรหัสผ่านใหม่ให้ผู้ใช้งาน ทาง Email เรียบร้อยแล้ว!!!",
+            //    "success"
+            //)
 
         } else if (result.dismiss === "cancel") {
 

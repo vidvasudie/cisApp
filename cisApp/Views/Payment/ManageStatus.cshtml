@@ -1,4 +1,5 @@
 ﻿@using cisApp.Core
+@using cisApp.Function
 
 @model JobPayment
 @{
@@ -40,11 +41,25 @@
         <!--begin::Container-->
         <div class="container">
 
-
-
             <!--begin::Card-->
-            @{await Html.RenderPartialAsync("~/Views/Shared/Common/_JobsDetail.cshtml", "");}
+
+            @{
+                SearchModel model = new SearchModel()
+                {
+                    JobId = Model.JobId
+                };
+                var job = GetJobs.Get.GetJobs(model).FirstOrDefault();
+
+            }
+
+            @await Html.PartialAsync("~/Views/Jobs/PT/_CardJobInfo.cshtml", job)
             <!--end::Card-->
+            <!--begin::image-->
+            @*<div class="" id="job_img_info">
+                @await Html.PartialAsync("~/Views/Jobs/PT/_CardJobExImages.cshtml", job)
+            </div>*@
+            <!--end::image-->
+            
             <!--begin::Row-->
             <div class="row">
                 <div class="col-xl-4">

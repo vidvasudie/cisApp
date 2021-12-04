@@ -8,6 +8,7 @@ using cisApp.Models;
 using cisApp.library;
 using cisApp.Core;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 
 namespace cisApp.Controllers
 {
@@ -18,10 +19,12 @@ namespace cisApp.Controllers
         private List<UserModel> _model = new List<UserModel>();
         private Guid _PermissionMenuId;
         private int _PermissionManage;
-        public UserManagementController()
+        private readonly IWebHostEnvironment _HostingEnvironment;
+        public UserManagementController(IWebHostEnvironment environment)
         {
             _PermissionMenuId = Guid.Parse("CA06E5CC-691E-4BE7-A8EF-3F9EE8400B1A");
             _PermissionManage = 2;// สิทธิ์ผู้ใช้งาน
+            _HostingEnvironment = environment;
         }
 
         public IActionResult Index(int pageIndex = 1)
@@ -110,13 +113,21 @@ namespace cisApp.Controllers
         {
             try
             {
-                //var user = GetUser.Manage.Delete(id, _UserId.Value);
+                var user = GetUser.Get.GetById(id);
 
-                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
+                string newPassword = Utility.RandomPassword();
+
+                var result = GetUser.Manage.ResetPassWord(id, Encryption.Encrypt(newPassword));
+
+                var sendMailResult = SendMail.SendMailResetPassword(user.Email, user.Fname + " " + user.Lname, newPassword, _HostingEnvironment.WebRootPath);
+
+                if (sendMailResult == false) return Json(new ResponseModel().ResponseError(MessageCommon.AdminSendMailPasswordFail));
+
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.AdminSendMailPasswordSuccess, Url.Action("Index", "userManagement")));
             }
             catch (Exception ex)
             {
-                return Json(new ResponseModel().ResponseError());
+                return Json(new ResponseModel().ResponseError(MessageCommon.AdminSendMailPasswordFail));
             }
         }
     }

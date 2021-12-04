@@ -1,6 +1,7 @@
 ﻿using cisApp.Function;
 using cisApp.library;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,10 +19,12 @@ namespace cisApp.Controllers
         private List<UserModel> _model = new List<UserModel>();
         private Guid _PermissionMenuId;
         private int _PermissionManage;
-        public EmployeeController()
+        private readonly IWebHostEnvironment _HostingEnvironment;
+        public EmployeeController(IWebHostEnvironment environment)
         {
             _PermissionMenuId = Guid.Parse("1BBF28A4-A88C-4A48-B2BF-C9D59C996902");
             _PermissionManage = 2;// สิทธิ์ผู้ใช้งาน
+            _HostingEnvironment = environment;
         }
 
         public IActionResult Index(int pageIndex = 1)
@@ -116,13 +119,21 @@ namespace cisApp.Controllers
         {
             try
             {
-                //var user = GetUser.Manage.Delete(id, _UserId.Value);
+                var user = GetUser.Get.GetById(id);
 
-                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Employee")));
+                string newPassword = Utility.RandomPassword();
+
+                var result = GetUser.Manage.ResetPassWord(id, Encryption.Encrypt(newPassword));
+
+                var sendMailResult = SendMail.SendMailResetPassword(user.Email, user.Fname + " " + user.Lname, newPassword, _HostingEnvironment.WebRootPath);
+
+                if (sendMailResult == false) return Json(new ResponseModel().ResponseError(MessageCommon.AdminSendMailPasswordFail));
+
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.AdminSendMailPasswordSuccess, Url.Action("Index", "userManagement")));
             }
             catch (Exception ex)
             {
-                return Json(new ResponseModel().ResponseError());
+                return Json(new ResponseModel().ResponseError(MessageCommon.AdminSendMailPasswordFail));
             }
         }
     }

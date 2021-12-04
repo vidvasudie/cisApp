@@ -18,6 +18,14 @@ namespace cisApp
 
         public const string SaveFail = "บันทึกข้อมูลไม่สำเร็จ";
 
+        public const string SendMailPasswordSuccess = "ระบบได้ทำการส่งรหัสผ่านใหม่ไปยังอีเมลของท่านแล้ว";
+
+        public const string SendMailPasswordFail = "เกิดข้อผิดพลาดในการส่งรหัสผ่านกรุณาติดต่อผู้ดูแลระบบ";
+
+        public const string AdminSendMailPasswordSuccess = "ระบบได้ทำการส่งรหัสผ่านไปยังอีเมลของผู้ใช้งานแล้ว";
+
+        public const string AdminSendMailPasswordFail = "เกิดข้อผิดพลากในการส่งรหัสผ่าน";
+
         public const string NameDuplicate = "ชื่อดังกล่าวกำลังถูกใช้งานอยู่";
 
         public const string DeleteNotdata = "ไม่พบข้อมูลที่ต้องการลบ";
