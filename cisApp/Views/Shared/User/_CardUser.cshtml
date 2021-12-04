@@ -129,15 +129,10 @@
                             {
                                 @if (BaseController._RoleMenuType == 2)
                                 {
-                                    string userController = "UserManagement";
-                                    if (Model.UserType == 3)
-                                    {
-                                        userController = "Employee";
-                                    }
-
+                                    
                                     <!--begin::Toolbar-->
                                     <div class="card-toolbar mb-7">
-                                        <a href="#" data-url="@Url.Action("ResetPassword", "UserManagement", new { id = Model.UserId })"
+                                        <a href="#" data-url="@Url.Action("ResetPassword", ViewData["ControllerName"].ToString(), new { id = Model.UserId })"
                                            class="btn btn-sm btn-light-danger font-weight-bolder text-uppercase mr-2 bt-reset-password">Reset Password</a>
 
                                         @if (Model.UserType == 1)
@@ -152,7 +147,7 @@
                                         }
 
 
-                                        @{ await Html.RenderPartialAsync("~/Views/userManagement/button/Func.cshtml", 2);
+                                        @{ await Html.RenderPartialAsync("~/Views/Shared/User/_CardUserBtnDropdown.cshtml", Model);
                                         }
 
                                     </div>

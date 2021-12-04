@@ -156,9 +156,44 @@ namespace cisApp.Controllers
         {
             return View();
         }
-        public IActionResult Submitwork()
+
+        [HttpGet]
+        public IActionResult Submitwork(Guid id, string AlbumType = "1")
         {
-            return View();
+            try
+            {
+                AlbumModel model = new AlbumModel()
+                {
+                    JobId = id,
+                    AlbumType = AlbumType
+                };
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }            
+        }
+
+        [HttpPost]
+        public JsonResult Submitwork(AlbumModel data)
+        {
+            try
+            {                
+                var result = GetAlbum.Manage.Update(data, _UserId.Value);
+                if (result != null)
+                {
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Jobs")));
+                }
+                else
+                {
+                    return Json(new ResponseModel().ResponseError());
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
         }
     }
 

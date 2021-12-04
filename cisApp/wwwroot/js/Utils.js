@@ -312,4 +312,13 @@ $('body').on('change', '.btt-status', function () {
 
 $('body').on('click', '.bt-img-del', function () { 
     $(this).parents('.single-img').remove();
+
+    try {
+        UpdateGallery()
+    }
+    catch (ex) {
+
+    }
+
 });
+

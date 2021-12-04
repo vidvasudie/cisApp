@@ -126,6 +126,13 @@ function initDropzone(elementId, obj) {
                 var suc = function (html) {
                     $('.' + elementId).append(html);
                     _this.removeAllFiles();
+
+                    try {
+                        UpdateGallery()
+                    }
+                    catch (ex) {
+
+                    }
                 }
                 var err = function (e) {
                     toastr.error('อัพโหลดรูปไม่สำเร็จกรุณาลองใหม่');

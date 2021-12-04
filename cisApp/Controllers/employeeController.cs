@@ -129,7 +129,7 @@ namespace cisApp.Controllers
 
                 if (sendMailResult == false) return Json(new ResponseModel().ResponseError(MessageCommon.AdminSendMailPasswordFail));
 
-                return Json(new ResponseModel().ResponseSuccess(MessageCommon.AdminSendMailPasswordSuccess, Url.Action("Index", "userManagement")));
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.AdminSendMailPasswordSuccess, Url.Action("Index", "Employee")));
             }
             catch (Exception ex)
             {
