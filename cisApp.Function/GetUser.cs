@@ -144,8 +144,8 @@ namespace cisApp.Function
                 }
             }
 
-            
 
+            
             public static List<UserModel> GetUserModels(SearchModel model)
             {
                 try

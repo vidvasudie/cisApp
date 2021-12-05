@@ -1,22 +1,26 @@
 ﻿@using cisApp.library;
 @using cisApp.Function;
-@model PaginatedList<JobModel>
+@model PaginatedList<UserModel>
 @{
 }
 
-@if (Model != null && Model.Count > 0)
-{
-    foreach (var item in Model)
+<!--begin::Row-->
+<div class="row">
+    @if (Model != null && Model.Count > 0)
     {
-        @await Html.PartialAsync("~/Views/Shared/Jobs/_CardJob.cshtml", item)
+        foreach (var item in Model)
+        {
+            @await Html.PartialAsync("~/Views/Designer/PT/_CardDesigner.cshtml", item)
+        }
     }
-}
-else
-{
-    <div class="text-center"> 
-        <h2 class="text-muted my-19"><i class="fas fa-exclamation-triangle fa-1x"></i> ไม่พบข้อมูล</h2>
-    </div>
-}
+    else
+    {
+        <div class="text-center">
+            <h2 class="text-muted my-19"><i class="fas fa-exclamation-triangle fa-1x"></i> ไม่พบข้อมูล</h2>
+        </div>
+    }
+</div>
+<!--end::Row-->
 
 <!--begin::Pagination-->
 @{
@@ -87,3 +91,6 @@ else
     </div>
 </div>
 <!--end::Pagination-->
+<script>
+    $('input[type=checkbox]').bootstrapToggle();
+</script>

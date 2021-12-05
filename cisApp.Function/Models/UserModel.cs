@@ -96,12 +96,17 @@ namespace cisApp.Function
         public int? Status { get; set; }
         public string StatusDesc { get; set; }
         public string Remark { get; set; }
+        public int JobWaitingStatusTotal { get; set; }
+        public int JobProcessStatusTotal { get; set; }
+        public int JobTotal { get; set; }
 
         [NotMapped]
         public List<FileAttachModel> files { get; set; }
 
         [NotMapped]
         public AttachFile AttachFileImage { get; set; }
+        [NotMapped]
+        public Guid AttachFileId { get; set; }
 
         [NotMapped]
         public bool FileRemove { get; set; }
@@ -114,5 +119,13 @@ namespace cisApp.Function
 
         [NotMapped]
         public string FileSize { get; set; }
+        [NotMapped]
+        public string UrlPath
+        {
+            get
+            {
+                return "~/Uploads" + "/" + this.AttachFileId + "/" + this.FileName;
+            }
+        }
     }
 }
