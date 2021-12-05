@@ -200,9 +200,14 @@
 </div>
 <!--end::Content-->
 
-@await Html.PartialAsync("~/Views/Shared/Jobs/JobAddCandidateModal.cshtml", new JobCandidateModel() { JobId=Model.JobId })
+@await Html.PartialAsync("~/Views/Shared/Jobs/JobAddCandidateModal.cshtml", new JobCandidateModel() { JobId = Model.JobId })
+
+@await Html.PartialAsync("~/Views/Shared/Album/_ImagesViewModal.cshtml")
 
 @section Scripts {
+
+    <link href="@Url.Content("~/css/image-modal.css")" rel="stylesheet" type="text/css" />
+
     <link href="@Url.Content("~/assets/plugins/custom/datatables/datatables.bundle.css")" rel="stylesheet" type="text/css" />
     <script src="@Url.Content("~/assets/plugins/custom/datatables/datatables.bundle.js")"></script>
 
@@ -210,9 +215,9 @@
         var _table = null;
         function complatedModal(data) {
             if (data.success) {
-                toastr.success(data.message, { fadeIn: 300 }) 
+                toastr.success(data.message, { fadeIn: 300 })
                 $('#addNewCandidateModal').modal("hide");
-                GetCandidateList(); 
+                GetCandidateList();
             }
             else {
                 toastr.error(data.message);
@@ -220,7 +225,7 @@
         }
         function GetCandidateList() {
             var suc = function (html) {
-                $('#candidate_list').html(html);   
+                $('#candidate_list').html(html);
                 initDataTable('#kt_datatable');
             }
             var err = function (e) {
@@ -254,7 +259,7 @@
             _table = $(elementId).DataTable({
                 language: {
                     search: 'ค้นหา:',
-                    emptyTable: 'ไม่พบข้อมูล', 
+                    emptyTable: 'ไม่พบข้อมูล',
                     info: 'แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ',
                     lengthMenu: 'แสดง _MENU_ รายการ',
                     infoFiltered: 'กรองจากทั้งหมด _MAX_ รายการ'
@@ -269,7 +274,7 @@
         $(function () {
             _delCallback = function () {
                 var suc = function (html) {
-                $('#candidate_list').html(html);   
+                $('#candidate_list').html(html);
                 initDataTable('#kt_datatable');
                 }
                 var err = function (e) {
@@ -290,7 +295,7 @@
                     alert('error ca modal', e);
                 }
                 CallAjax('@Url.Action("CandidateUserList", "Jobs")', 'POST', { JobId:'@Model.JobId' }, suc, err);
-                
+
             })
         });
     </script>

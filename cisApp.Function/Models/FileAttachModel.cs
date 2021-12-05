@@ -13,5 +13,8 @@ namespace cisApp.Function
         public string Description { get; set; }
         public bool IsView { get; set; } = false;
         public string FileBase64 { get; set; }
+        public int NextImg { get; set; }
+        public int NextImgSelected { get; set; }
+        public int col { get; set; }
     }
 }

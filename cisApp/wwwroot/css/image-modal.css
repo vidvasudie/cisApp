@@ -1,0 +1,324 @@
+﻿.gallery img {
+    height: 75vw;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+@media (min-width: 576px) {
+    .gallery img {
+        height: 35vw;
+    }
+}
+
+@media (min-width: 992px) {
+    .gallery img {
+        height: 18vw;
+    }
+}
+
+.carousel-item img {
+    height: 60vw;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+
+@media (min-width: 576px) {
+    .carousel-item img {
+        height: 350px;
+    }
+}
+
+@media (min-width: 992px) {
+    .carousel-item img {
+        height: 750px;
+    }
+}
+
+* {
+    transition: 0.3s;
+}
+
+.gallery.custom {
+    padding: 0 15px;
+}
+
+    .gallery.custom img {
+        display: block;
+        margin: 15px 0;
+        border-radius: 300px 30px 300px 300px;
+    }
+
+        .gallery.custom img:hover {
+            border-radius: 30px 90px 30px 30px;
+        }
+
+#previewModal.custom .modal-content {
+    background: none;
+    border: none;
+}
+
+#previewModal.custom .modal-header {
+    display: none;
+    border: none;
+}
+/*
+    #previewModal.custom .modal-header button {
+        background: none;
+        border-radius: 100px 100px 0 0;
+        padding: 5px 10px;
+        opacity: 1;
+        position: relative;
+        top: 3px;
+        border: solid 2px white;
+    }
+
+@media (min-width: 992px) {
+    #previewModal.custom .modal-header button {
+        top: 15px;
+    }
+}
+
+#previewModal.custom .modal-header button:hover {
+    top: 3px;
+}
+
+#previewModal.custom .modal-header span {
+    color: white;
+}
+*/
+#previewModal.custom .modal-body {
+    padding: 0;
+    border: none;
+    position: relative;
+}
+/*
+    #previewModal.custom .modal-body::before, #previewModal.custom .modal-body::after {
+        content: "";
+        height: 50px;
+        width: 50px;
+        display: block;
+        position: absolute;
+        background: white;
+        border-radius: 3px 10px;
+    }
+
+@media (min-width: 768px) {
+    #previewModal.custom .modal-body::before, #previewModal.custom .modal-body::after {
+        border-radius: 3px 30px;
+        height: 100px;
+        width: 100px;
+    }
+}
+
+#previewModal.custom .modal-body::before {
+    top: -5px;
+    left: -5px;
+}
+
+@media (min-width: 768px) {
+    #previewModal.custom .modal-body::before {
+        top: -15px;
+        left: -15px;
+    }
+}
+
+#previewModal.custom .modal-body::after {
+    bottom: -5px;
+    right: -5px;
+    z-index: -1;
+}
+
+@media (min-width: 768px) {
+    #previewModal.custom .modal-body::after {
+        bottom: -15px;
+        right: -15px;
+    }
+}
+    */
+#previewModal.custom .modal-footer {
+    display: none;
+    /*border: none;
+    margin-top: 60px;*/
+}
+/*
+@media (min-width: 992px) {
+    #previewModal.custom .modal-footer {
+        margin-top: 40px;
+    }
+}
+
+#previewModal.custom .modal-footer .btn {
+    margin: auto;
+    border: solid 2px white;
+    background: none;
+    text-transform: uppercase;
+    font-size: 0.8em;
+    letter-spacing: 0.1em;
+    font-weight: bold;
+    padding: 0.2em 0.7em;
+}
+
+    #previewModal.custom .modal-footer .btn:hover {
+        background: white;
+        color: black;
+    }
+    */
+#previewModal.custom .carousel-control-prev, #previewModal.custom .carousel-control-next {
+    font-size: 2em;
+    top: auto;
+    opacity: 1;
+    bottom: -52px;
+}
+
+@media (min-width: 768px) {
+    #previewModal.custom .carousel-control-prev, #previewModal.custom .carousel-control-next {
+        top: 0;
+        opacity: 0.5;
+        bottom: 0;
+    }
+}
+
+#previewModal.custom .carousel-control-next-icon, #previewModal.custom .carousel-control-prev-icon {
+    height: 30px;
+    width: 30px;
+}
+
+@media (min-width: 768px) {
+    #previewModal.custom .carousel-control-prev {
+        left: -90px;
+    }
+}
+
+@media (min-width: 768px) {
+    #previewModal.custom .carousel-control-next {
+        right: -90px;
+    }
+}
+
+#previewModal.custom .carousel-indicators {
+    bottom: -60px;
+}
+
+@media (min-width: 992px) {
+    #previewModal.custom .carousel-indicators {
+        bottom: -30px;
+    }
+}
+
+#previewModal.custom .carousel-indicators li {
+    height: 30px;
+    border-radius: 100px;
+    background: none;
+    border: solid 2px white;
+}
+
+@media (min-width: 992px) {
+    #previewModal.custom .carousel-indicators li {
+        height: 10px;
+    }
+}
+
+#previewModal.custom .carousel-indicators li:hover {
+    background: white;
+}
+
+#previewModal.custom .carousel-indicators li.active {
+    background: white;
+}
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+@media (min-width: 576px) {
+    .switch {
+        margin: 0;
+    }
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        transition: 0.4s;
+    }
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+.switch-wrap {
+    text-align: center;
+    background-color: #b1fbc1;
+    padding: 30px;
+    border-radius: 3px;
+    margin: 30px 0 0;
+}
+
+@media (min-width: 576px) {
+    .switch-wrap {
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: center;
+        width: 100%;
+        justify-content: center;
+        padding: 10px;
+    }
+}
+
+.switch-text {
+    display: block;
+    margin: 0.5em;
+}
+
+@media (min-width: 576px) {
+    .switch-text {
+        margin: 0 1em 0 0;
+    }
+}

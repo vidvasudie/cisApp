@@ -102,7 +102,7 @@
                     console.log(e)
                     _this.removeAllFiles();
                 }
-                CallAjax(_DropzonePreviewUrl, 'POST', { FileName: file.name, Size: file.size, FileBase64: file.dataURL, JobExTypeId: obj.type }, suc, err);
+                CallAjax(_DropzonePreviewUrl, 'POST', { FileName: file.name, Size: file.size, FileBase64: file.dataURL }, suc, err);
             })
         },
         accept: function (file, done) {
@@ -146,7 +146,7 @@ function initDropzone(elementId, obj) {
                     console.log(e)
                     _this.removeAllFiles();
                 }
-                CallAjax(_DropzonePreviewUrl, 'POST', { FileName: file.name, Size: file.size, FileBase64: file.dataURL, JobExTypeId: obj.type }, suc, err);
+                CallAjax(_DropzonePreviewUrl, 'POST', { FileName: file.name, Size: file.size, FileBase64: file.dataURL, TypeId: obj.type }, suc, err);
             })
         },
         accept: function (file, done) {

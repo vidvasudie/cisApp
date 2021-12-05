@@ -255,6 +255,51 @@ namespace cisApp.Function
                             context.Users.Update(obj);
                             context.SaveChanges();
 
+                            if (!String.IsNullOrEmpty(data.FileBase64)) // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
+                            {
+                                // remove previous img
+                                var curImg = context.AttachFile.Where(o => o.RefId == obj.UserImgId).FirstOrDefault();
+                                int activeUserImg = 0;
+                                if (curImg != null)
+                                {
+                                    curImg.IsActive = false;
+                                    curImg.UpdatedDate = DateTime.Now;
+                                    curImg.UpdatedBy = obj.UpdatedBy.Value;
+
+                                    context.AttachFile.Update(curImg);
+                                    activeUserImg = context.SaveChanges();
+                                } 
+
+                                // insert new UserImg
+                                UserImg userImg = new UserImg()
+                                {
+                                    UserId = obj.UserId.Value
+                                };
+
+                                context.UserImg.Update(userImg); 
+                                context.SaveChanges();
+
+                                GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), userImg.UserImgId.Value, obj.UserId.Value);
+
+                                obj.UserImgId = userImg.UserImgId;
+
+                                context.Users.Update(obj); 
+                                context.SaveChanges();
+                            }
+                            else if (data.FileRemove) // ถ้าลบไฟล์ออก แล้วไม่ได้อัพไฟล์ใหม่ขึ้นมาจะเข้า เงื่อนไขนี้
+                            {
+                                var curImg = context.AttachFile.Where(o => o.RefId == obj.UserImgId).FirstOrDefault(); 
+                                if (curImg != null)
+                                {
+                                    curImg.IsActive = false;
+                                    curImg.UpdatedDate = DateTime.Now;
+                                    curImg.UpdatedBy = obj.UpdatedBy.Value;
+
+                                    context.AttachFile.Update(curImg);
+                                    context.SaveChanges();
+                                }  
+                            }
+
                             //add new Request Designer data 
                             var dataList = context.UserDesignerRequest.ToList().OrderBy(o => o.Id).LastOrDefault();
                             string code = Utility.GenerateRequestCode("UDS{0}{1}{2}", Int32.Parse(dataList.Code.Substring(7, 5))+1, dataList.Code.Substring(5, 2) != DateTime.Now.Month.ToString("00"));
@@ -311,23 +356,25 @@ namespace cisApp.Function
                 }
                 //get old data ที่ไม่อยุ่ในรายการที่ o.FileBase64 ไม่มีค่า = ลบทิ้ง
                 string listId = String.Join(",", imgs.Where(o => o != null && String.IsNullOrEmpty(o.FileBase64)).Select(o => o.gId.ToString()));
-                SqlParameter[] parameter = new SqlParameter[] {
+                if (!String.IsNullOrEmpty(listId))
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@reqId", obj.Id),
                        new SqlParameter("@imgList", listId), //list
                        new SqlParameter("@mode", "1")//not in
                     };
-                var delList = StoreProcedure.GetAllStored<FileAttachModel>("GetUserDesignerRequestFiles", parameter);
+                    var delList = StoreProcedure.GetAllStored<FileAttachModel>("GetUserDesignerRequestFiles", parameter);
 
-                foreach (var file in delList)
-                {
-                    var item = context.AttachFile.Where(o => o.AttachFileId == file.AttachFileId).FirstOrDefault();
-                    item.IsActive = false;
-                    item.UpdatedDate = obj.UpdatedDate.Value;
-                    item.UpdatedBy = obj.UpdatedBy.Value;
-                    context.AttachFile.Remove(item);
-                    context.SaveChanges();
-                }
-
+                    foreach (var file in delList)
+                    {
+                        var item = context.AttachFile.Where(o => o.AttachFileId == file.AttachFileId).FirstOrDefault();
+                        item.IsActive = false;
+                        item.UpdatedDate = obj.UpdatedDate.Value;
+                        item.UpdatedBy = obj.UpdatedBy.Value;
+                        context.AttachFile.Remove(item);
+                        context.SaveChanges();
+                    }
+                }  
 
                 // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
                 foreach (var file in imgs.Where(o => o != null && !String.IsNullOrEmpty(o.FileBase64)))
@@ -371,6 +418,7 @@ namespace cisApp.Function
 
                 return 1;
             }
+             
 
         }
     }

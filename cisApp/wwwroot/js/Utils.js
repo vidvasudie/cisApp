@@ -2,6 +2,7 @@
 const _dataGuidAttr = 'data-guid'
 var _callback = null
 var _delCallback = null
+var _previewImgUrl = null
 
 function CallAjax(url, method, data, success, error) {
     if (data != null && data !== undefined) {
@@ -320,5 +321,31 @@ $('body').on('click', '.bt-img-del', function () {
 
     }
 
+});
+
+$('body').on('click', '.gallery img', function () {
+    var $this = $(this);
+    console.log($this)
+
+    var data = {}
+    data.files = [];
+    $.each($this.parents('.gallery').find('.single-img .img-list'), function (index, value) {
+        var objImg = {};
+        objImg.NextImgSelected = $this.attr('data-slide-to');
+        objImg.NextImg = $(value).attr('data-slide-to');
+        objImg.FileName = $(value).attr('alt');
+        objImg.AttachFileId = $(value).attr('data-id');
+
+        data.files.push(objImg);
+        console.log(objImg)
+    });
+    var suc = function (html) {
+        $('#carouselPreview').html(html);
+        $('#previewModal').modal('show');
+    }
+    var err = function (e) {
+        alert('error carouselPreview', e);
+    }
+    CallAjax(_previewImgUrl, 'POST', data, suc, err);
 });
 

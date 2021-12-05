@@ -435,9 +435,7 @@ namespace cisApp.Core
 
                 entity.Property(e => e.BankId).HasColumnName("BankID");
 
-                entity.Property(e => e.Code)
-                    .IsRequired()
-                    .HasMaxLength(11);
+                entity.Property(e => e.Code).HasMaxLength(15);
 
                 entity.Property(e => e.DistrictId).HasColumnName("DistrictID");
 

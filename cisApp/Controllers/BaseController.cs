@@ -120,5 +120,10 @@ namespace cisApp.Controllers
         {
             return PartialView("~/Views/Shared/Common/_ImageItem.cshtml", file);
         }
+        [HttpPost]
+        public PartialViewResult PreviewImage(UploadFilesModel model)
+        {
+            return PartialView("~/Views/Shared/Album/_ImageItems.cshtml", model.files);
+        }
     }
 }

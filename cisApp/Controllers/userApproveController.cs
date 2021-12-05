@@ -37,14 +37,18 @@ namespace cisApp.Controllers
         }
 
         public IActionResult Manage(SearchModel model)
-        {
-            //ยังไม่ได้ Get Image Profile
+        { 
             List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model); //ใช้ code ในการหารายการข้อมูล
-            if (_model != null)
+            if (_model != null && _model.Count > 0)
             {
                 var data = _model.FirstOrDefault();
-                //get data image profile
+                //get data image profile 
+                var userImg = GetUser.Get.GetUserImgs(data.UserId.Value);
 
+                if (userImg.Count > 0)
+                {
+                    data.AttachFileImage = GetAttachFile.Get.GetByRefId(userImg.FirstOrDefault().UserImgId.Value);
+                }
                 //get upgrade file attach
                 var fatchs = GetUserDesignerRequest.Get.GetUserDesignerRequestFiles(data.Id);
                 data.files = fatchs;
@@ -56,7 +60,14 @@ namespace cisApp.Controllers
             {
                 var user = GetUser.Get.GetById(model.Id.Value);
                 user.UserType = 2;
-                //var img = GetAttachFile.Get.GetByRefId(user.);
+                //get data image profile 
+                var userImg = GetUser.Get.GetUserImgs(user.UserId.Value);
+
+                if (userImg.Count > 0)
+                {
+                    user.AttachFileImage = GetAttachFile.Get.GetByRefId(userImg.FirstOrDefault().UserImgId.Value);
+                }
+
                 return View(user);
             }
             else
@@ -95,7 +106,23 @@ namespace cisApp.Controllers
         { 
             List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model);
             if(_model != null)
-                return View(_model.FirstOrDefault());
+            { 
+                var data = _model.FirstOrDefault();
+                //get data image profile
+                // get payment_img id
+                var userImg = GetUser.Get.GetUserImgs(data.UserId.Value);
+
+                if (userImg.Count > 0)
+                {
+                    data.AttachFileImage = GetAttachFile.Get.GetByRefId(userImg.FirstOrDefault().UserImgId.Value);
+                }
+                //get upgrade file attach
+                var fatchs = GetUserDesignerRequest.Get.GetUserDesignerRequestFiles(data.Id);
+                data.files = fatchs;
+
+                return View(data);
+            }
+            
             return View(new UserModel()); 
         }
 

@@ -1,11 +1,15 @@
 ﻿@using HtmlHelpers.BeginCollectionItemCore
 @model cisApp.Function.FileAttachModel
 @{
+    if(Model.col <= 0)
+    {
+        Model.col = 2;
+    }
 }
 
 @using (Html.BeginCollectionItem("files"))
 {
-    <div class="col-12 col-md-2 single-img">
+    <div class="col-12 col-md-@Html.Raw(Model.col) single-img">
         @Html.HiddenFor(m => m.TypeId)
         @Html.HiddenFor(m => m.Description)
         @Html.HiddenFor(m => m.AttachFileId)
@@ -16,7 +20,7 @@
         {
             <span class="float-right position-relative mr-n5 mb-n4 bt-img-del"> <i class="flaticon-circle icon-lg text-danger position-static zindex-2"></i></span>
         }
-        <img src="@Url.Content(String.IsNullOrEmpty(Model.FileBase64) ? Model.UrlPath : Model.FileBase64)" alt="@Html.Raw(Model.FileName)" class="img-thumbnail mx-3 my-3">
+        <img src="@Url.Content(String.IsNullOrEmpty(Model.FileBase64) ? Model.UrlPath : Model.FileBase64)" data-id="@Model.AttachFileId" alt="@Html.Raw(Model.FileName)" class="img-thumbnail mx-3 my-3 img-list" data-target="#carouselPreview" data-slide-to="@Model.NextImg">
     </div>
 }
  
