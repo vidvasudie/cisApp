@@ -97,7 +97,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                GetJobsCandidate.Manage.UpdateNewCandidate(model.userCandidates, _UserId.Value);
+                GetJobsCandidate.Manage.UpdateNewCandidate(model.userCandidates, _UserId.Value, Request.HttpContext.Connection.RemoteIpAddress.ToString());
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));
             }
             catch (Exception ex)
@@ -112,7 +112,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetJobsCandidate.Manage.Delete(id, _UserId.Value);
+                var user = GetJobsCandidate.Manage.Delete(id, _UserId.Value, Request.HttpContext.Connection.RemoteIpAddress.ToString());
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));
             }
