@@ -65,6 +65,50 @@ namespace cisApp.Function
                 }
             }
 
+            public static List<AlbumImageModel> GetRandomAlbumImage(string domainUrl, int take = 10)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@take", take)
+                    };
+
+                    var data = StoreProcedure.GetAllStored<AlbumImageModel>("GetRandomAlbumImage", parameter);
+
+                    if (data != null)
+                    {
+                        foreach (var item in data)
+                        {
+                            item.FullUrlPath = domainUrl + item.UrlPath;
+                        }
+                    }
+
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return new List<AlbumImageModel>();
+                }
+            }
+
+            public static List<AlbumImageModel> GetRandomAlbumImage(int take = 10)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@take", take)
+                    };
+
+                    var data = StoreProcedure.GetAllStored<AlbumImageModel>("GetRandomAlbumImage", parameter);
+
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return new List<AlbumImageModel>();
+                }
+            }
+
         }
 
         public class Manage

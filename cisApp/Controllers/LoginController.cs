@@ -20,6 +20,7 @@ namespace cisApp.Controllers
         }
         public IActionResult Index()
         {
+            
             return View(new LoginModel() { username= "admin@gmail.com", password="12345" });
         }
 
