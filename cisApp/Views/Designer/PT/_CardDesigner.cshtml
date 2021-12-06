@@ -34,11 +34,8 @@
                 <div class="d-flex align-items-center">
                     <!--begin::Pic-->
                     <div class="flex-shrink-0 mr-4 mt-lg-0 mt-4">
-                        <div class="symbol symbol-circle symbol-lg-75">
-                            @{
-                                var x = utilityFunc.RandomNumber(1, 10);
-                            }
-                            <img src="https://picsum.photos/75?random=@x" alt="image" />
+                        <div class="symbol symbol-circle symbol-lg-75" style="width: 75px;"> 
+                            <img src="@Url.Content(Model.UrlPath)" alt="image" />
                         </div>
                         @*<div class="symbol symbol-lg-75 symbol-circle symbol-primary d-none">
                             <span class="font-size-h3 font-weight-boldest">JM</span>
