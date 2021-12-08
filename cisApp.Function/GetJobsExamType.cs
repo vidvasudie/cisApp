@@ -27,22 +27,22 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
-            //public static List<JobsExamType> GetActive()
-            //{
-            //    try
-            //    {
-            //        using (var context = new CAppContext())
-            //        {
-            //            var data = context.JobsExamType.Where(o => o.is == id).ToList();
+            public static List<JobsExamType> GetActive()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.JobsExamType.Where(o => o.IsActive == true && o.IsDeleted == false).ToList();
 
-            //            return data;
-            //        }
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        throw ex;
-            //    }
-            //} 
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
 
         }
 

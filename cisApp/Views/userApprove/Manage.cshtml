@@ -133,7 +133,7 @@
                             <i class="ki ki-long-arrow-back icon-sm"></i>ย้อนกลับ
                         </a>
                         <div class="btn-group">
-                            <button type="button" class="btn btn-primary font-weight-bolder btn-submit" >
+                            <button type="button" class="btn btn-primary font-weight-bolder btn-submit">
                                 <i class="ki ki-check icon-sm"></i>บันทึก
                             </button>
                             @*<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
@@ -168,9 +168,16 @@
                         <div class="row">
                             <div class="col-xl-2"></div>
                             <div class="col-xl-8">
+                                @Html.HiddenFor(m => m.Id)
+                                @Html.HiddenFor(m => m.FileBase64)
+                                @Html.HiddenFor(m => m.FileName)
+                                @Html.HiddenFor(m => m.FileSize)
+                                @Html.HiddenFor(m => m.FileRemove)
                                 @Html.HiddenFor(m => m.UserType, new { @value = "2" })
 
                                 @await Html.PartialAsync("~/Views/Shared/User/_UserCustomer.cshtml", Model)
+
+                                @await Html.PartialAsync("Common/_DropzoneSingleFile", "รูปภาพประจำตัว")
 
                                 @if (Model.UserType == 2 || (!String.IsNullOrEmpty(Model.Code) && Model.Status == 1))
                                 {
@@ -178,32 +185,10 @@
                                 }
 
                                 <div class="separator separator-dashed my-10"></div>
-                                <div class="my-5">
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">เอกสารประกอบคำขอ</label>
-                                        
-                                        <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
-
-                                    </div>
-                                </div>
-
-                                <div class="separator separator-dashed my-10"></div>
-                                <div class="my-5">
-                                    <div class="form-group row">
-                                        <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">รูปภาพประจำตัว</label>
-                                        <div class="col-lg-4 col-md-9 col-sm-12">
-                                            <div class="dropzone dropzone-default" id="kt_dropzone_1">
-                                                <div class="dropzone-msg dz-message needsclick">
-                                                    <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
-                                                    <span class="dropzone-msg-desc">
-                                                        This is just a demo dropzone. Selected files are
-                                                        <strong>not</strong>actually uploaded.
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @{
+                                    var files = Model.files != null ? Model.files : new List<FileAttachModel>();
+                                }
+                                @await Html.PartialAsync("~/Views/Shared/Common/_DropzoneMultiFile.cshtml", new UploadFilesModel() { ElementId = "kt_dropzone_multi", Description = "เอกสารประกอบคำขอ", files = files })
 
 
 
@@ -222,21 +207,21 @@
 </div>
 <!--end::Content-->
 @section scripts{
-    <!--begin::Page Scripts(used by this page)-->
-    @*<link href="@Url.Content("~/assets/js/pages/crud/file-upload/uppy/uppy.min.css")" rel="stylesheet">
-        <script src="@Url.Content("~/assets/js/pages/crud/file-upload/uppy/uppy.min.js")"></script>
-        <script src="@Url.Content("~/assets/plugins/custom/uppy/uppy.bundle.js")"></script>
-        <script src="@Url.Content("~/assets/js/pages/crud/file-upload/uppy.js")"></script>*@
-     
+    
+    
 
     <script>
-        
+        const _DropzoneUrl = '@Url.Action("UploadFIle", "Base")'
+        const _DropzonePreviewUrl = '@Url.Action("UploadPreview", "Base")'
+        const _DropzoneFilePath = '@Url.Content(Model?.AttachFileImage?.UrlPath)'
+        const _DropzoneFileName = '@Model?.AttachFileImage?.FileName';
+        const _ModelNamePrefix = '#';
+
         $(function () {
-            const uppy = Uppy.Core({ autoProceed: false })
-            uppy.use(Uppy.Dashboard, { target: '#drag-drop-area', inline: true, height: 450 })
-            uppy.use(Uppy.Tus, { endpoint: 'https://master.tus.io/files/' })
+            initDropzone('kt_dropzone_multi', { type:0 });
         });
     </script>
 
+    <script src="@Url.Content("~/js/dropzoneThumbnail.js")"></script>
 
 }

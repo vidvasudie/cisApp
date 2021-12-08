@@ -26,6 +26,11 @@ namespace cisApp.Function
                 return "~/Uploads" + "/" + this.AttachFileId + "/" + this.AttachFileName;
             }
         }
-        public int CandidateSelected { get; set; } 
+        public int CandidateSelected { get; set; }
+
+
+        
+        public List<FileAttachModel> files { get; set; }
+
     }
 }

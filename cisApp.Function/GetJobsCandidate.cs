@@ -66,7 +66,7 @@ namespace cisApp.Function
 
         public class Manage
         {
-            public static int UpdateNewCandidate(List<JobCandidateModel> list, Guid _user)
+            public static int UpdateNewCandidate(List<JobCandidateModel> list, Guid _user, string ip)
             {
                 try
                 {
@@ -74,10 +74,12 @@ namespace cisApp.Function
                     {
                         using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
+                            JobsLogs log = new JobsLogs();
                             if (list != null && list.Count > 0)
                             {
                                 foreach (var item in list)
                                 {
+                                    log.JobId = item.JobId.Value;
                                     JobsCandidate obj = new JobsCandidate();
                                     obj.CaStatusId = 1;//รอประกวด
                                     obj.JobId = item.JobId;
@@ -90,6 +92,14 @@ namespace cisApp.Function
                             }
 
                             int result = context.SaveChanges();
+
+                            //add job log for every job activity  
+                            log.Description = ActionCommon.JobCandidateAdd;  
+                            log.Ipaddress = ip;
+                            log.CreatedDate = DateTime.Now;
+                            context.JobsLogs.Add(log);
+                            context.SaveChanges();
+
                             dbContextTransaction.Commit();
 
                             return result;
@@ -102,24 +112,36 @@ namespace cisApp.Function
                 }
             }
 
-            public static JobsCandidate Delete(int id, Guid userId)
+            public static JobsCandidate Delete(int id, Guid userId, string ip)
             {
                 try
                 {
                     using (var context = new CAppContext())
                     {
-                        JobsCandidate obj = context.JobsCandidate.Find(id);
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            JobsCandidate obj = context.JobsCandidate.Find(id);
 
-                        obj.IsDeleted = true;
+                            obj.IsDeleted = true;
 
-                        obj.DeletedDate = DateTime.Now;
-                        obj.DeletedBy = userId;
+                            obj.DeletedDate = DateTime.Now;
+                            obj.DeletedBy = userId;
 
-                        context.JobsCandidate.Update(obj);
+                            context.JobsCandidate.Update(obj);
 
-                        context.SaveChanges();
+                            context.SaveChanges();
 
-                        return obj;
+                            //add job log for every job activity  
+                            JobsLogs log = new JobsLogs();
+                            log.JobId = obj.JobId.Value;
+                            log.Description = ActionCommon.JobCandidateAdd;
+                            log.Ipaddress = ip;
+                            log.CreatedDate = DateTime.Now;
+                            context.JobsLogs.Add(log);
+                            context.SaveChanges();
+
+                            return obj;
+                        }
                     }
                 }
                 catch (Exception ex)

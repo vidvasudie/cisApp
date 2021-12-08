@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
 
-    // multiple file upload
+    // single file upload
     $('#kt_dropzone_1').dropzone({
         url: _DropzoneUrl, // Set the url for your upload script location
         paramName: "upload_file", // The name that will be used to transfer the file
@@ -69,4 +69,89 @@
         },
     });
 
+    // multiple file upload
+    $('#kt_dropzone_multi').dropzone({
+        url: _DropzoneUrl, // Set the url for your upload script location
+        paramName: "upload_file", // The name that will be used to transfer the file
+        maxFiles: 1,
+        maxFilesize: 5, // MB
+        addRemoveLinks: false,
+        thumbnailWidth: null,
+        thumbnailHeight: null,
+        init: function () { 
+            this.on("success", function (file) {
+                console.log('success')
+                console.log(file)
+                console.log(file.name)
+                console.log(file.size)
+                //console.log(file.dataURL)
+                var _this = this;
+                var suc = function (html) {
+                    $('.' + elementId).append(html);
+                    _this.removeAllFiles();
+
+                    try {
+                        UpdateGallery()
+                    }
+                    catch (ex) {
+
+                    }
+                }
+                var err = function (e) {
+                    toastr.error('อัพโหลดรูปไม่สำเร็จกรุณาลองใหม่');
+                    console.log(e)
+                    _this.removeAllFiles();
+                }
+                CallAjax(_DropzonePreviewUrl, 'POST', { FileName: file.name, Size: file.size, FileBase64: file.dataURL }, suc, err);
+            })
+        },
+        accept: function (file, done) {
+            done();
+        },
+        //success: _DropzoneSuccess,
+    }); 
+
 });
+
+function initDropzone(elementId, obj) {
+    $('#'+elementId).dropzone({
+        url: _DropzoneUrl, // Set the url for your upload script location
+        paramName: "upload_file", // The name that will be used to transfer the file
+        maxFiles: 1,
+        maxFilesize: 5, // MB
+        addRemoveLinks: false,
+        thumbnailWidth: null,
+        thumbnailHeight: null,
+        init: function () {
+            this.on("success", function (file) {
+                console.log('success')
+                console.log(file)
+                console.log(file.name)
+                console.log(file.size)
+                //console.log(file.dataURL)
+                var _this = this;
+                var suc = function (html) {
+                    $('.' + elementId).append(html);
+                    _this.removeAllFiles();
+
+                    try {
+                        UpdateGallery()
+                    }
+                    catch (ex) {
+
+                    }
+                }
+                var err = function (e) {
+                    toastr.error('อัพโหลดรูปไม่สำเร็จกรุณาลองใหม่');
+                    console.log(e)
+                    _this.removeAllFiles();
+                }
+                CallAjax(_DropzonePreviewUrl, 'POST', { FileName: file.name, Size: file.size, FileBase64: file.dataURL, TypeId: obj.type }, suc, err);
+            })
+        },
+        accept: function (file, done) {
+            done();
+        },
+        //success: _DropzoneSuccess,
+    });
+}

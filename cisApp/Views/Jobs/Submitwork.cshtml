@@ -1,6 +1,9 @@
-﻿
+﻿@using cisApp.Function
+
+@model AlbumModel
 @{
     ViewData["Title"] = "ระบบส่งงานผู้ว่าจ้าง";
+    ViewData["ControllerName"] = "Jobs";
 }
 
 <!--begin::Content-->
@@ -156,37 +159,40 @@
                         <div class="row justify-content-center py-10 px-8 py-lg-12 px-lg-10">
                             <div class="col-xl-12 col-xxl-7">
                                 <!--begin: Wizard Form-->
-                                <form class="form" id="kt_form">
+                                <form class="form" id="kt_form" asp-action="Submitwork" asp-controller=@ViewData["ControllerName"] method="post" data-ajax-confirm="@MessageCommon.Confirm" data-ajax="true" data-ajax-success="redirect">
                                     <!--begin: Wizard Step 1-->
                                     <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
                                         <h4 class="mb-10 font-weight-bold text-dark">ตั้งค่าเนื้อหา รายการข้อมูลทั้งหมดจะถูกนำไปทำเป็น Profile ข้อมูล</h4>
+                                        @Html.HiddenFor(m => m.AlbumType)
+                                        @Html.HiddenFor(m => m.UserId)
+                                        @Html.HiddenFor(m => m.JobId)
                                         <!--begin::Input-->
                                         <div class="form-group">
-                                            <label>ชื่ออัลบั้ม</label>
-                                            <input type="text" class="form-control" name="address1" placeholder="ชื่ออัลบั้ม" value="Address Line 1" />
+                                            @Html.LabelFor(m => m.AlbumName, "ชื่ออัลบั้ม", new { })
+                                            @Html.TextBoxFor(m => m.AlbumName, new { @class= "form-control" , @placeholder= "ชื่ออัลบั้ม", @required="required" })                                            
                                             <span class="form-text text-muted">โปรดใส่ชื่อ อัลบั้มภาพของคุณ</span>
                                         </div>
                                         <!--end::Input-->
                                         <!--begin::Input-->
                                         <div class="form-group">
-                                            <label>URL สำหรับดาวน์โหลดข้อมูล</label>
-                                            <input type="text" class="form-control" name="address1" placeholder="URL สำหรับดาวน์โหลดข้อมูล" value="" />
-                                         </div>
+                                            @Html.LabelFor(m => m.Url, "URL สำหรับดาวน์โหลดข้อมูล", new { })
+                                            @Html.TextBoxFor(m => m.Url, new { @class = "form-control", @placeholder = "URL สำหรับดาวน์โหลดข้อมูล", @required = "required" })
+                                        </div>
                                         <!--end::Input-->
                                         <div class="row">
                                             <div class="col-xl-6">
                                                 <!--begin::Input-->
                                                 <div class="form-group">
-                                                    <label>ประเภทงาน</label>
-                                                    <input type="text" class="form-control" name="postcode" placeholder="ประเภทงาน" value="Loft" />
+                                                    @Html.LabelFor(m => m.Category, "ประเภทงาน", new { })
+                                                    @Html.TextBoxFor(m => m.Category, new { @class = "form-control", @placeholder = "ประเภทงาน", @required = "required" })
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
                                             <div class="col-xl-6">
                                                 <!--begin::Input-->
                                                 <div class="form-group">
-                                                    <label>Tag</label>
-                                                    <input type="text" class="form-control" name="city" placeholder="Tag" value="ห้องนอน,ห้องน้ำ," />
+                                                    @Html.LabelFor(m => m.Tags, "Tag", new { })
+                                                    @Html.TextBoxFor(m => m.Tags, new { @class = "form-control", @placeholder = "Tag", @required = "required" })
                                                 </div>
                                                 <!--end::Input-->
                                             </div>
@@ -197,15 +203,24 @@
                                     <div class="pb-5" data-wizard-type="step-content">
                                         <h4 class="mb-10 font-weight-bold text-dark">เลือกรูปภาพที่ต้องการนำส่ง</h4>
                                         <!--begin::Input-->
-                                        <div class="dropzone dropzone-default" id="kt_dropzone_1">
+                                        <div class="dropzone dropzone-default" id="kt_dropzone_multi_1">
                                             <div class="dropzone-msg dz-message needsclick">
-                                                <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
-                                                <span class="dropzone-msg-desc">
-                                                    This is just a demo dropzone. Selected files are
-                                                    <strong>not</strong>actually uploaded.
-                                                </span>
+                                                <h3 class="dropzone-msg-title">ลากไฟล์มาวางเพื่ออัพโหลด</h3>
                                             </div>
                                         </div>
+                                        <div class="row kt_dropzone_multi_1" id="image_previews">
+                                            @{
+                                                if (Model.files != null && Model.files.Count > 0)
+                                                {
+                                                    foreach (var item in Model.files)
+                                                    {
+                                                        @await Html.PartialAsync("~/Views/Shared/Common/_ImageItem.cshtml", item)
+                                                    }
+                                                }
+
+                                            }
+                                        </div>
+                                        <div class="separator separator-dashed my-10"></div>
                                     </div>
                                     <!--end: Wizard Step 2-->
                                     <!--begin: Wizard Step 3-->
@@ -226,7 +241,7 @@
                                                     <!--begin: Info-->
                                                     <div class="flex-grow-1">
                                                         <!--begin: Content-->
-                                                        <div class="d-flex align-items-center flex-wrap justify-content-between">
+                                                        <div class="d-flex align-items-center flex-wrap justify-content-between thumbnail-gallery">
                                                             @{ int i = 0;
                                                                 int Temp = 10;
                                                             }
@@ -256,7 +271,7 @@
                                             <button type="button" class="btn btn-light-primary font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-prev">ย้อนกลับ</button>
                                         </div>
                                         <div>
-                                            <button type="button" class="btn btn-success font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-submit">นำส่ง</button>
+                                            <a class="btn btn-success font-weight-bolder text-uppercase px-9 py-4  btn-submit">นำส่ง</a>
                                             <button type="button" class="btn btn-primary font-weight-bolder text-uppercase px-9 py-4" data-wizard-type="action-next">ถัดไป</button>
                                         </div>
                                     </div>
@@ -282,9 +297,21 @@
     <!--begin::Page Custom Styles(used by this page)-->
     <link href="@Url.Content("~/assets/css/pages/wizard/wizard-3.css")" rel="stylesheet" type="text/css" />
 
-
     <!--begin::Page Scripts(used by this page)-->
     <script src="@Url.Content("~/assets/js/pages/custom/wizard/wizard-3.js")"></script>
-    <!--end::Page Scripts-->
+    <!--end::Page Scripts-->   
+
+    <script src="@Url.Content("~/js/dropzoneThumbnail.js")"></script>
+
+    <script src="@Url.Content("~/js/pages/submitwork.js")"></script>
+
+    <script>
+        const _DropzoneUrl = '@Url.Action("UploadFIle", "Base")'
+        const _DropzonePreviewUrl = '@Url.Action("UploadPreview", "Base")'
+
+        initDropzone('kt_dropzone_multi_1', { type : null });
+    </script>
+
+    
 
 }

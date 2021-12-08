@@ -7,12 +7,9 @@ namespace cisApp.Core
     public partial class JobsLogs
     {
         public int JoblogId { get; set; }
-        public int? JobId { get; set; }
-        /// <summary>
-        /// ข้อความอธิบายสถานะ
-        /// </summary>
-        public string Desctiption { get; set; }
+        public Guid JobId { get; set; }
+        public string Description { get; set; }
         public string Ipaddress { get; set; }
-        public DateTime? CreateDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
     }
 }

@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\cisApp.Common\cisApp.Common.csproj" />
     <ProjectReference Include="..\cisApp.Core\cisApp.Core.csproj" />
   </ItemGroup>
 

@@ -1,83 +1,49 @@
-﻿@model JobModel
-@using cisApp.Core
-@using cisApp.Function
-@{
-    ViewData["Title"] = "รายละเอียดใบงาน";
-}
+﻿@using cisApp.Function
+@model JobModel
 
+@{
+    //ViewData["Title"] = "จัดการข้อมูลผู้ใช้งาน" + (!string.IsNullOrEmpty(Model)?"ดีไซต์เนอร์": "ทั่วไป");
+    ViewData["Title"] = "สร้างใบงาน";
+    ViewData["ControllerName"] = "Jobs";
+    var cats = GetJobsExamType.Get.GetActive();
+}
 
 <!--begin::Content-->
 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
     <!--begin::Subheader-->
-    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-            <!--begin::Details-->
-            <div class="d-flex align-items-center flex-wrap mr-2">
-                <!--begin::Title-->
-                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">@ViewData["Title"]</h5>
-                <!--end::Title-->
-                <!--begin::Separator-->
-                <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
-                <!--begin::Title-->
-                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">@Model.JobNo</h5>
-                <!--end::Title-->
-                <!--end::Separator-->
-                <!--begin::Group Actions-->
-                <div class="d-flex- align-items-center flex-wrap mr-2 d-none" id="kt_subheader_group_actions">
-                    <div class="text-dark-50 font-weight-bold">
-                        <span id="kt_subheader_group_selected_rows">23</span>Selected:
-                    </div>
-                    <div class="d-flex ml-6">
-                        <div class="dropdown mr-2" id="kt_subheader_group_actions_status_change">
-                            <button type="button" class="btn btn-light-primary font-weight-bolder btn-sm dropdown-toggle" data-toggle="dropdown">Update Status</button>
-                            <div class="dropdown-menu p-0 m-0 dropdown-menu-sm">
-                                <ul class="navi navi-hover pt-3 pb-4">
-                                    <li class="navi-header font-weight-bolder text-uppercase text-primary font-size-lg pb-0">Change status to:</li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link" data-toggle="status-change" data-status="1">
-                                            <span class="navi-text">
-                                                <span class="label label-light-success label-inline font-weight-bold">Approved</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link" data-toggle="status-change" data-status="2">
-                                            <span class="navi-text">
-                                                <span class="label label-light-danger label-inline font-weight-bold">Rejected</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link" data-toggle="status-change" data-status="3">
-                                            <span class="navi-text">
-                                                <span class="label label-light-warning label-inline font-weight-bold">Pending</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link" data-toggle="status-change" data-status="4">
-                                            <span class="navi-text">
-                                                <span class="label label-light-info label-inline font-weight-bold">On Hold</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <button class="btn btn-light-success font-weight-bolder btn-sm mr-2" id="kt_subheader_group_actions_fetch" data-toggle="modal" data-target="#kt_datatable_records_fetch_modal">Fetch Selected</button>
-                        <button class="btn btn-light-danger font-weight-bolder btn-sm mr-2" id="kt_subheader_group_actions_delete_all">Delete All</button>
-                    </div>
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Cludidea</h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="" class="text-muted">Dashbaord</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="@Url.Action("Index", "Jobs")" class="text-muted">รายการคำขอสมัครนักออกแบบ</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:void(0)" class="text-muted">@ViewData["Title"]</a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
                 </div>
-                <!--end::Group Actions-->
+                <!--end::Page Heading-->
             </div>
-            <!--end::Details-->
+            <!--end::Info-->
             <!--begin::Toolbar-->
             <div class="d-flex align-items-center">
-                <!--begin::Button-->
-                <a href="#" class=""></a>
-                <!--end::Button-->
+                <!--begin::Actions-->
+                <a href="#" class="btn btn-light-primary font-weight-bolder btn-sm">Actions</a>
+                <!--end::Actions-->
                 <!--begin::Dropdown-->
-                <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="Quick actions" data-placement="left">
+                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
                     <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="svg-icon svg-icon-success svg-icon-2x">
                             <!--begin::Svg Icon | path:assets/media/svg/icons/Files/File-plus.svg-->
@@ -91,59 +57,57 @@
                             <!--end::Svg Icon-->
                         </span>
                     </a>
-                    <div class="dropdown-menu p-0 m-0 dropdown-menu-md dropdown-menu-right">
-                        <!--begin::Naviigation-->
-                        <ul class="navi">
-                            <li class="navi-header font-weight-bold py-5">
-                                <span class="font-size-lg">Add New:</span>
+                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right p-0 m-0">
+                        <!--begin::Navigation-->
+                        <ul class="navi navi-hover">
+                            <li class="navi-header font-weight-bold py-4">
+                                <span class="font-size-lg">Choose Label:</span>
                                 <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="Click to learn more..."></i>
                             </li>
                             <li class="navi-separator mb-3 opacity-70"></li>
                             <li class="navi-item">
                                 <a href="#" class="navi-link">
-                                    <span class="navi-icon">
-                                        <i class="flaticon2-shopping-cart-1"></i>
-                                    </span>
-                                    <span class="navi-text">Order</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-icon">
-                                        <i class="navi-icon flaticon2-calendar-8"></i>
-                                    </span>
-                                    <span class="navi-text">Members</span>
-                                    <span class="navi-label">
-                                        <span class="label label-light-danger label-rounded font-weight-bold">3</span>
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-success">Customer</span>
                                     </span>
                                 </a>
                             </li>
                             <li class="navi-item">
                                 <a href="#" class="navi-link">
-                                    <span class="navi-icon">
-                                        <i class="navi-icon flaticon2-telegram-logo"></i>
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-danger">Partner</span>
                                     </span>
-                                    <span class="navi-text">Project</span>
                                 </a>
                             </li>
                             <li class="navi-item">
                                 <a href="#" class="navi-link">
-                                    <span class="navi-icon">
-                                        <i class="navi-icon flaticon2-new-email"></i>
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-warning">Suplier</span>
                                     </span>
-                                    <span class="navi-text">Record</span>
-                                    <span class="navi-label">
-                                        <span class="label label-light-success label-rounded font-weight-bold">5</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-primary">Member</span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-text">
+                                        <span class="label label-xl label-inline label-light-dark">Staff</span>
                                     </span>
                                 </a>
                             </li>
                             <li class="navi-separator mt-3 opacity-70"></li>
-                            <li class="navi-footer pt-5 pb-4">
-                                <a class="btn btn-light-primary font-weight-bolder btn-sm" href="#">More options</a>
-                                <a class="btn btn-clean font-weight-bold btn-sm d-none" href="#" data-toggle="tooltip" data-placement="right" title="Click to learn more...">Learn more</a>
+                            <li class="navi-footer py-4">
+                                <a class="btn btn-clean font-weight-bold btn-sm" href="#">
+                                    <i class="ki ki-plus icon-sm"></i>Add new
+                                </a>
                             </li>
                         </ul>
-                        <!--end::Naviigation-->
+                        <!--end::Navigation-->
                     </div>
                 </div>
                 <!--end::Dropdown-->
@@ -155,144 +119,177 @@
     <!--begin::Entry-->
     <div class="d-flex flex-column-fluid">
         <!--begin::Container-->
-        <div class="container-fluid">
-
+        <div class="container">
             <!--begin::Card-->
-            @{
-                //await Html.RenderPartialAsync("~/Views/Shared/Common/JobsDetail.cshtml", Model);
-            }
-            @await Html.PartialAsync("PT/_CardJobInfo.cshtml", Model)
-            <!--end::Card-->
-            <!--begin::image-->
-            <div class="" id="job_img_info">
-                @await Html.PartialAsync("PT/_CardJobExImages.cshtml", Model)
-            </div>
-            <!--end::image-->
-
-            @if (Model.JobStatus != 1)//ร่าง
-            {
-                <!--begin::Row-->
-                <div class="row" id="candidate_list">
-                    @await Html.PartialAsync("PT/_CardJobCandidate.cshtml", Model)
-                </div>
-                <!--end::Row-->
-            }
-            @if (Model.JobStatus > 2)//ประกวด
-            {
-                <!--begin::image-->
-                <div class="" id="contest_list">
-                    @await Html.PartialAsync("PT/_CardJobContest.cshtml", Model)
-                </div>
-                <!--end::image-->
-
-                if (Model.JobCaUserId != null)
-                {
-                    <div id="job_img_submit">
-                        @await Html.PartialAsync("PT/_CardJobSubmitInfo.cshtml")
+            <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">
+                            @ViewData["Title"]
+                            <i class="mr-2"></i>
+                        </h3>
                     </div>
-                }
-            }
+                    <div class="card-toolbar">
+                        <a href="@Url.Action("Index", "Jobs")" class="btn btn-light-primary font-weight-bolder mr-2">
+                            <i class="ki ki-long-arrow-back icon-sm"></i>ย้อนกลับ
+                        </a>
+                        <button type="button" class="btn btn-light-info font-weight-bolder btn-draft">
+                                <i class="ki ki-check icon-sm"></i>บันทึกแบบร่าง
+                            </button>
+                        <div class="btn-group ml-2">
+                            <button type="button" class="btn btn-primary font-weight-bolder btn-submit">
+                                <i class="ki ki-check icon-sm"></i>บันทึก
+                            </button>
+                            @*<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                    <ul class="nav nav-hover flex-column">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon flaticon2-reload"></i>
+                                                <span class="nav-text">Save &amp; continue</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon flaticon2-add-1"></i>
+                                                <span class="nav-text">Save &amp; add new</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                <i class="nav-icon flaticon2-power"></i>
+                                                <span class="nav-text">Save &amp; exit</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!--begin::Form-->
+                    <form class="form" id="kt_form" asp-action="Manage" asp-controller=@ViewData["ControllerName"] method="post" data-ajax-confirm="@MessageCommon.Confirm" data-ajax="true" data-ajax-success="redirect">
+                        <div class="row">
+                            <div class="col-xl-2"></div>
+                            <div class="col-xl-8">
+                                @Html.HiddenFor(m => m.UserId)
+                                @Html.HiddenFor(m => m.JobNo)
+                                @Html.HiddenFor(m => m.IsDraft)
 
+                                <div class="my-5">
+                                    @*<div class="form-group row">
+                                        <label class="col-3">ลูกค้า <span class="text-danger">*</span></label>
+                                        <div class="col-9">
+                                            @{
+                                                SelectList userList = new SelectList(GetUser.Get.GetCutomerActive().Select(o => new { Id = o.UserId, Name = o.Fname + " " + o.Lname }), "Id", "Name");
+                                            }
+                                            @Html.DropDownListFor(m => m.UserId, userList, "กรุณาเลือก", new { @class = "form-control", @Required = "Required" })
+                                            @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>*@
+                                    <div class="form-group row">
+                                        <label class="col-3">ประเภทงาน <span class="text-danger">*</span></label>
+                                        <div class="col-9">
+                                            @{
+                                                SelectList jTypeList = new SelectList(GetJobsType.Get.GetActive(), "JobTypeId", "Name");
+                                            }
+                                            @Html.DropDownListFor(m => m.JobTypeId, jTypeList, "กรุณาเลือก", new { @class = "form-control", @Required = "Required" })
+                                            @Html.ValidationMessageFor(m => m.JobTypeId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-3">รายละเอียดและขอบเขตงาน <span class="text-danger">*</span></label>
+                                        <div class="col-9">
+                                            @Html.TextAreaFor(m => m.JobDescription, 5, 500, new { @class = "form-control form-control-solid", @placeholder = "อธิบายความต้องการ", @autocomplete = "off" })
+                                            @Html.ValidationMessageFor(m => m.JobDescription, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-3">ขนาดพื้นที่ <span class="text-danger">*</span></label>
+                                        <div class="col-9">
+                                            <div class="input-group input-group-solid">
+                                                @Html.TextBoxFor(m => m.JobAreaSize, "", new { @class = "form-control form-control-solid is-number-only", @maxlength = "10", @placeholder = "ระบุขนาด", @autocomplete = "off" })
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                        ตารางเมตร
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            @Html.ValidationMessageFor(m => m.JobAreaSize, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-3">กำหนดราคาต่อตรม. <span class="text-danger">*</span></label>
+                                        <div class="col-9">
+                                            <div class="input-group input-group-solid">
+                                                @Html.TextBoxFor(m => m.JobPricePerSqM, "", new { @class = "form-control form-control-solid is-number-only", @maxlength = "10", @placeholder = "ระบุราคา", @autocomplete = "off" })
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                        บาทต่อตรม.
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            @Html.ValidationMessageFor(m => m.JobPricePerSqM, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-3">เวลาดำเนินการ (โดยเริ่มนับหลังจากเลือกผู้ร่วมประกวด)</label>
+                                        <div class="col-9">
+                                            @Html.TextBoxFor(m => m.JobBeginDateStr, "", new { @class = "form-control form-control-solid", @placeholder = "00/00/0000", @readonly = "readonly" })
+                                            @Html.ValidationMessageFor(m => m.JobBeginDateStr, "", new { @class = "text-danger" })
+                                            <span class="form-text text-muted">ระยะเวลาคำนวณเบื้องต้นของดีไซน์เนอร์ กับขนาด ตรม. ของงาน</span>
+                                        </div>
+
+                                    </div>
+
+                                    @{
+
+                                        foreach (var cat in cats)
+                                        {
+                                            // Model.JobExUpload = new UploadFilesModel() { ElementId = "kt_dropzone_multi_" + cat.JobExTypeId, JobExTypeId = cat.JobExTypeId, Description = cat.Description, files = new List<FileAttachModel>() };
+                                            var catFiles = Model.files != null ? Model.files.Where(o => o.TypeId == cat.JobExTypeId).ToList() : new List<FileAttachModel>();
+                                            <div class="separator separator-dashed my-10"></div>
+                                            @await Html.PartialAsync("~/Views/Shared/Common/_DropzoneMultiFile.cshtml", new UploadFilesModel() { ElementId = "kt_dropzone_multi_" + cat.JobExTypeId, TypeId = cat.JobExTypeId, Description = cat.Description, files = catFiles })
+                                        }
+                                    }
+
+                                </div>
+
+                            </div>
+                            <div class="col-xl-2"></div>
+                        </div>
+                    </form>
+                    <!--end::Form-->
+                </div>
+            </div>
+            <!--end::Card-->
         </div>
         <!--end::Container-->
     </div>
     <!--end::Entry-->
 </div>
 <!--end::Content-->
+@section scripts{
 
-@await Html.PartialAsync("~/Views/Shared/Jobs/JobAddCandidateModal.cshtml", new JobCandidateModel() { JobId=Model.JobId })
+    <script type="text/javascript">
 
-@section Scripts {
-    <link href="@Url.Content("~/assets/plugins/custom/datatables/datatables.bundle.css")" rel="stylesheet" type="text/css" />
-    <script src="@Url.Content("~/assets/plugins/custom/datatables/datatables.bundle.js")"></script>
-
-    <script>
-        var _table = null;
-        function complatedModal(data) {
-            if (data.success) {
-                toastr.success(data.message, { fadeIn: 300 }) 
-                $('#addNewCandidateModal').modal("hide");
-                GetCandidateList(); 
-            }
-            else {
-                toastr.error(data.message);
-            }
-        }
-        function GetCandidateList() {
-            var suc = function (html) {
-                $('#candidate_list').html(html);   
-                initDataTable('#kt_datatable');
-            }
-            var err = function (e) {
-                alert('error ca modal', e);
-            }
-            CallAjax('@Url.Action("CardCandidateList", "Jobs")', 'POST', { JobId:'@Model.JobId' }, suc, err);
-        }
-        function LoadModalBody() {
-            initDataTable('#kt_datatable_ca', 1);//init modal table
-            $('.btn-add-new-ca').on('click', function () {
-                var tr = $(this).parents('tr');
-                var suc = function (html) {
-                    $('#new_ca').show();
-                    $('#addNewCandidateModal .modal-body #selected_user').append(html);
-                    _table.row(tr).remove().draw();
-                }
-                var err = function (e) {
-                    alert('error ca modal', e);
-                }
-                var url = $(this).attr('data-url');
-                var uid = $(this).attr('data-uid');
-                var fullname = $(this).attr('data-fullname');
-                var jid = $(this).attr('data-jid');
-                CallAjax(url, 'POST', { UserId: uid, UserFullName: fullname, JobId: jid }, suc, err);
-            });
-            $('.btn-modal-submit').on('click', function () {
-                $('#kt_form_modal').submit();
-            });
-        }
-        function initDataTable(elementId, style=0) {
-            _table = $(elementId).DataTable({
-                language: {
-                    search: 'ค้นหา:',
-                    emptyTable: 'ไม่พบข้อมูล', 
-                    info: 'แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ',
-                    lengthMenu: 'แสดง _MENU_ รายการ',
-                    infoFiltered: 'กรองจากทั้งหมด _MAX_ รายการ'
-                },
-                lengthChange: false,
-                pageLength : 5,
-                dom: style == 1 ? "<f<t>ip>" : "<lf<t>ip>"
-            });
-        }
+        const _DropzoneUrl = '@Url.Action("UploadFIle", "Base")'
+        const _DropzonePreviewUrl = '@Url.Action("UploadPreview", "Base")'
 
 
         $(function () {
-            _delCallback = function () {
-                var suc = function (html) {
-                $('#candidate_list').html(html);   
-                initDataTable('#kt_datatable');
-                }
-                var err = function (e) {
-                    alert('error ca modal', e);
-                }
-                CallAjax('@Url.Action("CardCandidateList", "Jobs")', 'POST', { JobId:'@Model.JobId' }, suc, err);
+            @{
+            var cats = GetJobsExamType.Get.GetActive();
+            foreach(var cat in cats)
+            {
+                @:initDropzone('kt_dropzone_multi_@cat.JobExTypeId', { type:@cat.JobExTypeId });
             }
-            initDataTable('#kt_datatable');
-            $('body').on('click', '.btn-modal-add-ca', function () {
-                var suc = function (html) {
-                    $('#addNewCandidateModal .modal-body #table_user').html(html);
-                    $('#addNewCandidateModal .modal-body #selected_user').html('');
-                    LoadModalBody();
-                    $('#new_ca').hide();
-                    $('#addNewCandidateModal').modal("show");
-                }
-                var err = function (e) {
-                    alert('error ca modal', e);
-                }
-                CallAjax('@Url.Action("CandidateUserList", "Jobs")', 'POST', { JobId:'@Model.JobId' }, suc, err);
-                
-            })
+            }
+
         });
     </script>
 
+    <script src="@Url.Content("~/js/dropzoneThumbnail.js")"></script>
+
+    
 }

@@ -25,19 +25,28 @@
                 <div class="d-flex">
                     <!--begin: Info-->
                     <div class="flex-grow-1">
-                        <!--begin: Content-->
-                        <div class="d-flex align-items-center flex-wrap justify-content-between">
-                            <div class="row ">
+                        <!--begin: Content d-flex-->
+                        <div class=" align-items-center flex-wrap justify-content-between">
+                            <div class="row gallery">
                                 @{
                                     var albumlist = GetAlbum.Get.GetJobSubmitAlbum(new SearchModel() { gId = Model.JobId, type = x });
                                     if (albumlist != null && albumlist.Count > 0)
                                     {
-                                        foreach (var item in albumlist)
+                                        int idx = 0;
+                                        var imgs = albumlist.Select(o => new FileAttachModel() { AttachFileId = o.AttachFileId, FileName = o.AttachFileName });
+                                        foreach (var item in imgs)
+                                        {
+                                            item.NextImg = idx;
+                                            item.IsView = true;
+                                            @await Html.PartialAsync("~/Views/Shared/Common/_ImageItem.cshtml", item)
+                                            idx++;
+                                        }
+                                        @*foreach (var item in albumlist)
                                         {
                                             <div class="col-12 col-md-2">
                                                 <img src="@Url.Content(item.UrlPath)" alt="@Html.Raw(item.AttachFileName)" class="img-thumbnail mx-3 my-3">
                                             </div>
-                                        }
+                                        }*@
                                     }
                                     else
                                     {

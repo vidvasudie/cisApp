@@ -1,4 +1,5 @@
-﻿
+﻿@using cisApp.Function
+@model SearchModel
 @{
     ViewData["Title"] = "ใบงาน";
 }
@@ -100,7 +101,7 @@
                 <a href="#" class=""></a>
                 <!--end::Button-->
                 <!--begin::Button-->
-                @*<a href="@Url.Action("Manage","Jobs")" class="btn btn-light-primary font-weight-bold ml-2">เพิ่ม Data</a>*@
+                @*<a href="@Url.Action("Manage","Jobs")" class="btn btn-light-primary font-weight-bold ml-2">สร้างใบงาน</a>*@
                 <!--end::Button-->
                 <!--begin::Dropdown-->
                 <div class="dropdown dropdown-inline ml-2" data-toggle="tooltip" title="Quick actions" data-placement="left">
@@ -195,6 +196,7 @@
     <script>
   
     function PagerClick(index) {
+        var text = $('#kt_subheader_search_form').val();
         var suc = function (html) {
             $('#box_update').html(html);
             $('#kt_subheader_total').html($('#TotalCount').val());
@@ -202,7 +204,7 @@
         var err = function (e) {
             alert('error paging', e);
         }
-        CallAjax('@Url.Action("ItemList", "Jobs")', 'POST', { currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
+        CallAjax('@Url.Action("ItemList", "Jobs")', 'POST', { text: text, Id: '@Model.Id', currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
     }
     function Search() {
         var text = $('#kt_subheader_search_form').val();
@@ -214,7 +216,7 @@
             var err = function (e) {
                 alert('error search', e);
             }
-            CallAjax('@Url.Action("ItemList", "Jobs")', 'POST', { text: text, pageSize: $('#pageSize').val() }, suc, err);
+            CallAjax('@Url.Action("ItemList", "Jobs")', 'POST', { text: text, Id: '@Model.Id', pageSize: $('#pageSize').val() }, suc, err);
         }
     } 
 

@@ -201,31 +201,20 @@
                                             </span>
                                         </div>
                                     </div>
-
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
                                             <label class="mr-3 mb-0 d-none d-md-block">สถานะ:</label>
-                                            <select class="form-control" id="kt_datatable_search_type">
+                                            <select class="form-control" id="kt_datatable_search_status">
                                                 <option value="">ทั้งหมด</option>
-                                                <option value="1">ใช้งาน</option>
-                                                <option value="2">ไม่ใช้งาน</option>
+                                                <option value="true">ใช้งาน</option>
+                                                <option value="false">ไม่ใช้งาน</option>
                                             </select>
                                         </div>
                                     </div>
-                                    @*<div class="col-md-4 my-2 my-md-0">
-                                        <div class="d-flex align-items-center">
-                                            <label class="mr-3 mb-0 d-none d-md-block">ประเภท :</label>
-                                            <select class="form-control" id="kt_datatable_search_status">
-                                                <option value="">ทั้งหมด</option>
-                                                <option value="1">ลูกค้า</option>
-                                                <option value="2">นักออกแบบ</option>
-                                            </select>
-                                        </div>
-                                    </div>*@
                                 </div>
                             </div>
                             <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
-                                <a href="#" class="btn btn-light-primary px-6 font-weight-bold">Search</a>
+                                <a href="#" class="btn btn-light-primary px-6 font-weight-bold" onclick="PagerClick(1)">Search</a>
                             </div>
                         </div>
                     </div>
@@ -252,7 +241,7 @@
 @section scripts {
 
     <script>
-   
+
     function PagerClick(index) {
         var suc = function (html) {
             $('#box_update').html(html);
@@ -260,7 +249,19 @@
         var err = function (e) {
             alert('error paging', e);
         }
-        CallAjax('@Url.Action("ItemList", ViewData["ControllerName"])', 'POST', { currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
+
+        var text = $('#kt_datatable_search_query').val()        
+        var active = $('#kt_datatable_search_status').val()
+
+
+        CallAjax('@Url.Action("ItemList", ViewData["ControllerName"])', 'POST'
+            , {
+                text
+                , active
+                , currentPage: index
+                , pageSize: $('#pageSize').val()
+            }
+            , suc, err);
     }
 
     $(function () {

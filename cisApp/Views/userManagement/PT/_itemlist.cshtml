@@ -2,6 +2,7 @@
 @using cisApp.Function;
 @model PaginatedList<UserModel>
 @{
+    ViewData["ControllerName"] = "UserManagement";
 }
 
 
@@ -72,7 +73,7 @@
                     }
                 }
             </select>
-            <span class="text-muted">Displaying @Model.TotalCurrentPage of @Model.TotalCount records</span>
+            <span class="text-muted">แสดง @Model.TotalCurrentPage จาก @Model.TotalCount รายการ</span>
         </div>
     </div>
     <!--end:: Pagination-->

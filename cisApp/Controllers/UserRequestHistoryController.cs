@@ -47,10 +47,27 @@ namespace cisApp.Controllers
                 ViewBag.goBack = Url.Action("Index", "UserRequestHistory");
                 ViewBag.TitleList = "รายการประวัติคำขอสมัครนักออกแบบ";
             }
-            List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model);
-            if (_model != null)
-                return View(_model.FirstOrDefault());
-            return View(new UserModel());
+             
+            List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model); //ใช้ code ในการหารายการข้อมูล
+            if (_model != null && _model.Count > 0)
+            {
+                var data = _model.FirstOrDefault();
+                //get data image profile
+                // get payment_img id
+                var userImg = GetUser.Get.GetUserImgs(data.UserId.Value);
+
+                if (userImg.Count > 0)
+                {
+                    data.AttachFileImage = GetAttachFile.Get.GetByRefId(userImg.FirstOrDefault().UserImgId.Value);
+                }
+                //get upgrade file attach
+                var fatchs = GetUserDesignerRequest.Get.GetUserDesignerRequestFiles(data.Id);
+                data.files = fatchs;
+
+                return View(data);
+            }
+            return BadRequest();
+            //return View(new UserModel());
         }
 
     }

@@ -132,31 +132,31 @@
                         </a>
                         <div class="btn-group">
                             @*<button type="button" class="btn btn-primary font-weight-bolder" onclick="submit();">
-            <i class="ki ki-check icon-sm"></i>บันทึก
-        </button>
-        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                <ul class="nav nav-hover flex-column">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon flaticon2-reload"></i>
-                            <span class="nav-text">Save &amp; continue</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon flaticon2-add-1"></i>
-                            <span class="nav-text">Save &amp; add new</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon flaticon2-power"></i>
-                            <span class="nav-text">Save &amp; exit</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>*@
+                                    <i class="ki ki-check icon-sm"></i>บันทึก
+                                </button>
+                                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
+                                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                                        <ul class="nav nav-hover flex-column">
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="nav-icon flaticon2-reload"></i>
+                                                    <span class="nav-text">Save &amp; continue</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="nav-icon flaticon2-add-1"></i>
+                                                    <span class="nav-text">Save &amp; add new</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    <i class="nav-icon flaticon2-power"></i>
+                                                    <span class="nav-text">Save &amp; exit</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>*@
                         </div>
                     </div>
                 </div>
@@ -165,10 +165,32 @@
                     <form class="form" id="kt_form">
                         <div class="row">
                             <div class="col-xl-2"></div>
-                            <div class="col-xl-8"> 
+                            <div class="col-xl-8">
                                 @Html.HiddenFor(m => m.Code)
                                 <div class="req-approve">
                                     @await Html.PartialAsync("~/Views/Shared/User/_UserCustomer.cshtml", Model)
+
+                                    <div class="separator separator-dashed my-10"></div>
+                                    <div class="my-5">
+                                        <div class="form-group row">
+                                            <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">รูปภาพประจำตัว</label>
+                                            <div class="col-lg-4 col-md-9 col-sm-12 gallery" >
+                                                @if (Model.AttachFileImage != null)
+                                                {
+                                                    @await Html.PartialAsync("~/Views/Shared/Common/_ImageItem.cshtml", new FileAttachModel() { FileName = Model.AttachFileImage.FileName, AttachFileId = Model.AttachFileImage.AttachFileId, IsView = true })
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-12 text-center pl-15 mt-n10 nodata">
+                                                        <h2 class=" text-muted my-19"><i class="fas fa-exclamation-triangle fa-1x"></i> ไม่พบข้อมูล</h2>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
 
                                     @if (Model.UserType == 2 || (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc)))
                                     {
@@ -180,53 +202,37 @@
                                 <div class="my-5">
                                     <div class="form-group row">
                                         <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">เอกสารประกอบคำขอ</label>
-
+                                    </div>
+                                    <div class="form-group row gallery" >
                                         @{
-                                            int i = 0;
-                                        }
-                                        @while (i < 4)
-                                        {
-
-                                            <div class="col-lg-6 col-md-6 col-sm-12">
-
-                                                <div class="d-flex flex-column align-items-center">
-                                                    <!--begin: Icon-->
-                                                    @*<img alt="" class="max-h-65px" src="" />*@
-                                                    <img src="https://picsum.photos/300/500?random=@i" alt="..." class="img-thumbnail">
-                                                    <!--end: Icon-->
-                                                    <!--begin: Tite-->
-                                                    <a href="#" class="text-dark-75 font-weight-bold mt-15 font-size-lg">@utilityFunc.GenerateName(10) .jpg</a>
-                                                    <!--end: Tite-->
+                                            if (Model.files != null && Model.files.Count > 0)
+                                            {
+                                                int idx = 0;
+                                                foreach (var item in Model.files)
+                                                {
+                                                    item.NextImg = idx;
+                                                    item.IsView = true;
+                                                    item.col = 3;
+                                                    @await Html.PartialAsync("~/Views/Shared/Common/_ImageItem.cshtml", item)
+                                                    idx++;
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <div class="col-12 text-center pl-15 mt-n10 nodata"  >
+                                                    <h2 class=" text-muted my-19"><i class="fas fa-exclamation-triangle fa-1x"></i> ไม่พบข้อมูล</h2>
                                                 </div>
-
-                                            </div>
-                                            i++;
+                                            }
                                         }
 
                                     </div>
                                 </div>
 
                                 <div class="separator separator-dashed my-10"></div>
-                                @*<div class="my-5">
-            <div class="form-group row">
-                <label class="col-form-label col-lg-3 col-sm-12 text-lg-right">รูปภาพประจำตัว</label>
-                <div class="col-lg-4 col-md-9 col-sm-12">
-                    <div class="dropzone dropzone-default" id="kt_dropzone_1">
-                        <div class="dropzone-msg dz-message needsclick">
-                            <h3 class="dropzone-msg-title">Drop files here or click to upload.</h3>
-                            <span class="dropzone-msg-desc">
-                                This is just a demo dropzone. Selected files are
-                                <strong>not</strong>actually uploaded.
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>*@
                                 @{
-                                    var checkedOne = Model.Status == 1 || Model.Status == null ? "checked":"";
-                                    var checkedTwo = Model.Status == 2 ? "checked":"";
-                                    var checkedThree = Model.Status == 3 ? "checked":"";
+                                    var checkedOne = Model.Status == 1 || Model.Status == null ? "checked" : "";
+                                    var checkedTwo = Model.Status == 2 ? "checked" : "";
+                                    var checkedThree = Model.Status == 3 ? "checked" : "";
 
                                 }
                                 <div class="my-5">
@@ -276,11 +282,13 @@
     <!--end::Entry-->
 </div>
 <!--end::Content-->
+@await Html.PartialAsync("~/Views/Shared/Album/_ImagesViewModal.cshtml")
+
 @section scripts{
     <!--begin::Page Scripts(used by this page)-->
+    <link href="@Url.Content("~/css/image-modal.css")" rel="stylesheet" type="text/css" />
 
-
-    <script> 
+    <script>
         $(function () {
             $('input').attr('readonly', true);
             $('textarea').attr('readonly', true);
@@ -290,6 +298,7 @@
             $('input[type=radio]').on('click', function (e) {
                 e.preventDefault();
             });
+             
         });
     </script>
 

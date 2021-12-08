@@ -6,6 +6,7 @@ namespace cisApp.Function
 {
     public class SearchModel
     {
+        public Guid? Id { get; set; }
         public Guid? gId { get; set; }
         public string text { get; set; }
         public int? currentPage { get; set; } = 1;
@@ -14,6 +15,7 @@ namespace cisApp.Function
         public int mode { get; set; } = 0; 
         public int? type { get; set; }
         public string goBack { get; set; }
+        public bool? active { get; set; }
 
         public int? jobType { get; set; }
         public int? PaymentStatus { get; set; }

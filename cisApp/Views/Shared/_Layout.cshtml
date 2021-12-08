@@ -96,6 +96,13 @@
             max-width: 100%;
             height: auto;
         }
+        .img-thumbnail.img-list{
+            max-width: 250px !important;
+            height: 150px !important;
+        }
+        span.bt-img-del i:hover {
+          color: #000 !important;
+        }
     </style>
 </head>
 <!--end::Head-->
@@ -854,6 +861,7 @@
 
     <script>
         $(function () {
+            _previewImgUrl = '@Url.Action("PreviewImage", "Base")';
             if ($('select').length > 0) {
                 $('select').select2();
             }

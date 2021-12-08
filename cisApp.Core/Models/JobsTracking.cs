@@ -7,7 +7,8 @@ namespace cisApp.Core
     public partial class JobsTracking
     {
         public int JobTrackingId { get; set; }
-        public Guid? JobId { get; set; }
+        public Guid JobId { get; set; }
         public DateTime? StatusDate { get; set; }
+        public int? JobStatus { get; set; }
     }
 }

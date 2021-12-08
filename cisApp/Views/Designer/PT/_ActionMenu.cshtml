@@ -1,0 +1,70 @@
+﻿@using cisApp.Controllers
+@model cisApp.Function.UserModel
+@{
+}
+
+<div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+    <!--begin::Navigation-->
+    <ul class="navi navi-hover">
+        <li class="navi-header pb-1">
+            <span class="text-primary text-uppercase font-weight-bold font-size-sm">Action:</span>
+        </li>
+        <li class="navi-item">
+            <a href="@Url.Action("Manage","UserApprove")" class="navi-link">
+                <span class="navi-icon">
+                    <i class="flaticon2-document"></i>
+                </span>
+                <span class="navi-text">ดูประวัติ</span>
+            </a>
+        </li>
+        <li class="navi-item">
+            <a href="@Url.Action("index","Jobs")" class="navi-link">
+                <span class="navi-icon">
+                    <i class="flaticon2-document"></i>
+                </span>
+                <span class="navi-text">ดูสถานะงาน</span>
+            </a>
+        </li>
+        <li class="navi-item">
+            <a href="@Url.Action("index","files",new { Mode ="Designer"})" class="navi-link">
+                <span class="navi-icon">
+                    <i class="flaticon2-document"></i>
+                </span>
+                <span class="navi-text">ผลงาน</span>
+            </a>
+        </li>
+        <li class="navi-item">
+            <a href="@Url.Action("Detail","Jobs")" class="navi-link">
+                <span class="navi-icon">
+                    <i class="flaticon2-document"></i>
+                </span>
+                <span class="navi-text">ประวัติการโอนเงิน</span>
+            </a>
+        </li>
+        <li class="navi-item">
+            <a href="@Url.Action("Detail","Jobs")" class="navi-link">
+                <span class="navi-icon">
+                    <i class="flaticon2-document"></i>
+                </span>
+                <span class="navi-text">Log</span>
+            </a>
+        </li>
+        <li class="navi-item">
+            <a href="#" class="navi-link">
+                <span class="navi-icon">
+                    <i class="flaticon-chat"></i>
+                </span>
+                <span class="navi-text">Log Chat</span>
+            </a>
+        </li>
+        <li class="navi-item">
+            <a href="@Url.Action("Detail","Jobs")" class="navi-link">
+                <span class="navi-icon">
+                    <i class="flaticon2-document"></i>
+                </span>
+                <span class="navi-text">Dashbaord รายได้</span>
+            </a>
+        </li>
+    </ul>
+    <!--end::Navigation-->
+</div>

@@ -2,6 +2,7 @@
 const _dataGuidAttr = 'data-guid'
 var _callback = null
 var _delCallback = null
+var _previewImgUrl = null
 
 function CallAjax(url, method, data, success, error) {
     if (data != null && data !== undefined) {
@@ -188,6 +189,10 @@ function GetDataPostCode(urlAction) {
 $('body').on('click', '.btn-submit', function () {
     $('#kt_form').submit();
 })
+$('body').on('click', '.btn-draft', function () {
+    $('#IsDraft').val(true);
+    $('#kt_form').submit();
+});
 
 $('body').on('keypress', '.is-number-only', function (e) {
     keys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
@@ -233,8 +238,7 @@ $('body').on('click', '.bt-delete', function (e) {
 
 $('body').on('click', '.bt-update', function (e) {
 
-    var elem = $(this);
-
+    var elem = $(this); 
     Swal.fire({
         title: "แก้ไขข้อมูล",
         text: "ยืนยันการแก้ไขข้อมูล",
@@ -247,6 +251,44 @@ $('body').on('click', '.bt-update', function (e) {
         if (result.value) {
             var url = $(elem).attr(_dataUrlAttr)
             window.location = url;
+
+        } else if (result.dismiss === "cancel") {
+
+        }
+    });
+});
+
+$('body').on('click', '.bt-reset-password', function (e) {
+
+    var elem = $(this);
+
+    Swal.fire({
+        title: "reset password",
+        text: "ยืนยันแก้ไขรหัสผ่านผู้ใช้งาน",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "ใช่, ยืนยัน",
+        cancelButtonText: "ไม่, ยกเลิก",
+        reverseButtons: true
+    }).then(function (result) {
+        if (result.value) {
+            var url = $(elem).attr(_dataUrlAttr)
+            $.ajax({
+                url: url,
+                method: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) {
+                    redirect(res)
+                },
+                error: function (err) {
+                    redirect(err)
+                }
+            })
+            //Swal.fire(
+            //    "สำเร็จ!",
+            //    "รหัสผ่านถูกแก้ไข ระบบทำการส่งรหัสผ่านใหม่ให้ผู้ใช้งาน ทาง Email เรียบร้อยแล้ว!!!",
+            //    "success"
+            //)
 
         } else if (result.dismiss === "cancel") {
 
@@ -268,3 +310,42 @@ $('body').on('change', '.btt-status', function () {
     });
 
 }); 
+
+$('body').on('click', '.bt-img-del', function () { 
+    $(this).parents('.single-img').remove();
+
+    try {
+        UpdateGallery()
+    }
+    catch (ex) {
+
+    }
+
+});
+
+$('body').on('click', '.gallery img', function () {
+    var $this = $(this);
+    console.log($this)
+
+    var data = {}
+    data.files = [];
+    $.each($this.parents('.gallery').find('.single-img .img-list'), function (index, value) {
+        var objImg = {};
+        objImg.NextImgSelected = $this.attr('data-slide-to');
+        objImg.NextImg = $(value).attr('data-slide-to');
+        objImg.FileName = $(value).attr('alt');
+        objImg.AttachFileId = $(value).attr('data-id');
+
+        data.files.push(objImg);
+        console.log(objImg)
+    });
+    var suc = function (html) {
+        $('#carouselPreview').html(html);
+        $('#previewModal').modal('show');
+    }
+    var err = function (e) {
+        alert('error carouselPreview', e);
+    }
+    CallAjax(_previewImgUrl, 'POST', data, suc, err);
+});
+

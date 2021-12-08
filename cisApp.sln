@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp.Service", "cisApp.Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp.Function", "cisApp.Function\cisApp.Function.csproj", "{B95905B0-5048-4900-976A-5530B3EF8F2C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cisApp.API", "cisApp.API\cisApp.API.csproj", "{980DC8A7-0ED3-4A09-B00C-E0A926973483}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp.API", "cisApp.API\cisApp.API.csproj", "{980DC8A7-0ED3-4A09-B00C-E0A926973483}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

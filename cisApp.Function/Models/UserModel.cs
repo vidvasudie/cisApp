@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using cisApp.Core;
+using cisApp.library;
+using static cisApp.library.DateTimeUtil;
 
 namespace cisApp.Function
 {
@@ -11,14 +13,7 @@ namespace cisApp.Function
     {
         public Guid? UserId { get; set; }
 
-
-
-      
-
-
-
-
-
+         
         /// <summary>
         /// 1 = ผู้ใข้งาน,
         /// 2 = นักออกแบบ
@@ -28,9 +23,7 @@ namespace cisApp.Function
         [Display(Name = "ประเภทผู้ใช้งาน")]
         public int? UserType { get; set; }
 
-       
-
-
+        
         public Guid? RoleId { get; set; }
         /// <summary>
         /// รหัสผู้ออกแบบ
@@ -79,7 +72,18 @@ namespace cisApp.Function
 
         public bool IsActive { get; set; }
         public bool IsDeleted { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public string CreatedDateStr
+        {
+            get
+            {
+                return CreatedDate.ToStringFormat(DateTimeFormat.FULL);
+            }
+            set
+            {
+                CreatedDate = value.ToDateTimeFormat();
+            }
+        }
         public DateTime UpdatedDate { get; set; }
         public DateTime DeletedDate { get; set; }
         public DateTime? LastLogin { get; set; }
@@ -87,13 +91,22 @@ namespace cisApp.Function
         public Guid? UpdatedBy { get; set; }
         public Guid? DeletedBy { get; set; }
 
+        public int Id { get; set; }
         public string Code { get; set; }
         public int? Status { get; set; }
         public string StatusDesc { get; set; }
         public string Remark { get; set; }
+        public int JobWaitingStatusTotal { get; set; }
+        public int JobProcessStatusTotal { get; set; }
+        public int JobTotal { get; set; }
+
+        [NotMapped]
+        public List<FileAttachModel> files { get; set; }
 
         [NotMapped]
         public AttachFile AttachFileImage { get; set; }
+        [NotMapped]
+        public Guid AttachFileId { get; set; }
 
         [NotMapped]
         public bool FileRemove { get; set; }
@@ -106,5 +119,13 @@ namespace cisApp.Function
 
         [NotMapped]
         public string FileSize { get; set; }
+        [NotMapped]
+        public string UrlPath
+        {
+            get
+            {
+                return "~/Uploads" + "/" + this.AttachFileId + "/" + this.FileName;
+            }
+        }
     }
 }

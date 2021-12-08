@@ -11,7 +11,7 @@
             <!--begin::Pic-->
             <div class="flex-shrink-0 mr-7">
                 <div class="symbol symbol-50 symbol-lg-120">
-                    <img alt="Pic" src="https://picsum.photos/120/50?random=3" />
+                    <img alt="Pic" src="@Url.Content(Model.UrlPath)" />
                 </div>
             </div>
             <!--end::Pic-->
@@ -26,29 +26,28 @@
                             @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
                             {
                                 @Html.Raw("[" + Model.Code + "] " + Model.Fname + " " + Model.Lname)
+                                @if (Model.Status == 1)
+                                {
+                                    <i class="flaticon2-writing text-warning icon-md ml-2"></i>
+                                }
+                                else if (Model.Status == 2)
+                                {
+                                    <i class="flaticon2-correct text-success icon-md ml-2"></i>
+                                }
+                                else //3
+                                {
+                                    <i class="flaticon-cancel text-danger icon-md ml-2"></i>
+                                }
                             }
                             else
                             {
                                 @Html.Raw(Model.Fname + " " + Model.Lname)
+                                @if (Model.UserType == 2)
+                                {
+                                    <i class="flaticon2-correct text-success icon-md ml-2"></i>
+                                }
                             }
-                            <i class="flaticon2-contract text-success icon-md ml-2"></i>
-                            @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
-                            {
-                                var btn_color = "btn-light-warning";
-                                if (Model.Status == 1)
-                                {
-                                    btn_color = "btn-light-warning";
-                                }
-                                else if (Model.Status == 2)
-                                {
-                                    btn_color = "btn-light-success";
-                                }
-                                else if (Model.Status == 3)
-                                {
-                                    btn_color = "btn-light-danger";
-                                }
-                                <span class="btn @btn_color btn-sm px-6 font-weight-bold ml-5">@Html.Raw(Model.StatusDesc)</span>
-                            }
+
                         </a>
                         <!--end::Name-->
                         <!--begin::Contacts-->
@@ -107,8 +106,7 @@
                                 {
 
                                     @if (BaseController._RoleMenuType == 2)
-                                    {
-                                        <a href="@Url.Action("Manage", "UserApprove", new { text = Model.Code })" class="btn btn-sm btn-warning font-weight-bolder text-uppercase" target="_blank">แก้ไขคำขอ</a>
+                                    { 
                                         <a href="@Url.Action("ManageRequest", "UserApprove", new { text=Model.Code })" class="btn btn-sm btn-primary font-weight-bolder text-uppercase" target="_blank">ตรวจสอบ</a>
                                     }
                                     else
@@ -125,16 +123,29 @@
                             {
                                 @if (BaseController._RoleMenuType == 2)
                                 {
-                                    string userController = "UserManagement";
-                                    if (Model.UserType == 3)
-                                    {
-                                        userController = "Employee";
-                                    }
+                                    
+                                    <!--begin::Toolbar-->
+                                    <div class="card-toolbar mb-7">
+                                        <a href="#" data-url="@Url.Action("ResetPassword", ViewData["ControllerName"].ToString(), new { id = Model.UserId })"
+                                           class="btn btn-sm btn-light-danger font-weight-bolder text-uppercase mr-2 bt-reset-password">Reset Password</a>
 
-                                    <a href="#" data-url="@Url.Action("Manage", userController, new { id = Model.UserId })"
-                                       class="btn btn-sm btn-warning font-weight-bolder text-uppercase bt-update">แก้ไขข้อมูลผู้ใช้งาน</a>
-                                    <a href="#" data-url="@Url.Action("Delete", userController, new { id = Model.UserId })"
-                                       class="btn btn-sm btn-danger font-weight-bolder text-uppercase bt-delete">ลบผู้ใช้งาน</a>
+                                        @if (Model.UserType == 1)
+                                        {
+                                            <a href="#" data-url="@Url.Action("Manage", "UserApprove", new { Id = Model.UserId })"
+                                               class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2 bt-update">Upgrade</a>
+                                        }
+                                        else if (Model.UserType == 2)
+                                        {
+                                            <a href="#" data-url="@Url.Action("Downgrade", "UserManagement", new { id = Model.UserId })"
+                                               class="btn btn-sm btn-light-warning font-weight-bolder text-uppercase mr-2 bt-downgrade bt-delete">Downgrade</a>
+                                        }
+
+
+                                        @{ await Html.RenderPartialAsync("~/Views/Shared/User/_CardUserBtnDropdown.cshtml", Model);
+                                        }
+
+                                    </div>
+                                    <!--end::Toolbar-->
                                 }
 
                             }
@@ -197,36 +208,80 @@
                     </div>
                     <!--end::Designer data-->
                     <!--begin::Content-->
-            <div class="d-flex align-items-center flex-wrap justify-content-between">
+                    <div class="d-flex align-items-center flex-wrap justify-content-between">
 
-                <!--begin::Description-->
-                <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
-                    @Html.Raw(Model.Address + " ตำบล" + Model.SubDistrictDesc + " อำเภอ" + Model.DistrictDesc + " จังหวัด" + Model.ProvinceDesc + " " + Model.PostCode)
-                </div>
-                <!--end::Description-->
-                <!--begin::Progress-->
-                <div class="d-flex mt-4 mt-sm-0">
-                    @if (Model.LastLogin != null)
-                    {
-                        <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด @Model.LastLogin</span>
-                    }
-                    else
-                    {
-                        <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด -</span>
-                    }
+                        <!--begin::Description-->
+                        <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5 ">
+                            @Html.Raw(Model.Address + " ตำบล" + Model.SubDistrictDesc + " อำเภอ" + Model.DistrictDesc + " จังหวัด" + Model.ProvinceDesc + " " + Model.PostCode)
+                        </div>
+                        <!--end::Description-->
+                        <!--begin::Progress-->
+                        <div class="d-flex mt-4 mt-sm-0">
+                            @if (!String.IsNullOrEmpty(Model.Code))
+                            {
+                                <span class="font-weight-bold mr-4">วันที่ทำรายการ @Model.CreatedDateStr</span>
+                            }
+                            else
+                            {
+                                @if (Model.LastLogin != null)
+                                {
+                                    <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด @Model.LastLogin</span>
+                                }
+                                else
+                                {
+                                    <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด -</span>
+                                }
+                            }
 
-                </div>
-                <!--end::Progress-->
-                <!--begin::Progress-->
-                @*<div class="d-flex mt-4 mt-sm-0">
-            <span class="font-weight-bold mr-4">Progress</span>
-            <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <span class="font-weight-bolder text-dark ml-4">78%</span>
-        </div>*@
-                <!--end::Progress-->
-            </div>
+                        </div>
+                        <!--end::Progress-->
+                        
+                       
+                        <!--begin::Progress-->
+                        @*<div class="d-flex mt-4 mt-sm-0">
+                                <span class="font-weight-bold mr-4">Progress</span>
+                                <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="font-weight-bolder text-dark ml-4">78%</span>
+                            </div>*@
+                        <!--end::Progress-->
+                    </div>
+                    <!--end::Content-->
+                    
+                }
+                else
+                {
+                    <!--begin::Content-->
+                    <div class="d-flex align-items-center flex-wrap justify-content-between">
+
+
+                        <!--begin::Progress-->
+                        <div class="d-flex mt-4 mt-sm-0">
+                            @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
+                            {
+                                @if (Model.LastLogin != null)
+                                {
+                                    <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด @Model.LastLogin</span>
+                                }
+                                else
+                                {
+                                    <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด -</span>
+                                }
+                            }
+
+                        </div>
+                        <!--end::Progress-->
+                        <!--begin::Progress-->
+                        @*<div class="d-flex mt-4 mt-sm-0">
+                                <span class="font-weight-bold mr-4">Progress</span>
+                                <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
+                                    <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <span class="font-weight-bolder text-dark ml-4">78%</span>
+                            </div>*@
+                        <!--end::Progress-->
+                    </div>
                     <!--end::Content-->
                 }
 
@@ -234,6 +289,13 @@
             <!--end::Info-->
         </div>
         <!--end::Top-->
+         @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc) && Model.Status > 1)
+         {
+            <!--begin::Separator-->
+            <div class="separator separator-solid my-7"></div>
+            <!--end::Separator-->
+            <h4 class="font-weight-bold mr-4"> @Html.Raw(Model.StatusDesc) </h4> 
+          } 
     </div>
 </div>
 <!--end::Card-->
