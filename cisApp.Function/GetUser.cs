@@ -193,11 +193,11 @@ namespace cisApp.Function
                     };
 
                     return StoreProcedure.GetAllStored<UserModel>("GetUserLogin", parameter);
-                //}
-                //catch (Exception ex)
-                //{
-                //    return new List<UserModel>();
-                //}
+                }
+                catch (Exception ex)
+                {
+                    return new List<UserModel>();
+                }
             }
 
             public static List<UserImg> GetUserImgs(Guid userId)
