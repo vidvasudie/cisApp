@@ -21,7 +21,13 @@ namespace cisApp.API.Controllers
         public object Get(string search, int? page = 0)
         {
             string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
-            var Obj = GetAlbum.Get.GetAlbumImage(search, page.Value, 10, webAdmin);
+            SearchModel model = new SearchModel()
+            {
+                text = search,
+                currentPage = 0,
+                pageSize = 10
+            };
+            var Obj = GetAlbum.Get.GetAlbumImage(model, webAdmin);
 
             if (Obj.Count > 0)
             {
