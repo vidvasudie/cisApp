@@ -176,8 +176,7 @@ namespace cisApp.Function
                 {
                     throw ex;
                 }
-            } 
-
+            }  
             private static int ManageImages(CAppContext context, List<FileAttachModel> imgs, Jobs obj)
             {
                 if(imgs == null || imgs.Count == 0)

@@ -12,7 +12,7 @@ namespace cisApp
         }
         public static common errors(string Message, string MessageEN, Object Data )
         {
-            return new common() { success = true, Message = Message, MessageEN = Message, Data = Data  }; 
+            return new common() { success = false, Message = Message, MessageEN = Message, Data = Data  }; 
         }
 
      }

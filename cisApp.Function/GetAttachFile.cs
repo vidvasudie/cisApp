@@ -35,12 +35,12 @@ namespace cisApp.Function
         public class Manage
         {
 
-            public static bool UploadFile(string base64File, string fileName, int fileSize, Guid refId, Guid userId)
+            public static AttachFile UploadFile(string base64File, string fileName, int fileSize, Guid? refId, Guid userId)
             {
                 try
                 {
                     if (string.IsNullOrEmpty(base64File))
-                        return true;
+                        return null;
                                        
 
                     Guid id = Guid.NewGuid();
@@ -74,7 +74,7 @@ namespace cisApp.Function
                         context.SaveChanges();
                     }
 
-                    return true;
+                    return attachFile;
                 }
                 catch (Exception ex)
                 {
