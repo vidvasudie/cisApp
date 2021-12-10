@@ -30,7 +30,7 @@ namespace cisApp.API.Controllers
                     {
                         return Ok(resultJson.errors("อัพโหลดไฟล์ไม่สำเร็จ", "fail", null));
                     }
-                    string Host = _config.GetSection("AttachDomain:Host").Value;
+                    string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
                     bool removeLast = Host.Last() == '/';
                     string UrlPath = athFile.UrlPath;
                     if (removeLast)
