@@ -21,7 +21,7 @@ namespace cisApp.Controllers
         public IActionResult Index()
         {
             
-            return View(new LoginModel() { username= "admin@gmail.com", password="12345" });
+            return View(new LoginModel() { username= "admin@gmail.com", password="12345", userType = 3 });
         }
 
         [HttpPost]
@@ -46,7 +46,8 @@ namespace cisApp.Controllers
                     return Json(new ResponseModel().ResponseError(MessageCommon.IncorrectData)); 
                 }
                 else
-                { 
+                {
+                    obj.userType = 3;
                     var users = GetUser.Get.GetUserLogin(obj);
                     if (users == null || users.Count < 1)
                     {
