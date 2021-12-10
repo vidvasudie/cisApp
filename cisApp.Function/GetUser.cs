@@ -235,6 +235,7 @@ namespace cisApp.Function
                         {
                             //using var transaction = context.Database.BeginTransaction();
                             Users obj = new Users();
+                            UsersPassword usersPassword = null;
 
                             if (data.UserId != null)
                             {
@@ -264,7 +265,7 @@ namespace cisApp.Function
 
 
                                 newPassword = Encryption.Encrypt(newPassword);
-                                UsersPassword usersPassword = new UsersPassword()
+                                usersPassword = new UsersPassword()
                                 {
                                     Password = newPassword
                                 };
@@ -368,6 +369,15 @@ namespace cisApp.Function
                                 GetAttachFile.Manage.UpdateStatusByRefId(userImg.UserImgId.Value, false, userId.Value);
                             }
 
+                            if (usersPassword != null)
+                            {
+                                usersPassword.UserId = obj.UserId;
+
+                                context.UsersPassword.Update(usersPassword);
+
+                                context.SaveChanges();
+                            }
+
                             dbContextTransaction.Commit();
 
                             return obj;
@@ -443,7 +453,8 @@ namespace cisApp.Function
 
                         UsersPassword usersPassword = new UsersPassword()
                         {
-                            Password = newPassword
+                            Password = newPassword,
+                            UserId = obj.UserId
                         };
 
                         context.UsersPassword.Update(usersPassword);

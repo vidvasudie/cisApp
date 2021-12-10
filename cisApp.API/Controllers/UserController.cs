@@ -36,7 +36,7 @@ namespace cisApp.API.Controllers
                     }
                     else
                     {
-                        var _result = GetUser.Manage.Update(new UserModel() { Fname = value.Fname, Lname = value.Lname, Tel = value.Tel, Email = value.Tel, UserType = 1, IsActive = true }, null, value.NewPassword);
+                        var _result = GetUser.Manage.Update(new UserModel() { Fname = value.Fname, Lname = value.Lname, Tel = value.Tel, Email = value.Email, UserType = 1, IsActive = true }, null, value.NewPassword);
                         return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new { ActivityID = _result.UserId, time = DateTime.Now, expire = DateTime.Now.AddDays(1) }));
                     }
                 }
