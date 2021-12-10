@@ -109,6 +109,35 @@ namespace cisApp.Function
                 }
             }
 
+            public static List<AlbumImageModel> GetAlbumImage(string stext, int page = 1, int take = 10,string domainUrl = "")
+            {
+                try
+                {
+                    int skip = (page) * take;
+                    SqlParameter[] parameter = new SqlParameter[] {
+                        new SqlParameter("@stext", stext),
+                        new SqlParameter("@skip", skip),
+                        new SqlParameter("@take", take)
+                    };
+
+                    var data = StoreProcedure.GetAllStored<AlbumImageModel>("GetAlbumImage", parameter);
+
+                    if (data != null)
+                    {
+                        foreach (var item in data)
+                        {
+                            item.FullUrlPath = domainUrl + item.UrlPath;
+                        }
+                    }
+
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return new List<AlbumImageModel>();
+                }
+            }
+
         }
 
         public class Manage
