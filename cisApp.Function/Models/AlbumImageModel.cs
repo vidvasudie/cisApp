@@ -29,6 +29,7 @@ namespace cisApp.Function
         public Guid JobID { get; set; }
         public string Category { get; set; }
         public string Tags { get; set; }
+        public string AlbumName { get; set; }
 
         public string UrlPath
         {

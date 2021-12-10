@@ -1,5 +1,7 @@
 ﻿using cisApp.Function;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 using System.Linq;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,15 +11,21 @@ namespace cisApp.API.Controllers
     [ApiController]
     public class HomeController : ControllerBase
     {
+        readonly static IConfigurationRoot config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+                      .AddJsonFile("appsettings.json")
+                      .Build();
+
         // GET: api/<HomeController>
         [HttpGet]
-        public object Get(string search , int? page =0)
+        public object Get(string search, int? page = 0)
         {
-          var Obj =   GetAlbum.Get.GetRandomAlbumImage();
+            string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+            var Obj = GetAlbum.Get.GetAlbumImage(search, page.Value, 10, webAdmin);
 
             if (Obj.Count > 0)
             {
-                return Ok(resultJson.success(null, null, Obj.Select(o=> new  {o.AttachFileId,o.FileName,o.UrlPath,o.UserId,o.JobID }).ToList()   ,null,null,page,page+1));
+                return Ok(resultJson.success(null, null, Obj.Select(o => new { o.AttachFileId, o.FileName, o.FullUrlPath, o.UserId, o.JobID, o.AlbumName, o.Category, o.Tags }).ToList(), null, null, page, page + 1));
             }
             else
             {
