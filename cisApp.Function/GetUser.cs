@@ -189,7 +189,7 @@ namespace cisApp.Function
                     SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@username", !String.IsNullOrEmpty(model.username) ? model.username.Trim() : (object)DBNull.Value),
                        new SqlParameter("@password", !String.IsNullOrEmpty(model.password) ? Encryption.Encrypt(model.password.Trim()) : (object)DBNull.Value),
-                       new SqlParameter("@usertype", model.userType)
+                       new SqlParameter("@usertype", model.userType == null ? 1 : model.userType)
                     };
 
                     return StoreProcedure.GetAllStored<UserModel>("GetUserLogin", parameter);
