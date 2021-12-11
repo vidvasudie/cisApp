@@ -30,6 +30,27 @@ namespace cisApp.Function
                     throw ex;
                 }                
             }
+
+            public static AttachFile GetByUserId(Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = from user in context.Users.Where(o => o.UserId == userId && o.IsActive == true) 
+                                   join img in context.AttachFile on user.UserImgId equals img.RefId
+                                   select img;
+                        if (!data.Any())
+                            return null;
+
+                        return data.FirstOrDefault();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public class Manage
