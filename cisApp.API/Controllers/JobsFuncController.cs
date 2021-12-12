@@ -92,5 +92,63 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [Route("api/jobs/getcustomerjoblist")]
+        [HttpGet]
+        public IActionResult GetCustomerJobList(Guid userId)
+        {
+            try
+            {
+                if (userId == Guid.Empty)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
+
+                var data = GetJobs.Get.GetCustomerJobList(userId);
+                if (data == null)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                return Ok(resultJson.success("สำเร็จ", "success", data));
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [Route("api/jobs/canceljob")]
+        [HttpDelete]
+        public IActionResult CancelJob(Guid jobId, Guid userId)
+        {
+            try
+            {
+                if (jobId == Guid.Empty || userId == Guid.Empty)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
+
+                var pm = GetJobPayment.Get.GetByJobId(jobId);
+                if(pm.Where(o => o.PayStatus > 1).Count() > 0) //1=รอชำระเงิน
+                {
+                    //ถ้าจ่ายแล้ว ยกเลิกไม่ได้
+                    return Ok(resultJson.errors("ไม่สามารถยกเลิกได้ เมื่อมีการชำระเงินแล้ว", "fail", null));
+                }
+                 
+                var job = GetJobs.Manage.CancelJob(jobId, userId);
+                if (job == null)
+                {
+                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
+                }
+                return Ok(resultJson.success("สำเร็จ", "success", new { job.JobId, job.JobNo }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+
     }
 }

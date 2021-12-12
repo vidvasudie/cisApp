@@ -89,6 +89,24 @@ namespace cisApp.Function
                 }
             }
 
+            public static List<CustomerJobListModel> GetCustomerJobList(Guid userId)
+            {
+                try
+                {
+                    if (userId == Guid.Empty)
+                        return null;
+
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", userId) 
+                    };
+
+                    return StoreProcedure.GetAllStored<CustomerJobListModel>("GetCustomerJobList", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
 
         }
 
@@ -286,6 +304,45 @@ namespace cisApp.Function
 
                 return 1; 
             } 
+
+            public static Jobs CancelJob(Guid jobId, Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            var jobPms = context.JobPayment.Where(o => o.JobId == jobId);
+                            if (jobPms.Any())
+                            {
+                                if(jobPms.Where(o => o.PayStatus > 1).Count() > 0) //1=รอชำระเงิน
+                                    return null;
+                            }
+                                
+                            var datas = context.Jobs.Where(o => o.JobId == jobId);
+                            if (!datas.Any())
+                                return null;
+
+                            var data = datas.FirstOrDefault();
+                            data.JobStatus = 6;//ยกเลิก
+                            data.UpdatedDate = DateTime.Now;
+                            data.UpdatedBy = userId;
+
+                            context.Jobs.Update(data);
+                            context.SaveChanges();
+
+                            dbContextTransaction.Commit();
+
+                            return data;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
 
         }
 
