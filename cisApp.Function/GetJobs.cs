@@ -137,8 +137,16 @@ namespace cisApp.Function
                             obj.JobTypeId = data.JobTypeId;
                             obj.JobDescription = data.JobDescription;
                             obj.JobAreaSize = data.JobAreaSize;
-                            obj.JobPrice = data.JobPrice;
                             obj.JobPricePerSqM = data.JobPricePerSqM;
+                            
+                            obj.JobPrice = data.JobPrice;
+                            
+                            obj.JobProceedRatio = data.JobProceedRatio;
+                            obj.JobPriceProceed = data.JobPriceProceed;
+
+                            obj.JobVatratio = data.JobVatratio;
+                            obj.JobFinalPrice = data.JobFinalPrice;
+
                             obj.JobStatus = data.JobStatus;
                             obj.JobBeginDate = data.JobBeginDate;
                             obj.JobEndDate = data.JobEndDate;
