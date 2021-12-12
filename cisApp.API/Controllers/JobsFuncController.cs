@@ -12,47 +12,69 @@ namespace cisApp.API.Controllers
 {
 
     [ApiController]
-    public class JobsFuncController : ControllerBase
+    public class JobsFuncController : BaseController
     {
-        [Route("api/[controller]")]
+        [Route("api/jobs/createjob")]
         [HttpPost]
         public object Post([FromBody] JobAPIModels value)
-        { 
-           var result=  GetJobs.Manage.Update(new JobModel
-            {
-                IsDraft = value.IsDraft,
-                JobTypeId = value.JobTypeId, 
-                JobDescription = value.JobDescription,
-                JobAreaSize = value.JobAreaSize,
-                JobPrice = value.JobPrice,
-                JobPricePerSqM = value.JobPricePerSqM
-            });
-
-            return Ok(resultJson.success("สร้างใบงานสำเร็จ","success", new { result.JobId })); 
-        }
-
-
-        [Route("api/[controller]/GetType")]
-        [HttpGet]
-        public object GetType()
         {
+            try
+            {
+                if(value.UserId == Guid.Empty)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
 
-            var obj = GetJobsType.Get.GetActive().Select(o => new { o.JobTypeId, o.Name }).ToList();
-            return Ok(resultJson.success( "", "", new { obj }));
+                JobModel job = new JobModel()
+                {
+                    IsApi = true,
+                    UserId = value.UserId,
+                    JobTypeId = value.JobTypeId,
+                    JobDescription = value.JobDescription,
+                    JobAreaSize = value.JobAreaSize,
+                    JobPrice = value.JobPrice,
+                    JobPriceProceed = value.JobPriceProceed,
+                    JobFinalPrice = value.JobFinalPrice,
+                    JobProceedRatio = value.JobProceedRatio,
+                    JobVatratio = value.JobVatRatio,
+                    JobPricePerSqM = value.JobPricePerSqM,
+                    JobStatus = value.IsDraft ? 1 : 2, //1=ร่าง, 2=รอ 
+                    files = value.FileList.Select(o => new FileAttachModel { AttachFileId= Guid.Parse(o.FileId), FileName=o.FileName, TypeId=o.Type }).ToList()
+                };
+
+                var result = GetJobs.Manage.Update(job, value.Ip);
+
+                return Ok(resultJson.success("สร้างใบงานสำเร็จ", "success", new { result.JobId, result.JobNo }));
+
+            }
+            catch(Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            } 
+
+            
         }
 
 
+        [Route("api/jobs/getjobtype")]
+        [HttpGet]
+        public object GetJobType()
+        {
+            try
+            {
+                var obj = GetJobsType.Get.GetActive().Select(o => new { id=o.JobTypeId, name=o.Name }).ToList();
+                if(obj == null || obj.Count == 0)
+                {
+                    return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", null));
+                }
+                return Ok(resultJson.success("สำเร็จ", "success", obj));
+            }
+            catch(Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
 
-        //// PUT api/<JobsFuncController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<JobsFuncController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+         
     }
 }

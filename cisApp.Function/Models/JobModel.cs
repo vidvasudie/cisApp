@@ -43,5 +43,6 @@ namespace cisApp.Function
         public int? JobsExTypeId { get; set; }
         public string JobsExTypeDesc { get; set; }
         public List<FileAttachModel> files { get; set; }
+        public bool IsApi { get; set; } = false;
     }
 }

@@ -94,6 +94,7 @@ namespace cisApp.Function
 
         public class Manage
         {
+
             public static Jobs Update(JobModel data, string ip = null)
             {
                 try
@@ -114,23 +115,23 @@ namespace cisApp.Function
                                 log.Description = ActionCommon.JobInsert;
                                 obj.CreatedDate = DateTime.Now;
                                 obj.CreatedBy = data.CreatedBy;
-
-                                if(data.JobStatus > 1)
+ 
+                            }
+                            if (data.JobStatus == 2)
+                            {
+                                //create new JobNo if not Draft and new job status = 2
+                                var dataList = context.Jobs.ToList();
+                                if (dataList != null && dataList.Count > 0)
                                 {
-                                    //create new JobNo if not Draft
-                                    var dataList = context.Jobs.ToList();
-                                    if (dataList != null && dataList.Count > 0)
-                                    {
-                                        var dl = dataList.OrderBy(o => o.JobNo).LastOrDefault();
-                                        obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", Int32.Parse(dl.JobNo.Substring(7, 5)) + 1, dl.JobNo.Substring(5, 2) != DateTime.Now.Month.ToString("00"));
-                                    }
-                                    else
-                                    {
-                                        obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", 0, true);
-                                    }
+                                    var dl = dataList.OrderBy(o => o.JobNo).LastOrDefault();
+                                    obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", Int32.Parse(dl.JobNo.Substring(7, 5)) + 1, dl.JobNo.Substring(5, 2) != DateTime.Now.Month.ToString("00"));
                                 }
-                                
-                            } 
+                                else
+                                {
+                                    obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", 0, true);
+                                }
+                            }
+
                             obj.UserId = data.UserId; 
                             obj.JobCaUserId = data.JobCaUserId;
                             obj.JobTypeId = data.JobTypeId;
@@ -149,7 +150,34 @@ namespace cisApp.Function
 
                             //validate insert and remove image 
                             //insert job image ex
-                            ManageImages(context, data.files, obj);
+                            if (data.IsApi)
+                            {   
+                                // ไฟล์อัพมาใหม่ 
+                                foreach (var file in data.files.Where(o => o != null))
+                                {
+                                    //insert JobExImage
+                                    JobsExamImage map = new JobsExamImage();
+                                    map.JobsExImgId = Guid.NewGuid();
+                                    map.JobsExTypeId = file.TypeId;
+                                    map.JobId = obj.JobId;
+                                    context.JobsExamImage.Add(map);
+                                    context.SaveChanges();
+
+                                    var athFile = context.AttachFile.Where(o => o.AttachFileId == file.AttachFileId);
+                                    if (athFile.Any())
+                                    {
+                                        var afile = athFile.FirstOrDefault();
+                                        afile.RefId = map.JobsExImgId;
+                                        context.AttachFile.Update(afile);
+                                        context.SaveChanges();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                ManageImages(context, data.files, obj);
+                            }
+                            
 
                             //add job tracking for jobStatus 
                             JobsTracking tracking = new JobsTracking();
@@ -249,8 +277,7 @@ namespace cisApp.Function
                 }
 
                 return 1; 
-            }
-
+            } 
 
         }
 
