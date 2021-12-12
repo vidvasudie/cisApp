@@ -75,6 +75,22 @@ namespace cisApp.API.Controllers
             }
         }
 
-         
+        [Route("api/jobs/getjobinfo")]
+        [HttpGet]
+        public object GetJobDefaultInfo()
+        {
+            try
+            {
+                var proceedRatio = GetTmProceedRatio.Get.GetFirst();
+                var vatRatio = GetTmVatratio.Get.GetFirst();
+                var priceSQM = 250;
+                return Ok(resultJson.success("สำเร็จ", "success", new { ProceedRatio= proceedRatio.Ratio, VatRatio= vatRatio.Ratio, PriceSQM= priceSQM }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
     }
 }
