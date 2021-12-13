@@ -11,7 +11,8 @@ namespace cisApp.Function
     {
         public string UserFullName { get; set; }
         public int UserLikes { get; set; }
-
+        public decimal PriceRate { get; set; }
+        public decimal UserRate { get; set; }
         public int UserMessageCount { get; set; }
         public string CaStatusDesc { get; set; }
         public int RegisterDays

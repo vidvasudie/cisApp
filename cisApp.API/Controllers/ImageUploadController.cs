@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using cisApp.API.Models;
 using cisApp.Function;
@@ -25,21 +28,39 @@ namespace cisApp.API.Controllers
                 }
                 try
                 {
-                    var athFile = GetAttachFile.Manage.UploadFile(value.FileBase64, value.FileName, value.Size, null, value.UserId);
-                    if (athFile == null)
+                    //var athFile = GetAttachFile.Manage.UploadFile(value.FileBase64, value.FileName, value.Size, null, value.UserId);
+                    using (var client = new HttpClient())
                     {
-                        return Ok(resultJson.errors("อัพโหลดไฟล์ไม่สำเร็จ", "fail", null));
-                    }
-                    string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
-                    bool removeLast = Host.Last() == '/';
-                    string UrlPath = athFile.UrlPath;
-                    if (removeLast)
-                    {
-                        Host = Host.Remove(Host.Length - 1); 
-                    }
-                    UrlPath = UrlPath.Replace("~", Host);
+                        //System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                        //System.Net.ServicePointManager.ServerCertificateValidationCallback = (senderX, certificate, chain, sslPolicyErrors) => { return true; };
+                        client.BaseAddress = new Uri(_config.GetSection("WebConfig:AdminWebStie").Value);
+                        var response = client.PostAsJsonAsync(_config.GetSection("WebConfig:UploadAPI").Value, value).Result;
+                        if (response.IsSuccessStatusCode)
+                        { 
 
-                    return Ok(resultJson.success("อัพโหลดไฟล์สำเร็จ", "success", new { athFile.AttachFileId, athFile.FileName, UrlPath }));
+                            Console.Write("Success");
+                        }
+                        else
+                            Console.Write("Error");
+                    }
+
+
+
+                    //if (athFile == null)
+                    //{
+                    //    return Ok(resultJson.errors("อัพโหลดไฟล์ไม่สำเร็จ", "fail", null));
+                    //}
+                    //string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
+                    //bool removeLast = Host.Last() == '/';
+                    //string UrlPath = athFile.UrlPath;
+                    //if (removeLast)
+                    //{
+                    //    Host = Host.Remove(Host.Length - 1); 
+                    //}
+                    //UrlPath = UrlPath.Replace("~", Host);
+
+                    //return Ok(resultJson.success("อัพโหลดไฟล์สำเร็จ", "success", new { athFile.AttachFileId, athFile.FileName, UrlPath }));
+                    return Ok();
                 }
                 catch (Exception ex)
                 {

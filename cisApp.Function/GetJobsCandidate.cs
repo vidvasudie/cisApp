@@ -59,8 +59,7 @@ namespace cisApp.Function
                     return new List<JobCandidateModel>();
                 }
             }
-
-
+             
 
         }
 
@@ -140,6 +139,51 @@ namespace cisApp.Function
                             context.JobsLogs.Add(log);
                             context.SaveChanges();
 
+                            dbContextTransaction.Commit();
+                            return obj;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static JobsCandidate Reject(Guid jobId, Guid userId, Guid caUserId, string ip)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            var objs = context.JobsCandidate.Where(o => o.JobId == jobId && o.UserId == caUserId);
+                            if(objs == null || objs.Count() == 0)
+                            {
+                                return null;
+                            }
+                            JobsCandidate obj = objs.FirstOrDefault();
+
+                            obj.CaStatusId = 5;//ปฎิเสธ
+
+                            obj.DeletedDate = DateTime.Now;
+                            obj.DeletedBy = userId;
+
+                            context.JobsCandidate.Update(obj);
+
+                            context.SaveChanges();
+
+                            //add job log for every job activity 
+                            JobsLogs log = new JobsLogs();
+                            log.Description = ActionCommon.JobUpdate;
+                            log.JobId = jobId;
+                            log.Ipaddress = ip;
+                            log.CreatedDate = DateTime.Now;
+                            context.JobsLogs.Add(log);
+                            context.SaveChanges();
+
+                            dbContextTransaction.Commit();
                             return obj;
                         }
                     }

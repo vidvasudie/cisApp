@@ -305,7 +305,7 @@ namespace cisApp.Function
                 return 1; 
             } 
 
-            public static Jobs CancelJob(Guid jobId, Guid userId)
+            public static Jobs CancelJob(Guid jobId, Guid userId, string ip)
             {
                 try
                 {
@@ -330,6 +330,15 @@ namespace cisApp.Function
                             data.UpdatedBy = userId;
 
                             context.Jobs.Update(data);
+                            context.SaveChanges();
+
+                            //add job log for every job activity 
+                            JobsLogs log = new JobsLogs();
+                            log.Description = ActionCommon.JobUpdate;
+                            log.JobId = data.JobId;
+                            log.Ipaddress = ip;
+                            log.CreatedDate = DateTime.Now;
+                            context.JobsLogs.Add(log);
                             context.SaveChanges();
 
                             dbContextTransaction.Commit();

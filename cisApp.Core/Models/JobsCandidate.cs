@@ -18,5 +18,6 @@ namespace cisApp.Core
         public Guid? DeletedBy { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsDeleted { get; set; }
+        public bool? IsLike { get; set; } = false;
     }
 }

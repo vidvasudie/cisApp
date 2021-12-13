@@ -120,7 +120,7 @@ namespace cisApp.API.Controllers
 
         [Route("api/jobs/canceljob")]
         [HttpDelete]
-        public IActionResult CancelJob(Guid jobId, Guid userId)
+        public IActionResult CancelJob(Guid jobId, Guid userId, string ip)
         {
             try
             {
@@ -136,7 +136,7 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("ไม่สามารถยกเลิกได้ เมื่อมีการชำระเงินแล้ว", "fail", null));
                 }
                  
-                var job = GetJobs.Manage.CancelJob(jobId, userId);
+                var job = GetJobs.Manage.CancelJob(jobId, userId, ip);
                 if (job == null)
                 {
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
@@ -149,6 +149,53 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [Route("api/jobs/getcandidatelist")]
+        [HttpGet]
+        public IActionResult GetCandidateList(Guid jobId)
+        {
+            try
+            {
+                if (jobId == Guid.Empty)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
 
+                var data = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId= jobId });
+                if(data == null || data.Count == 0)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                }
+                
+                return Ok(resultJson.success("สำเร็จ", "success", data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate }).ToList()));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [Route("api/jobs/rejectcandidate")]
+        [HttpDelete]
+        public IActionResult RejectCandidate(Guid jobId, Guid userId, Guid caUserId, string ip)
+        {
+            try
+            {
+                if (jobId == Guid.Empty || userId == Guid.Empty)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                } 
+
+                var jobCa = GetJobsCandidate.Manage.Reject(jobId, userId, caUserId, ip);
+                if (jobCa == null)
+                {
+                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
+                }
+                return Ok(resultJson.success("สำเร็จ", "success", new { jobCa.JobId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
     }
 }
