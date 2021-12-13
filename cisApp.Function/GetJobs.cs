@@ -89,11 +89,30 @@ namespace cisApp.Function
                 }
             }
 
+            public static List<CustomerJobListModel> GetCustomerJobList(Guid userId)
+            {
+                try
+                {
+                    if (userId == Guid.Empty)
+                        return null;
+
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", userId) 
+                    };
+
+                    return StoreProcedure.GetAllStored<CustomerJobListModel>("GetCustomerJobList", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
 
         }
 
         public class Manage
         {
+
             public static Jobs Update(JobModel data, string ip = null)
             {
                 try
@@ -114,30 +133,38 @@ namespace cisApp.Function
                                 log.Description = ActionCommon.JobInsert;
                                 obj.CreatedDate = DateTime.Now;
                                 obj.CreatedBy = data.CreatedBy;
-
-                                if(data.JobStatus > 1)
+ 
+                            }
+                            if (data.JobStatus == 2)
+                            {
+                                //create new JobNo if not Draft and new job status = 2
+                                var dataList = context.Jobs.ToList();
+                                if (dataList != null && dataList.Count > 0)
                                 {
-                                    //create new JobNo if not Draft
-                                    var dataList = context.Jobs.ToList();
-                                    if (dataList != null && dataList.Count > 0)
-                                    {
-                                        var dl = dataList.OrderBy(o => o.JobNo).LastOrDefault();
-                                        obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", Int32.Parse(dl.JobNo.Substring(7, 5)) + 1, dl.JobNo.Substring(5, 2) != DateTime.Now.Month.ToString("00"));
-                                    }
-                                    else
-                                    {
-                                        obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", 0, true);
-                                    }
+                                    var dl = dataList.OrderBy(o => o.JobNo).LastOrDefault();
+                                    obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", Int32.Parse(dl.JobNo.Substring(7, 5)) + 1, dl.JobNo.Substring(5, 2) != DateTime.Now.Month.ToString("00"));
                                 }
-                                
-                            } 
+                                else
+                                {
+                                    obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", 0, true);
+                                }
+                            }
+
                             obj.UserId = data.UserId; 
                             obj.JobCaUserId = data.JobCaUserId;
                             obj.JobTypeId = data.JobTypeId;
                             obj.JobDescription = data.JobDescription;
                             obj.JobAreaSize = data.JobAreaSize;
-                            obj.JobPrice = data.JobPrice;
                             obj.JobPricePerSqM = data.JobPricePerSqM;
+                            
+                            obj.JobPrice = data.JobPrice;
+                            
+                            obj.JobProceedRatio = data.JobProceedRatio;
+                            obj.JobPriceProceed = data.JobPriceProceed;
+
+                            obj.JobVatratio = data.JobVatratio;
+                            obj.JobFinalPrice = data.JobFinalPrice;
+
                             obj.JobStatus = data.JobStatus;
                             obj.JobBeginDate = data.JobBeginDate;
                             obj.JobEndDate = data.JobEndDate;
@@ -149,7 +176,34 @@ namespace cisApp.Function
 
                             //validate insert and remove image 
                             //insert job image ex
-                            ManageImages(context, data.files, obj);
+                            if (data.IsApi)
+                            {   
+                                // ไฟล์อัพมาใหม่ 
+                                foreach (var file in data.files.Where(o => o != null))
+                                {
+                                    //insert JobExImage
+                                    JobsExamImage map = new JobsExamImage();
+                                    map.JobsExImgId = Guid.NewGuid();
+                                    map.JobsExTypeId = file.TypeId;
+                                    map.JobId = obj.JobId;
+                                    context.JobsExamImage.Add(map);
+                                    context.SaveChanges();
+
+                                    var athFile = context.AttachFile.Where(o => o.AttachFileId == file.AttachFileId);
+                                    if (athFile.Any())
+                                    {
+                                        var afile = athFile.FirstOrDefault();
+                                        afile.RefId = map.JobsExImgId;
+                                        context.AttachFile.Update(afile);
+                                        context.SaveChanges();
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                ManageImages(context, data.files, obj);
+                            }
+                            
 
                             //add job tracking for jobStatus 
                             JobsTracking tracking = new JobsTracking();
@@ -249,8 +303,55 @@ namespace cisApp.Function
                 }
 
                 return 1; 
-            }
+            } 
 
+            public static Jobs CancelJob(Guid jobId, Guid userId, string ip)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            var jobPms = context.JobPayment.Where(o => o.JobId == jobId);
+                            if (jobPms.Any())
+                            {
+                                if(jobPms.Where(o => o.PayStatus > 1).Count() > 0) //1=รอชำระเงิน
+                                    return null;
+                            }
+                                
+                            var datas = context.Jobs.Where(o => o.JobId == jobId);
+                            if (!datas.Any())
+                                return null;
+
+                            var data = datas.FirstOrDefault();
+                            data.JobStatus = 6;//ยกเลิก
+                            data.UpdatedDate = DateTime.Now;
+                            data.UpdatedBy = userId;
+
+                            context.Jobs.Update(data);
+                            context.SaveChanges();
+
+                            //add job log for every job activity 
+                            JobsLogs log = new JobsLogs();
+                            log.Description = ActionCommon.JobUpdate;
+                            log.JobId = data.JobId;
+                            log.Ipaddress = ip;
+                            log.CreatedDate = DateTime.Now;
+                            context.JobsLogs.Add(log);
+                            context.SaveChanges();
+
+                            dbContextTransaction.Commit();
+
+                            return data;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
 
         }
 

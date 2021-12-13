@@ -266,6 +266,8 @@ namespace cisApp.Core
 
                 entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
+                entity.Property(e => e.IsLike).HasDefaultValueSql("((0))");
+
                 entity.Property(e => e.JobId).HasColumnName("JobID");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");

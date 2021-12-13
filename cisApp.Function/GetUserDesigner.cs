@@ -48,9 +48,11 @@ namespace cisApp.Function
                 {
                     using (var context = new CAppContext())
                     {
-                        var data = context.UserDesigner.Where(o => o.UserId == userid).FirstOrDefault();
+                        var data = context.UserDesigner.Where(o => o.UserId == userid);
+                        if(data.Any())
+                            return data.FirstOrDefault();
 
-                        return data;
+                        return null;
                     }
                 }
                 catch (Exception ex)
@@ -58,7 +60,27 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
-
+            public static ProfileBankModel GetBankProfile(Guid userId)
+            {
+                try
+                {
+                    if(userId == Guid.Empty)
+                    {
+                        return null;
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", userId)
+                    };
+                    var data = StoreProcedure.GetAllStored<ProfileBankModel>("GetBankProfile", parameter);
+                    if (data.Any())
+                        return data.FirstOrDefault();
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
 
             public static List<UserModel> GetDesignerItems(SearchModel model)
             {
@@ -90,6 +112,46 @@ namespace cisApp.Function
                 catch (Exception ex)
                 {
                     return 0;
+                }
+            }
+        }
+        public class Manage
+        {
+            public static UserDesigner UpdateBankProfile(BankModel model)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            UserDesigner data = new UserDesigner();
+                            if (model.UserId == Guid.Empty)
+                            {
+                                return null;
+                            }
+                            var objs = context.UserDesigner.Where(o => o.UserId == model.UserId);
+                            if (!objs.Any())
+                            {
+                                return null;
+                            }
+                            data = objs.FirstOrDefault();
+                            data.BankId = model.BankId;
+                            data.AccountNumber = model.AccountNumber;
+                            data.AccountType = model.AccountTypeId;
+                            
+                            context.UserDesigner.Update(data);
+                            context.SaveChanges();
+
+                            dbContextTransaction.Commit();
+
+                            return data;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
                 }
             }
         }
