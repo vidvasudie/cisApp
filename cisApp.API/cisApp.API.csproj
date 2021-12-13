@@ -23,5 +23,9 @@
     <ProjectReference Include="..\cisApp.library\cisApp.library.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 
 </Project>
