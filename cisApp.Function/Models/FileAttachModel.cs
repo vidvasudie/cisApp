@@ -16,5 +16,9 @@ namespace cisApp.Function
         public int NextImg { get; set; }
         public int NextImgSelected { get; set; }
         public int col { get; set; }
+        public string UrlPath2
+        {
+            get; set;
+        }
     }
 }
