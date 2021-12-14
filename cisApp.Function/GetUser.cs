@@ -144,6 +144,23 @@ namespace cisApp.Function
                 }
             }
 
+            public static Users GetByThirdPartyInfo(string fname, string lname, string email)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.Users.Where(o => o.Email == email && o.Fname == fname && o.Lname == lname);
+                        if (data.Any())
+                            return data.FirstOrDefault();
+                        return null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
 
             
             public static List<UserModel> GetUserModels(SearchModel model)

@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using cisApp.Function;
+using cisApp.API.Models;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace cisApp.API.Controllers
 {
-    [Route("api/[controller]")]
+    
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -16,7 +17,8 @@ namespace cisApp.API.Controllers
         /// สมัครสมาชิก
         /// </summary>
         /// <param name="value"></param>
-        [HttpPost("register")]
+        [Route("api/register")]
+        [HttpPost]
         public object register([FromBody] UserModelCommon value)
         {
 
@@ -53,12 +55,36 @@ namespace cisApp.API.Controllers
         /// แก้ไขรหัสผ่าน
         /// </summary>
         /// <param name="value"></param>
-        [HttpPost("resetpass")]
+        [Route("api/resetpass")]
+        [HttpPost]
         public void resetpass([FromBody] string value)
         {
         }
 
+        [Route("api/validatethirdpartyuser")]
+        [HttpPost]
+        public IActionResult ValidateThirdPartyUser([FromBody] UserModel model)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(model.Fname) || String.IsNullOrEmpty(model.Lname) || String.IsNullOrEmpty(model.Email))
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
 
+                var user = GetUser.Get.GetByThirdPartyInfo(model.Fname, model.Lname, model.Email); 
+                if (user == null)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", new { model.Fname, model.Lname, model.Email }));
+                }
+               
+                return Ok(resultJson.success("สำเร็จ", "success", new LoginResult { uSID = user.UserId.Value, Fname = user.Fname, Lname = user.Lname, isDesigner = (user.UserType == 1) ? false : true }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ค้นหาข้อมูลไม่สำเร็จ", "fail", new { model.Fname, model.Lname, model.Email }));
+            }
+        }
 
 
     }
