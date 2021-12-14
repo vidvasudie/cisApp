@@ -58,6 +58,7 @@ namespace cisApp.Core
         public virtual DbSet<Settings> Settings { get; set; }
         public virtual DbSet<TmProceedRatio> TmProceedRatio { get; set; }
         public virtual DbSet<TmVatratio> TmVatratio { get; set; }
+        public virtual DbSet<UsersResetPassword> UsersResetPassword { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TmProceedRatio>(entity =>
@@ -630,6 +631,24 @@ namespace cisApp.Core
                     .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Name).HasMaxLength(500);
+            });
+
+            modelBuilder.Entity<UsersResetPassword>(entity =>
+            {
+                entity.HasKey(e => e.UserResetPasswordId)
+                    .HasName("PK__Users_Re__DB8DE62E7B8CD4E5");
+
+                entity.ToTable("Users_ResetPassword");
+
+                entity.Property(e => e.UserResetPasswordId)
+                    .HasColumnName("UserResetPasswordID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Token)
+                    .IsRequired()
+                    .HasColumnType("ntext");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
             });
 
             modelBuilder.Entity<Settings>(entity =>

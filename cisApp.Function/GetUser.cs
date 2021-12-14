@@ -408,6 +408,63 @@ namespace cisApp.Function
                 }
             }
 
+            public static Users UpdateProfile(AttachFile data, Guid id, Guid? userId = null)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            //using var transaction = context.Database.BeginTransaction();
+                            Users obj = new Users();
+
+                            obj = context.Users.Find(id);
+
+                            // remove previous img
+                            var activeUserImg = Get.GetUserImgs(obj.UserId.Value);
+
+                            if (activeUserImg.Count > 0)
+                            {
+                                foreach (var item in activeUserImg)
+                                {
+                                    GetAttachFile.Manage.UpdateStatusByRefId(item.UserImgId.Value, false, userId.Value);
+                                }
+                            }
+
+                            // insert new UserImg
+                            UserImg userImg = new UserImg()
+                            {
+                                UserId = obj.UserId.Value
+                            };
+
+                            context.UserImg.Update(userImg);
+
+                            context.SaveChanges();
+
+                            data.RefId = userImg.UserImgId;
+
+                            context.AttachFile.Update(data);
+
+                            obj.UserImgId = userImg.UserImgId;
+
+                            context.Users.Update(obj);
+
+                            context.SaveChanges();
+
+                            dbContextTransaction.Commit();
+
+                            return obj;
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
             public static Users Active(Guid id, bool active, Guid userId)
             {
                 try

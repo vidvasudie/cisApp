@@ -24,7 +24,7 @@ namespace cisApp.Function
         [Required(ErrorMessage = "กรุณากรอกเบอร์โทรศัพท์")]
         public string Tel { get; set; }
 
-
+        public Guid? Id { get; set; }
 
         public string NewPassword { get; set; } 
         public string ConfirmPassword { get; set; }
