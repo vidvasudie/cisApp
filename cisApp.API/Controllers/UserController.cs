@@ -9,16 +9,15 @@ using cisApp.API.Models;
 
 namespace cisApp.API.Controllers
 {
-    
+    [Route("api/[controller]")]
     [ApiController]
     public class UserController : BaseController
     {
         /// <summary>
         /// สมัครสมาชิก
         /// </summary>
-        /// <param name="value"></param>
-        [Route("api/register")]
-        [HttpPost]
+        /// <param name="value"></param> 
+        [HttpPost("register")]
         public object register([FromBody] UserModelCommon value)
         {
 
@@ -134,36 +133,7 @@ namespace cisApp.API.Controllers
                     {
                         return Ok(resultJson.errors("อัพโหลดไฟล์ไม่สำเร็จ", "fail", null));
                     }
-        [Route("api/resetpass")]
-        [HttpPost]
-        public void resetpass([FromBody] string value)
-        {
-        }
-
-        [Route("api/validatethirdpartyuser")]
-        [HttpPost]
-        public IActionResult ValidateThirdPartyUser([FromBody] UserModel model)
-        {
-            try
-            {
-                if (String.IsNullOrEmpty(model.Fname) || String.IsNullOrEmpty(model.Lname) || String.IsNullOrEmpty(model.Email))
-                {
-                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
-                }
-
-                var user = GetUser.Get.GetByThirdPartyInfo(model.Fname, model.Lname, model.Email); 
-                if (user == null)
-                {
-                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", new { model.Fname, model.Lname, model.Email }));
-                }
-               
-                return Ok(resultJson.success("สำเร็จ", "success", new LoginResult { uSID = user.UserId.Value, Fname = user.Fname, Lname = user.Lname, isDesigner = (user.UserType == 1) ? false : true }));
-            }
-            catch (Exception ex)
-            {
-                return Ok(resultJson.errors("ค้นหาข้อมูลไม่สำเร็จ", "fail", new { model.Fname, model.Lname, model.Email }));
-            }
-        }
+        
                     var user = GetUser.Manage.UpdateProfile(athFile, value.UserId, value.UserId);
 
                     string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
@@ -185,5 +155,28 @@ namespace cisApp.API.Controllers
             return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
         }
 
+        [HttpPost("validatethirdpartyuser")]
+        public IActionResult ValidateThirdPartyUser([FromBody] ThirdPartyModel model)
+        {
+            try
+            {
+                if (String.IsNullOrEmpty(model.Fname) || String.IsNullOrEmpty(model.Lname) || String.IsNullOrEmpty(model.Email))
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
+
+                var user = GetUser.Get.GetByThirdPartyInfo(model.Fname, model.Lname, model.Email);
+                if (user == null)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", new { model.Fname, model.Lname, model.Email }));
+                }
+
+                return Ok(resultJson.success("สำเร็จ", "success", new LoginResult { uSID = user.UserId.Value, Fname = user.Fname, Lname = user.Lname, isDesigner = (user.UserType == 1) ? false : true }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ค้นหาข้อมูลไม่สำเร็จ", "fail", new { model.Fname, model.Lname, model.Email }));
+            }
+        }
     }
 }
