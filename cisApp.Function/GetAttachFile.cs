@@ -185,6 +185,31 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
+            public static AttachFile ChangeRefId(Guid id, Guid RefId, Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var attchFile = context.AttachFile.Find(id);
+
+                        attchFile.RefId = RefId;
+                        attchFile.UpdatedBy = userId;
+                        attchFile.UpdatedDate = DateTime.Now;
+
+                        context.AttachFile.Update(attchFile);
+
+                        context.SaveChanges();
+
+                        return attchFile;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
     }
 }

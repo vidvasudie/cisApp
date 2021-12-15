@@ -135,43 +135,115 @@ namespace cisApp.Function
 
         public class Manage
         {
-            public static JobPayment Update(JobPayment data, Guid userId)
+            public static JobPayment Update(JobPayment data, Guid userId, string ip = "")
             {
                 try
                 {
                     using (var context = new CAppContext())
                     {
-                        //using var transaction = context.Database.BeginTransaction();
-                        JobPayment obj = new JobPayment();
-
-                        if (data.JobPayId != null)
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
-                            obj = context.JobPayment.Find(data.JobPayId);
-                            obj.PayDate = data.PayDate;
+                            //using var transaction = context.Database.BeginTransaction();
+                            JobPayment obj = new JobPayment();
+
+                            if (data.JobPayId != null)
+                            {
+                                obj = context.JobPayment.Find(data.JobPayId);
+                                obj.PayDate = data.PayDate;
+                            }
+                            else
+                            {
+                                obj.PayDate = DateTime.Now;
+                                obj.JobId = data.JobId;
+                                obj.OrderId = "IDE-0001";
+                                obj.CreatedBy = userId;
+                                obj.CreatedDate = DateTime.Now;
+                            }
+
+
+                            obj.PayStatus = data.PayStatus;
+                            obj.Comment = data.Comment;
+                            obj.UpdatedBy = userId;
+                            obj.UpdatedDate = DateTime.Now;
+
+                            context.JobPayment.Update(obj);
+
+                            context.SaveChanges();
+
+
+                            // save profile
+                            if (!String.IsNullOrEmpty(data.FileBase64)) // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
+                            {
+                                // remove previous img
+                                var activePaymentImg = Get.GetJobPaymentImgs(obj.JobPayId.Value);
+
+                                if (activePaymentImg.Count > 0)
+                                {
+                                    foreach (var item in activePaymentImg)
+                                    {
+                                        GetAttachFile.Manage.UpdateStatusByRefId(item.JobPayimgId.Value, false, userId);
+                                    }
+                                }
+
+                                // insert new paymentImg
+                                JobPaymentImg jobPaymentImg = new JobPaymentImg()
+                                {
+                                    JobPayId = obj.JobPayId
+                                };
+
+                                context.JobPaymentImg.Update(jobPaymentImg);
+
+                                context.SaveChanges();
+
+                                GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), jobPaymentImg.JobPayimgId.Value, userId);
+                            }
+                            else if (data.FileRemove) // ถ้าลบไฟล์ออก แล้วไม่ได้อัพไฟล์ใหม่ขึ้นมาจะเข้า เงื่อนไขนี้
+                            {
+                                var paymentImg = context.JobPaymentImg.Where(o => o.JobPayId == obj.JobPayId).FirstOrDefault();
+
+                                GetAttachFile.Manage.UpdateStatusByRefId(paymentImg.JobPayimgId.Value, false, userId);
+                            }
+
+                            //add job log for every job activity 
+                            JobsLogs log = new JobsLogs();
+                            log.JobId = obj.JobId.Value;
+                            log.Ipaddress = ip;
+                            log.CreatedDate = DateTime.Now;
+                            context.JobsLogs.Add(log);
+                            context.SaveChanges();
+
+                            dbContextTransaction.Commit();
+
+                            return obj;
                         }
-                        else
+                            
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static JobPayment AddSlip(int id, int status, Guid attachId, Guid userId, string ip = "")
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
-                            obj.PayDate = DateTime.Now;
-                            obj.JobId = data.JobId;
-                            obj.OrderId = "IDE-0001";
-                            obj.CreatedBy = userId;
-                            obj.CreatedDate = DateTime.Now;
-                        }
+                            JobPayment obj = context.JobPayment.Find(id);
+
+                            obj.PayStatus = status;
+                            obj.UpdatedBy = userId;
+                            obj.UpdatedDate = DateTime.Now;
+
+                            context.JobPayment.Update(obj);
+
+                            context.SaveChanges();
 
 
-                        obj.PayStatus = data.PayStatus;
-                        obj.Comment = data.Comment;
-                        obj.UpdatedBy = userId;
-                        obj.UpdatedDate = DateTime.Now;
-
-                        context.JobPayment.Update(obj);
-
-                        context.SaveChanges();
-                                                
-
-                        // save profile
-                        if (!String.IsNullOrEmpty(data.FileBase64)) // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
-                        {
                             // remove previous img
                             var activePaymentImg = Get.GetJobPaymentImgs(obj.JobPayId.Value);
 
@@ -193,16 +265,21 @@ namespace cisApp.Function
 
                             context.SaveChanges();
 
-                            GetAttachFile.Manage.UploadFile(data.FileBase64, data.FileName, Convert.ToInt32(data.FileSize), jobPaymentImg.JobPayimgId.Value, userId);
-                        }
-                        else if (data.FileRemove) // ถ้าลบไฟล์ออก แล้วไม่ได้อัพไฟล์ใหม่ขึ้นมาจะเข้า เงื่อนไขนี้
-                        {
-                            var paymentImg = context.JobPaymentImg.Where(o => o.JobPayId == obj.JobPayId).FirstOrDefault();
+                            GetAttachFile.Manage.ChangeRefId(attachId, jobPaymentImg.JobPayimgId.Value, userId);
 
-                            GetAttachFile.Manage.UpdateStatusByRefId(paymentImg.JobPayimgId.Value, false, userId);
-                        }
+                            //add job log for every job activity 
+                            JobsLogs log = new JobsLogs();
+                            log.JobId = obj.JobId.Value;
+                            log.Ipaddress = ip;
+                            log.CreatedDate = DateTime.Now;
+                            context.JobsLogs.Add(log);
+                            context.SaveChanges();
 
-                        return obj;
+                            dbContextTransaction.Commit();
+
+                            return obj;
+                        }
+                            
                     }
                 }
                 catch (Exception ex)

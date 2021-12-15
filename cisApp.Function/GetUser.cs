@@ -408,7 +408,7 @@ namespace cisApp.Function
                 }
             }
 
-            public static Users UpdateProfile(AttachFile data, Guid id, Guid? userId = null)
+            public static Users UpdateProfile(Guid attachId, Guid id, Guid? userId = null)
             {
                 try
                 {
@@ -442,9 +442,11 @@ namespace cisApp.Function
 
                             context.SaveChanges();
 
-                            data.RefId = userImg.UserImgId;
+                            var attach = context.AttachFile.Find(attachId);
 
-                            context.AttachFile.Update(data);
+                            attach.RefId = userImg.UserImgId;
+
+                            context.AttachFile.Update(attach);
 
                             obj.UserImgId = userImg.UserImgId;
 
