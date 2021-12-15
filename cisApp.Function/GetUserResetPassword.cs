@@ -52,7 +52,8 @@ namespace cisApp.Function
                         {
                             UserId = userId,
                             CreateDate = DateTime.Now,
-                            IsDeleted = false
+                            IsDeleted = false,
+                            RefCode = "RefCode"
                         };
 
                         var tokenHandler = new JwtSecurityTokenHandler();

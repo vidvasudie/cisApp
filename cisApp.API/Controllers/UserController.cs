@@ -109,6 +109,8 @@ namespace cisApp.API.Controllers
                 Obj.Email = value.Email;
 
                 var Result = GetUser.Manage.Update(Obj, value.Id.Value);
+
+
                 return Ok(resultJson.success(null, null, new { Result.Fname, Result.Lname, Result.Tel, Result.Email }, null, null, null, null));
             }
             catch (Exception ex)
