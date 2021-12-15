@@ -1,6 +1,7 @@
 ﻿using cisApp.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +13,10 @@ namespace cisApp.Function
     public static class GetAttachFile
     {
         public static string _UploadDir = "Uploads";
+        static IConfigurationRoot _config = new ConfigurationBuilder()
+                                    .SetBasePath(Directory.GetCurrentDirectory())
+                                    .AddJsonFile("appsettings.json")
+                                    .Build();
         public class Get
         {
             public static AttachFile GetByRefId(Guid refId)
@@ -66,7 +71,8 @@ namespace cisApp.Function
 
                     Guid id = Guid.NewGuid();
 
-                    string uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", _UploadDir, id.ToString());
+                    //string uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", _UploadDir, id.ToString());
+                    string uploadPath = Path.Combine(_config.GetSection("Upload:Path").Value, _UploadDir, id.ToString());
 
                     string virtualPath = Path.Combine(_UploadDir, id.ToString(), fileName);
 

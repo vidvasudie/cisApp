@@ -7,14 +7,10 @@ using System.Threading.Tasks;
 namespace cisApp.Function
 {
     public class UploadAPIModel
-    {
-        [Required]
-        public string FileBase64 { get; set; }
-        [Required]
-        public string FileName { get; set; }
-        [Required]
-        public int Size { get; set; }
-        [Required]
+    { 
+        public string FileBase64 { get; set; } 
+        public string FileName { get; set; } 
+        public int Size { get; set; } 
         public Guid UserId { get; set; }
     }
 }
