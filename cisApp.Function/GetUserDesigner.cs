@@ -114,6 +114,30 @@ namespace cisApp.Function
                     return 0;
                 }
             }
+
+            public static List<DesignerJobListModel> GetJobListSearch(DesignerJobListSearch model)
+            {
+                try
+                {
+                    if (Guid.Empty == model.userId)
+                    {
+                        return new List<DesignerJobListModel>();
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", model.userId),
+                       new SqlParameter("@jobTypeName", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@skip", model.skip),
+                       new SqlParameter("@take", model.take)
+                    };
+
+                    return StoreProcedure.GetAllStored<DesignerJobListModel>("GetJobListByDesignerSearch", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new List<DesignerJobListModel>();
+                }
+            }
+
         }
         public class Manage
         {
