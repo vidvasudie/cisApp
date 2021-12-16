@@ -648,9 +648,6 @@ namespace cisApp.Core
                     .HasColumnName("UserResetPasswordID")
                     .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.Token)
-                    .IsRequired()
-                    .HasColumnType("ntext");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
             });
