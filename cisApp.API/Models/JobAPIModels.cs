@@ -44,6 +44,9 @@ namespace cisApp.API.Models
         /// %VAT ในใบงาน
         /// </summary>
         public int? JobVatRatio { get; set; } = 7;
+        public bool IsInvRequired { get; set; } = false;
+        public string InvAddress { get; set; }
+        public string InvPersonalId { get; set; }
         public List<FileListModel> FileList { get; set; }
     }
     public class FileListModel

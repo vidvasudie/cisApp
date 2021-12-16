@@ -39,6 +39,9 @@ namespace cisApp.API.Controllers
                     JobVatratio = value.JobVatRatio,
                     JobPricePerSqM = value.JobPricePerSqM,
                     JobStatus = value.IsDraft ? 1 : 2, //1=ร่าง, 2=รอ 
+                    IsInvRequired = value.IsInvRequired,
+                    InvAddress = value.InvAddress,
+                    InvPersonalId = value.InvPersonalId,
                     files = value.FileList.Select(o => new FileAttachModel { AttachFileId= Guid.Parse(o.FileId), FileName=o.FileName, TypeId=o.Type }).ToList()
                 };
 

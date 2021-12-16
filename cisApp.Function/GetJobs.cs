@@ -165,6 +165,10 @@ namespace cisApp.Function
                             obj.JobVatratio = data.JobVatratio;
                             obj.JobFinalPrice = data.JobFinalPrice;
 
+                            obj.IsInvRequired = data.IsInvRequired;
+                            obj.InvAddress = data.InvAddress;
+                            obj.InvPersonalId = data.InvPersonalId;
+
                             obj.JobStatus = data.JobStatus;
                             obj.JobBeginDate = data.JobBeginDate;
                             obj.JobEndDate = data.JobEndDate;
