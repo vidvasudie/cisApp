@@ -76,6 +76,72 @@ namespace cisApp.API.Controllers
         }
 
         /// <summary>
+        /// หลังจากได้ token
+        /// </summary>
+        /// <param name="value"></param>
+        [HttpPost("resetpassToken")]
+        public object resetpassToken([FromBody] string value)
+        {
+            try
+            {
+                var userResetPassword = GetUserResetPassword.Get.GetByToken(value);
+
+                if (userResetPassword != null)
+                {
+                    return Ok(resultJson.success(null, null, new { userResetPassword.Token, userResetPassword.RefCode }, null, null, null, null));
+                }
+
+                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+            }
+
+            try
+            {
+                var Obj = GetUser.Get.GetByEmail(value);
+
+                if (Obj == null)
+                {
+                    return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+                }
+
+                var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
+                return Ok(resultJson.success(null, null, new { Status = true, Message = "ระบบได้ทำการส่งลิงก์รีเซ็ตรหัสผ่านไปยังอีเมลของท่านแล้ว" }, null, null, null, null));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+            }
+        }
+
+        /// <summary>
+        /// แก้ไขรหัสผ่าน submit
+        /// </summary>
+        /// <param name="value"></param>
+        [HttpPost("resetpassSubmit")]
+        public object resetpassToken([FromBody]ChangePasswordModel value )
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var user = GetUserResetPassword.Manage.ResetPassword(value.Token, value.Password);
+
+                    return Ok(resultJson.success(null, null, new { Status = true, Message = "เปลี่ยนรหัสผ่านสำเร็จ" }, null, null, null, null));
+                }
+
+                return Unauthorized(resultJson.errors("กรุณาใส่รหัส่ผ่านได้ถูกต้อง", "กรุณาใส่รหัส่ผ่านได้ถูกต้อง", null));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+            }
+        }
+
+
+        /// <summary>
         /// ดึงข้อมูล Profile
         /// </summary>
         /// <param name="value"></param>
