@@ -65,5 +65,8 @@ namespace cisApp.Core
         public Guid? CreatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public Guid? UpdatedBy { get; set; }
+        public bool IsInvRequired { get; set; }
+        public string InvAddress { get; set; }
+        public string InvPersonalId { get; set; }
     }
 }

@@ -178,15 +178,15 @@
 
                                 <div class="my-5">
                                     @*<div class="form-group row">
-                                        <label class="col-3">ลูกค้า <span class="text-danger">*</span></label>
-                                        <div class="col-9">
-                                            @{
-                                                SelectList userList = new SelectList(GetUser.Get.GetCutomerActive().Select(o => new { Id = o.UserId, Name = o.Fname + " " + o.Lname }), "Id", "Name");
-                                            }
-                                            @Html.DropDownListFor(m => m.UserId, userList, "กรุณาเลือก", new { @class = "form-control", @Required = "Required" })
-                                            @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>*@
+            <label class="col-3">ลูกค้า <span class="text-danger">*</span></label>
+            <div class="col-9">
+                @{
+                    SelectList userList = new SelectList(GetUser.Get.GetCutomerActive().Select(o => new { Id = o.UserId, Name = o.Fname + " " + o.Lname }), "Id", "Name");
+                }
+                @Html.DropDownListFor(m => m.UserId, userList, "กรุณาเลือก", new { @class = "form-control", @Required = "Required" })
+                @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
                                     <div class="form-group row">
                                         <label class="col-3">ประเภทงาน <span class="text-danger">*</span></label>
                                         <div class="col-9">
@@ -241,7 +241,32 @@
                                         </div>
 
                                     </div>
+                                    <div class="form-group row">
+                                        <label class="col-3 col-form-label">ขอใบกำกับภาษี</label>
+                                        <div class="col-9 col-form-label">
+                                            <label class="checkbox checkbox-success">
+                                                @Html.CheckBoxFor(m => m.IsInvRequired)
+                                                <span></span>
+                                            </label>
+                                            @Html.ValidationMessageFor(m => m.IsInvRequired, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-3">ที่อยู่ใบกำกับภาษี</label>
+                                        <div class="col-9">
+                                            @Html.TextBoxFor(m => m.InvAddress, "", new { @class = "form-control form-control-solid", @placeholder = "ที่อยู่ใบกำกับภาษี" })
+                                            @Html.ValidationMessageFor(m => m.InvAddress, "", new { @class = "text-danger" }) 
+                                        </div>
 
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-3">เลขประจำตัวผู้เสียใบกำกับภาษี</label>
+                                        <div class="col-9">
+                                            @Html.TextBoxFor(m => m.InvPersonalId, "", new { @class = "form-control form-control-solid", @placeholder = "เลขประจำตัวผู้เสียใบกำกับภาษี" })
+                                            @Html.ValidationMessageFor(m => m.InvPersonalId, "", new { @class = "text-danger" }) 
+                                        </div>
+
+                                    </div>
                                     @{
 
                                         foreach (var cat in cats)

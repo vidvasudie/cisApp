@@ -168,6 +168,10 @@ namespace cisApp.Core
 
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
+                entity.Property(e => e.InvPersonalId)
+                    .HasColumnName("InvPersonalID")
+                    .HasMaxLength(13); 
+
                 entity.Property(e => e.JobAreaSize)
                     .HasColumnType("decimal(10, 2)")
                     .HasComment("ขนาดพื้นที่ ");
