@@ -115,7 +115,7 @@ namespace cisApp.Function
                 }
             }
 
-            public static List<DesignerJobListModel> GetJobListSearch(DesignerJobListSearch model)
+            public static List<DesignerJobListModel> GetJobListSearch(DesignerJobListSearch model, bool IsSubmit = false)
             {
                 try
                 {
@@ -126,6 +126,7 @@ namespace cisApp.Function
                     SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@userId", model.userId),
                        new SqlParameter("@jobTypeName", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@submitList", IsSubmit ? 1 : 0),
                        new SqlParameter("@skip", model.skip),
                        new SqlParameter("@take", model.take)
                     };
@@ -137,6 +138,7 @@ namespace cisApp.Function
                     return new List<DesignerJobListModel>();
                 }
             }
+            
 
         }
         public class Manage

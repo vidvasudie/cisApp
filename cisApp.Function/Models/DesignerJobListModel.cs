@@ -44,6 +44,8 @@ namespace cisApp.Function
         public string Fullname { get; set; }
         public Guid AttachFileID { get; set; }
         public string FileName { get; set; }
+        public bool IsCanSubmit { get; set; }
+        public string WarningText { get; set; }
         public string UrlPathUserImage
         {
             get
