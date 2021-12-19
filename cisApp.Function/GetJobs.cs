@@ -309,7 +309,7 @@ namespace cisApp.Function
                 return 1; 
             } 
 
-            public static Jobs CancelJob(Guid jobId, Guid userId, string ip)
+            public static Jobs CancelJob(Guid jobId, Guid userId, string rejectMsg, string ip)
             {
                 try
                 {
@@ -338,7 +338,7 @@ namespace cisApp.Function
 
                             //add job log for every job activity 
                             JobsLogs log = new JobsLogs();
-                            log.Description = ActionCommon.JobUpdate;
+                            log.Description = rejectMsg;
                             log.JobId = data.JobId;
                             log.Ipaddress = ip;
                             log.CreatedDate = DateTime.Now;

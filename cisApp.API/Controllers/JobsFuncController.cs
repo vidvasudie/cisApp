@@ -123,7 +123,7 @@ namespace cisApp.API.Controllers
 
         [Route("api/jobs/canceljob")]
         [HttpDelete]
-        public IActionResult CancelJob(Guid jobId, Guid userId, string ip)
+        public IActionResult CancelJob(Guid jobId, Guid userId, string rejectMsg, string ip)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("ไม่สามารถยกเลิกได้ เมื่อมีการชำระเงินแล้ว", "fail", null));
                 }
                  
-                var job = GetJobs.Manage.CancelJob(jobId, userId, ip);
+                var job = GetJobs.Manage.CancelJob(jobId, userId, rejectMsg, ip);
                 if (job == null)
                 {
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
