@@ -58,5 +58,48 @@ namespace cisApp.API.Controllers
             }
             
         }
+
+        [Route("api/bank/banklist")]
+        [HttpGet]
+        public IActionResult GetBankList()
+        {
+            try
+            {
+                var banks = GetTmBank.Get.GetByActive();
+                if (banks == null)
+                {
+                    return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", banks.Select(o => new { id=o.Id, name=o.Name })));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [Route("api/bank/accounttypelist")]
+        [HttpGet]
+        public IActionResult GetBankAccountTypeList()
+        {
+            try
+            {
+                var banks = GetTmBankAccountType.Get.GetByActive();
+                if (banks == null)
+                {
+                    return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", banks.Select(o => new { id = o.Id, name = o.Name })));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+
+
     }
 }

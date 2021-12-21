@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="html\" />
+    <Folder Include="wwwroot\assets\images\bank\" />
   </ItemGroup>
 
   <ItemGroup>
