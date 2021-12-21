@@ -1,14 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
+using System.Linq;
 using System.Text;
 using cisApp.Core;
 using cisApp.library;
+using Microsoft.Extensions.Configuration;
 
 namespace cisApp.Function
 {
     public class JobCandidateModel : JobsCandidate
     {
+        public IConfigurationRoot _config = new ConfigurationBuilder()
+                                    .SetBasePath(Directory.GetCurrentDirectory())
+                                    .AddJsonFile("appsettings.json")
+                                    .Build();
         public string UserFullName { get; set; }
         public int UserLikes { get; set; }
         public decimal PriceRate { get; set; }
@@ -38,6 +45,21 @@ namespace cisApp.Function
             get
             {
                 return "~/Uploads" + "/" + this.AttachFileId + "/" + this.AttachFileName;
+            }
+        }
+        public string UrlPathAPI
+        {
+            get
+            {
+                string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
+                bool removeLast = Host.Last() == '/';
+                string UrlPath = "~/Uploads" + "/" + this.AttachFileId + "/" + this.AttachFileName;
+                if (removeLast)
+                {
+                    Host = Host.Remove(Host.Length - 1);
+                }
+                UrlPath = UrlPath.Replace("~", Host);
+                return UrlPath;
             }
         }
         [NotMapped]

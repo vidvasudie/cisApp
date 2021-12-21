@@ -11,6 +11,7 @@ namespace cisApp.Function
         public string JobType { get; set; }
         public decimal JobAreaSize { get; set; }
         public int JobStatus { get; set; }
+        public string JobStatusDesc { get; set; }
         public DateTime? DueDate { get; set; }
         public string DueDateStr
         {
