@@ -173,7 +173,7 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
                 
-                return Ok(resultJson.success("สำเร็จ", "success", new { jobId= job.JobId, job.JobFinalPrice, candiadtes = data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate }).ToList() } ));
+                return Ok(resultJson.success("สำเร็จ", "success", new { jobId= job.JobId, job.JobFinalPrice, candidates = data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate }).ToList() } ));
             }
             catch (Exception ex)
             {
