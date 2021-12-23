@@ -162,14 +162,18 @@ namespace cisApp.API.Controllers
                 {
                     return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
                 }
-
+                var job = GetJobs.Get.GetById(jobId);
+                if (job == null)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                }
                 var data = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId= jobId });
                 if(data == null || data.Count == 0)
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
                 
-                return Ok(resultJson.success("สำเร็จ", "success", data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate }).ToList()));
+                return Ok(resultJson.success("สำเร็จ", "success", new { jobId= job.JobId, job.JobFinalPrice, candiadtes = data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate }).ToList() } ));
             }
             catch (Exception ex)
             {
