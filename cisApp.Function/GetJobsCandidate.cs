@@ -59,7 +59,22 @@ namespace cisApp.Function
                     return new List<JobCandidateModel>();
                 }
             }
-             
+            public static List<JobCandidateModel> GetDesignerJobSubmitList(SearchModel model)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@jobId", model.gId != null && model.gId != Guid.Empty ? model?.gId.ToString() : (object)DBNull.Value)
+                    };
+
+                    return StoreProcedure.GetAllStored<JobCandidateModel>("GetDesignerJobSubmitList", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new List<JobCandidateModel>();
+                }
+            }
+
 
         }
 

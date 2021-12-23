@@ -138,7 +138,29 @@ namespace cisApp.Function
                     return new List<DesignerJobListModel>();
                 }
             }
-            
+
+            public static List<DesignerJobListModel> GetJobContestList(DesignerJobListSearch model)
+            {
+                try
+                {
+                    if (Guid.Empty == model.userId)
+                    {
+                        return new List<DesignerJobListModel>();
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", model.userId),
+                       new SqlParameter("@jobId", model.jobId != Guid.Empty ? model.jobId : (object)DBNull.Value),
+                       new SqlParameter("@skip", model.skip),
+                       new SqlParameter("@take", model.take)
+                    };
+
+                    return StoreProcedure.GetAllStored<DesignerJobListModel>("GetDesignerJobContestList", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new List<DesignerJobListModel>();
+                }
+            } 
 
         }
         public class Manage

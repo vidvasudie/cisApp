@@ -128,7 +128,7 @@ namespace cisApp.API.Controllers
                 }
                 var j = job.FirstOrDefault();
                 //get candidate with status 2:อยู่ระหว่างประกวด
-                j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId, status = 2 });
+                j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId });
 
                 //get jobeximage 
                 j.jobsExamImages = GetJobsExamImage.Get.GetImageByJobId(jobId);
@@ -140,6 +140,37 @@ namespace cisApp.API.Controllers
                 return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
             }
         }
+
+        [Route("api/designer/jobcontestlist")]
+        [HttpGet]
+        public IActionResult GetJobContestList(Guid userId, int? skip = 0, int? take = 10)
+        {
+            try
+            {
+                var model = new DesignerJobListSearch() { userId = userId, skip = skip, take = take };
+                //get list of jobs designer contest now
+                var jobs = GetUserDesigner.Get.GetJobContestList(model);
+                if (jobs == null || jobs.Count() == 0)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                foreach (var j in jobs)
+                {
+                    //get candidate with already submit work
+                    j.jobCandidates = GetJobsCandidate.Get.GetDesignerJobSubmitList(new SearchModel() { gId = j.JobID });
+                    j.JobUserSubmitCount = j.jobCandidates != null ? j.jobCandidates.Count() : 0;
+                }
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", jobs, model.take, jobs.Count()));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+
+        }
+    
 
     }
 }

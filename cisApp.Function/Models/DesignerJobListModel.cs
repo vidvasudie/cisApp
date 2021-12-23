@@ -25,6 +25,7 @@ namespace cisApp.Function
         public decimal JobFinalPrice { get; set; }
         public decimal JobPricePerSqM { get; set; } 
         public int JobStatus { get; set; }
+        public string JobStatusDesc { get; set; }
         public bool IsInvRequired { get; set; }
         public string InvAddress { get; set; }
         public string InvPersonalID { get; set; }
@@ -65,6 +66,7 @@ namespace cisApp.Function
         }
         public decimal RecruitedPrice { get; set; }
         public decimal ContestPrice { get; set; }
+        public int JobUserSubmitCount { get; set; }
         public List<JobCandidateModel> jobCandidates { get; set; }
         public List<JobsExamImageModel> jobsExamImages { get; set; }
     }
