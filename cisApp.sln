@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp.Function", "cisApp.F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp.API", "cisApp.API\cisApp.API.csproj", "{980DC8A7-0ED3-4A09-B00C-E0A926973483}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cisApp.SignalRTest", "cisApp.SignalRTest\cisApp.SignalRTest.csproj", "{E0D7F753-ACFE-42B8-AA63-7148F10EBC61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{980DC8A7-0ED3-4A09-B00C-E0A926973483}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{980DC8A7-0ED3-4A09-B00C-E0A926973483}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{980DC8A7-0ED3-4A09-B00C-E0A926973483}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0D7F753-ACFE-42B8-AA63-7148F10EBC61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0D7F753-ACFE-42B8-AA63-7148F10EBC61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0D7F753-ACFE-42B8-AA63-7148F10EBC61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0D7F753-ACFE-42B8-AA63-7148F10EBC61}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
