@@ -107,7 +107,24 @@ namespace cisApp.Function
                     return null;
                 }
             }
+            public static List<DesignerSubmitWorkModel> GetWorkSubmitList(Guid jobId)
+            {
+                try
+                {
+                    if (jobId == Guid.Empty)
+                        return null;
 
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@jobId", jobId)
+                    };
+
+                    return StoreProcedure.GetAllStored<DesignerSubmitWorkModel>("GetWorkSubmitList", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
         }
 
         public class Manage

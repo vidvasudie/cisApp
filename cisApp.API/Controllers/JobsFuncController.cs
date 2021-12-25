@@ -204,7 +204,50 @@ namespace cisApp.API.Controllers
                 return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
             }
         }
-    
-    
+
+        [Route("api/jobs/getworksubmitlist")]
+        [HttpGet]
+        public IActionResult GetWorkSubmitList(Guid jobId)
+        {
+            try
+            {
+                if (jobId == Guid.Empty)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
+
+                var data = GetJobs.Get.GetWorkSubmitList(jobId);
+                if (data == null || data.Count() == 0)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
+                bool removeLast = Host.Last() == '/'; 
+                if (removeLast)
+                {
+                    Host = Host.Remove(Host.Length - 1);
+                } 
+
+                return Ok(resultJson.success("สำเร็จ", "success", new {
+                    data.First().JobId,
+                    data.First().CaUserId,
+                    CaUrlPath = data.First().CaUrlPath == null ? null : data.First().CaUrlPath.Replace("~", Host),
+                    data.First().Fullname,
+                    data.First().LastLogin,
+                    data.First().UpdatedDateStr,
+                    data.First().AlbumName,
+                    works = data.Select(o => new { o.AlbumAttachFileID, o.AlbumFileName, WorkUrlPath= o.AlbumAttachFileID == null ? null : o.WorkUrlPath.Replace("~", Host) })
+                }));
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+
+
     }
 }
