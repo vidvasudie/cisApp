@@ -247,9 +247,6 @@ namespace cisApp.API.Controllers
             }
         }
 
-
-
-    
         [Route("api/jobs/submitwork")]
         [HttpPost]
         public IActionResult SubmitWork([FromBody]SubmitworkModel value)
