@@ -184,6 +184,8 @@ namespace cisApp.Function
                             //insert job image ex
                             ManageImages(context, data.files, obj);
 
+                            ManageImageApi(context, data.apiFiles, obj, userId);
+
                             //add job tracking for jobStatus 
                             //JobsTracking tracking = new JobsTracking();
                             //tracking.JobId = obj.JobId;
@@ -193,10 +195,11 @@ namespace cisApp.Function
                             //context.SaveChanges();
 
                             //add job log for every job activity 
-                            //log.JobId = obj.JobId;
-                            //log.Ipaddress = ip;
-                            //log.CreatedDate = DateTime.Now;
-                            //context.JobsLogs.Add(log);
+                            JobsLogs log = new JobsLogs();
+                            log.JobId = obj.JobId;
+                            log.Ipaddress = "";
+                            log.CreatedDate = DateTime.Now;
+                            context.JobsLogs.Add(log);
                             context.SaveChanges();
 
                             dbContextTransaction.Commit();
@@ -265,6 +268,39 @@ namespace cisApp.Function
                 }
 
                 return 1;
+            }
+
+            public static int ManageImageApi(CAppContext context, List<Guid> imgs, Album obj, Guid userId)
+            {
+                try
+                {
+                    if (imgs == null)
+                    {
+                        return 1;
+                    }
+
+                    // need to delete previous img ?
+
+                    foreach(var file in imgs)
+                    {
+                        AlbumImage map = new AlbumImage()
+                        {
+                            AlbumId = obj.AlbumId.Value,
+                            UserId = obj.UserId
+                        };
+
+                        context.AlbumImage.Add(map);
+                        context.SaveChanges();
+
+                        GetAttachFile.Manage.ChangeRefId(file, map.ImgId.Value, userId);
+                    }
+
+                    return 1;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
     }

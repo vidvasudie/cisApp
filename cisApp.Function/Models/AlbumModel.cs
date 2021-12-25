@@ -27,10 +27,9 @@ namespace cisApp.Function
             }
         }
         public int CandidateSelected { get; set; }
-
-
         
         public List<FileAttachModel> files { get; set; }
+        public List<Guid> apiFiles { get; set; }
 
     }
 }

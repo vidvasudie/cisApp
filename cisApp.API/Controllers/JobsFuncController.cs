@@ -205,6 +205,36 @@ namespace cisApp.API.Controllers
             }
         }
     
+        [Route("api/jobs/submitwork")]
+        public IActionResult SubmitWork([FromBody]SubmitworkModel value)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    AlbumModel model = new AlbumModel()
+                    {
+                        JobId = value.JobId.Value,
+                        UserId = value.UserId,
+                        Category = value.Category,
+                        Tags = value.Tags,
+                        AlbumName = value.AlbumName,
+                        Url = value.Url,
+                        AlbumType = value.AlbumType,
+                        apiFiles = value.imgs
+                    };
+
+                    var result = GetAlbum.Manage.Update(model, value.UserId.Value);
+
+                    return Ok(resultJson.success("สำเร็จ", "success", new { result.JobId }));
+                }
+                return Ok(resultJson.errors("ข้อมูลไม่ถูกต้อง ModelState Not Valid", "fail", null));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
     
     }
 }
