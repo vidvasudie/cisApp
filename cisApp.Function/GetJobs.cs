@@ -187,7 +187,7 @@ namespace cisApp.Function
                             JobsLogs log = new JobsLogs();
                             log.JobId = obj.JobId;
                             log.Description = ActionCommon.JobCandidateSelected;
-                            log.Ipaddress = value.ClientIp;
+                            log.Ipaddress = value.ip;
                             log.CreatedDate = DateTime.Now;
                             context.JobsLogs.Add(log);
                             context.SaveChanges();
@@ -410,7 +410,7 @@ namespace cisApp.Function
                             var jobPms = context.JobPayment.Where(o => o.JobId == jobId);
                             if (jobPms.Any())
                             {
-                                if(jobPms.Where(o => o.PayStatus > 1).Count() > 0) //1=รอชำระเงิน
+                                if(jobPms.Where(o => o.PayStatus == 1 || o.PayStatus == 4).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน 
                                     return null;
                             }
                                 

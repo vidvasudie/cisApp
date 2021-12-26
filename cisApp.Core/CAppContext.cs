@@ -59,6 +59,7 @@ namespace cisApp.Core
         public virtual DbSet<TmProceedRatio> TmProceedRatio { get; set; }
         public virtual DbSet<TmVatratio> TmVatratio { get; set; }
         public virtual DbSet<UsersResetPassword> UsersResetPassword { get; set; }
+        public virtual DbSet<TmCauseCancel> TmCauseCancel { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TmProceedRatio>(entity =>
@@ -675,6 +676,17 @@ namespace cisApp.Core
                     .IsUnicode(false);
 
                 entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
+            });
+
+            modelBuilder.Entity<TmCauseCancel>(entity =>
+            {
+                entity.ToTable("Tm_CauseCancel");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Description).IsRequired();
+
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
             });
 
             OnModelCreatingPartial(modelBuilder);

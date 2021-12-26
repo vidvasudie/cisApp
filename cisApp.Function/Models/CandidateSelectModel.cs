@@ -8,7 +8,7 @@ namespace cisApp.Function
     {
         public Guid JobId { get; set; }
         public Guid CaUserId { get; set; }
-        public string ClientIp { get; set; }
+        public string ip { get; set; }
         public Guid UserId { get; set; }
     }
 }

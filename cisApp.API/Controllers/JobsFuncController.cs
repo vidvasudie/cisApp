@@ -133,7 +133,7 @@ namespace cisApp.API.Controllers
                 }
 
                 var pm = GetJobPayment.Get.GetByJobId(jobId);
-                if(pm.Where(o => o.PayStatus > 1).Count() > 0) //1=รอชำระเงิน
+                if(pm.Where(o => o.PayStatus == 1 || o.PayStatus == 4).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน
                 {
                     //ถ้าจ่ายแล้ว ยกเลิกไม่ได้
                     return Ok(resultJson.errors("ไม่สามารถยกเลิกได้ เมื่อมีการชำระเงินแล้ว", "fail", null));
@@ -301,6 +301,26 @@ namespace cisApp.API.Controllers
             catch (Exception ex)
             {
                 return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [Route("api/jobs/getcausecancel")]
+        [HttpGet]
+        public IActionResult GetCauseCancelList()
+        {
+            try
+            { 
+                var list = GetTmCauseCancel.Get.GetByActive();
+                if (list == null)
+                {
+                    return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", list.Select(o => new { id = o.Id, name = o.Description })));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
             }
         }
 
