@@ -18,23 +18,27 @@
     <script src="~/signalr/hubs"></script>
     <!--SignalR script to update the chat page and send messages.-->
     <script>
-        $(function () {
+        var userId = new Date().getTime().toString();
 
-            var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44384/hubs/test").build();
+        console.log('user id', userId)
 
-            connection.on("boardcastMessage", function (user, message) {
-                console.log('boardcastMessage', user, message)
+        var connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44384/hubs/test?userId=" + userId).build();
+
+        //connection.hub.qs = 'userId=' + userId
+
+        connection.on("boardcastMessage", function (user, message) {
+            console.log('boardcastMessage', user, message)
+        });
+
+        connection.start()
+        setTimeout(function () {
+            console.log('new Date().getTime()', new Date().getTime())
+            connection.invoke("boardcastMessage", 'ppp', new Date().getTime().toString()).catch(function (err) {
+                return console.error(err.toString());
             });
 
-            connection.start()
-            setTimeout(function () {
-                console.log('new Date().getTime()', new Date().getTime())
-                connection.invoke("boardcastMessage", 'ppp', new Date().getTime().toString()).catch(function (err) {
-                    return console.error(err.toString());
-                });
+        }, 2000);
 
-            }, 2000);
-            
 
             //// Reference the auto-generated proxy for the hub.
             //var chat = $.connection.chatHub;
@@ -57,7 +61,6 @@
             //        $('#message').val('').focus();
             //    });
             //});
-        });
         // This optional function html-encodes messages for display in the page.
         function htmlEncode(value) {
             var encodedValue = $('<div />').text(value).html();
