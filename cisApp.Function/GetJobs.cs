@@ -129,7 +129,80 @@ namespace cisApp.Function
 
         public class Manage
         {
+            public static Jobs UpdateCandidate(CandidateSelectModel value)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            Jobs obj = new Jobs(); 
+                            var data = context.Jobs.Where(o => o.JobId == value.JobId);
+                            if (!data.Any())
+                            {
+                                return null;
+                            }
+                            obj = data.FirstOrDefault();
+                            obj.JobCaUserId = value.CaUserId;
+                            obj.UpdatedDate = DateTime.Now;
+                            obj.UpdatedBy = value.UserId;
+                            context.Jobs.Update(obj);
+                            context.SaveChanges();
 
+                            var jobCas = context.JobsCandidate.Where(o => o.JobId == value.JobId);
+                            if (!jobCas.Any())
+                            {
+                                return null;
+                            }
+                            var jobCa = jobCas.Where(o => o.UserId == value.CaUserId).FirstOrDefault();
+                            jobCa.CaStatusId = 3;//3=คัดเลือก
+                            jobCa.UpdatedDate = DateTime.Now;
+                            jobCa.UpdatedBy = value.UserId;
+                            context.JobsCandidate.Update(jobCa);
+                            context.SaveChanges();
+
+                            //clear work slot for other 2 candidate
+                            List<UserDesigner> tmp = new List<UserDesigner>();
+                            var usrDesginers = context.UserDesigner.ToList();
+                            foreach (var ca in context.JobsCandidate.Where(o => o.JobId == value.JobId && o.UserId != value.CaUserId))
+                            {
+                                var usrDesginer = usrDesginers.Where(o => o.UserId == ca.UserId).FirstOrDefault();
+                                usrDesginer.AreaSqmused -= (int) obj.JobAreaSize;
+                                usrDesginer.AreaSqmremain = usrDesginer.AreaSqmmax - usrDesginer.AreaSqmused;
+                                tmp.Add(usrDesginer);
+                            }
+                            context.UserDesigner.UpdateRange(tmp);
+                            context.SaveChanges();
+
+                            //add job tracking for jobStatus 
+                            JobsTracking tracking = new JobsTracking();
+                            tracking.JobId = obj.JobId;
+                            tracking.StatusDate = DateTime.Now;
+                            tracking.JobStatus = 4; //4=ประกาศ
+                            context.JobsTracking.Add(tracking);
+                            context.SaveChanges();
+
+                            //add job log for every job activity 
+                            JobsLogs log = new JobsLogs();
+                            log.JobId = obj.JobId;
+                            log.Description = ActionCommon.JobCandidateSelected;
+                            log.Ipaddress = value.ClientIp;
+                            log.CreatedDate = DateTime.Now;
+                            context.JobsLogs.Add(log);
+                            context.SaveChanges();
+
+                            dbContextTransaction.Commit();
+
+                            return obj;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
             public static Jobs Update(JobModel data, string ip = null)
             {
                 try

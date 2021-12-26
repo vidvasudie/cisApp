@@ -9,7 +9,7 @@ namespace cisApp.Core
         /// <summary>
         /// รหัสผู้ออกแบบ
         /// </summary>
-        public Guid? UserDesignerId { get; set; }
+        public Guid UserDesignerId { get; set; }
         /// <summary>
         /// รหัสผู้ใช้งาน
         /// </summary>
@@ -32,20 +32,24 @@ namespace cisApp.Core
         public int? AccountType { get; set; }
         public string Address { get; set; }
         /// <summary>
-        /// code ตำบล
+        /// ID ตำบล
         /// </summary>
         public int? SubDistrictId { get; set; }
         /// <summary>
-        /// code อำเภอ
+        /// ID อำเภอ
         /// </summary>
         public int? DistrictId { get; set; }
         /// <summary>
-        /// code จังหวัด
+        /// ID จังหวัด
         /// </summary>
         public int? ProvinceId { get; set; }
         /// <summary>
         /// รหัสไปรษณีย์
         /// </summary>
         public string PostCode { get; set; }
+        public decimal AreaSqmrate { get; set; }
+        public int AreaSqmmax { get; set; }
+        public int AreaSqmused { get; set; }
+        public int AreaSqmremain { get; set; }
     }
 }

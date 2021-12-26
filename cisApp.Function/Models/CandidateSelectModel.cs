@@ -1,0 +1,14 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace cisApp.Function
+{
+    public class CandidateSelectModel
+    {
+        public Guid JobId { get; set; }
+        public Guid CaUserId { get; set; }
+        public string ClientIp { get; set; }
+        public Guid UserId { get; set; }
+    }
+}

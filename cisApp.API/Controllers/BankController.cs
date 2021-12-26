@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using cisApp.API.Models;
 using cisApp.Function;
+using cisApp.library;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -65,6 +66,7 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                //var xx = Encryption.Decrypt("s9LrP8c+HjTWUbLOve8Xhg==");
                 var banks = GetTmBank.Get.GetByActive();
                 if (banks == null)
                 {

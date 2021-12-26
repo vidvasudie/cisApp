@@ -278,6 +278,31 @@ namespace cisApp.API.Controllers
                 return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
             }
         }
-    
+
+        [Route("api/jobs/candidateselect")]
+        [HttpPost]
+        public IActionResult CandidateSelect([FromBody]CandidateSelectModel value)
+        {
+            try
+            { 
+                if (value.JobId == Guid.Empty || value.CaUserId == Guid.Empty)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
+
+                var job = GetJobs.Manage.UpdateCandidate(value);
+                if(job == null)
+                {
+                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
+                } 
+
+                return Ok(resultJson.success("สำเร็จ", "success", new { JobId=job.JobId, CaUserId=job.JobCaUserId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
     }
 }

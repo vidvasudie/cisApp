@@ -561,13 +561,24 @@ namespace cisApp.Core
 
                 entity.Property(e => e.AccountType).HasComment("ประเภทบัญชี: 1=ออมทรัพย์, 2=ประจำ, 3=กระแสรายวัน");
 
+                entity.Property(e => e.AreaSqmmax).HasColumnName("AreaSQMMax");
+
+                entity.Property(e => e.AreaSqmrate)
+                    .HasColumnName("AreaSQMRate")
+                    .HasColumnType("decimal(10, 2)")
+                    .HasDefaultValueSql("((250))");
+
+                entity.Property(e => e.AreaSqmremain).HasColumnName("AreaSQMRemain");
+
+                entity.Property(e => e.AreaSqmused).HasColumnName("AreaSQMUsed");
+
                 entity.Property(e => e.BankId)
                     .HasColumnName("BankID")
                     .HasComment("รหัสธนาคาร");
 
                 entity.Property(e => e.DistrictId)
                     .HasColumnName("DistrictID")
-                    .HasComment("code อำเภอ");
+                    .HasComment("ID อำเภอ");
 
                 entity.Property(e => e.PersonalId)
                     .HasColumnName("PersonalID")
@@ -580,11 +591,11 @@ namespace cisApp.Core
 
                 entity.Property(e => e.ProvinceId)
                     .HasColumnName("ProvinceID")
-                    .HasComment("code จังหวัด");
+                    .HasComment("ID จังหวัด");
 
                 entity.Property(e => e.SubDistrictId)
                     .HasColumnName("SubDistrictID")
-                    .HasComment("code ตำบล");
+                    .HasComment("ID ตำบล");
 
                 entity.Property(e => e.UserId)
                     .HasColumnName("UserID")
