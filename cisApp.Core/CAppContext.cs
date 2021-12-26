@@ -167,11 +167,15 @@ namespace cisApp.Core
                     .HasColumnName("JobID")
                     .HasDefaultValueSql("(newid())");
 
+                entity.Property(e => e.CancelId)
+                    .HasColumnName("CancelID")
+                    .HasComment("รหัสสาเหตุยกเลิก");
+
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
 
                 entity.Property(e => e.InvPersonalId)
                     .HasColumnName("InvPersonalID")
-                    .HasMaxLength(13); 
+                    .HasMaxLength(13);
 
                 entity.Property(e => e.JobAreaSize)
                     .HasColumnType("decimal(10, 2)")

@@ -399,7 +399,7 @@ namespace cisApp.Function
                 return 1; 
             } 
 
-            public static Jobs CancelJob(Guid jobId, Guid userId, string rejectMsg, string ip)
+            public static Jobs CancelJob(Guid jobId, Guid userId, int cancelId, string cancelMsg, string ip)
             {
                 try
                 {
@@ -410,7 +410,7 @@ namespace cisApp.Function
                             var jobPms = context.JobPayment.Where(o => o.JobId == jobId);
                             if (jobPms.Any())
                             {
-                                if(jobPms.Where(o => o.PayStatus == 1 || o.PayStatus == 4).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน 
+                                if(jobPms.Where(o => o.PayStatus != 1 || o.PayStatus != 4).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน 
                                     return null;
                             }
                                 
@@ -419,6 +419,7 @@ namespace cisApp.Function
                                 return null;
 
                             var data = datas.FirstOrDefault();
+                            data.CancelId = cancelId;
                             data.JobStatus = 6;//ยกเลิก
                             data.UpdatedDate = DateTime.Now;
                             data.UpdatedBy = userId;
@@ -426,9 +427,16 @@ namespace cisApp.Function
                             context.Jobs.Update(data);
                             context.SaveChanges();
 
+                            //get massage cancel
+                            if (String.IsNullOrEmpty(cancelMsg) && cancelId > 0)
+                            {
+                                var cc = context.TmCauseCancel.Where(o => o.Id == cancelId).FirstOrDefault();
+                                cancelMsg = cc.Description;
+                            }
+
                             //add job log for every job activity 
                             JobsLogs log = new JobsLogs();
-                            log.Description = rejectMsg;
+                            log.Description = cancelMsg;
                             log.JobId = data.JobId;
                             log.Ipaddress = ip;
                             log.CreatedDate = DateTime.Now;

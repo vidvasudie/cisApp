@@ -68,5 +68,9 @@ namespace cisApp.Core
         public bool IsInvRequired { get; set; }
         public string InvAddress { get; set; }
         public string InvPersonalId { get; set; }
+        /// <summary>
+        /// รหัสสาเหตุยกเลิก
+        /// </summary>
+        public int? CancelId { get; set; }
     }
 }
