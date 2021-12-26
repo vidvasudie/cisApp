@@ -145,6 +145,7 @@ namespace cisApp.Function
                             }
                             obj = data.FirstOrDefault();
                             obj.JobCaUserId = value.CaUserId;
+                            obj.JobStatus = 4;//ประกาศ
                             obj.UpdatedDate = DateTime.Now;
                             obj.UpdatedBy = value.UserId;
                             context.Jobs.Update(obj);
