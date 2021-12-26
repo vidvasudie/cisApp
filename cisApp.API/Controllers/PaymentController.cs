@@ -22,6 +22,15 @@ namespace cisApp.API.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var job = GetJobs.Get.GetById(value.JobId.Value);
+
+                    if (job.JobCaUserId == null)
+                    {
+                        return Ok(resultJson.errors("ใบงานดังกล่าวยังไม่มีผู้ผ่านการประกวด", "fail", null));
+                    }
+
+                    var candidate = GetUser.Get.GetById(job.JobCaUserId.Value);
+
                     JobPayment data = new JobPayment()
                     {
                         JobId = value.JobId,
@@ -35,7 +44,9 @@ namespace cisApp.API.Controllers
                         , JobId = payment.JobId
                         , UserId = value.UserId
                         , PayDate = payment.PayDate
-                        , PayExpire = payment.PayDate.Value.AddMinutes(15) }));
+                        , PayExpire = payment.PayDate.Value.AddMinutes(15)
+                    , JobFinalPrice = job.JobFinalPrice
+                    , CandidateAccount = candidate.AccountNumber}));
                 }
 
                 return Ok(resultJson.errors("JobId And UserId Is Ruqired", "fail", null));                
