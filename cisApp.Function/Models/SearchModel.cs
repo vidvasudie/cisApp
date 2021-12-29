@@ -21,5 +21,8 @@ namespace cisApp.Function
         public int? PaymentStatus { get; set; }
         public Guid? JobId { get; set; }
         public int? JobStatus { get; set; }
+
+        public Guid? SenderId { get; set; }
+        public Guid? RecieverId { get; set; }
     }
 }

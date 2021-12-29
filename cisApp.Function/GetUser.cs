@@ -238,6 +238,27 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
+            public static AttachFile GetUserProfileImg(Guid userId)
+            {
+                try
+                {
+                    var userImgs = GetUserImgs(userId);
+
+                    if (userImgs != null && userImgs.Count > 0)
+                    {
+                        var attachFile = GetAttachFile.Get.GetByRefId(userImgs.FirstOrDefault().UserImgId.Value);
+
+                        return attachFile;
+                    }
+
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public class Manage

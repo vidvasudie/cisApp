@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -54,6 +55,22 @@ namespace cisApp.Function
                 catch (Exception ex)
                 {
                     throw ex;
+                }
+            }
+
+            public static List<AttachFile> GetByRefIdList(Guid id)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@id", id)
+                    };
+
+                    return StoreProcedure.GetAllStored<AttachFile>("GetAttachFileByRefId", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new List<AttachFile>();
                 }
             }
         }

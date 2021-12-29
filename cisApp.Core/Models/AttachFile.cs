@@ -31,5 +31,14 @@ namespace cisApp.Core
                 return "~/Uploads" + "/" + this.AttachFileId + "/" + this.FileName;
             }
         }
+
+        [NotMapped]
+        public string UrlPathAPI
+        {
+            get
+            {
+                return "Uploads" + "/" + this.AttachFileId + "/" + this.FileName;
+            }
+        }
     }
 }
