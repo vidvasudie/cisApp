@@ -147,7 +147,7 @@ namespace cisApp.Function
                             }
 
                             // get profile
-                            var profile = GetUser.Get.GetUserProfileImg(item.SenderId);
+                            var profile = GetUser.Get.GetUserProfileImg(item.RealSenderId);
 
                             if (profile != null)
                             {

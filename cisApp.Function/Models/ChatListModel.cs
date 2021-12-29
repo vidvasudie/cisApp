@@ -10,6 +10,7 @@ namespace cisApp.Function
         public string ChatName { get; set; }
         
         public int UnRead { get; set; }
+        public Guid UserId { get; set; }
 
         public List<AttachFileAPIModel> Profiles { get; set; }
 
