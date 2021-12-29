@@ -1,27 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "แชทรายบุคคล";
-    ViewData["ControllerName"] = "Chats";
-}
-
-@section Scripts{
-    <!--begin::Page Scripts(used by this page)-->
-    <script src="@Url.Content("~/assets/js/pages/custom/chat/chat.js")"></script>
-    <!--end::Page Scripts-->
-
-    <script src="@Url.Content("~/js/pages/chat/index.js")"></script>
-
-    <script>
-        const _ChatListUrl = '@Url.Action("GetChatList", ViewData["ControllerName"].ToString(), new {type = 0})'
-
-        $(document).ready(function () {
-            initView();
-        })
-    </script>
-
-    
-
-    
+    ViewData["Title"] = "แชทกลุ่ม";
 }
 
 <!--begin::Content-->
@@ -55,13 +34,61 @@
                                         </span>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control py-4 h-auto" placeholder="ค้นหารายชื่อ" />
+                                <input type="text" class="form-control py-4 h-auto" placeholder="ค้นหารหัสใบงาน" />
                             </div>
                             <!--end:Search-->
                             <!--begin:Users-->
-                            <div class="mt-7 scroll scroll-pull" id="chat-list">
-
-
+                            <div class="mt-7 scroll scroll-pull">
+                                <!--begin:User-->
+                                <div class="d-flex align-items-center justify-content-between mb-5">
+                                    <div class="d-flex align-items-center">
+                                        <div class="symbol symbol-circle symbol-50 mr-3 symbol-light-warning">
+                                            <span class="symbol-label font-size-h5">ประกวด</span>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-lg">ID65-0100001</a>
+                                            <span class="text-muted font-weight-bold font-size-sm">Job create 10/10/2564</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column align-items-end">
+                                        <span class="text-muted font-weight-bold font-size-sm">35 mins</span>
+                                    </div>
+                                </div>
+                                <!--end:User-->
+                                <!--begin:User-->
+                                <div class="d-flex align-items-center justify-content-between mb-5">
+                                    <div class="d-flex align-items-center">
+                                        <div class="symbol symbol-circle symbol-50 mr-3 symbol-light-warning">
+                                            <span class="symbol-label font-size-h5">ประกวด</span>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-lg">ID65-0100002</a>
+                                            <span class="text-muted font-weight-bold font-size-sm">Job create 10/10/2564</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column align-items-end">
+                                        <span class="text-muted font-weight-bold font-size-sm">7 hrs</span>
+                                        <span class="label label-sm label-success">4</span>
+                                    </div>
+                                </div>
+                                <!--end:User-->
+                                <!--begin:User-->
+                                <div class="d-flex align-items-center justify-content-between mb-5">
+                                    <div class="d-flex align-items-center">
+                                        <div class="symbol symbol-circle symbol-50 mr-3 symbol-light-warning">
+                                            <span class="symbol-label font-size-h5">ประกวด</span>
+                                        </div>
+                                        <div class="d-flex flex-column">
+                                            <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-lg">ID65-0100003</a>
+                                            <span class="text-muted font-weight-bold font-size-sm">Job create 10/10/2564</span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column align-items-end">
+                                        <span class="text-muted font-weight-bold font-size-sm">3 hrs</span>
+                                        <span class="label label-sm label-danger">5</span>
+                                    </div>
+                                </div>
+                                <!--end:User-->
                             </div>
                             <!--end:Users-->
                         </div>
@@ -92,41 +119,28 @@
                                     </span>
                                 </button>
                                 <!--end::Aside Mobile Toggle-->
-                                <!--begin::Dropdown Menu-->
-                                <div class="dropdown dropdown-inline">
-                                    <button type="button" class="btn btn-clean btn-sm btn-icon btn-icon-md" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="ki ki-bold-more-hor icon-md"></i>
-                                    </button>
-                                    <div class="dropdown-menu p-0 m-0 dropdown-menu-left dropdown-menu-md">
-                                        <!--begin::Navigation-->
-                                        <ul class="navi navi-hover py-5">
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-drop"></i>
-                                                    </span>
-                                                    <span class="navi-text">เพิ่มเข้ากลุ่ม</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-list-3"></i>
-                                                    </span>
-                                                    <span class="navi-text">ดูประวัติ</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <!--end::Navigation-->
-                                    </div>
-                                </div>
-                                <!--end::Dropdown Menu-->
+                             
                             </div>
-                            <div class="text-center flex-grow-1">
-                                <div class="text-dark-75 font-weight-bold font-size-h5">Matt Pears</div>
-                                <div>
-                                    <span class="label label-sm label-dot label-success"></span>
-                                    <span class="font-weight-bold text-muted font-size-sm">Active</span>
+                            <div class="text-center text-center">
+                                <div class="symbol-group symbol-hover justify-content-center">
+                                    <div class="symbol symbol-35 symbol-circle" data-toggle="tooltip" title="Ana Fox">
+                                        <img alt="Pic" src="https://picsum.photos/300?random=2" />
+                                    </div>
+                                    <div class="symbol symbol-35 symbol-circle" data-toggle="tooltip" title="Nich Nilson">
+                                        <img alt="Pic" src="https://picsum.photos/300?random=3" />
+                                    </div>
+                                    <div class="symbol symbol-35 symbol-circle" data-toggle="tooltip" title="James Stone">
+                                        <img alt="Pic" src="https://picsum.photos/300?random=4" />
+                                    </div>
+                                    <div class="symbol symbol-35 symbol-circle" data-toggle="tooltip" title="Micheal Bold">
+                                        <img alt="Pic" src="https://picsum.photos/300?random=1" />
+                                    </div>
+                                    <div class="symbol symbol-35 symbol-circle" data-toggle="tooltip" title="Sean Cooper">
+                                        <img alt="Pic" src="https://picsum.photos/300?random=5" />
+                                    </div>
+                                    <div class="symbol symbol-35 symbol-circle symbol-light-success" data-toggle="tooltip" title="Invite someone">
+                                        <span class="symbol-label font-weight-bold">2+</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="text-right flex-grow-1">
@@ -153,7 +167,7 @@
                                                     <span class="navi-icon">
                                                         <i class="flaticon2-drop"></i>
                                                     </span>
-                                                    <span class="navi-text">New Group</span>
+                                                    <span class="navi-text">สร้างกลุ่มใหม่</span>
                                                 </a>
                                             </li>
                                             <li class="navi-item">
@@ -161,57 +175,10 @@
                                                     <span class="navi-icon">
                                                         <i class="flaticon2-list-3"></i>
                                                     </span>
-                                                    <span class="navi-text">Contacts</span>
+                                                    <span class="navi-text">เพิ่มรายชื่อ</span>
                                                 </a>
                                             </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-rocket-1"></i>
-                                                    </span>
-                                                    <span class="navi-text">Groups</span>
-                                                    <span class="navi-link-badge">
-                                                        <span class="label label-light-primary label-inline font-weight-bold">new</span>
-                                                    </span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-bell-2"></i>
-                                                    </span>
-                                                    <span class="navi-text">Calls</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-gear"></i>
-                                                    </span>
-                                                    <span class="navi-text">Settings</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-separator my-3"></li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-magnifier-tool"></i>
-                                                    </span>
-                                                    <span class="navi-text">Help</span>
-                                                </a>
-                                            </li>
-                                            <li class="navi-item">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="flaticon2-bell-2"></i>
-                                                    </span>
-                                                    <span class="navi-text">Privacy</span>
-                                                    <span class="navi-link-badge">
-                                                        <span class="label label-light-danger label-rounded font-weight-bold">5</span>
-                                                    </span>
-                                                </a>
-                                            </li>
-                                        </ul>
+                                         </ul>
                                         <!--end::Navigation-->
                                     </div>
                                 </div>
@@ -228,11 +195,11 @@
                                     <!--begin::Message In-->
                                     <div class="d-flex flex-column mb-5 align-items-start">
                                         <div class="d-flex align-items-center">
-                                            <div class="symbol symbol-circle symbol-40 mr-3">
+                                            <div class="symbol symbol-circle symbol-35 mr-3">
                                                 <img alt="Pic" src="https://picsum.photos/300?random=1" />
                                             </div>
                                             <div>
-                                                <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">Matt Pears</a>
+                                                <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">Nich Larson</a>
                                                 <span class="text-muted font-size-sm">2 Hours</span>
                                             </div>
                                         </div>
@@ -246,7 +213,7 @@
                                                 <span class="text-muted font-size-sm">3 minutes</span>
                                                 <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">Cloudidea Supports</a>
                                             </div>
-                                            <div class="symbol symbol-circle symbol-40 ml-3">
+                                            <div class="symbol symbol-circle symbol-35 ml-3">
                                                 <img alt="Pic" src="https://picsum.photos/300?random=66" />
                                             </div>
                                         </div>
@@ -256,11 +223,11 @@
                                     <!--begin::Message In-->
                                     <div class="d-flex flex-column mb-5 align-items-start">
                                         <div class="d-flex align-items-center">
-                                            <div class="symbol symbol-circle symbol-40 mr-3">
+                                            <div class="symbol symbol-circle symbol-35 mr-3">
                                                 <img alt="Pic" src="https://picsum.photos/300?random=1" />
                                             </div>
                                             <div>
-                                                <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">Matt Pears</a>
+                                                <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">Adam Cook</a>
                                                 <span class="text-muted font-size-sm">40 seconds</span>
                                             </div>
                                         </div>
@@ -274,11 +241,70 @@
                                                 <span class="text-muted font-size-sm">Just now</span>
                                                 <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">Cloudidea Supports</a>
                                             </div>
-                                            <div class="symbol symbol-circle symbol-40 ml-3">
+                                            <div class="symbol symbol-circle symbol-35 ml-3">
                                                 <img alt="Pic" src="https://picsum.photos/300?random=66" />
                                             </div>
                                         </div>
                                         <div class="mt-2 rounded p-5 bg-light-primary text-dark-50 font-weight-bold font-size-lg text-right max-w-400px">You’ll receive notifications for all issues, pull requests!</div>
+                                    </div>
+                                    <!--end::Message Out-->
+                                    <!--begin::Message In-->
+                                    <div class="d-flex flex-column mb-5 align-items-start">
+                                        <div class="d-flex align-items-center">
+                                            <div class="symbol symbol-circle symbol-35 mr-3">
+                                                <img alt="Pic" src="https://picsum.photos/300?random=2" />
+                                            </div>
+                                            <div>
+                                                <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">Nina Pears</a>
+                                                <span class="text-muted font-size-sm">40 seconds</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 rounded p-5 bg-light-success text-dark-50 font-weight-bold font-size-lg text-left max-w-400px">
+                                            You can unwatch this repository immediately by clicking here:
+                                            <a href="#">https://github.com</a>
+                                        </div>
+                                    </div>
+                                    <!--end::Message In-->
+                                    <!--begin::Message Out-->
+                                    <div class="d-flex flex-column mb-5 align-items-end">
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <span class="text-muted font-size-sm">Just now</span>
+                                                <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">Cloudidea Supports</a>
+                                            </div>
+                                            <div class="symbol symbol-circle symbol-35 ml-3">
+                                                <img alt="Pic" src="https://picsum.photos/300?random=66" />
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 rounded p-5 bg-light-primary text-dark-50 font-weight-bold font-size-lg text-right max-w-400px">Discover what students who viewed Learn Figma - UI/UX Design. Essential Training also viewed</div>
+                                    </div>
+                                    <!--end::Message Out-->
+                                    <!--begin::Message In-->
+                                    <div class="d-flex flex-column mb-5 align-items-start">
+                                        <div class="d-flex align-items-center">
+                                            <div class="symbol symbol-circle symbol-35 mr-3">
+                                                <img alt="Pic" src="https://picsum.photos/300?random=5" />
+                                            </div>
+                                            <div>
+                                                <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">Matthew Robertson</a>
+                                                <span class="text-muted font-size-sm">40 seconds</span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 rounded p-5 bg-light-success text-dark-50 font-weight-bold font-size-lg text-left max-w-400px">Most purchased Business courses during this sale!</div>
+                                    </div>
+                                    <!--end::Message In-->
+                                    <!--begin::Message Out-->
+                                    <div class="d-flex flex-column mb-5 align-items-end">
+                                        <div class="d-flex align-items-center">
+                                            <div>
+                                                <span class="text-muted font-size-sm">Just now</span>
+                                                <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">Cloudidea Supports</a>
+                                            </div>
+                                            <div class="symbol symbol-circle symbol-35 ml-3">
+                                                <img alt="Pic" src="https://picsum.photos/300?random=66" />
+                                            </div>
+                                        </div>
+                                        <div class="mt-2 rounded p-5 bg-light-primary text-dark-50 font-weight-bold font-size-lg text-right max-w-400px">Company BBQ to celebrate the last quater achievements and goals. Food and drinks provided</div>
                                     </div>
                                     <!--end::Message Out-->
                                 </div>
@@ -295,7 +321,7 @@
                                 <div class="mr-3">
                                     <a href="#" class="btn btn-clean btn-icon btn-md mr-1">
                                         <i class="flaticon2-photograph icon-lg"></i>
-                                    </a>
+                                    </a> 
                                 </div>
                                 <div>
                                     <button type="button" class="btn btn-primary btn-md text-uppercase font-weight-bold chat-send py-2 px-6">ส่ง</button>
@@ -316,3 +342,8 @@
     <!--end::Entry-->
 </div>
 <!--end::Content-->
+@section Scripts{
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="@Url.Action("~/assets/js/pages/custom/chat/chat.js")"></script>
+    <!--end::Page Scripts-->
+}
