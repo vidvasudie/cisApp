@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using cisApp.Core;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
 
 namespace cisApp.Function
 {
@@ -169,11 +170,92 @@ namespace cisApp.Function
                         }
                     }
 
-                    return messages;
+                    return messages.OrderBy(o => o.CreatedDate).ToList();
                 }
                 catch (Exception ex)
                 {
                     return new List<ChatMessageModel>();
+                }
+            }
+
+            public static ChatDetailModel GetChatDetail(Guid id)
+            {
+                try
+                {
+                    var chatGroup = GetChatGroup.Get.GetById(id);
+
+                    if (chatGroup != null)
+                    {
+                        var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroup.ChatGroupId.Value);
+
+                        if (chatGroupUsers != null)
+                        {
+                            ChatDetailModel detail = new ChatDetailModel()
+                            {
+                                RecieverId = id,
+                                IsGroup = true,
+                                ChatName = chatGroup.ChatGroupName,
+                                chatProfiles = new List<ChatProfileModel>()
+                            };
+
+                            string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+
+                            foreach (var item in chatGroupUsers)
+                            {
+                                var img = GetUser.Get.GetUserProfileImg(item.UserId);
+
+                                var user = GetUser.Get.GetById(item.UserId);
+
+                                if (user != null)
+                                {
+                                    ChatProfileModel profile = new ChatProfileModel()
+                                    {
+                                        Name = user?.Fname + " " + user?.Lname,
+                                        ImgUrl = webAdmin + img?.UrlPathAPI
+                                    };
+
+                                    detail.chatProfiles.Add(profile);
+                                }
+                            }
+
+                            return detail;
+                        }
+                    }
+                    else
+                    {
+                        var user = GetUser.Get.GetById(id);
+
+                        if (user != null)
+                        {
+                            ChatDetailModel detail = new ChatDetailModel()
+                            {
+                                RecieverId = id,
+                                IsGroup = false,
+                                ChatName = user.Fname + " " +user.Lname,
+                                chatProfiles = new List<ChatProfileModel>()
+                            };
+
+                            string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+
+                            var img = GetUser.Get.GetUserProfileImg(id);
+
+                            ChatProfileModel profile = new ChatProfileModel()
+                            {
+                                Name = user?.Fname + " " + user?.Lname,
+                                ImgUrl = webAdmin + img?.UrlPathAPI
+                            };
+
+                            detail.chatProfiles.Add(profile);
+
+                            return detail;
+                        }
+                    }
+
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
                 }
             }
         }

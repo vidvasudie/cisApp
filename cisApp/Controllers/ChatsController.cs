@@ -3,9 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using cisApp.Function;
+using cisApp.Core;
 
 namespace cisApp.Controllers
 {
+    [CustomActionExecute("33A0E193-2812-4783-9A7C-480762AC5A54")]
     public class ChatsController : BaseController
     {
         public IActionResult Index()
@@ -13,9 +16,17 @@ namespace cisApp.Controllers
             return View();
         }
 
-        public IActionResult Private()
+        public IActionResult Private(SearchModel model)
         {
-            return View();
+            try
+            {
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
         }
 
         public IActionResult Group()
@@ -28,9 +39,9 @@ namespace cisApp.Controllers
         {
             try
             {
+                var chatList = GetChatMessage.Get.GetChatList(_UserId.Value);
 
-
-                return PartialView("PT/_ChatList");
+                return PartialView("PT/_ChatList", chatList);
             }
             catch (Exception ex)
             {
@@ -43,13 +54,79 @@ namespace cisApp.Controllers
         {
             try
             {
+                if (id == null)
+                {
+                    throw new Exception("id null exception");
+                }
 
+                SearchModel model = new SearchModel()
+                {
+                    SenderId = _UserId.Value,
+                    RecieverId = id.Value
+                };
 
-                return PartialView("PT/_ChatCard");
+                var chatMessages = GetChatMessage.Get.GetChatMessageModels(model);
+
+                var chatDetailModel = GetChatMessage.Get.GetChatDetail(id.Value);
+
+                chatDetailModel.chatMessages = chatMessages;
+
+                return PartialView("PT/_ChatCard", chatDetailModel);
             }
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        [HttpGet]
+        public PartialViewResult GetChatMessagePage(Guid? id, int page = 1)
+        {
+            try
+            {
+                if (id == null)
+                {
+                    throw new Exception("id null exception");
+                }
+
+                SearchModel model = new SearchModel()
+                {
+                    SenderId = _UserId.Value,
+                    RecieverId = id.Value,
+                    currentPage = page
+                };
+
+                var chatMessages = GetChatMessage.Get.GetChatMessageModels(model);
+
+                return PartialView("PT/_ChatMessage", chatMessages);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public JsonResult SendMessage(ChatMessage data)
+        {
+            try
+            {
+                data.SenderId = _UserId.Value;
+                data.RealSenderId = _UserId.Value;
+
+                var result = GetChatMessage.Manage.Add(data, null, _UserId.Value);
+                if (result != null)
+                {
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));
+                }
+                else
+                {
+                    return Json(new ResponseModel().ResponseError());
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
             }
         }
 
