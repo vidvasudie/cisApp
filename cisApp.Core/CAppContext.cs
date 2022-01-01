@@ -60,6 +60,9 @@ namespace cisApp.Core
         public virtual DbSet<TmVatratio> TmVatratio { get; set; }
         public virtual DbSet<UsersResetPassword> UsersResetPassword { get; set; }
         public virtual DbSet<TmCauseCancel> TmCauseCancel { get; set; }
+        public virtual DbSet<ChatGroup> ChatGroup { get; set; }
+        public virtual DbSet<ChatGroupUser> ChatGroupUser { get; set; }
+        public virtual DbSet<ChatMessage> ChatMessage { get; set; }
         public virtual DbSet<JobDesignerReview> JobDesignerReview { get; set; }
         public virtual DbSet<UserFavoriteDesigner> UserFavoriteDesigner { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -696,36 +699,6 @@ namespace cisApp.Core
                 entity.Property(e => e.Description).IsRequired();
 
                 entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
-            });
-
-            modelBuilder.Entity<JobDesignerReview>(entity =>
-            {
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.DesignerUserId)
-                    .HasColumnName("DesignerUserID")
-                    .HasComment("รหัสนักออกแบบ");
-
-                entity.Property(e => e.JobId).HasColumnName("JobID");
-
-                entity.Property(e => e.Rate).HasColumnType("decimal(6, 2)");
-
-                entity.Property(e => e.UserId)
-                    .HasColumnName("UserID")
-                    .HasComment("รหัสผู้ใช้งาน");
-            });
-
-            modelBuilder.Entity<UserFavoriteDesigner>(entity =>
-            {
-                entity.Property(e => e.Id).HasColumnName("ID");
-
-                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
-
-                entity.Property(e => e.UserDesignerId)
-                    .HasColumnName("UserDesignerID")
-                    .HasComment("รหัสผู้ใข้งานของนักออกแบบ");
-
-                entity.Property(e => e.UserId).HasColumnName("UserID");
             });
 
             OnModelCreatingPartial(modelBuilder);

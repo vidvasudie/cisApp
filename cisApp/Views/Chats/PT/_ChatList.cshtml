@@ -1,0 +1,48 @@
+﻿
+@using cisApp.Function
+
+@model List<ChatListModel>
+@{
+    ViewData["ControllerName"] = "Chats";
+}
+
+@foreach (var item in Model)
+{
+    <!--begin:User-->
+<div class="d-flex align-items-center justify-content-between mb-5">
+    <div class="d-flex align-items-center">
+        <div class="symbol symbol-circle symbol-50 mr-3">
+            <img alt="Pic" src="@Url.Content(item.Profiles.FirstOrDefault()?.Path)" />
+        </div>
+        <div class="d-flex flex-column">
+            <a href="javascript:void(0)"
+               class="text-dark-75 text-hover-primary font-weight-bold font-size-lg chat-list-item"
+               data-url="@Url.Action("GetChatCard", ViewData["ControllerName"].ToString(), new { id = item.UserId })">
+                @item.ChatName?.Trim()
+            </a>
+            @if (item.UserType == 1)
+            {
+                <span class="text-muted font-weight-bold font-size-sm">
+                    ผู้ใช้งานทั่วไป
+                </span>
+            }
+            else if (item.UserType == 2)
+            {
+                <span class="text-muted font-weight-bold font-size-sm">
+                    Designer
+                </span>
+            }
+
+        </div>
+    </div>
+    <div class="d-flex flex-column align-items-end">
+        @*<span class="text-muted font-weight-bold font-size-sm">35 mins</span>*@
+        @if (item.UnRead > 0)
+        {
+            <span class="label label-sm label-danger">@item.UnRead</span>
+        }
+
+    </div>
+</div>
+    <!--end:User-->
+}

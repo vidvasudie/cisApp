@@ -84,6 +84,38 @@ var KTAppChat = function () {
 					KTUtil.getById('kt_app_chat_toggle').click();
 				}, 1000);
 			}
+		},
+
+		initChat: function () {
+			// Elements
+			_chatAsideEl = KTUtil.getById('kt_chat_aside');
+			_chatContentEl = KTUtil.getById('kt_chat_content');
+
+			// Init aside and user list
+			//_initAside();
+
+			// Init inline chat example
+			KTLayoutChat.setup(KTUtil.getById('kt_chat_content'));
+
+			// Trigger click to show popup modal chat on page load
+			if (KTUtil.getById('kt_app_chat_toggle')) {
+				setTimeout(function () {
+					KTUtil.getById('kt_app_chat_toggle').click();
+				}, 1000);
+			}
+		},
+
+		initAside: function () {
+			// Elements
+			_chatAsideEl = KTUtil.getById('kt_chat_aside');
+			_chatContentEl = KTUtil.getById('kt_chat_content');
+
+			// Init aside and user list
+			_initAside();
+
+			// Init inline chat example
+			//KTLayoutChat.setup(KTUtil.getById('kt_chat_content'));
+
 		}
 	};
 }();
