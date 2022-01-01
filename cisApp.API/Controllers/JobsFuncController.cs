@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using cisApp.Function;
+using cisApp.Core;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -323,6 +324,62 @@ namespace cisApp.API.Controllers
                 return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
             }
         }
+
+        [Route("api/jobs/getapprovedetail")]
+        [HttpGet]
+        public IActionResult GetApproveDetail(Guid jobId)
+        {
+            try
+            {
+                var data = GetJobs.Get.GetApproveDetail(jobId);
+                if (data == null || data.Count == 0)
+                {
+                    return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
+                bool removeLast = Host.Last() == '/';
+                string PicUrlPath = data.First().PicUrlPath;
+                if (removeLast)
+                {
+                    Host = Host.Remove(Host.Length - 1);
+                }
+                PicUrlPath = PicUrlPath.Replace("~", Host);
+                
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", new { 
+                    data.First().JobId,
+                    data.First().JobCaUserId,
+                    PicUrlPath,
+                    data.First().Fullname,
+                    data.First().Tel,
+                    data.First().IsCanEdit,
+                    data.First().IsConfirmApprove,
+                    data.First().IsCusFavorite,
+                    albums = data.Select(o => new { o.AlbumName, o.AlbumType, o.AlbumTypeDesc, o.Url, ImgUrlPath=o.ImgUrlPath.Replace("~", Host) }),
+                } ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [Route("api/jobs/submitjobreview")]
+        [HttpPost]
+        public IActionResult SubmitReview([FromBody] JobDesignerReview value)
+        {
+            try
+            {
+                var data = GetJobDesignerReview.Manage.Add(value); 
+
+                return Ok(resultJson.success("สำเร็จ", "success", new { data.JobId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
 
     }
 }

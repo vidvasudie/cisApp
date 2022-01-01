@@ -72,5 +72,9 @@ namespace cisApp.Core
         /// รหัสสาเหตุยกเลิก
         /// </summary>
         public int? CancelId { get; set; }
+        /// <summary>
+        /// จำนวนการขอแก้ไข
+        /// </summary>
+        public int? EditSubmitCount { get; set; }
     }
 }
