@@ -13,5 +13,7 @@ namespace cisApp.Function
         
         public List<AttachFileAPIModel> Files { get; set; }
 
+        public List<AttachFile> AttachFiles { get; set; }
+
     }
 }

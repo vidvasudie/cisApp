@@ -19,15 +19,16 @@
         const _ChatCardUrl = '@Url.Action("GetChatCard", ViewData["ControllerName"].ToString(), new { Id = Model.Id })'
         const _ChatMessageUrl = '@Url.Action("GetChatMessagePage", ViewData["ControllerName"].ToString(), new { Id = "__id__", page = "__page__" })'
         const _SendMessageUrl = '@Url.Action("SendMessage", ViewData["ControllerName"].ToString())'
+        const _SendMessageFileUrl = '@Url.Action("SendMessageFiles", ViewData["ControllerName"].ToString())'
 
         $(document).ready(function () {
             initView();
         })
     </script>
 
-    
 
-    
+    @await Html.PartialAsync("~/Views/Shared/Album/_ImagesViewModal.cshtml")
+
 }
 
 <!--begin::Content-->
@@ -80,7 +81,7 @@
                 <div class="flex-row-fluid ml-lg-8" id="kt_chat_content">
                     <!--begin::Card-->
                     <div class="card card-custom">
-                        
+
                     </div>
                     <!--end::Card-->
                 </div>

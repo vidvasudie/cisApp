@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using cisApp.Function;
 using cisApp.Core;
+using cisApp.Function.Models;
 
 namespace cisApp.Controllers
 {
@@ -115,6 +116,43 @@ namespace cisApp.Controllers
                 data.RealSenderId = _UserId.Value;
 
                 var result = GetChatMessage.Manage.Add(data, null, _UserId.Value);
+                if (result != null)
+                {
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));
+                }
+                else
+                {
+                    return Json(new ResponseModel().ResponseError());
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
+
+        [HttpPost]
+        public JsonResult SendMessageFiles(ChatMessageFileModel data)
+        {
+            try
+            {
+                var chatMessage = new ChatMessage()
+                {
+                    SenderId = _UserId.Value,
+                    RealSenderId = _UserId.Value,
+                    RecieverId = data.RecieverId
+                };
+
+                List<AttachFile> uploadedFile = new List<AttachFile>();
+
+                foreach (var file in data.FileList)
+                {
+                    var fileUpload = GetAttachFile.Manage.UploadFile(file.Base64Str, file.FileName, file.FileSize, null, _UserId.Value);
+                    uploadedFile.Add(fileUpload);
+                }
+
+                var result = GetChatMessage.Manage.Add(chatMessage, uploadedFile.Select(o => o.AttachFileId).ToList(), _UserId.Value);
+
                 if (result != null)
                 {
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));

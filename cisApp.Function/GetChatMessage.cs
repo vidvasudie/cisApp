@@ -133,6 +133,7 @@ namespace cisApp.Function
                             {
                                 var attachFiles = GetAttachFile.Get.GetByRefIdList(item.ImgId.Value);
 
+                                item.AttachFiles = attachFiles;
                                 item.Files = new List<AttachFileAPIModel>();
 
                                 foreach (var file in attachFiles)
@@ -275,6 +276,7 @@ namespace cisApp.Function
 
                             if (imgs != null && imgs.Count > 0)
                             {
+                                data.Message = "ได้ส่งไฟล์แนบ";
                                 chatMessageImgId = AddChatMessageImg(Guid.NewGuid(), imgs, userId);
                                 data.ImgId = chatMessageImgId;
                             }

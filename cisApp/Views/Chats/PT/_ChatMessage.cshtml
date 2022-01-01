@@ -16,7 +16,7 @@
             <div class="d-flex align-items-center">
                 <div class="symbol symbol-circle symbol-40 mr-3">
                     @if (item.Profile != null
-                      && !string.IsNullOrEmpty(item.Profile.Path))
+                 && !string.IsNullOrEmpty(item.Profile.Path))
                     {
                         <img alt="Pic" src="@item.Profile.Path" />
                     }
@@ -31,7 +31,36 @@
                     @*<span class="text-muted font-size-sm">2 Hours</span>*@
                 </div>
             </div>
-            <div class="mt-2 rounded p-5 bg-light-success text-dark-50 font-weight-bold font-size-lg text-left max-w-400px">@item.Message</div>
+            @if (item.Files != null && item.Files.Count > 0)
+            {
+                <div class="mt-2 rounded p-5 bg-light-success text-dark-50 font-weight-bold font-size-lg text-left max-w-400px row gallery">
+                    @*@foreach (var file in item.Files)
+                        {
+                            <img class="col-md-4" src="@file.Path" />
+
+                        }*@
+
+                    @{
+                        int idx = 0;
+                        Random rnd = new Random();
+                        var imgs = item.AttachFiles.Select(o => new FileAttachModel() { AttachFileId = o.AttachFileId, FileName = o.FileName, Size = o.Size
+                            , TypeId = rnd.Next() });
+                        foreach (var attach in imgs)
+                        {
+                            attach.NextImg = idx;
+                            attach.IsView = true;
+                            @await Html.PartialAsync("~/Views/Shared/Common/_ImageItemChat.cshtml", item)
+                            idx++;
+                        }
+                    }
+
+                </div>
+            }
+            else
+            {
+                <div class="mt-2 rounded p-5 bg-light-success text-dark-50 font-weight-bold font-size-lg text-left max-w-400px">@item.Message</div>
+            }
+
         </div>
         <!--end::Message In-->
     }
@@ -48,7 +77,36 @@
                     <img alt="Pic" src="https://picsum.photos/300?random=66" />
                 </div>
             </div>
-            <div class="mt-2 rounded p-5 bg-light-primary text-dark-50 font-weight-bold font-size-lg text-right max-w-400px">@item.Message</div>
+            @if (item.Files != null && item.Files.Count > 0)
+            {
+                <div class="mt-2 rounded p-5 bg-light-primary text-dark-50 font-weight-bold font-size-lg text-right max-w-400px row gallery">
+                    @*@foreach (var file in item.Files)
+                        {
+                            <img class="col-md-4" src="@file.Path"/>
+                        }*@
+                    @{
+                        int idx = 0;
+                        Random rnd = new Random();
+                        var imgs = item.AttachFiles.Select(o => new FileAttachModel() { AttachFileId = o.AttachFileId, FileName = o.FileName, Size = o.Size
+                        ,
+                            TypeId = rnd.Next()
+                        });
+                        foreach (var attach in imgs)
+                        {
+                            attach.NextImg = idx;
+                            attach.IsView = true;
+                            @await Html.PartialAsync("~/Views/Shared/Common/_ImageItemChat.cshtml", attach)
+                            idx++;
+                        }
+                    }
+
+                </div>
+            }
+            else
+            {
+                <div class="mt-2 rounded p-5 bg-light-primary text-dark-50 font-weight-bold font-size-lg text-right max-w-400px">@item.Message</div>
+            }
+
         </div>
         <!--end::Message Out-->
     }

@@ -105,7 +105,12 @@ function chatCardInit(res) {
     var ps;
     if (ps = KTUtil.data(scrollEl).get('ps')) {
         console.log('ps scroolTop', ps)
-        ps.element.scrollTop = 626
+        console.log('lastScrollTop', ps.contentHeight)
+        ps.element.scrollTop = ps.contentHeight
+
+        setTimeout(function () {
+            ps.element.scrollTop = ps.contentHeight
+        }, 500);
 
         $(ps.element).on('ps-y-reach-start', function () {
             console.log('ps-y-reach-start')
@@ -281,4 +286,83 @@ function postMessage(text) {
     )
 }
 
+$('body').on('change', '#attach-upload', function () {
 
+    var elem = $(this)
+
+    var files = $(elem)[0].files
+    var i = 0;
+
+    var fileList = [];
+
+    while (i < files.length) {
+
+        if (files[i].size > 10 * 1024 * 1024) {
+            alert(_msgFileSizeExceed);
+            $(elem).val('');
+            break;
+        }
+
+        let fileObj = {};
+        fileObj.fileName = files[i].name;
+        fileObj.fileType = files[i].type;
+        fileObj.fileSize = files[i].size;
+
+        let reader = new FileReader();
+
+        //console.log(files[i])
+
+        reader.onloadend = function (event) {
+            //console.log(event.target.result);
+            fileObj.Base64Str = event.target.result;
+            fileList.push(fileObj);
+
+            if (fileList.length === files.length) {
+                //console.log('push completed')
+                //console.log(fileList)
+                postMessageFiles(fileList)
+                //getFileUploadedDiv(fileList, '#uploaded-div-' + typeAtID)
+
+                $(elem).val('');
+            }
+        }
+
+        reader.readAsDataURL(files[i])
+        i++;
+    }
+})
+
+
+function postMessageFiles(files) {
+
+    var recieverId = $('#RecieverId').val();
+
+    var data = {};
+    data.RecieverId = recieverId
+    //data.Message = text
+    data.fileList = files;
+
+    CallAjax(
+        _SendMessageFileUrl,
+        'POST',
+        //JSON.stringify(data),
+        data,
+        function (res) {
+            try {
+                //console.log(res)
+                replaceChatMessage();
+            }
+            catch (ex) {
+                console.log(ex)
+            }
+        },
+        function (err) {
+            try {
+                console.log(err)
+            }
+            catch (ex) {
+                console.log(ex)
+            }
+        }
+    )
+}
