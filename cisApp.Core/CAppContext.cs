@@ -63,6 +63,8 @@ namespace cisApp.Core
         public virtual DbSet<ChatGroup> ChatGroup { get; set; }
         public virtual DbSet<ChatGroupUser> ChatGroupUser { get; set; }
         public virtual DbSet<ChatMessage> ChatMessage { get; set; }
+        public virtual DbSet<JobDesignerReview> JobDesignerReview { get; set; }
+        public virtual DbSet<UserFavoriteDesigner> UserFavoriteDesigner { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TmProceedRatio>(entity =>
@@ -160,7 +162,6 @@ namespace cisApp.Core
                 entity.Property(e => e.JobPayId).HasColumnName("JobPayID");
             });
 
-
             modelBuilder.Entity<Jobs>(entity =>
             {
                 entity.HasKey(e => e.JobId)
@@ -175,6 +176,10 @@ namespace cisApp.Core
                     .HasComment("รหัสสาเหตุยกเลิก");
 
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.EditSubmitCount)
+                    .HasDefaultValueSql("((0))")
+                    .HasComment("จำนวนการขอแก้ไข");
 
                 entity.Property(e => e.InvPersonalId)
                     .HasColumnName("InvPersonalID")
@@ -695,32 +700,6 @@ namespace cisApp.Core
 
                 entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
             });
-
-            modelBuilder.Entity<ChatGroup>(entity =>
-            {
-                entity.ToTable("Chat_Group");
-
-                entity.Property(e => e.ChatGroupId).HasDefaultValueSql("(newid())");
-
-                entity.Property(e => e.ChatGroupName)
-                    .IsRequired()
-                    .HasMaxLength(255);
-            });
-
-            modelBuilder.Entity<ChatGroupUser>(entity =>
-            {
-                entity.ToTable("Chat_Group_User");
-
-                entity.Property(e => e.ChatGroupUserId).HasDefaultValueSql("(newid())");
-            });
-
-            modelBuilder.Entity<ChatMessage>(entity =>
-            {
-                entity.ToTable("Chat_Message");
-
-                entity.Property(e => e.ChatMessageId).HasDefaultValueSql("(newid())");
-            });
-
 
             OnModelCreatingPartial(modelBuilder);
         }

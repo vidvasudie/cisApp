@@ -125,6 +125,25 @@ namespace cisApp.Function
                     return null;
                 }
             }
+
+            public static List<JobDesignerApproveDetailModel> GetApproveDetail(Guid jobId)
+            {
+                try
+                {
+                    if (jobId == Guid.Empty)
+                        return null;
+
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@jobId", jobId)
+                    };
+
+                    return StoreProcedure.GetAllStored<JobDesignerApproveDetailModel>("GetJobDesignerDetailApprove ", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
         }
 
         public class Manage
