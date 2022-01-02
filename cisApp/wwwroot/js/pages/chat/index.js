@@ -2,8 +2,10 @@
 var _Page = 1
 
 function initView() {
+    connectSignalR()
     loadChatList()
     loadChatCard()
+
 }
 
 function loadChatList() {
@@ -127,6 +129,21 @@ function replaceChatMessage() {
             $('#charCardMessage').html(res);
 
             KTAppChat.initChat();
+
+            var element = KTUtil.getById('kt_chat_content')
+            var scrollEl = KTUtil.find(element, '.scroll');
+
+            var ps;
+            if (ps = KTUtil.data(scrollEl).get('ps')) {
+                console.log('ps scroolTop', ps)
+                console.log('lastScrollTop', ps.contentHeight)
+                ps.element.scrollTop = ps.contentHeight
+
+                setTimeout(function () {
+                    ps.element.scrollTop = ps.contentHeight
+                }, 500);
+
+            }
         }, 1)
     }
     catch (ex) {
@@ -239,7 +256,7 @@ function sendMessage() {
     KTUtil.setHTML(node, html);
     messagesEl.appendChild(node);
     
-    scrollEl.scrollTop = parseInt(KTUtil.css(messagesEl, 'height'));
+    //scrollEl.scrollTop = parseInt(KTUtil.css(messagesEl, 'height'));
 
     var ps;
     if (ps = KTUtil.data(scrollEl).get('ps')) {
@@ -270,6 +287,7 @@ function postMessage(text) {
             try {
                 //console.log(res)
                 replaceChatMessage();
+                invokeSendMessage(recieverId, text, null)
             }
             catch (ex) {
                 console.log(ex)
@@ -349,8 +367,9 @@ function postMessageFiles(files) {
         data,
         function (res) {
             try {
-                //console.log(res)
+                console.log(res)
                 replaceChatMessage();
+                invokeSendMessage(recieverId, '', res.data.imgs)
             }
             catch (ex) {
                 console.log(ex)
@@ -366,3 +385,4 @@ function postMessageFiles(files) {
         }
     )
 }
+

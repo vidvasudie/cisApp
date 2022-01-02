@@ -20,6 +20,23 @@ namespace cisApp.Function
                                     .Build();
         public class Get
         {
+            public static AttachFile GetById(Guid id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.AttachFile.Find(id);
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
             public static AttachFile GetByRefId(Guid refId)
             {
                 try

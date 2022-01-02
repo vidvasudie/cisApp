@@ -259,6 +259,153 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
+            public static List<ChatMessageModel> MockChatMessageModel(Guid senderId, Guid recieverId, string message, List<Guid> imgs)
+            {
+                try
+                {
+                    // if message has attachFile must get it
+                    List<AttachFileAPIModel> attachFileAPIs = new List<AttachFileAPIModel>();
+
+                    List<AttachFile> attachFiles = new List<AttachFile>();
+
+                    string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                    var createDate = DateTime.Now;
+
+                    if (imgs != null)
+                    {
+                        
+
+                        foreach (var item in imgs)
+                        {
+                            var attach = GetAttachFile.Get.GetById(item);
+                            attachFiles.Add(attach);
+                        }
+
+                        foreach (var file in attachFiles)
+                        {
+                            AttachFileAPIModel attachFile = new AttachFileAPIModel()
+                            {
+                                Name = file.FileName,
+                                Path = webAdmin + file.UrlPathAPI
+                            };
+
+                            attachFileAPIs.Add(attachFile);
+                        }
+                    }
+
+                    var chatGroup = GetChatGroup.Get.GetById(recieverId);
+
+                    if (chatGroup != null)
+                    {
+                        var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroup.ChatGroupId.Value);
+
+                        if (chatGroupUsers != null)
+                        {
+
+                            List<ChatMessageModel> chatMessageModels = new List<ChatMessageModel>();
+                            
+                            foreach (var item in chatGroupUsers)
+                            {
+                                ChatMessageModel messageModel = new ChatMessageModel()
+                                {
+                                    SenderId = senderId,
+                                    RealSenderId = senderId,
+                                    RecieverId = item.UserId,
+                                    Message = message,
+                                    AttachFiles = attachFiles,
+                                    Files = attachFileAPIs,
+                                    CreatedDate = createDate
+                                };
+
+                                var profile = GetUser.Get.GetUserProfileImg(senderId);
+
+                                var user = GetUser.Get.GetById(senderId);
+
+                                if (user != null)
+                                {
+                                    messageModel.SenderName = user.Fname + " " + user.Lname;
+                                    if (profile != null)
+                                    {
+                                        messageModel.Profile = new AttachFileAPIModel()
+                                        {
+                                            Name = profile.FileName,
+                                            Path = webAdmin + profile.UrlPathAPI
+                                        };
+                                    }
+                                    else
+                                    {
+                                        // insert default img
+                                        messageModel.Profile = new AttachFileAPIModel()
+                                        {
+                                            Name = "default",
+                                            Path = webAdmin + _DefaultProfile
+                                        };
+                                    }
+
+                                    chatMessageModels.Add(messageModel);
+                                }
+                            }
+
+                            return chatMessageModels;
+                        }
+
+                        return null;
+                    }
+                    else
+                    {
+                        List<ChatMessageModel> chatMessageModels = new List<ChatMessageModel>();
+
+                        ChatMessageModel messageModel = new ChatMessageModel()
+                        {
+                            SenderId = senderId,
+                            RealSenderId = senderId,
+                            RecieverId = recieverId,
+                            Message = message,
+                            AttachFiles = attachFiles,
+                            Files = attachFileAPIs,
+                            CreatedDate = createDate
+                        };
+
+                        var profile = GetUser.Get.GetUserProfileImg(senderId);
+
+                        var user = GetUser.Get.GetById(senderId);
+
+                        if (user != null)
+                        {
+                            messageModel.SenderName = user.Fname + " " + user.Lname;
+
+                            if (profile != null)
+                            {
+                                messageModel.Profile = new AttachFileAPIModel()
+                                {
+                                    Name = profile.FileName,
+                                    Path = webAdmin + profile.UrlPathAPI
+                                };
+                            }
+                            else
+                            {
+                                // insert default img
+                                messageModel.Profile = new AttachFileAPIModel()
+                                {
+                                    Name = "default",
+                                    Path = webAdmin + _DefaultProfile
+                                };
+                            }
+
+                            chatMessageModels.Add(messageModel);
+                        }
+
+                        return chatMessageModels;
+                    }
+
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public class Manage

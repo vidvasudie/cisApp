@@ -6,12 +6,19 @@ using System.Threading.Tasks;
 using cisApp.Function;
 using cisApp.Core;
 using cisApp.Function.Models;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace cisApp.Controllers
 {
     [CustomActionExecute("33A0E193-2812-4783-9A7C-480762AC5A54")]
     public class ChatsController : BaseController
     {
+        readonly static IConfigurationRoot config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+                      .AddJsonFile("appsettings.json")
+                      .Build();
+
         public IActionResult Index()
         {
             return View();
@@ -21,6 +28,10 @@ namespace cisApp.Controllers
         {
             try
             {
+                string webSignalR = config.GetSection("WebConfig:SignalRWebSite").Value;
+
+                ViewData["SignalRWebSite"] = webSignalR;
+
                 return View(model);
             }
             catch (Exception ex)
@@ -118,7 +129,7 @@ namespace cisApp.Controllers
                 var result = GetChatMessage.Manage.Add(data, null, _UserId.Value);
                 if (result != null)
                 {
-                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, result));
                 }
                 else
                 {
@@ -155,7 +166,7 @@ namespace cisApp.Controllers
 
                 if (result != null)
                 {
-                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, new { result, imgs = uploadedFile.Select(o => o.AttachFileId).ToList() }));
                 }
                 else
                 {

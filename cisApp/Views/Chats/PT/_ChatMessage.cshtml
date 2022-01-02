@@ -49,7 +49,7 @@
                         {
                             attach.NextImg = idx;
                             attach.IsView = true;
-                            @await Html.PartialAsync("~/Views/Shared/Common/_ImageItemChat.cshtml", item)
+                            @await Html.PartialAsync("~/Views/Shared/Common/_ImageItemChat.cshtml", attach)
                             idx++;
                         }
                     }

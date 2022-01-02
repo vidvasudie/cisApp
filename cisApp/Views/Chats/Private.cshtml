@@ -9,10 +9,14 @@
 
 @section Scripts{
     <!--begin::Page Scripts(used by this page)-->
+    <!--Reference the SignalR library. -->
+    <script src="@Url.Content("~/microsoft/signalr/dist/browser/signalr.min.js")"></script>
+
     <script src="@Url.Content("~/assets/js/pages/custom/chat/chat.js")"></script>
     <!--end::Page Scripts-->
 
     <script src="@Url.Content("~/js/pages/chat/index.js")"></script>
+    <script src="@Url.Content("~/js/pages/chat/signalRChat.js")"></script>
 
     <script>
         const _ChatListUrl = '@Url.Action("GetChatList", ViewData["ControllerName"].ToString(), new {type = 0})'
@@ -20,6 +24,10 @@
         const _ChatMessageUrl = '@Url.Action("GetChatMessagePage", ViewData["ControllerName"].ToString(), new { Id = "__id__", page = "__page__" })'
         const _SendMessageUrl = '@Url.Action("SendMessage", ViewData["ControllerName"].ToString())'
         const _SendMessageFileUrl = '@Url.Action("SendMessageFiles", ViewData["ControllerName"].ToString())'
+
+        const _SignalRUrl = '@ViewData["SignalRWebSite"].ToString()'
+
+        const _UserID = '@cisApp.Controllers.BaseController._UserId.Value.ToString()'
 
         $(document).ready(function () {
             initView();
