@@ -189,6 +189,8 @@ function prependChatMessage() {
 function getChatMessage(callbackFunc, page = 1) {
     var recieverId = $('#RecieverId').val();
 
+    console.log('onGetChatMessage recieverId=', recieverId)
+
     var url = _ChatMessageUrl.replace('__id__', recieverId).replace('__page__', page);
     CallAjax(
         url,

@@ -7,7 +7,21 @@ function connectSignalR() {
     // add on sendMessage Listener
     _connection.on("SendMessage", function (messageObj) {
         console.log('SendMessage', messageObj)
-        replaceChatMessage();
+
+        loadChatList()
+
+        try {
+            var recieverId = $('#RecieverId').val();
+            if (recieverId == messageObj.senderId) {
+                replaceChatMessage();
+            }
+        }
+        catch (ex) {
+            console.log('on replaceChatMessage SignalR', ex)
+        }
+
+        
+        
     });
 
     _connection.start()
