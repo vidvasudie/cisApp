@@ -81,6 +81,51 @@ namespace cisApp.Function
                     return null;
                 }
             }
+            public static List<DesignerContestSummary> GetContestSummary(Guid userId)
+            {
+                try
+                {
+                    if (userId == Guid.Empty)
+                    {
+                        return null;
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", userId)
+                    };
+                    var data = StoreProcedure.GetAllStored<DesignerContestSummary>("GetDesignerContestSummary", parameter);
+                    if (data.Any())
+                        return data.ToList();
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+            public static List<DesignerListReviewModel> GetReview(DesignerJobListSearch model)
+            {
+                try
+                {
+                    if (model.userId == Guid.Empty && model.jobId == Guid.Empty)
+                    {
+                        return null;
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", model.userId == Guid.Empty ? (object)DBNull.Value : model.userId),
+                       new SqlParameter("@jobId", model.jobId == Guid.Empty ? (object)DBNull.Value : model.jobId),
+                       new SqlParameter("@skip", model.skip),
+                       new SqlParameter("@take", model.take)
+                    };
+                    var data = StoreProcedure.GetAllStored<DesignerListReviewModel>("GetDesignerReviewList", parameter);
+                    if (data.Any())
+                        return data.ToList();
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
 
             public static List<UserModel> GetDesignerItems(SearchModel model)
             {
@@ -202,6 +247,7 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
         }
     }
 }

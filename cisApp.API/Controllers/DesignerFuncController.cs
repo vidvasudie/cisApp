@@ -170,7 +170,95 @@ namespace cisApp.API.Controllers
             }
 
         }
-    
+
+        [Route("api/designer/review")]
+        [HttpGet]
+        public IActionResult GetReviewList(Guid userId, Guid jobId, int? skip = 0, int? take = 10)
+        {
+            try
+            {
+                var model = new DesignerJobListSearch() { userId = userId, jobId = jobId, skip = skip, take = take };
+                //get list of  designer review
+                var reviews = GetUserDesigner.Get.GetReview(model);
+                if (reviews == null || reviews.Count() == 0)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
+                bool removeLast = Host.Last() == '/';
+                string PicUrlPath = reviews.First().UrlPath;
+                if (removeLast)
+                {
+                    Host = Host.Remove(Host.Length - 1);
+                }
+                PicUrlPath = PicUrlPath.Replace("~", Host);
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", new { 
+                    reviews.FirstOrDefault().DesignerUserId,
+                    reviews.FirstOrDefault().DesignerFullname,
+                    PicUrlPath,
+                    reviews = reviews.Select(o => new { o.UserId, o.Fullname, o.Rate, o.RateAll, o.Message })
+                }, model.take, reviews.Count()));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+
+        }
+
+        [Route("api/designer/contestsummary")]
+        [HttpGet]
+        public IActionResult GetContestSummary(Guid userId)
+        {
+            try
+            {
+                //get list of  designer review
+                var summaryList = GetUserDesigner.Get.GetContestSummary(userId);
+                if (summaryList == null || summaryList.Count == 0)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                }
+                 
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", new
+                {
+                    summaryList.FirstOrDefault().JobCaUserID,
+                    summaryList.FirstOrDefault().SummaryAll,
+                    summaryGroup = summaryList.Select(o => new { o.JobTypeDesc, o.Total })
+                }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+
+        }
+
+        [Route("api/designer/favorite")]
+        [HttpPost]
+        public IActionResult UserFavorite([FromBody]FavoriteModel value)
+        {
+            try
+            {
+                if (value.UserId == Guid.Empty || value.CaUserId == Guid.Empty)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
+
+                var fav = GetUserFavoriteDesigner.Manage.Update(value);
+                if (fav == null)
+                {
+                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
+                }
+
+                return Ok(resultJson.success("สำเร็จ", "success", new { caUserId=fav.UserDesignerId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
 
     }
 }
