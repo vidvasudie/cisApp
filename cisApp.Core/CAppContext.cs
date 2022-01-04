@@ -701,6 +701,32 @@ namespace cisApp.Core
                 entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
             });
 
+            modelBuilder.Entity<ChatGroup>(entity =>
+            {
+                entity.ToTable("Chat_Group");
+
+                entity.Property(e => e.ChatGroupId).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.ChatGroupName)
+                    .IsRequired()
+                    .HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<ChatGroupUser>(entity =>
+            {
+                entity.ToTable("Chat_Group_User");
+
+                entity.Property(e => e.ChatGroupUserId).HasDefaultValueSql("(newid())");
+            });
+
+            modelBuilder.Entity<ChatMessage>(entity =>
+            {
+                entity.ToTable("Chat_Message");
+
+                entity.Property(e => e.ChatMessageId).HasDefaultValueSql("(newid())");
+            });
+
+
             OnModelCreatingPartial(modelBuilder);
         }
 
