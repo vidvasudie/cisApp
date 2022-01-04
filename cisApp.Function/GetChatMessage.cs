@@ -21,12 +21,13 @@ namespace cisApp.Function
         public class Get
         {
 
-            public static List<ChatListModel> GetChatList(Guid id)
+            public static List<ChatListModel> GetChatList(Guid id, string type = "")
             {
                 try
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
-                       new SqlParameter("@id", id)
+                       new SqlParameter("@id", id),
+                       new SqlParameter("@type", !string.IsNullOrEmpty(type) ? type : (object)DBNull.Value)
                     };
 
                     var messages = StoreProcedure.GetAllStored<ChatListModel>("GetChatList", parameter);

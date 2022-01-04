@@ -19,7 +19,7 @@
     <script src="@Url.Content("~/js/pages/chat/signalRChat.js")"></script>
 
     <script>
-        const _ChatListUrl = '@Url.Action("GetChatList", ViewData["ControllerName"].ToString(), new {type = 0})'
+        const _ChatListUrl = '@Url.Action("GetChatList", ViewData["ControllerName"].ToString(), new {type = "1"})'
         const _ChatCardUrl = '@Url.Action("GetChatCard", ViewData["ControllerName"].ToString(), new { Id = Model.Id })'
         const _ChatMessageUrl = '@Url.Action("GetChatMessagePage", ViewData["ControllerName"].ToString(), new { Id = "__id__", page = "__page__" })'
         const _SendMessageUrl = '@Url.Action("SendMessage", ViewData["ControllerName"].ToString())'
@@ -70,7 +70,7 @@
                                         </span>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control py-4 h-auto" placeholder="ค้นหารายชื่อ" />
+                                <input type="text" class="form-control py-4 h-auto" placeholder="ค้นหารายชื่อ" id="chatSearchText"/>
                             </div>
                             <!--end:Search-->
                             <!--begin:Users-->

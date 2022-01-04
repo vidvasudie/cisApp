@@ -8,9 +8,18 @@ function initView() {
 
 }
 
+$('body').on('change', '#chatSearchText', function () {
+    loadChatList()
+})
+
 function loadChatList() {
+    var url = _ChatListUrl
+    var text = $('#chatSearchText').val()
+    if (text.length > 0) {
+        url = url + '&text=' + text
+    }
     CallAjax(
-        _ChatListUrl,
+        url,
         'GET',
         null,
         function (res) {
@@ -279,6 +288,8 @@ function postMessage(text) {
     var data = {};
     data.RecieverId = recieverId
     data.Message = text
+
+    console.log('post message', data)
 
     CallAjax(
         _SendMessageUrl,
