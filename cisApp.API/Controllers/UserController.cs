@@ -55,7 +55,7 @@ namespace cisApp.API.Controllers
         /// </summary>
         /// <param name="value"></param>
         [HttpPost("resetpass")]
-        public object resetpass([FromBody] string value)
+        public object resetpass(string value)
         {
             try
             {                

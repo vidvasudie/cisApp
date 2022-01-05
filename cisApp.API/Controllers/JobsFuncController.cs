@@ -256,6 +256,31 @@ namespace cisApp.API.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    string AlbumType = "1";
+
+                    var job = GetJobs.Get.GetById(value.JobId.Value);
+
+                    if (job.JobStatus < 5) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
+                    {
+                        AlbumType = "1";
+                    }
+                    else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
+                    {
+                        AlbumType = "2";
+                    }
+                    else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
+                    {
+                        AlbumType = "3";
+                    }
+                    else if (job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
+                    {
+                        AlbumType = "4";
+                    }
+                    else // เกินกว่านี้ เตะออก
+                    {
+                        return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "ใบงานดังกล่าวได้ส่งแก้ไขงานครบจำนวนที่ได้ตั้งไว้แล้ว", null));;
+                    }
+
                     AlbumModel model = new AlbumModel()
                     {
                         JobId = value.JobId.Value,
@@ -264,7 +289,7 @@ namespace cisApp.API.Controllers
                         Tags = value.Tags,
                         AlbumName = value.AlbumName,
                         Url = value.Url,
-                        AlbumType = value.AlbumType,
+                        AlbumType = AlbumType,
                         apiFiles = value.imgs
                     };
 
