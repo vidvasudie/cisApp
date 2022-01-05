@@ -260,5 +260,98 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [Route("api/designer/jobshistory")]
+        [HttpGet]
+        public IActionResult GetJobsHistory(Guid userId, int? skip = 0, int? take = 10)
+        {
+            try
+            {
+                var model = new DesignerJobListSearch() { userId = userId, skip = skip, take = take };
+                //get list of job history
+                var histList = GetUserDesigner.Get.GetJobsHistory(model);
+                if (histList == null || histList.Count == 0)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
+                bool removeLast = Host.Last() == '/'; 
+                if (removeLast)
+                {
+                    Host = Host.Remove(Host.Length - 1);
+                } 
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", histList.Select(o => new 
+                { 
+                    o.IsCusFavorite,
+                    o.JobId,
+                    o.JobNo,
+                    o.JobDescription,
+                    o.JobTypeName,
+                    o.JobAreaSize,
+                    o.CreatedDateStr,
+                    o.UserId,
+                    o.Rate,
+                    o.Fullname,
+                    PicUrlPath= o.UrlPath.Replace("~", Host)
+                }) ));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+
+        }
+
+        [Route("api/designer/profile")]
+        [HttpGet]
+        public IActionResult GetProfile(Guid userId, int? skip = 0, int? take = 100)
+        {
+            try
+            { 
+                var dpf = GetUserDesigner.Get.GetDesignerProfile(userId);
+                if (dpf == null)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                }
+                var model = new DesignerJobListSearch() { userId = userId, skip = skip, take = take };
+                var imgs = GetUserDesigner.Get.GetDesignerAlbumImage(model);
+                if (imgs == null)
+                {
+                    imgs = new List<AlbumModel>();
+                }
+                 
+                string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
+                bool removeLast = Host.Last() == '/';
+                if (removeLast)
+                {
+                    Host = Host.Remove(Host.Length - 1);
+                }
+
+                var albs = imgs.Select(o => o.AlbumName).Distinct();
+
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", new 
+                { 
+                    dpf.DesignerUserId,
+                    dpf.Fullname,
+                    picUrl = dpf.UrlPath.Replace("~", Host),
+                    dpf.RateAll,
+                    dpf.RateCount,
+                    dpf.ContestWinTotal,
+                    dpf.AreaSQMRate,
+                    dpf.AreaSQMMax,
+                    dpf.AreaSQMUsed,
+                    dpf.AreaSQMRemain,
+                    albums = imgs.Where(o => o.AttachFileName != null).Select(o => new { o.AlbumName, imageUrl = o.UrlPath.Replace("~", Host), o.AttachFileName })
+                }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+
+        }
+
     }
 }

@@ -81,6 +81,46 @@ namespace cisApp.Function
                     return null;
                 }
             }
+            public static DesignerProfileModel GetDesignerProfile(Guid userId)
+            {
+                try
+                {
+                    if (userId == Guid.Empty)
+                    {
+                        return null;
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", userId)
+                    };
+                    var data = StoreProcedure.GetAllStored<DesignerProfileModel>("GetDesignerProfile", parameter);
+                    if (data.Any())
+                        return data.FirstOrDefault();
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+            public static List<AlbumModel> GetDesignerAlbumImage(DesignerJobListSearch model)
+            {
+                try
+                { 
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", model.userId),
+                       new SqlParameter("@skip", model.skip),
+                       new SqlParameter("@take", model.take)
+                    };
+                    var data = StoreProcedure.GetAllStored<AlbumModel>("GetDesignerAlbumImage", parameter);
+                    if (data.Any())
+                        return data.ToList();
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
             public static List<DesignerContestSummary> GetContestSummary(Guid userId)
             {
                 try
@@ -93,6 +133,29 @@ namespace cisApp.Function
                        new SqlParameter("@userId", userId)
                     };
                     var data = StoreProcedure.GetAllStored<DesignerContestSummary>("GetDesignerContestSummary", parameter);
+                    if (data.Any())
+                        return data.ToList();
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+            public static List<DesignerJobsHistoryModel> GetJobsHistory(DesignerJobListSearch model)
+            {
+                try
+                {
+                    if (model.userId == Guid.Empty)
+                    {
+                        return null;
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", model.userId),
+                       new SqlParameter("@skip", model.skip),
+                       new SqlParameter("@take", model.take)
+                    };
+                    var data = StoreProcedure.GetAllStored<DesignerJobsHistoryModel>("GetJobDesignerHistory", parameter);
                     if (data.Any())
                         return data.ToList();
                     return null;
