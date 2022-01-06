@@ -263,10 +263,12 @@ namespace cisApp.API.Controllers
                     if (job.JobStatus < 5) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
                     {
                         AlbumType = "1";
+                        
                     }
                     else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
                     {
                         AlbumType = "2";
+                        
                     }
                     else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
                     {
@@ -293,8 +295,24 @@ namespace cisApp.API.Controllers
                         apiFiles = value.imgs
                     };
 
+                    
+
                     var result = GetAlbum.Manage.Update(model, value.UserId.Value);
 
+                    // update edit count
+                    if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
+                    {
+                        GetJobs.Manage.UpdateEditCount(value.JobId.Value, 1);
+
+                    }
+                    else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
+                    {
+                        GetJobs.Manage.UpdateEditCount(value.JobId.Value, 2);
+                    }
+                    else if (job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
+                    {
+                        GetJobs.Manage.UpdateEditCount(value.JobId.Value, 3);
+                    }
                     return Ok(resultJson.success("สำเร็จ", "success", new { result.JobId }));
                 }
                 return Ok(resultJson.errors("ข้อมูลไม่ถูกต้อง ModelState Not Valid", "fail", null));
