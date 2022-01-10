@@ -236,6 +236,39 @@ $('body').on('click', '.bt-delete', function (e) {
     });
 });
 
+$('body').on('click', '.bt-adduser', function (e) {
+
+    var elem = $(this);
+
+    Swal.fire({
+        title: "เพิ่มผู้ใช้เข้ากลุ่ม",
+        text: "เพิ่มผู้ใช้เข้ากลุ่ม",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "ใช่, ยืนยัน",
+        cancelButtonText: "ไม่, ยกเลิก",
+        reverseButtons: true
+    }).then(function (result) {
+        if (result.value) {
+            var url = $(elem).attr(_dataUrlAttr)
+            $.ajax({
+                url: url,
+                method: 'POST',
+                contentType: 'application/json; charset=utf-8',
+                success: function (res) {
+                    redirect(res)
+                },
+                error: function (err) {
+                    redirect(err)
+                }
+            })
+
+        } else if (result.dismiss === "cancel") {
+
+        }
+    });
+});
+
 $('body').on('click', '.bt-update', function (e) {
 
     var elem = $(this); 

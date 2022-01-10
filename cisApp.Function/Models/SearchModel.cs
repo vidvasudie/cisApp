@@ -22,6 +22,9 @@ namespace cisApp.Function
         public Guid? JobId { get; set; }
         public int? JobStatus { get; set; }
 
+        public Guid? GroupId { get; set; }
+        public Guid? UserId { get; set; }
+
         public Guid? SenderId { get; set; }
         public Guid? RecieverId { get; set; }
     }
