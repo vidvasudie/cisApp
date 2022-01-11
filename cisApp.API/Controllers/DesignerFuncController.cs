@@ -127,17 +127,19 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
                 var j = job.FirstOrDefault();
-                //get candidate with status 2:อยู่ระหว่างประกวด
-                j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId });
+                //get candidate with status 2:อยู่ระหว่างประกวด 
+                var jcs = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId, status = 2 });
+                j.jobCandidates = jcs.Count() > 0 ? jcs : new List<JobCandidateModel>();
 
                 //get jobeximage 
-                j.jobsExamImages = GetJobsExamImage.Get.GetImageByJobId(jobId);
-                 
-                return Ok(resultJson.success("สร้างใบงานสำเร็จ", "success", new List<DesignerJobListModel> { j }));
+                var jem = GetJobsExamImage.Get.GetImageByJobId(jobId);
+                j.jobsExamImages = jem.Count() > 0 ? jem : new List<JobsExamImageModel>();
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", new List<DesignerJobListModel> { j }));
             }
             catch (Exception ex)
             {
-                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
             }
         }
 

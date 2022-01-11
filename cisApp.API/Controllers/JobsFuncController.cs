@@ -230,16 +230,18 @@ namespace cisApp.API.Controllers
                     Host = Host.Remove(Host.Length - 1);
                 } 
 
-                return Ok(resultJson.success("สำเร็จ", "success", new {
-                    data.First().JobId,
-                    data.First().CaUserId,
-                    CaUrlPath = data.First().CaUrlPath == null ? null : data.First().CaUrlPath.Replace("~", Host),
-                    data.First().Fullname,
-                    data.First().LastLogin,
-                    data.First().UpdatedDateStr,
-                    data.First().AlbumName,
-                    works = data.Select(o => new { o.AlbumAttachFileID, o.AlbumFileName, WorkUrlPath= o.AlbumAttachFileID == null ? null : o.WorkUrlPath.Replace("~", Host) })
-                }));
+                return Ok(resultJson.success("สำเร็จ", "success", data.Select(o => new
+                {
+                    o.JobId,
+                    o.CaUserId,
+                    CaUrlPath = o.CaUrlPath == null ? null : o.CaUrlPath.Replace("~", Host),
+                    o.Fullname,
+                    o.LastLogin,
+                    o.UpdatedDateStr,
+                    o.AlbumName,
+                    works = data.Where(d => d.CaUserId == o.CaUserId && d.AlbumName != null).Select(s => new { s.AlbumAttachFileID, s.AlbumFileName, WorkUrlPath = s.AlbumAttachFileID == null ? null : s.WorkUrlPath.Replace("~", Host) })
+                })));
+                
 
             }
             catch (Exception ex)
