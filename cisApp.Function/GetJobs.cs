@@ -475,6 +475,29 @@ namespace cisApp.Function
                 }
             }
 
+            public static Jobs UpdateEditCount(Guid jobId, int editCount)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var job = context.Jobs.Find(jobId);
+
+                        job.EditSubmitCount = editCount;
+
+                        context.Jobs.Update(job);
+
+                        context.SaveChanges();
+
+                        return job;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
         }
 
     }

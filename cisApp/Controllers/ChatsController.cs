@@ -8,6 +8,7 @@ using cisApp.Core;
 using cisApp.Function.Models;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using cisApp.library;
 
 namespace cisApp.Controllers
 {
@@ -41,9 +42,13 @@ namespace cisApp.Controllers
             
         }
 
-        public IActionResult Group()
+        public IActionResult Group(SearchModel model)
         {
-            return View();
+            string webSignalR = config.GetSection("WebConfig:SignalRWebSite").Value;
+
+            ViewData["SignalRWebSite"] = webSignalR;
+
+            return View(model);
         }
 
         [HttpGet]
@@ -181,6 +186,52 @@ namespace cisApp.Controllers
             catch (Exception ex)
             {
                 return Json(new ResponseModel().ResponseError());
+            }
+        }
+
+        public IActionResult CreateGroup()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult CreateGroup(ChatGroup data)
+        {
+            try
+            {
+                var user = GetChatGroup.Manage.Update(data, _UserId.Value);
+
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Group", "Chats", new { Id = user.ChatGroupId })));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
+
+        [HttpPost]
+        public PartialViewResult ItemList(SearchModel model)
+        {
+            List<UserModel> _model = GetUser.Get.GetUserModels(model);
+            int count = GetUser.Get.GetUserModelsTotal(model);
+
+            ViewData["GroupId"] = model.GroupId;
+
+            return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
+        }
+
+        [HttpPost]
+        public JsonResult AddUser(SearchModel model)
+        {
+            try
+            {
+                GetChatGroup.Manage.AddUser(model.UserId.Value, model.GroupId.Value);
+
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Group", "Chats", new { Id = model.GroupId.Value })));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError(ex.Message));
             }
         }
 
