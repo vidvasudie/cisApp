@@ -86,5 +86,33 @@ namespace cisApp.API.Controllers
             }
 
         }
+
+        [Route("api/Payment/History")]
+        [HttpGet]
+        public object Get(Guid? userId, int? month, int? year, int? page = 1, int limit = 10)
+        {
+            
+            try
+            {
+                SearchModel model = new SearchModel()
+                {
+                    UserId = userId.Value,
+                    currentPage = page,
+                    pageSize = limit,
+                    Year = year,
+                    Month = month
+                };
+
+                var Obj = GetJobPayment.Get.GetBySearch(model);
+                var total = GetJobPayment.Get.GetBySearchTotal(model);
+
+                return Ok(resultJson.success(null, null, Obj, null, total, page, page + 1));
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace cisApp.API.Controllers
             SearchModel model = new SearchModel()
             {
                 text = search,
-                currentPage = 0,
+                currentPage = page,
                 pageSize = 10
             };
             var Obj = GetAlbum.Get.GetAlbumImage(model, webAdmin);

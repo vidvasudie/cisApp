@@ -29,5 +29,8 @@ namespace cisApp.Function
 
         public Guid? SenderId { get; set; }
         public Guid? RecieverId { get; set; }
+
+        public int? Year { get; set; }
+        public int? Month { get; set; }
     }
 }

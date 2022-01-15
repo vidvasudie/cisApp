@@ -57,5 +57,11 @@ namespace cisApp.Core
 
         [NotMapped]
         public string JobOwner { get; set; }
+
+        [NotMapped]
+        public decimal JobAreaSize { get; set; }
+        
+        [NotMapped]
+        public string JobDescription { get; set; }
     }
 }
