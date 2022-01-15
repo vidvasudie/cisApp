@@ -20,6 +20,7 @@ namespace cisApp.Function
         public int UserLikes { get; set; }
         public decimal PriceRate { get; set; }
         public decimal UserRate { get; set; }
+        public string Ip { get; set; }
         public int UserMessageCount { get; set; }
         public string CaStatusDesc { get; set; }
         public int RegisterDays

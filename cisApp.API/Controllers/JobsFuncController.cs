@@ -155,7 +155,7 @@ namespace cisApp.API.Controllers
 
         [Route("api/jobs/getcandidatelist")]
         [HttpGet]
-        public IActionResult GetCandidateList(Guid jobId)
+        public IActionResult GetCandidateList(Guid jobId, int status=0)
         {
             try
             {
@@ -168,7 +168,7 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
-                var data = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId= jobId });
+                var data = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId= jobId, statusStr = status.ToString() });
                 if(data == null || data.Count == 0)
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
@@ -423,7 +423,59 @@ namespace cisApp.API.Controllers
             {
                 return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
             }
-        } 
+        }
+
+        [Route("api/jobs/getjobdetail")]
+        [HttpGet]
+        public IActionResult GetJobDetail(Guid jobId)
+        {
+            try
+            {
+                if (jobId == Guid.Empty)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
+                var job = GetJobs.Get.GetJobDetail(jobId).FirstOrDefault();
+                if (job == null)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                }
+                var data = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId, statusStr = "2,3", statusOpt="in" });
+                if (data == null || data.Count == 0)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                return Ok(resultJson.success("สำเร็จ", "success", new { 
+                    jobId = job.JobID,
+                    job.JobNo,
+                    job.JobDescription,
+                    job.JobTypeName,
+                    job.JobAreaSize,
+                    job.JobPricePerSqM,
+                    job.JobStatus,
+                    job.JobPrice,
+                    job.JobPriceProceed,
+                    job.JobFinalPrice,
+                    job.IsInvRequired,
+                    job.InvAddress,
+                    job.InvPersonalID,
+                    job.CreatedDateStr,
+                    job.UserID,
+                    job.FileName,
+                    job.UrlPathUserImage,
+                    job.RecruitedPrice,
+                    job.ContestPrice,
+                    candidates = data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate }).ToList() }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+
+
 
     }
 }

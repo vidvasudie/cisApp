@@ -33,7 +33,8 @@ namespace cisApp.Function
                 {
                     SqlParameter[] parameter = new SqlParameter[] { 
                        new SqlParameter("@jobId", model.gId != null && model.gId != Guid.Empty ? model?.gId.ToString() : (object)DBNull.Value), 
-                       new SqlParameter("@status", model.status != 0 ? model.status : (object)DBNull.Value)
+                       new SqlParameter("@status", !String.IsNullOrEmpty(model.statusStr) ? model.statusStr : (object)DBNull.Value),
+                       new SqlParameter("@statusOpt", String.IsNullOrEmpty(model.statusOpt) ? "equal" : model.statusOpt)//equal, more, less, in
                     };
 
                     return StoreProcedure.GetAllStored<JobCandidateModel>("GetJobsCandidate", parameter);
@@ -80,6 +81,47 @@ namespace cisApp.Function
 
         public class Manage
         {
+            public static JobsCandidate Add(Guid jobId, Guid userId, string ip)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            JobsCandidate obj = new JobsCandidate();
+                            obj.JobId = jobId;
+                            obj.UserId = userId;
+                            obj.CaStatusId = 1;//รอประกวด
+
+                            obj.UpdatedDate = DateTime.Now;
+                            obj.UpdatedBy = userId;
+                            obj.CreatedDate = DateTime.Now;
+                            obj.CreatedBy = userId;
+
+                            context.JobsCandidate.Add(obj);
+
+                            context.SaveChanges();
+
+                            //add job log for every job activity 
+                            JobsLogs log = new JobsLogs();
+                            log.Description = ActionCommon.JobUpdate;
+                            log.JobId = jobId;
+                            log.Ipaddress = ip;
+                            log.CreatedDate = DateTime.Now;
+                            context.JobsLogs.Add(log);
+                            context.SaveChanges();
+
+                            dbContextTransaction.Commit();
+                            return obj;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
             public static int UpdateNewCandidate(List<JobCandidateModel> list, Guid _user, string ip)
             {
                 try

@@ -45,8 +45,22 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
-             
 
+            public static List<JobDetailModel> GetJobDetail(Guid jobId)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@jobId", jobId != Guid.Empty ? jobId : (object)DBNull.Value)
+                    };
+
+                    return StoreProcedure.GetAllStored<JobDetailModel>("GetJobDetail", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new List<JobDetailModel>();
+                }
+            }
             public static List<JobModel> GetJobs(SearchModel model)
             {
                 try

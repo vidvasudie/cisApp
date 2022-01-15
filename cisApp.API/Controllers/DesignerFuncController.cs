@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using cisApp.Core;
 using cisApp.Function;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ namespace cisApp.API.Controllers
                 foreach (var j in jobs)
                 {
                     //get candidate with status 2:อยู่ระหว่างประกวด
-                    j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = j.JobID, status = 2 });
+                    j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = j.JobID, statusStr = "2" });
 
                     //get jobeximage 
                     j.jobsExamImages = GetJobsExamImage.Get.GetImageByJobId(j.JobID);
@@ -94,7 +95,7 @@ namespace cisApp.API.Controllers
                 foreach (var j in jobs)
                 {
                     //get candidate with status 2:อยู่ระหว่างประกวด
-                    j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = j.JobID, status = 2 });
+                    j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = j.JobID, statusStr = "2" });
 
                     //get jobeximage 
                     j.jobsExamImages = GetJobsExamImage.Get.GetImageByJobId(j.JobID);
@@ -121,25 +122,48 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
-                var job = jobs.Where(o => o.JobID == jobId);
+                var job = jobs.Where(o => o.JobID == jobId).FirstOrDefault();
                 if (job == null)
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
-                var j = job.FirstOrDefault();
-                //get candidate with status 2:อยู่ระหว่างประกวด 
-                var jcs = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId, status = 2 });
-                j.jobCandidates = jcs.Count() > 0 ? jcs : new List<JobCandidateModel>();
+                var j = job;
+                //get candidate with status 2:อยู่ระหว่างประกวด  
+                j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId, statusStr = "2" });
 
-                //get jobeximage 
-                var jem = GetJobsExamImage.Get.GetImageByJobId(jobId);
-                j.jobsExamImages = jem.Count() > 0 ? jem : new List<JobsExamImageModel>();
+                //get jobeximage  
+                j.jobsExamImages = GetJobsExamImage.Get.GetImageByJobId(jobId);
 
                 return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", new List<DesignerJobListModel> { j }));
             }
             catch (Exception ex)
             {
                 return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [Route("api/designer/submitjob")]
+        [HttpPost]
+        public IActionResult SubmitJob([FromBody]JobCandidateModel value)
+        {
+            try
+            {
+                if (value.JobId == Guid.Empty || value.UserId == Guid.Empty)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
+
+                var job = GetJobsCandidate.Manage.Add(value.JobId.Value, value.UserId.Value, value.Ip);
+                if (job == null)
+                {
+                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
+                }
+                
+                return Ok(resultJson.success("สำเร็จ", "success", new { job.JobId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
             }
         }
 
@@ -354,6 +378,8 @@ namespace cisApp.API.Controllers
             }
 
         }
+
+        
 
     }
 }
