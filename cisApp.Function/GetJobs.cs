@@ -196,6 +196,18 @@ namespace cisApp.Function
                             context.JobsCandidate.Update(jobCa);
                             context.SaveChanges();
 
+                            //change status for other 2 candidate
+                            var jobCa2 = context.JobsCandidate.Where(o => o.JobId == value.JobId && o.UserId != value.CaUserId);
+                            foreach (var ca in jobCa2)
+                            {
+                                ca.CaStatusId = 4;//4=ไม่ได้รับคัดเลือก
+                                ca.UpdatedDate = DateTime.Now;
+                                ca.UpdatedBy = value.UserId;
+
+                                context.JobsCandidate.Update(ca);
+                                context.SaveChanges();
+                            } 
+
                             //clear work slot for other 2 candidate
                             List<UserDesigner> tmp = new List<UserDesigner>();
                             var usrDesginers = context.UserDesigner.ToList();
