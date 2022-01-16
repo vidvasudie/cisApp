@@ -15,6 +15,11 @@ namespace cisApp.API.Controllers
     [ApiController]
     public class JobsFuncController : BaseController
     {
+        /// <summary>
+        /// สร้างใบงาน
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [Route("api/jobs/createjob")]
         [HttpPost]
         public object Post([FromBody] JobAPIModels value)
@@ -59,7 +64,10 @@ namespace cisApp.API.Controllers
             
         }
 
-
+        /// <summary>
+        /// แสดงข้อมูลประเภทใบงาน
+        /// </summary>
+        /// <returns></returns>
         [Route("api/jobs/getjobtype")]
         [HttpGet]
         public object GetJobType()
@@ -79,6 +87,10 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// ข้อมูลตั้งต้นของการสร้างใบงาน
+        /// </summary>
+        /// <returns></returns>
         [Route("api/jobs/getjobinfo")]
         [HttpGet]
         public object GetJobDefaultInfo()
@@ -96,6 +108,11 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// แสดงรายการใบงานของลูกค้า แสดงเฉพาะใบงานที่ยังไม่ยุติ / สิ้นสุด
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [Route("api/jobs/getcustomerjoblist")]
         [HttpGet]
         public IActionResult GetCustomerJobList(Guid userId)
@@ -122,6 +139,46 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// แสดงรายการใบงานของลูกค้า แสดงเฉพาะใบงานที่ ยุติ / สิ้นสุด
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [Route("api/jobs/getcustomerhistorylist")]
+        [HttpGet]
+        public IActionResult GetCustomerHistoryJobList(Guid userId)
+        {
+            try
+            {
+                if (userId == Guid.Empty)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
+
+                var data = GetJobs.Get.GetCustomerHistoryJobList(userId);
+                if (data == null)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                return Ok(resultJson.success("สำเร็จ", "success", data));
+
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        /// <summary>
+        /// ยกเลิกใบงาน และปรับสถานะ cadiadte เป้น 6=ใบงานถูกยกเลิก
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="userId"></param>
+        /// <param name="cancelId"></param>
+        /// <param name="cancelMsg"></param>
+        /// <param name="ip"></param>
+        /// <returns></returns>
         [Route("api/jobs/canceljob")]
         [HttpDelete]
         public IActionResult CancelJob(Guid jobId, Guid userId, int cancelId, string cancelMsg, string ip)
@@ -153,6 +210,12 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// ดึงรายการผู้สมัครในใบงานนั้นๆ 
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
         [Route("api/jobs/getcandidatelist")]
         [HttpGet]
         public IActionResult GetCandidateList(Guid jobId, int status=0)
@@ -182,6 +245,14 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// ปฎิเสธนักออกแบบ
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="userId"></param>
+        /// <param name="caUserId"></param>
+        /// <param name="ip"></param>
+        /// <returns></returns>
         [Route("api/jobs/rejectcandidate")]
         [HttpDelete]
         public IActionResult RejectCandidate(Guid jobId, Guid userId, Guid caUserId, string ip)
@@ -496,7 +567,7 @@ namespace cisApp.API.Controllers
                     job.FileName,
                     job.UrlPathUserImage,
                     job.RecruitedPrice,
-                    job.ContestPrice,
+                    job.ContestPrice, 
                     candidates = data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate }).ToList() }));
             }
             catch (Exception ex)

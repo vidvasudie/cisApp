@@ -6,11 +6,17 @@ using System.Linq;
 using cisApp.Core;
 using cisApp.library;
 using cisApp;
+using Microsoft.Extensions.Configuration;
 
 namespace cisApp.Function
 {
     public static class GetJobs
     {
+        public static IConfigurationRoot _config = new ConfigurationBuilder()
+                                    .SetBasePath(Directory.GetCurrentDirectory())
+                                    .AddJsonFile("appsettings.json")
+                                    .Build();
+
         public class Get
         {
             public static List<Jobs> GetAll()
@@ -115,6 +121,24 @@ namespace cisApp.Function
                     };
 
                     return StoreProcedure.GetAllStored<CustomerJobListModel>("GetCustomerJobList", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+            public static List<CustomerJobHistoryListModel> GetCustomerHistoryJobList(Guid userId)
+            {
+                try
+                {
+                    if (userId == Guid.Empty)
+                        return null;
+
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", userId)
+                    };
+
+                    return StoreProcedure.GetAllStored<CustomerJobHistoryListModel>("GetCustomerHistoryJobList", parameter);
                 }
                 catch (Exception ex)
                 {
@@ -259,6 +283,7 @@ namespace cisApp.Function
                         {
                             Jobs obj = new Jobs();
                             JobsLogs log = new JobsLogs();
+                            var dateNow = DateTime.Now;
                             if (data.JobId != null && data.JobId != Guid.Empty)
                             {
                                 obj = context.Jobs.Where(o => o.JobId == data.JobId).FirstOrDefault();
@@ -267,7 +292,10 @@ namespace cisApp.Function
                             else
                             {
                                 log.Description = ActionCommon.JobInsert;
-                                obj.CreatedDate = DateTime.Now;
+                                int maxDayWait = int.Parse(_config.GetSection("JobProcess:WaitCaSubmit").Value);
+                                obj.JobBeginDate = dateNow.AddDays(maxDayWait);
+                                obj.JobEndDate = obj.JobBeginDate.Value.AddHours((int)data.JobAreaSize / 10 * 2.5 * 24);
+                                obj.CreatedDate = dateNow;
                                 obj.CreatedBy = data.CreatedBy;
  
                             }
@@ -305,10 +333,8 @@ namespace cisApp.Function
                             obj.InvAddress = data.InvAddress;
                             obj.InvPersonalId = data.InvPersonalId;
 
-                            obj.JobStatus = data.JobStatus;
-                            obj.JobBeginDate = data.JobBeginDate;
-                            obj.JobEndDate = data.JobEndDate;
-                            obj.UpdatedDate = DateTime.Now;
+                            obj.JobStatus = data.JobStatus; 
+                            obj.UpdatedDate = dateNow;
                             obj.UpdatedBy = data.UpdatedBy;
 
                             context.Jobs.Update(obj);
@@ -348,7 +374,7 @@ namespace cisApp.Function
                             //add job tracking for jobStatus 
                             JobsTracking tracking = new JobsTracking();
                             tracking.JobId = obj.JobId;
-                            tracking.StatusDate = DateTime.Now;
+                            tracking.StatusDate = dateNow;
                             tracking.JobStatus = obj.JobStatus;
                             context.JobsTracking.Add(tracking);
                             context.SaveChanges();
@@ -472,6 +498,18 @@ namespace cisApp.Function
 
                             context.Jobs.Update(data);
                             context.SaveChanges();
+
+                            //change status for  candidate status=6(ใบงานถูกยกเลิก)
+                            var jobCa = context.JobsCandidate.Where(o => o.JobId == data.JobId).ToList();
+                            foreach (var ca in jobCa)
+                            {
+                                ca.CaStatusId = 6;//6=ใบงานถูกยกเลิก
+                                ca.UpdatedDate = DateTime.Now;
+                                ca.UpdatedBy = userId;
+
+                                context.JobsCandidate.Update(ca);
+                                context.SaveChanges();
+                            }
 
                             //get massage cancel
                             if (String.IsNullOrEmpty(cancelMsg) && cancelId > 0)

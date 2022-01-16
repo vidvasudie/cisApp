@@ -12,6 +12,18 @@ namespace cisApp.API.Controllers
     [ApiController]
     public class DesignerFuncController : BaseController
     {
+        /// <summary>
+        /// แสดงรายการงานที่สามารถสมัครได้ ตามเงื่อนไข
+        /// - slot งานที่เหลืออยู่
+        /// - rate งานที่รับได้
+        /// - ลูกค้ากด Favorite
+        /// - วันหมดอายุการรับสมัคร
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="text"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
         [Route("api/designer/joblist")]
         [HttpGet]
         public IActionResult JobList(Guid userId, string text, int? skip=0, int? take=10)
@@ -26,24 +38,63 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
 
-
+                List<DesignerJobListModel> tmp = new List<DesignerJobListModel>();
+                int maxDayWait = int.Parse(_config.GetSection("JobProcess:WaitCaSubmit").Value);
                 foreach (var j in jobs)
                 {
-                    //get candidate with status 2:อยู่ระหว่างประกวด
-                    j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = j.JobID, statusStr = "2" });
+                    if (j.StatusDate.Value.AddDays(maxDayWait).Ticks > DateTime.Now.Ticks)
+                    {
+                        //get candidate with status 1:สมัคร
+                        j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = j.JobID, statusStr = "1" });
 
-                    //get jobeximage 
-                    j.jobsExamImages = GetJobsExamImage.Get.GetImageByJobId(j.JobID);
-                }
+                        //get jobeximage 
+                        j.jobsExamImages = GetJobsExamImage.Get.GetImageByJobId(j.JobID);
 
-                return Ok(resultJson.success("สร้างใบงานสำเร็จ", "success", jobs, model.take, jobs.Count()));
+                        tmp.Add(j);
+                    }
+                    
+                } 
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", tmp.Select(o => new {
+                    o.IsCusFavorite,
+                    o.JobID,
+                    o.JobNo,
+                    o.JobTypeName,
+                    o.JobDescription,
+                    o.JobAreaSize,
+                    //o.JobPrice,
+                    //o.JobPriceProceed,
+                    //o.JobFinalPrice,
+                    //o.JobPricePerSqM,
+                    //o.JobStatus,
+                    //o.IsInvRequired,
+                    //o.InvAddress,
+                    //o.InvPersonalID,
+                    o.CreatedDate,
+                    o.CreatedDateStr,
+                    o.UserID,
+                    o.Fullname,
+                    o.FileName,
+                    o.UrlPathUserImage,
+                    o.RecruitedPrice,
+                    o.ContestPrice,
+                    JobCandidates = o.jobCandidates.Select(s => new { s.UrlPathAPI }),
+                    JobsExamImages = o.jobsExamImages.Select(s => new { s.UrlPathAPI })
+                }).ToList(), model.take, jobs.Count()));
             }
             catch (Exception ex)
             {
-                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
             }
         }
 
+        /// <summary>
+        /// บันทึกข้อมูลการยกเลิกการสมัคร เข้าประกวดงาน
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="jobId"></param>
+        /// <param name="ip"></param>
+        /// <returns></returns>
         [Route("api/designer/canceljob")]
         [HttpDelete]
         public IActionResult CancelJob(Guid userId, Guid jobId, string ip)
@@ -78,6 +129,14 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// หน้าแสดงรายการงานทั้งกมดที่สมัครไปแล้ว ยังอยู่ในสถานะรอ 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="text"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
         [Route("api/designer/jobsubmitlist")]
         [HttpGet]
         public IActionResult GetJobSubmitList(Guid userId, string text, int? skip = 0, int? take = 10)
@@ -109,6 +168,13 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// แสดงรายละเอียดงานท่ี่ได้สมัครไว้ 
+        /// - คำนวณ ระยะเวลา การส่งงาน 10 ตรม ต่อ 2.5 วัน
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
         [Route("api/designer/jobsubmitdetail")]
         [HttpGet]
         public IActionResult GetSubmitJobDetail(Guid userId, Guid jobId)
@@ -134,7 +200,35 @@ namespace cisApp.API.Controllers
                 //get jobeximage  
                 j.jobsExamImages = GetJobsExamImage.Get.GetImageByJobId(jobId);
 
-                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", new List<DesignerJobListModel> { j }));
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", new List<object>() { 
+                    new {
+                        j.IsCusFavorite,
+                        j.JobID,
+                        j.JobNo,
+                        j.JobTypeName,
+                        j.JobDescription,
+                        j.JobAreaSize,
+                        j.JobPrice,
+                        j.JobPriceProceed,
+                        j.JobFinalPrice,
+                        j.JobPricePerSqM,
+                        j.JobStatus, 
+                        j.JobEndDate,
+                        j.IsInvRequired,
+                        j.InvAddress,
+                        j.InvPersonalID,
+                        j.CreatedDate,
+                        j.CreatedDateStr,
+                        j.UserID,
+                        j.Fullname,
+                        j.FileName,
+                        j.UrlPathUserImage,
+                        j.RecruitedPrice,
+                        j.ContestPrice,
+                        JobCandidates = j.jobCandidates.Select(s => new { s.UrlPathAPI }),
+                        JobsExamImages = j.jobsExamImages.Select(s => new { s.UrlPathAPI })
+                    }
+                })); 
             }
             catch (Exception ex)
             {
@@ -142,6 +236,11 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// บันทึกข้อมูลการสมัครเข้าประกวดงาน
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [Route("api/designer/submitjob")]
         [HttpPost]
         public IActionResult SubmitJob([FromBody]JobCandidateModel value)
@@ -167,6 +266,13 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// แสดงรายการงานของนักออกแบบ ที่สถานะอยู่ระหว่างประกวด
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
         [Route("api/designer/jobcontestlist")]
         [HttpGet]
         public IActionResult GetJobContestList(Guid userId, int? skip = 0, int? take = 10)
@@ -197,6 +303,14 @@ namespace cisApp.API.Controllers
 
         }
 
+        /// <summary>
+        /// แสดงข้อมูล review ของนักออกแบบตามใบงานหรือทังหมด
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="jobId"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
         [Route("api/designer/review")]
         [HttpGet]
         public IActionResult GetReviewList(Guid userId, Guid jobId, int? skip = 0, int? take = 10)
@@ -234,6 +348,11 @@ namespace cisApp.API.Controllers
 
         }
 
+        /// <summary>
+        /// แสดงข้อมูลประวัติการประกวด แยกตามประเภทใบงาน
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         [Route("api/designer/contestsummary")]
         [HttpGet]
         public IActionResult GetContestSummary(Guid userId)
@@ -261,6 +380,11 @@ namespace cisApp.API.Controllers
 
         }
 
+        /// <summary>
+        /// บันทึกการกด favorite นักออกแบบ (toggle)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [Route("api/designer/favorite")]
         [HttpPost]
         public IActionResult UserFavorite([FromBody]FavoriteModel value)
@@ -286,6 +410,15 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// แสดงรายการประวัติงานที่เคยประกวด 
+        /// - ไม่ีผ่านการประกวด
+        /// - ผ่านการประกวด และสิ้นสุดแล้ว
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
         [Route("api/designer/jobshistory")]
         [HttpGet]
         public IActionResult GetJobsHistory(Guid userId, int? skip = 0, int? take = 10)
@@ -320,6 +453,7 @@ namespace cisApp.API.Controllers
                     o.UserId,
                     o.Rate,
                     o.Fullname,
+                    IsWin=!String.IsNullOrEmpty(o.WinText),
                     o.WinText,
                     ImgCoverUrl = aLImg.First().FullUrlPath,
                     PicUrlPath = o.UrlPath.Replace("~", Host)
@@ -332,6 +466,13 @@ namespace cisApp.API.Controllers
 
         }
 
+        /// <summary>
+        /// แสดงข้อมูลนักออกแบบ
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <returns></returns>
         [Route("api/designer/profile")]
         [HttpGet]
         public IActionResult GetProfile(Guid userId, int? skip = 0, int? take = 100)
@@ -372,6 +513,8 @@ namespace cisApp.API.Controllers
                     dpf.AreaSQMMax,
                     dpf.AreaSQMUsed,
                     dpf.AreaSQMRemain,
+                    dpf.PositionName,
+                    dpf.Caption,
                     albums = imgs.Where(o => o.AttachFileName != null).Select(o => new { o.AlbumName, imageUrl = o.UrlPath.Replace("~", Host), o.AttachFileName })
                 }));
             }
@@ -383,6 +526,5 @@ namespace cisApp.API.Controllers
         }
 
         
-
     }
 }

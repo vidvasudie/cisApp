@@ -41,6 +41,7 @@ namespace cisApp.Function
                 CreatedDate = value.ToDateTimeFormat();
             }
         }
+        public DateTime? StatusDate { get; set; }
         public Guid UserID { get; set; }
         public string Fullname { get; set; }
         public Guid AttachFileID { get; set; }
