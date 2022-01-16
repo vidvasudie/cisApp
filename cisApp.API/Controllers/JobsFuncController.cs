@@ -206,6 +206,11 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// แสดงรายชื่อ ผู้เข้าประกวด พร้อม list รายการรูปที่จัดส่ง เวลาที่จัดส่ง
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
         [Route("api/jobs/getworksubmitlist")]
         [HttpGet]
         public IActionResult GetWorkSubmitList(Guid jobId)
@@ -325,6 +330,13 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// บันทึกนักแบบที่ถูกคัดเลือก 
+        /// job_status=4(ประกาศ)
+        /// ca_job_status=3(คัดเลือก)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [Route("api/jobs/candidateselect")]
         [HttpPost]
         public IActionResult CandidateSelect([FromBody]CandidateSelectModel value)
@@ -350,6 +362,10 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// ดึงข้อมูลสาเหตุการยกเลิอกใบงาน
+        /// </summary>
+        /// <returns></returns>
         [Route("api/jobs/getcausecancel")]
         [HttpGet]
         public IActionResult GetCauseCancelList()
@@ -370,6 +386,11 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// แสดงรายละเอียดการส่งงานของนักออกแบบที่ได้รับเลือก (ตรวจสอบผลงาน)
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
         [Route("api/jobs/getapprovedetail")]
         [HttpGet]
         public IActionResult GetApproveDetail(Guid jobId)
@@ -409,6 +430,11 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// บันทึก review 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [Route("api/jobs/submitjobreview")]
         [HttpPost]
         public IActionResult SubmitReview([FromBody] JobDesignerReview value)
@@ -425,6 +451,11 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// ดึงข้อมูลรายละเอียดใบงาน
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
         [Route("api/jobs/getjobdetail")]
         [HttpGet]
         public IActionResult GetJobDetail(Guid jobId)
@@ -440,7 +471,7 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
-                var data = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId, statusStr = "2,3", statusOpt="in" });
+                var data = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId, statusStr = "2,3,4", statusOpt="in" });
                 if (data == null || data.Count == 0)
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
