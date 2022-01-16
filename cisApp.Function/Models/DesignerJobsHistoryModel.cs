@@ -25,6 +25,7 @@ namespace cisApp.Function
                 CreatedDate = value.ToDateTimeFormat();
             }
         }
+        public string WinText { get; set; }
         public Guid UserId { get; set; }
         public decimal Rate { get; set; }
         public string Fullname { get; set; }
@@ -37,5 +38,6 @@ namespace cisApp.Function
                 return "~/Uploads" + "/" + this.PicAttachFileID + "/" + this.PicFileName;
             }
         }
+        public string ImgCoverUrl { get; set; }
     }
 }
