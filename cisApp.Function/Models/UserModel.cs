@@ -91,7 +91,7 @@ namespace cisApp.Function
         public Guid? UpdatedBy { get; set; }
         public Guid? DeletedBy { get; set; }
 
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public string Code { get; set; }
         public int? Status { get; set; }
         public string StatusDesc { get; set; }

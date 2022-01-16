@@ -68,6 +68,7 @@ namespace cisApp.Function
         public decimal ContestPrice { get; set; }
         public int JobUserSubmitCount { get; set; }
         public DateTime? JobEndDate { get; set; }
+        
         public List<JobCandidateModel> jobCandidates { get; set; }
         public List<JobsExamImageModel> jobsExamImages { get; set; }
     }
