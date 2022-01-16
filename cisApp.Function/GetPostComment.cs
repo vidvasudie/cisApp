@@ -11,30 +11,27 @@ namespace cisApp.Function
     {
         public class Get
         {
-            //public static PostLike GetByUserIdAndRefId(Guid userId, Guid refId)
-            //{
-            //    try
-            //    {
-            //        SqlParameter[] parameter = new SqlParameter[]
-            //        {
-            //            new SqlParameter("@userId", userId),
-            //            new SqlParameter("@refId", refId)
-            //        };
+            public static List<PostComment> GetByRefId(Guid refId, int page = 1, int limit = 10)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[]
+                    {                        
+                        new SqlParameter("@refId", refId),
+                        new SqlParameter("@skip", (page-1)*limit),
+                        new SqlParameter("@take", limit)
+                    };
 
-            //        var data = StoreProcedure.GetAllStored<PostLike>("GetPostLikeByUserAndRefId", parameter);
+                    var data = StoreProcedure.GetAllStored<PostComment>("GetPostCommentByRefID", parameter);
+                                        
 
-            //        if (data.Count > 0)
-            //        {
-            //            return data.FirstOrDefault();
-            //        }
-
-            //        return null;
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        throw ex;
-            //    }
-            //}
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public class Manage
@@ -53,7 +50,8 @@ namespace cisApp.Function
                             UpdatedDate = DateTime.Now,
                             UpdatedBy = userId,
                             Comment = comment,
-                            ImgId = null
+                            ImgId = null,
+                            IsActive = true
                         };
 
                         context.PostComment.Add(obj);

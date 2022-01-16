@@ -47,5 +47,29 @@ namespace cisApp.API.Controllers
                 return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
             }
         }
+
+        [HttpGet("GetComment")]
+        public object GetComment(Guid? refId, int page = 1, int limit = 10)
+        {
+            try
+            {
+                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+
+                var obj = GetPostComment.Get.GetByRefId(refId.Value, page, limit);
+
+                foreach (var item in obj)
+                {
+                    var attch = GetUser.Get.GetUserProfileImg(item.UserId);
+
+                    item.FullUrlPath = webAdmin + attch.UrlPathAPI;
+                }
+
+                return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", obj));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
     }
 }
