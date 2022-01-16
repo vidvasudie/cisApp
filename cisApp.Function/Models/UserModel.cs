@@ -127,5 +127,10 @@ namespace cisApp.Function
                 return "~/Uploads" + "/" + this.AttachFileId + "/" + this.FileName;
             }
         }
+
+        [NotMapped]
+        public Guid? ApiUserImg { get; set; }
+        [NotMapped]
+        public List<Guid> ApiAttachFileImg { get; set; } = new List<Guid>();
     }
 }

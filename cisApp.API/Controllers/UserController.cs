@@ -234,5 +234,34 @@ namespace cisApp.API.Controllers
                 return Ok(resultJson.errors("ค้นหาข้อมูลไม่สำเร็จ", "fail", new { model.Fname, model.Lname, model.Email }));
             }
         }
+
+        [HttpPost("RequestUpgreade")]
+        public IActionResult RequestUpgreade([FromBody] UserModel model)
+        {
+            try
+            {
+                if (model.ApiAttachFileImg.Count == 0)
+                {
+                    return Ok(resultJson.errors("กรุณาอัพโหลดหลักฐาน", "fail", null));
+                }
+
+                var userId = model.UserId.Value;
+
+                GetUserDesignerRequest.Manage.AddNewRequest(model);
+
+                if (model.ApiUserImg != null)
+                {
+                    GetUser.Manage.UpdateProfile(model.ApiUserImg.Value, userId, userId);
+                }
+
+
+
+                return Ok(resultJson.success("สำเร็จ", "success", null));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ค้นหาข้อมูลไม่สำเร็จ", "fail", null));
+            }
+        }
     }
 }
