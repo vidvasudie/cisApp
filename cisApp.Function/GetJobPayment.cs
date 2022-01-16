@@ -35,6 +35,9 @@ namespace cisApp.Function
                        new SqlParameter("@jobId", model.JobId != null ? model.JobId : (object)DBNull.Value),
                        new SqlParameter("@jobStatus", model.JobStatus != null ? model.JobStatus : (object)DBNull.Value),
                        new SqlParameter("@jobType", model.jobType != null ? model.jobType : (object)DBNull.Value),
+                       new SqlParameter("@userId", model.UserId != null ? model.UserId : (object)DBNull.Value),
+                       new SqlParameter("@payMonth", model.Month != null  ? model.Month : (object)DBNull.Value),
+                       new SqlParameter("@payYear", model.Year != null  ? model.Year : (object)DBNull.Value),
                        new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
                        new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
                     };
@@ -55,7 +58,10 @@ namespace cisApp.Function
                         new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
                        new SqlParameter("@jobId", model.JobId != null ? model.JobId : (object)DBNull.Value),
                        new SqlParameter("@jobStatus", model.JobStatus != null ? model.JobStatus : (object)DBNull.Value),
-                       new SqlParameter("@jobType", model.jobType != null ? model.jobType : (object)DBNull.Value)                       
+                       new SqlParameter("@jobType", model.jobType != null ? model.jobType : (object)DBNull.Value)   ,
+                       new SqlParameter("@userId", model.UserId != null ? model.UserId : (object)DBNull.Value),
+                       new SqlParameter("@payMonth", model.Month != null  ? model.Month : (object)DBNull.Value),
+                       new SqlParameter("@payYear", model.Year != null  ? model.Year : (object)DBNull.Value)
                     };
                     var dt = StoreProcedure.GetAllStoredDataTable("GetJobPaymentTotal", parameter);
                     return (int)dt.Rows[0]["TotalCount"];

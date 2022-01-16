@@ -40,6 +40,9 @@ namespace cisApp.Function
         }
 
         public string FullUrlPath { get; set; }
+        public int? LikeCount { get; set; }
+        public bool IsLiked { get; set; }
+        public Guid? AlbumRefId { get; set; }
 
     }
 }

@@ -29,5 +29,11 @@ namespace cisApp.Function
 
         public Guid? SenderId { get; set; }
         public Guid? RecieverId { get; set; }
+
+        public int? Year { get; set; }
+        public int? Month { get; set; }
+        public string Tags { get; set; }
+        public string Categories { get; set; }
+        public string Orderby { get; set; }
     }
 }

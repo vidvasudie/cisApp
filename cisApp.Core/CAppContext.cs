@@ -65,6 +65,9 @@ namespace cisApp.Core
         public virtual DbSet<ChatMessage> ChatMessage { get; set; }
         public virtual DbSet<JobDesignerReview> JobDesignerReview { get; set; }
         public virtual DbSet<UserFavoriteDesigner> UserFavoriteDesigner { get; set; }
+
+        public virtual DbSet<PostComment> PostComment { get; set; }
+        public virtual DbSet<PostLike> PostLike { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TmProceedRatio>(entity =>
@@ -724,6 +727,32 @@ namespace cisApp.Core
                 entity.ToTable("Chat_Message");
 
                 entity.Property(e => e.ChatMessageId).HasDefaultValueSql("(newid())");
+            });
+
+            modelBuilder.Entity<PostComment>(entity =>
+            {
+                entity.ToTable("Post_Comment");
+
+                entity.Property(e => e.PostCommentId)
+                    .HasColumnName("PostCommentID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.RefId).HasColumnName("RefID");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+            });
+
+            modelBuilder.Entity<PostLike>(entity =>
+            {
+                entity.ToTable("Post_Like");
+
+                entity.Property(e => e.PostLikeId)
+                    .HasColumnName("PostLikeID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.RefId).HasColumnName("RefID");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
             });
 
 
