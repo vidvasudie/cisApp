@@ -305,8 +305,9 @@ namespace cisApp.API.Controllers
                 if (removeLast)
                 {
                     Host = Host.Remove(Host.Length - 1);
-                } 
-
+                }
+                var aLImg = GetAlbum.Get.GetRandomAlbumImage(Host + "/", userId, 1);
+                  
                 return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", histList.Select(o => new 
                 { 
                     o.IsCusFavorite,
@@ -319,7 +320,9 @@ namespace cisApp.API.Controllers
                     o.UserId,
                     o.Rate,
                     o.Fullname,
-                    PicUrlPath= o.UrlPath.Replace("~", Host)
+                    o.WinText,
+                    ImgCoverUrl = aLImg.First().FullUrlPath,
+                    PicUrlPath = o.UrlPath.Replace("~", Host)
                 }) ));
             }
             catch (Exception ex)

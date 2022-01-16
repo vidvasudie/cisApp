@@ -226,7 +226,6 @@ namespace cisApp.Function
             }
 
 
-
             public static int AddNewRequest(UserModel data)
             {
                 try
@@ -237,8 +236,12 @@ namespace cisApp.Function
                         {
                             //add or update User 
                             Users obj = new Users();
-                            //var userId = Guid.NewGuid();
-                            //obj.UserId = userId;
+                            obj = context.Users.Where(o => o.UserId == data.UserId).FirstOrDefault();
+                            if (obj == null)
+                            {
+                                obj.UserId = Guid.NewGuid();
+                            }
+                            
                             obj.Fname = data.Fname;
                             obj.Lname = data.Lname;
                             obj.UserType = data.UserType;
