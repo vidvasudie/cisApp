@@ -235,13 +235,13 @@ namespace cisApp.Function
                         using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
                             //add or update User 
-                            Users obj = context.Users.Where(o => o.UserId == data.UserId).FirstOrDefault();
+                            Users obj = new Users();
+                            obj = context.Users.Where(o => o.UserId == data.UserId).FirstOrDefault();
                             if (obj == null)
                             {
                                 obj.UserId = Guid.NewGuid();
                             }
-                            //var userId = Guid.NewGuid();
-                            //obj.UserId = userId;
+                            
                             obj.Fname = data.Fname;
                             obj.Lname = data.Lname;
                             obj.UserType = data.UserType;
