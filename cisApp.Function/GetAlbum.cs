@@ -113,9 +113,12 @@ namespace cisApp.Function
             {
                 try
                 {
-                    int skip = (model.currentPage.Value) * model.pageSize.Value;
+                    int skip = (model.currentPage.Value - 1) * model.pageSize.Value;
                     SqlParameter[] parameter = new SqlParameter[] {
-                        new SqlParameter("@stext", model.text),
+                        new SqlParameter("@stext", ""),
+                        new SqlParameter("@orderBy", model.Orderby),
+                        new SqlParameter("@tags", model.Tags),
+                        new SqlParameter("@categories", model.Categories),
                         new SqlParameter("@skip", skip),
                         new SqlParameter("@take", model.pageSize.Value)
                     };
@@ -135,6 +138,32 @@ namespace cisApp.Function
                 catch (Exception ex)
                 {
                     return new List<AlbumImageModel>();
+                }
+            }
+
+            public static AlbumImageModel GetAlbumImageByAttachId(string domainUrl, Guid id)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@id", id)
+                    };
+
+                    var data = StoreProcedure.GetAllStored<AlbumImageModel>("GetAlbumImageByAttachId", parameter);
+
+                    if (data != null)
+                    {
+                        foreach (var item in data)
+                        {
+                            item.FullUrlPath = domainUrl + item.UrlPath;
+                        }
+                    }
+
+                    return data.FirstOrDefault();
+                }
+                catch (Exception ex)
+                {
+                    return null;
                 }
             }
 

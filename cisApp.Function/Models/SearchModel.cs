@@ -32,5 +32,8 @@ namespace cisApp.Function
 
         public int? Year { get; set; }
         public int? Month { get; set; }
+        public string Tags { get; set; }
+        public string Categories { get; set; }
+        public string Orderby { get; set; }
     }
 }
