@@ -271,11 +271,11 @@ namespace cisApp.API.Controllers
         /// </summary>
         /// <param name="value"></param> 
         [HttpPost("updatetel")]
-        public object EditTel([FromBody] UserModelCommon value)
+        public object EditTel(string tel, Guid id)
         {
             try
             {
-                var user = GetUser.Manage.UpdateTel(value.Tel, value.Id.Value);
+                var user = GetUser.Manage.UpdateTel(tel, id);
                 return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new { user.UserId }));
             }
             catch (Exception ex)
