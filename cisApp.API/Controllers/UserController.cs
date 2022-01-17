@@ -235,8 +235,8 @@ namespace cisApp.API.Controllers
             }
         }
 
-        [HttpPost("RequestUpgreade")]
-        public IActionResult RequestUpgreade([FromBody] UserModel model)
+        [HttpPost("RequestUpgrade")]
+        public IActionResult RequestUpgrade([FromBody] UserModel model)
         {
             try
             {
@@ -244,6 +244,10 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("กรุณาอัพโหลดหลักฐาน", "fail", null));
                 }
+
+                model.Status = 1;
+                model.CreatedBy = model.UserId.Value;
+                model.UpdatedBy = model.UserId.Value;
 
                 var userId = model.UserId.Value;
 
@@ -253,8 +257,6 @@ namespace cisApp.API.Controllers
                 {
                     GetUser.Manage.UpdateProfile(model.ApiUserImg.Value, userId, userId);
                 }
-
-
 
                 return Ok(resultJson.success("สำเร็จ", "success", null));
             }

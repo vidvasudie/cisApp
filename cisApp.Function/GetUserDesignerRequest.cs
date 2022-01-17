@@ -239,18 +239,18 @@ namespace cisApp.Function
                             obj = context.Users.Where(o => o.UserId == data.UserId).FirstOrDefault();
                             if (obj == null)
                             {
-                                obj.UserId = Guid.NewGuid();
+                                obj = new Users();
+                                obj.CreatedDate = DateTime.Now;
+                                obj.CreatedBy = data.CreatedBy;
+                                obj.IsActive = true;
+                                obj.Email = data.Email;
+                                obj.IsActive = data.IsActive;
+                                obj.UserType = data.UserType;
                             }
                             
                             obj.Fname = data.Fname;
-                            obj.Lname = data.Lname;
-                            obj.UserType = data.UserType;
+                            obj.Lname = data.Lname;                            
                             obj.Tel = data.Tel;
-                            obj.Email = data.Email;
-                            //obj.IsActive = data.IsActive;
-                            obj.IsActive = true;
-                            obj.CreatedDate = DateTime.Now;
-                            obj.CreatedBy = data.CreatedBy;
                             obj.UpdatedDate = DateTime.Now;
                             obj.UpdatedBy = data.UpdatedBy;
                             obj.IsDeleted = false;
@@ -333,6 +333,7 @@ namespace cisApp.Function
                             //validate insert and remove image 
                             //insert job image ex
                             ManageImages(context, data.files, objSub);
+                            ManageImagesApi(context, data.ApiAttachFileImg, objSub, obj.UserId.Value);
 
                             dbContextTransaction.Commit();
 
@@ -421,7 +422,38 @@ namespace cisApp.Function
 
                 return 1;
             }
-             
+
+            private static int ManageImagesApi(CAppContext context, List<Guid> imgs, UserDesignerRequest obj, Guid userId)
+            {
+                if (imgs == null || imgs.Count == 0)
+                {
+                    return 0;
+                }
+                int count = imgs.Where(o => o != null).Count();
+                if (count == 0)
+                {
+                    return 0;
+                }
+                
+                // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
+                foreach (var file in imgs)
+                {
+                    //insert JobExImage
+                    UserDesignerRequestImage map = new UserDesignerRequestImage();
+                    map.UserDesignerRequestImgId = Guid.NewGuid();
+                    map.UserDesignerRequestImgType = 0;
+                    map.UserDesignerRequestId = obj.Id;
+                    context.UserDesignerRequestImage.Add(map);
+                    context.SaveChanges();
+
+                    GetAttachFile.Manage.ChangeRefId(file, map.UserDesignerRequestImgId, userId);
+                                       
+                    context.SaveChanges();
+                }
+
+                return 1;
+            }
+
 
         }
     }
