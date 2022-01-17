@@ -621,6 +621,39 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
+            public static Users UpdateTel(string tel, Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        { 
+                            Users obj = new Users();
+
+                            obj = context.Users.Find(userId); 
+
+                            obj.Tel = tel;
+                            obj.UpdatedBy = userId;
+                            obj.UpdatedDate = DateTime.Now;
+
+                            context.Users.Update(obj); 
+                            context.SaveChanges(); 
+
+                            dbContextTransaction.Commit();
+
+                            return obj;
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
         }
     }
 }

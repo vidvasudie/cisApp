@@ -263,5 +263,26 @@ namespace cisApp.API.Controllers
                 return Ok(resultJson.errors("ค้นหาข้อมูลไม่สำเร็จ", "fail", null));
             }
         }
+
+        /// <summary>
+        /// แก้ไขเบอร์โทร
+        /// </summary>
+        /// <param name="value"></param> 
+        [HttpPost("updatetel")]
+        public object EditTel([FromBody] UserModelCommon value)
+        {
+            try
+            {
+                var user = GetUser.Manage.UpdateTel(value.Tel, value.Id.Value);
+                return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new { user.UserId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+
+        }
+
+
     }
 }

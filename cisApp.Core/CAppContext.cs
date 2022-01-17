@@ -68,6 +68,7 @@ namespace cisApp.Core
 
         public virtual DbSet<PostComment> PostComment { get; set; }
         public virtual DbSet<PostLike> PostLike { get; set; }
+        public virtual DbSet<UserBookmarkDesigner> UserBookmarkDesigner { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TmProceedRatio>(entity =>
@@ -754,7 +755,18 @@ namespace cisApp.Core
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
             });
+            modelBuilder.Entity<UserBookmarkDesigner>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
 
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.UserDesignerId)
+                    .HasColumnName("UserDesignerID")
+                    .HasComment("รหัสผู้ใข้งานของนักออกแบบ");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+            });
 
             OnModelCreatingPartial(modelBuilder);
         }

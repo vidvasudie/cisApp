@@ -411,6 +411,36 @@ namespace cisApp.API.Controllers
         }
 
         /// <summary>
+        /// บันทึกการกด bookmark นักออกแบบ (toggle)
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [Route("api/designer/bookmark")]
+        [HttpPost]
+        public IActionResult UserBookmark([FromBody]FavoriteModel value)
+        {
+            try
+            {
+                if (value.UserId == Guid.Empty || value.CaUserId == Guid.Empty)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
+
+                var fav = GetUserBookmarkDesigner.Manage.Update(value);
+                if (fav == null)
+                {
+                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
+                }
+
+                return Ok(resultJson.success("สำเร็จ", "success", new { caUserId = fav.UserDesignerId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        /// <summary>
         /// แสดงรายการประวัติงานที่เคยประกวด 
         /// - ไม่ีผ่านการประกวด
         /// - ผ่านการประกวด และสิ้นสุดแล้ว
