@@ -71,5 +71,64 @@ namespace cisApp.API.Controllers
                 return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
             }
         }
+
+        [HttpGet("GetFaq")]
+        public object GetQFaq(int page = 1, int limit = 10)
+        {
+            try
+            {
+                var faq = GetFaq.Get.GetActive(); 
+                 
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", faq.Select(o => new { 
+                    o.Qorder,
+                    o.Question,
+                    o.Answer
+                }).Skip(page - 1).Take(limit).ToList()));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [HttpPost("PostHelp")]
+        public object PostUserHelp(string tel, string email, string message)
+        {
+            try
+            {
+                var obj = GetUserHelp.Manage.Add(tel, email, message);
+
+                return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new { obj.Id }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [HttpGet("GetFavorite")]
+        public object GetFavoriteList(Guid userId, int page = 1, int limit = 10)
+        {
+            try
+            {
+                var fav = GetUserFavoriteDesigner.Get.GetFavoriteList(userId, page, limit);
+                string Host = config.GetSection("WebConfig:AdminWebStie").Value;
+                bool removeLast = Host.Last() == '/';
+                if (removeLast)
+                {
+                    Host = Host.Remove(Host.Length - 1);
+                }
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", fav.Select(o => new {
+                    userId,
+                    Fullname = o.UserFullName,
+                    UrlPath = o.UrlPath == null ? null : o.UrlPath.Replace("~", Host),
+                }).Skip(page - 1).Take(limit).ToList()));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
     }
 }

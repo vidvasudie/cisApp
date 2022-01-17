@@ -69,6 +69,9 @@ namespace cisApp.Core
         public virtual DbSet<PostComment> PostComment { get; set; }
         public virtual DbSet<PostLike> PostLike { get; set; }
         public virtual DbSet<UserBookmarkDesigner> UserBookmarkDesigner { get; set; }
+        public virtual DbSet<Faq> Faq { get; set; }
+        public virtual DbSet<UserHelp> UserHelp { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TmProceedRatio>(entity =>
@@ -767,6 +770,39 @@ namespace cisApp.Core
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
             });
+            modelBuilder.Entity<Faq>(entity =>
+            {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Answer).IsRequired();
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.Qorder).HasColumnName("QOrder");
+
+                entity.Property(e => e.Question).IsRequired();
+            });
+            modelBuilder.Entity<UserHelp>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.Email).HasMaxLength(500);
+
+                entity.Property(e => e.Status)
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("สถานะ 1=แจ้งปัญหา, 2=ตอบกลับ");
+
+                entity.Property(e => e.Tel)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+            });
+
 
             OnModelCreatingPartial(modelBuilder);
         }
