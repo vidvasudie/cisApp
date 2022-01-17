@@ -218,7 +218,7 @@ namespace cisApp.API.Controllers
         /// <returns></returns>
         [Route("api/jobs/getcandidatelist")]
         [HttpGet]
-        public IActionResult GetCandidateList(Guid jobId, int status=0)
+        public IActionResult GetCandidateList(Guid jobId, int status = 5)
         {
             try
             {
@@ -231,7 +231,7 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
-                var data = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId= jobId, statusStr = status.ToString() });
+                var data = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId= jobId, statusStr = status.ToString(), statusOpt= status == 5 ? "less":"" });
                 if(data == null || data.Count == 0)
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
