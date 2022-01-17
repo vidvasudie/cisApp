@@ -130,5 +130,68 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [Route("GetProvince")]
+        [HttpGet]
+        public IActionResult GetProvince()
+        {
+            try
+            {
+                //var xx = Encryption.Decrypt("s9LrP8c+HjTWUbLOve8Xhg==");
+                var province = GetTmProvince.Get.GetByActive();
+                if (province == null)
+                {
+                    return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", province.Select(o => new { id = o.Id, name = o.NameTh, nameEN = o.NameEn })));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [Route("GetDistrict")]
+        [HttpGet]
+        public IActionResult GetDistrict(int id)
+        {
+            try
+            {
+                //var xx = Encryption.Decrypt("s9LrP8c+HjTWUbLOve8Xhg==");
+                var district = GetTmDistrict.Get.GetByProvinceId(id);
+                if (district == null)
+                {
+                    return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", district.Select(o => new { id = o.Id, name = o.NameTh, nameEN = o.NameEn })));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [Route("GetSubDistrict")]
+        [HttpGet]
+        public IActionResult GetSubDistrict(int id)
+        {
+            try
+            {
+                //var xx = Encryption.Decrypt("s9LrP8c+HjTWUbLOve8Xhg==");
+                var subDistrict = GetTmSubDistrict.Get.GetByDistrictId(id);
+                if (subDistrict == null)
+                {
+                    return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", subDistrict.Select(o => new { id = o.Id, name = o.NameTh, nameEN = o.NameEn })));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
     }
 }
