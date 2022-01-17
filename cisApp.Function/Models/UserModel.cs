@@ -132,5 +132,7 @@ namespace cisApp.Function
         public Guid? ApiUserImg { get; set; }
         [NotMapped]
         public List<Guid> ApiAttachFileImg { get; set; } = new List<Guid>();
+        [NotMapped]
+        public int ReqId { get; set; }
     }
 }
