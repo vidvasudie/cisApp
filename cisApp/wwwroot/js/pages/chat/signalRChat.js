@@ -24,6 +24,13 @@ function connectSignalR() {
         
     });
 
+
+    _connection.onclose(function () {
+        _connection.start()
+    })
+
+    //_connection.serverTimeoutInMilliseconds = 1000 * 60 * 10; // for  10 minute
+
     _connection.start()
 }
 
