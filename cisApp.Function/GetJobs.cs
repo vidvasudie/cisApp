@@ -51,7 +51,21 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+            public static List<WinnerModel> GetWinnerSummary()
+            {
+                try
+                {
+                    //SqlParameter[] parameter = new SqlParameter[] {
+                    //   new SqlParameter("@jobId", jobId != Guid.Empty ? jobId : (object)DBNull.Value)
+                    //};
 
+                    return StoreProcedure.GetAllStoredNonparam<WinnerModel>("GetWinnerSummary");
+                }
+                catch (Exception ex)
+                {
+                    return new List<WinnerModel>();
+                }
+            }
             public static List<JobDetailModel> GetJobDetail(Guid jobId)
             {
                 try

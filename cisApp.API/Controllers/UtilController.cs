@@ -193,5 +193,33 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [Route("GetWinner")]
+        [HttpGet]
+        public IActionResult GetWinnerList()
+        {
+            try
+            { 
+                var wins = GetJobs.Get.GetWinnerSummary();
+                string Host = config.GetSection("WebConfig:AdminWebStie").Value;
+                bool removeLast = Host.Last() == '/';
+                if (removeLast)
+                {
+                    Host = Host.Remove(Host.Length - 1);
+                }
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", wins.Select(o => new { 
+                    o.Rownum,
+                    o.UserId,
+                    o.Fullname,
+                    UrlPath = o.UrlPath == null ? null : o.UrlPath.Replace("~", Host),
+                    o.WinCount
+                })));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+
     }
 }
