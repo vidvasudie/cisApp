@@ -47,7 +47,7 @@ namespace cisApp.API.Controllers
                 var data = GetUserDesigner.Manage.UpdateBankProfile(model);
                 if(data == null)
                 {
-                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
+                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ ไม่พบข้อมูลนักออกแบบ", "fail", null));
                 }
                 var dsUser = GetUserDesigner.Get.GetBankProfile(model.UserId);
                  

@@ -33,7 +33,7 @@ namespace cisApp.Function
                 {
                     SqlParameter[] parameter = new SqlParameter[] { 
                        new SqlParameter("@jobId", model.gId != null && model.gId != Guid.Empty ? model?.gId.ToString() : (object)DBNull.Value), 
-                       new SqlParameter("@status", !String.IsNullOrEmpty(model.statusStr) ? model.statusStr : (object)DBNull.Value),
+                       new SqlParameter("@status", !String.IsNullOrEmpty(model.statusStr) && int.Parse(model.statusStr) > 0 ? model.statusStr : (object)DBNull.Value),
                        new SqlParameter("@statusOpt", String.IsNullOrEmpty(model.statusOpt) ? "equal" : model.statusOpt)//equal, more, less, in
                     };
 
@@ -89,6 +89,11 @@ namespace cisApp.Function
                     {
                         using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
+                            int dbCount = context.JobsCandidate.Where(o => o.JobId == jobId && o.UserId == userId).Count();
+                            if(dbCount >= 2)
+                            {
+                                return null;
+                            }
                             JobsCandidate obj = new JobsCandidate();
                             obj.JobId = jobId;
                             obj.UserId = userId;

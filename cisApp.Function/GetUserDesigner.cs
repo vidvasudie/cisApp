@@ -286,12 +286,12 @@ namespace cisApp.Function
                             {
                                 return null;
                             }
-                            var objs = context.UserDesigner.Where(o => o.UserId == model.UserId);
-                            if (!objs.Any())
+                            var obj = context.UserDesigner.Where(o => o.UserId == model.UserId).FirstOrDefault();
+                            if (obj == null)
                             {
                                 return null;
                             }
-                            data = objs.FirstOrDefault();
+                            data = obj;
                             data.BankId = model.BankId;
                             data.AccountNumber = model.AccountNumber;
                             data.AccountType = model.AccountTypeId;

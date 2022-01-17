@@ -154,7 +154,7 @@ namespace cisApp.API.Controllers
                 foreach (var j in jobs)
                 {
                     //get candidate with status 2:อยู่ระหว่างประกวด
-                    j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = j.JobID, statusStr = "2" });
+                    j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = j.JobID, statusStr = "1" });
 
                     //get jobeximage 
                     j.jobsExamImages = GetJobsExamImage.Get.GetImageByJobId(j.JobID);
@@ -195,7 +195,7 @@ namespace cisApp.API.Controllers
                 }
                 var j = job;
                 //get candidate with status 2:อยู่ระหว่างประกวด  
-                j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId, statusStr = "2" });
+                j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId, statusStr = "1" });
 
                 //get jobeximage  
                 j.jobsExamImages = GetJobsExamImage.Get.GetImageByJobId(jobId);
@@ -225,7 +225,7 @@ namespace cisApp.API.Controllers
                         j.UrlPathUserImage,
                         j.RecruitedPrice,
                         j.ContestPrice,
-                        JobCandidates = j.jobCandidates.Select(s => new { s.UrlPathAPI }),
+                        JobCandidates = j.jobCandidates.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, s.UrlPathAPI }),
                         JobsExamImages = j.jobsExamImages.Select(s => new { s.UrlPathAPI })
                     }
                 })); 
@@ -255,7 +255,7 @@ namespace cisApp.API.Controllers
                 var job = GetJobsCandidate.Manage.Add(value.JobId.Value, value.UserId.Value, value.Ip);
                 if (job == null)
                 {
-                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
+                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ นักออกแบบไม่สามารถสมัครงานเดิมได้เกิน 2 ครั้ง", "fail", null));
                 }
                 
                 return Ok(resultJson.success("สำเร็จ", "success", new { job.JobId }));
