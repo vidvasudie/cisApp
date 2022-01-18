@@ -185,7 +185,28 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));
                 }
 
-                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", subDistrict.Select(o => new { id = o.Id, name = o.NameTh, nameEN = o.NameEn })));
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", subDistrict.Select(o => new { id = o.Id, name = o.NameTh, nameEN = o.NameEn, zipcode = o.PostCode })));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [Route("GetText")]
+        [HttpGet]
+        public IActionResult GetText(string key)
+        {
+            try
+            {
+                //var xx = Encryption.Decrypt("s9LrP8c+HjTWUbLOve8Xhg==");
+                var data = GetSettings.Get.GetByKeyword(key);
+                if (data == null)
+                {
+                    return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", data.Content));
             }
             catch (Exception ex)
             {
