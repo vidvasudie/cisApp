@@ -242,6 +242,22 @@ namespace cisApp.Controllers
                     return Json(new ResponseModel().ResponseError("ไม่สามารถส่งงานดังกล่าวได้เนื่องจากสถานะงาน ไม่ได้อยู่ในสถานะที่ส่งงานได้"));
                 }
                 var result = GetAlbum.Manage.Update(data, _UserId.Value);
+
+                // update edit count
+                if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
+                {
+                    GetJobs.Manage.UpdateEditCount(data.JobId, 1);
+
+                }
+                else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
+                {
+                    GetJobs.Manage.UpdateEditCount(data.JobId, 2);
+                }
+                else if (job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
+                {
+                    GetJobs.Manage.UpdateEditCount(data.JobId, 3);
+                }
+
                 if (result != null)
                 {
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Jobs")));
