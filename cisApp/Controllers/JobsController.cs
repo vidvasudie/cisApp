@@ -162,17 +162,23 @@ namespace cisApp.Controllers
         {
             try
             {
-                //string AlbumType = "1";
+                AlbumType = "1";
 
                 //var job = GetJobs.Get.GetById(id);
 
-                //if (job.JobStatus != 5) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
+                //if (job.JobStatus < 5) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
                 //{
                 //    AlbumType = "1";
+
+                //}
+                //else if (job.JobStatus == 7) // 7 คือ ขอพิมพ์เขียวให้ type เป็น 5 คือพิมพ์เขียว
+                //{
+                //    AlbumType = "5";
                 //}
                 //else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
                 //{
                 //    AlbumType = "2";
+
                 //}
                 //else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
                 //{
@@ -184,7 +190,7 @@ namespace cisApp.Controllers
                 //}
                 //else // เกินกว่านี้ เตะออก
                 //{
-
+                    
                 //}
 
                 AlbumModel model = new AlbumModel()
@@ -205,7 +211,36 @@ namespace cisApp.Controllers
         public JsonResult Submitwork(AlbumModel data)
         {
             try
-            {                
+            {
+                string AlbumType = "1";
+                var job = GetJobs.Get.GetById(data.JobId);
+
+                if (job.JobStatus < 5) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
+                {
+                    AlbumType = "1";
+
+                }
+                else if (job.JobStatus == 7) // 7 คือ ขอพิมพ์เขียวให้ type เป็น 5 คือพิมพ์เขียว
+                {
+                    AlbumType = "5";
+                }
+                else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
+                {
+                    AlbumType = "2";
+
+                }
+                else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
+                {
+                    AlbumType = "3";
+                }
+                else if (job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
+                {
+                    AlbumType = "4";
+                }
+                else // เกินกว่านี้ เตะออก
+                {
+                    return Json(new ResponseModel().ResponseError("ไม่สามารถส่งงานดังกล่าวได้เนื่องจากสถานะงาน ไม่ได้อยู่ในสถานะที่ส่งงานได้"));
+                }
                 var result = GetAlbum.Manage.Update(data, _UserId.Value);
                 if (result != null)
                 {

@@ -343,6 +343,10 @@ namespace cisApp.API.Controllers
                         AlbumType = "1";
                         
                     }
+                    else if (job.JobStatus == 7) // 7 คือ ขอพิมพ์เขียวให้ type เป็น 5 คือพิมพ์เขียว
+                    {
+                        AlbumType = "5";
+                    }
                     else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
                     {
                         AlbumType = "2";
