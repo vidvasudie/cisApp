@@ -61,7 +61,7 @@ namespace cisApp.Controllers
                     data.AttachFileImage = GetAttachFile.Get.GetByRefId(userImg.FirstOrDefault().UserImgId.Value);
                 }
                 //get upgrade file attach
-                var fatchs = GetUserDesignerRequest.Get.GetUserDesignerRequestFiles(data.Id);
+                var fatchs = GetUserDesignerRequest.Get.GetUserDesignerRequestFiles(data.ReqId);
                 data.files = fatchs;
 
                 return View(data);
