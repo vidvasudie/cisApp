@@ -188,7 +188,7 @@ namespace cisApp.API.Controllers
             }
             catch (Exception ex)
             {
-                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+                return Unauthorized(resultJson.errors(ex.Message, "ไม่พบข้อมูล", null));
             }
         }
 
