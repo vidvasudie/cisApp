@@ -568,6 +568,8 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
+                //get jobeximage  
+                var jobimgex = GetJobsExamImage.Get.GetImageByJobId(jobId);
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { 
                     jobId = job.JobID,
@@ -585,11 +587,14 @@ namespace cisApp.API.Controllers
                     job.InvPersonalID,
                     job.CreatedDateStr,
                     job.UserID,
+                    job.Fullname,
                     job.FileName,
                     job.UrlPathUserImage,
                     job.RecruitedPrice,
-                    job.ContestPrice, 
-                    candidates = data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate }).ToList() }));
+                    job.ContestPrice,
+                    JobCandidates = data.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, s.UrlPathAPI, s.IsLike, s.PriceRate, s.UserRate }).ToList(),
+                    JobsExamImages = jobimgex.Select(s => new { s.UrlPathAPI, s.JobsExTypeDesc })
+                }));
             }
             catch (Exception ex)
             {
