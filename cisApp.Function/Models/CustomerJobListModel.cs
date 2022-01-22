@@ -8,6 +8,7 @@ namespace cisApp.Function
     public class CustomerJobListModel
     {
         public Guid JobID { get; set; }
+        public string JobNo { get; set; }
         public string JobType { get; set; }
         public decimal JobAreaSize { get; set; }
         public int JobStatus { get; set; }

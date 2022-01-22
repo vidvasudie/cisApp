@@ -226,7 +226,7 @@ namespace cisApp.API.Controllers
                         j.RecruitedPrice,
                         j.ContestPrice,
                         JobCandidates = j.jobCandidates.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, s.UrlPathAPI }),
-                        JobsExamImages = j.jobsExamImages.Select(s => new { s.UrlPathAPI })
+                        JobsExamImages = j.jobsExamImages.Select(s => new { s.UrlPathAPI, s.JobsExTypeDesc })
                     }
                 })); 
             }
