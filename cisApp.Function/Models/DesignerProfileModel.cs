@@ -26,5 +26,6 @@ namespace cisApp.Function
         public decimal AreaSQMRate { get; set; }
         public string PositionName { get; set; }
         public string Caption { get; set; }
+        public bool IsFavorite { get; set; }
     }
 }

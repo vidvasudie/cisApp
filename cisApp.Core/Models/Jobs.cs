@@ -76,5 +76,9 @@ namespace cisApp.Core
         /// จำนวนการขอแก้ไข
         /// </summary>
         public int? EditSubmitCount { get; set; }
+        /// <summary>
+        /// ชื่อในเอกสารขอใบกำกับภาษี
+        /// </summary>
+        public string Invname { get; set; }
     }
 }

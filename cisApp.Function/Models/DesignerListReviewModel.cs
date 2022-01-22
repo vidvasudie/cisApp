@@ -19,6 +19,7 @@ namespace cisApp.Function
         }
         public Guid UserId { get; set; }
         public string Fullname { get; set; }
+        public string PositionName { get; set; }
         public decimal Rate { get; set; }
         public decimal RateAll { get; set; }
         public string Message { get; set; }

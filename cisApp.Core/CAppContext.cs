@@ -192,6 +192,8 @@ namespace cisApp.Core
                     .HasColumnName("InvPersonalID")
                     .HasMaxLength(13);
 
+                entity.Property(e => e.Invname).HasComment("ชื่อในเอกสารขอใบกำกับภาษี");
+
                 entity.Property(e => e.JobAreaSize)
                     .HasColumnType("decimal(10, 2)")
                     .HasComment("ขนาดพื้นที่ ");

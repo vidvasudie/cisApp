@@ -81,15 +81,16 @@ namespace cisApp.Function
                     return null;
                 }
             }
-            public static DesignerProfileModel GetDesignerProfile(Guid userId)
+            public static DesignerProfileModel GetDesignerProfile(Guid userDesignerId, Guid userId)
             {
                 try
                 {
-                    if (userId == Guid.Empty)
+                    if (userDesignerId == Guid.Empty)
                     {
                         return null;
                     }
                     SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userDesignerId", userDesignerId),
                        new SqlParameter("@userId", userId)
                     };
                     var data = StoreProcedure.GetAllStored<DesignerProfileModel>("GetDesignerProfile", parameter);

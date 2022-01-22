@@ -48,6 +48,7 @@ namespace cisApp.API.Controllers
                     IsInvRequired = value.IsInvRequired,
                     InvAddress = value.InvAddress,
                     InvPersonalId = value.InvPersonalId,
+                    Invname = value.Invname,
                     files = value.FileList.Select(o => new FileAttachModel { AttachFileId= Guid.Parse(o.FileId), FileName=o.FileName, TypeId=o.Type }).ToList()
                 };
 
@@ -160,8 +161,24 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
+                string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
+                bool removeLast = Host.Last() == '/'; 
+                if (removeLast)
+                {
+                    Host = Host.Remove(Host.Length - 1);
+                }
 
-                return Ok(resultJson.success("สำเร็จ", "success", data));
+                return Ok(resultJson.success("สำเร็จ", "success", data.Select(o => new { 
+                    o.JobID,
+                    o.JobType,
+                    o.JobAreaSize,
+                    o.JobDescription,
+                    o.JobStatusDesc,
+                    o.AttachFileID,
+                    o.FileName,
+                    ImgUrlPath = o.UrlPath.Replace("~", Host),
+                    o.Fullname
+                })));
 
             }
             catch (Exception ex)
@@ -237,7 +254,7 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
                 
-                return Ok(resultJson.success("สำเร็จ", "success", new { jobId= job.JobId, job.JobFinalPrice, candidates = data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate }).ToList() } ));
+                return Ok(resultJson.success("สำเร็จ", "success", new { jobId= job.JobId, job.JobFinalPrice, candidates = data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate, UrlPath = o.UrlPathAPI }).ToList() } ));
             }
             catch (Exception ex)
             {

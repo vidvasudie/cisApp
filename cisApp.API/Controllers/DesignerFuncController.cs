@@ -337,6 +337,7 @@ namespace cisApp.API.Controllers
                 return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", new { 
                     reviews.FirstOrDefault().DesignerUserId,
                     reviews.FirstOrDefault().DesignerFullname,
+                    reviews.FirstOrDefault().PositionName,
                     PicUrlPath,
                     reviews = reviews.Select(o => new { o.UserId, o.Fullname, o.Rate, o.RateAll, o.Message })
                 }, model.take, reviews.Count()));
@@ -505,11 +506,11 @@ namespace cisApp.API.Controllers
         /// <returns></returns>
         [Route("api/designer/profile")]
         [HttpGet]
-        public IActionResult GetProfile(Guid userId, int? skip = 0, int? take = 100)
+        public IActionResult GetProfile(Guid userDesignerId, Guid userId, int? skip = 0, int? take = 100)
         {
             try
             { 
-                var dpf = GetUserDesigner.Get.GetDesignerProfile(userId);
+                var dpf = GetUserDesigner.Get.GetDesignerProfile(userDesignerId, userId);
                 if (dpf == null)
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
@@ -544,6 +545,7 @@ namespace cisApp.API.Controllers
                     dpf.AreaSQMUsed,
                     dpf.AreaSQMRemain,
                     dpf.PositionName,
+                    dpf.IsFavorite,
                     dpf.Caption,
                     albums = imgs.Where(o => o.AttachFileName != null).Select(o => new { o.AlbumName, imageUrl = o.UrlPath.Replace("~", Host), o.AttachFileName })
                 }));

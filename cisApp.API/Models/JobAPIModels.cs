@@ -45,6 +45,7 @@ namespace cisApp.API.Models
         /// </summary>
         public int? JobVatRatio { get; set; } = 7;
         public bool IsInvRequired { get; set; } = false;
+        public string Invname { get; set; }
         public string InvAddress { get; set; }
         public string InvPersonalId { get; set; }
         public List<FileListModel> FileList { get; set; }
