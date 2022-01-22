@@ -144,6 +144,54 @@ namespace cisApp.Function
                 }
             }
 
+            public static bool IsTelAlreadyUseInsert(string email)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[]
+                    {
+                        new SqlParameter("@stext", email)
+                    };
+
+                    var data = StoreProcedure.GetAllStored<UserModel>("GetUserByTel", parameter);
+
+                    if (data.Count > 0)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static bool IsTelAlreadyUseUpdate(string email)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[]
+                    {
+                        new SqlParameter("@stext", email)
+                    };
+
+                    var data = StoreProcedure.GetAllStored<UserModel>("GetUserByTel", parameter);
+
+                    if (data.Count > 1)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
             public static Users GetByThirdPartyInfo(string fname, string lname, string email)
             {
                 try
@@ -282,6 +330,11 @@ namespace cisApp.Function
                                 {
                                     throw new Exception("Email ดังกล่าวถูกใช้งานไปแล้ว");
                                 }
+
+                                if (!Get.IsTelAlreadyUseUpdate(data.Tel))
+                                {
+                                    throw new Exception("เบอร์โทรศัพท์ ดังกล่าวถูกใช้งานไปแล้ว");
+                                }
                             }
                             else
                             {
@@ -292,6 +345,11 @@ namespace cisApp.Function
                                 if (!Get.IsEmailAlreadyUseInsert(data.Email))
                                 {
                                     throw new Exception("Email ดังกล่าวถูกใช้งานไปแล้ว");
+                                }
+
+                                if (!Get.IsTelAlreadyUseInsert(data.Tel))
+                                {
+                                    throw new Exception("เบอร์โทรศัพท์ ดังกล่าวถูกใช้งานไปแล้ว");
                                 }
 
                                 // in case insert we need insert new password
