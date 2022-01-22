@@ -120,6 +120,7 @@ namespace cisApp.API.Controllers
                 }
                 return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", fav.Select(o => new {
                     userId,
+                    userDesignerId = o.UserId,
                     Fullname = o.UserFullName,
                     UrlPath = o.UrlPath == null ? null : o.UrlPath.Replace("~", Host),
                 }).Skip(page - 1).Take(limit).ToList()));
