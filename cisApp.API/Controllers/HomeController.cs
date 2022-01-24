@@ -75,6 +75,8 @@ namespace cisApp.API.Controllers
 
                 var Liked = GetPostLike.Get.GetByUserIdAndRefId(userId.Value, Obj.RefId.Value);
 
+                var comment = GetPostComment.Get.GetByRefId(Obj.RefId.Value);
+
                 var user = GetUser.Get.GetById(Obj.UserId.Value);
 
                 if (Obj != null)
@@ -94,7 +96,9 @@ namespace cisApp.API.Controllers
                             LikeCount = Obj.LikeCount != null ? Obj.LikeCount : 0,
                             IsLiked = Liked == null ? false : true,
                             DesignerName = user.Fname + " " + user.Lname,
-                            ProfilePath = user.AttachFileImage != null ? webAdmin + user.AttachFileImage.UrlPathAPI : webAdmin + _DefaultProfile
+                            ProfilePath = user.AttachFileImage != null ? webAdmin + user.AttachFileImage.UrlPathAPI : webAdmin + _DefaultProfile,
+                            CreateDate = Obj.CreatedDate,
+                            CommentCount = comment.Count
                         }
                        ));
                 }
