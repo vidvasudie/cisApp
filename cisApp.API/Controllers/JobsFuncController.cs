@@ -508,6 +508,7 @@ namespace cisApp.API.Controllers
                     data.First().JobId,
                     data.First().JobCaUserId,
                     PicUrlPath,
+                    LastLogin = data.First().LastLoginStr,
                     data.First().Fullname,
                     data.First().Tel,
                     data.First().IsCanEdit,

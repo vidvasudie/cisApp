@@ -1,6 +1,8 @@
-﻿using System;
+﻿using cisApp.library;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using static cisApp.library.DateTimeUtil;
 
 namespace cisApp.Function
 {
@@ -15,6 +17,18 @@ namespace cisApp.Function
             get
             {
                 return "~/Uploads" + "/" + this.PicAttachFileID + "/" + this.PicFileName;
+            }
+        }
+        public DateTime? LastLogin { get; set; }
+        public string LastLoginStr
+        {
+            get
+            {
+                return LastLogin.ToStringFormat(DateTimeFormat.FULL);
+            }
+            set
+            {
+                LastLogin = value.ToDateTimeFormat();
             }
         }
         public string Fullname { get; set; }
