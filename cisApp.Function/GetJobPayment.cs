@@ -218,6 +218,26 @@ namespace cisApp.Function
                             context.JobsLogs.Add(log);
                             context.SaveChanges();
 
+                            if (obj.PayStatus == 3)
+                            {
+                                var job = GetJobs.Get.GetById(obj.JobId.Value);
+
+                                job.JobStatus = 3;
+
+                                context.Jobs.Update(job);
+                                context.SaveChanges();
+
+                                var cadi = GetJobsCandidate.Get.GetByJobId(new SearchModel() { JobId = job.JobId });
+
+                                foreach (var item in cadi)
+                                {
+                                    item.CaStatusId = 2;
+                                }
+
+                                context.JobsCandidate.UpdateRange(cadi);
+                                context.SaveChanges();
+                            }
+
                             dbContextTransaction.Commit();
 
                             return obj;
