@@ -221,43 +221,40 @@ namespace cisApp.Function
                             obj.UpdatedBy = value.UserId;
                             context.Jobs.Update(obj);
                             context.SaveChanges();
-
+                             
+                            List < UserDesigner > tmp = new List<UserDesigner>();
+                            var usrDesginers = context.UserDesigner.ToList();
                             var jobCas = context.JobsCandidate.Where(o => o.JobId == value.JobId);
                             if (!jobCas.Any())
                             {
                                 return null;
                             }
-                            var jobCa = jobCas.Where(o => o.UserId == value.CaUserId).FirstOrDefault();
-                            jobCa.CaStatusId = 3;//3=คัดเลือก
-                            jobCa.UpdatedDate = DateTime.Now;
-                            jobCa.UpdatedBy = value.UserId;
-                            context.JobsCandidate.Update(jobCa);
-                            context.SaveChanges();
-
-                            //change status for other 2 candidate
-                            var jobCa2 = context.JobsCandidate.Where(o => o.JobId == value.JobId && o.UserId != value.CaUserId);
-                            foreach (var ca in jobCa2)
+                            foreach (var ca in jobCas)
                             {
-                                ca.CaStatusId = 4;//4=ไม่ได้รับคัดเลือก
-                                ca.UpdatedDate = DateTime.Now;
-                                ca.UpdatedBy = value.UserId;
+                                if (ca.UserId == value.CaUserId)
+                                {
+                                    ca.CaStatusId = 3;//3=คัดเลือก
+                                    ca.UpdatedDate = DateTime.Now;
+                                    ca.UpdatedBy = value.UserId;
+                                    
+                                }
+                                else
+                                {
+                                    //change status for other 2 candidate
+                                    ca.CaStatusId = 4;//4=ไม่ได้รับคัดเลือก
+                                    ca.UpdatedDate = DateTime.Now;
+                                    ca.UpdatedBy = value.UserId;
 
-                                context.JobsCandidate.Update(ca);
-                                context.SaveChanges();
-                            } 
-
-                            //clear work slot for other 2 candidate
-                            List<UserDesigner> tmp = new List<UserDesigner>();
-                            var usrDesginers = context.UserDesigner.ToList();
-                            foreach (var ca in context.JobsCandidate.Where(o => o.JobId == value.JobId && o.UserId != value.CaUserId))
-                            {
-                                var usrDesginer = usrDesginers.Where(o => o.UserId == ca.UserId).FirstOrDefault();
-                                usrDesginer.AreaSqmused -= (int) obj.JobAreaSize;
-                                usrDesginer.AreaSqmremain = usrDesginer.AreaSqmmax - usrDesginer.AreaSqmused;
-                                tmp.Add(usrDesginer);
+                                    //clear work slot for other 2 candidate
+                                    var usrDesginer = usrDesginers.Where(o => o.UserId == ca.UserId).FirstOrDefault();
+                                    usrDesginer.AreaSqmused -= (int)obj.JobAreaSize;
+                                    usrDesginer.AreaSqmremain = usrDesginer.AreaSqmmax - usrDesginer.AreaSqmused;
+                                    tmp.Add(usrDesginer);
+                                }
                             }
-                            context.UserDesigner.UpdateRange(tmp);
-                            context.SaveChanges();
+                            context.JobsCandidate.UpdateRange(jobCas);
+                            context.UserDesigner.UpdateRange(tmp); 
+                            context.SaveChanges(); 
 
                             //add job tracking for jobStatus 
                             JobsTracking tracking = new JobsTracking();

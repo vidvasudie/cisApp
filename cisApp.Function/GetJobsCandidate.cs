@@ -33,7 +33,7 @@ namespace cisApp.Function
                 {
                     SqlParameter[] parameter = new SqlParameter[] { 
                        new SqlParameter("@jobId", model.gId != null && model.gId != Guid.Empty ? model?.gId.ToString() : (object)DBNull.Value), 
-                       new SqlParameter("@status", !String.IsNullOrEmpty(model.statusStr) && int.Parse(model.statusStr) > 0 ? model.statusStr : (object)DBNull.Value),
+                       new SqlParameter("@status", !String.IsNullOrEmpty(model.statusStr) ? model.statusStr : (object)DBNull.Value),
                        new SqlParameter("@statusOpt", String.IsNullOrEmpty(model.statusOpt) ? "equal" : model.statusOpt)//equal, more, less, in
                     };
 

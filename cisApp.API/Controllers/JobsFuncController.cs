@@ -508,6 +508,7 @@ namespace cisApp.API.Controllers
                     data.First().JobId,
                     data.First().JobCaUserId,
                     PicUrlPath,
+                    LastLogin = data.First().LastLoginStr,
                     data.First().Fullname,
                     data.First().Tel,
                     data.First().IsCanEdit,
@@ -564,10 +565,10 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
                 var data = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId, statusStr = "2,3,4", statusOpt="in" });
-                if (data == null || data.Count == 0)
-                {
-                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
-                }
+                //if (data == null || data.Count == 0)
+                //{
+                //    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
+                //}
                 //get jobeximage  
                 var jobimgex = GetJobsExamImage.Get.GetImageByJobId(jobId);
 
