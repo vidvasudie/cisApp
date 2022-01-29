@@ -71,6 +71,7 @@ namespace cisApp.Core
         public virtual DbSet<UserBookmarkDesigner> UserBookmarkDesigner { get; set; }
         public virtual DbSet<Faq> Faq { get; set; }
         public virtual DbSet<UserHelp> UserHelp { get; set; }
+        public virtual DbSet<Otp> Otp { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -803,6 +804,45 @@ namespace cisApp.Core
                 entity.Property(e => e.Tel)
                     .HasMaxLength(10)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Otp>(entity =>
+            {
+                entity.Property(e => e.OtpId)
+                    .HasColumnName("otpID");
+
+                entity.Property(e => e.CreateDate).HasColumnName("createDate");
+
+                entity.Property(e => e.Expire)
+                    .HasColumnName("expire")
+                    .HasComment("เวลาหมดอายุ");
+
+                entity.Property(e => e.IsReferesh)
+                    .HasColumnName("isReferesh")
+                    .HasComment("กรณี ขอ otp รอบใหม่");
+
+                entity.Property(e => e.OtpMsg)
+                    .HasColumnName("otpMsg")
+                    .HasComment("เลข  otp ที่จัดส่ง");
+
+                entity.Property(e => e.OtpRef)
+                    .HasColumnName("otpRef")
+                    .HasComment("อ้างอิง รหัส otp เดิม กรณี ขอ otp รอบใหม่");
+
+                entity.Property(e => e.OtpType)
+                    .HasColumnName("otpType")
+                    .HasMaxLength(6)
+                    .IsUnicode(false)
+                    .HasComment("sms / email");
+
+                entity.Property(e => e.SendTo)
+                    .HasColumnName("sendTo")
+                    .HasMaxLength(255)
+                    .HasComment("เบอร์โทร / Email");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnName("userID")
+                    .HasComment("ลงทะเบียนใหม่ จะไม่มี");
             });
 
 

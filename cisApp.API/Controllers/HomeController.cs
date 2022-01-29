@@ -37,14 +37,7 @@ namespace cisApp.API.Controllers
                 };
                 List<AlbumImageModel> Obj = new List<AlbumImageModel>();
 
-                if (!string.IsNullOrEmpty(tags) || !string.IsNullOrEmpty(categories) || !string.IsNullOrEmpty(orderby))
-                {
-                    Obj = GetAlbum.Get.GetAlbumImage(model, webAdmin);
-                }
-                else
-                {
-                    Obj = GetAlbum.Get.GetRandomAlbumImage(webAdmin, model.pageSize.Value);
-                }
+                Obj = GetAlbum.Get.GetAlbumImage(model, webAdmin);
 
                 if (Obj.Count > 0)
                 {
