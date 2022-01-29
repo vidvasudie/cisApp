@@ -404,8 +404,12 @@ namespace cisApp.API.Controllers
 
                     var result = GetAlbum.Manage.Update(model, value.UserId.Value);
 
+                    if (job.JobStatus < 5)
+                    {
+
+                    }
                     // update edit count
-                    if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
+                    else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
                     {
                         GetJobs.Manage.UpdateEditCount(value.JobId.Value, 1);
 
@@ -417,6 +421,12 @@ namespace cisApp.API.Controllers
                     else if (job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
                     {
                         GetJobs.Manage.UpdateEditCount(value.JobId.Value, 3);
+                    }
+
+                    if (job.JobStatus == 4)
+                    {
+                        job.JobStatus = 5;
+                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
                     }
                     return Ok(resultJson.success("สำเร็จ", "success", new { result.JobId }));
                 }
