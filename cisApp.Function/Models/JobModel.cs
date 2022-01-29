@@ -15,7 +15,7 @@ namespace cisApp.Function
         public string UserTel { get; set; }
          
         public string JobTypeDesc { get; set; }
-         
+        public string PayStatusDesc { get; set; }
         public string JobStatusDesc { get; set; } 
         public string JobBeginDateStr
         {

@@ -7,6 +7,8 @@ namespace cisApp.Function
     public class CustomerJobHistoryListModel
     {
         public Guid JobID { get; set; }
+        public string JobNo { get; set; }
+        public int JobStatus { get; set; }
         public string JobType { get; set; }
         public decimal JobAreaSize { get; set; }
         public string JobDescription { get; set; }

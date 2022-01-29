@@ -160,7 +160,7 @@ namespace cisApp.API.Controllers
                     j.jobsExamImages = GetJobsExamImage.Get.GetImageByJobId(j.JobID);
                 }
 
-                return Ok(resultJson.success("สร้างใบงานสำเร็จ", "success", jobs, model.take, jobs.Count()));
+                return Ok(resultJson.success("สร้างใบงานสำเร็จ", "success", jobs.OrderByDescending(o => o.CreatedDate), model.take, jobs.Count()));
             }
             catch (Exception ex)
             {
