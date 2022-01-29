@@ -23,6 +23,7 @@ namespace cisApp.Function
         public string Ip { get; set; }
         public int UserMessageCount { get; set; }
         public string CaStatusDesc { get; set; }
+        public string PayStatusDesc { get; set; }
         public int RegisterDays
         {
             get

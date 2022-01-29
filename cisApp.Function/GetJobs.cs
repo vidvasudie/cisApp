@@ -50,7 +50,7 @@ namespace cisApp.Function
                 {
                     throw ex;
                 }
-            }
+            } 
             public static List<WinnerModel> GetWinnerSummary()
             {
                 try
@@ -559,6 +559,29 @@ namespace cisApp.Function
                         var job = context.Jobs.Find(jobId);
 
                         job.EditSubmitCount = editCount;
+
+                        context.Jobs.Update(job);
+
+                        context.SaveChanges();
+
+                        return job;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static Jobs UpdateRequestInstallFileStatus(Guid jobId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var job = context.Jobs.Find(jobId);
+
+                        job.JobStatus = 7;//ขอไฟล์แบบติดตั้ง
 
                         context.Jobs.Update(job);
 

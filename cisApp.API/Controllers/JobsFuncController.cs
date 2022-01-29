@@ -166,18 +166,23 @@ namespace cisApp.API.Controllers
                 if (removeLast)
                 {
                     Host = Host.Remove(Host.Length - 1);
-                }
+                } 
 
                 return Ok(resultJson.success("สำเร็จ", "success", data.Select(o => new { 
                     o.JobID,
+                    o.JobNo,
                     o.JobType,
                     o.JobAreaSize,
                     o.JobDescription,
                     o.JobStatusDesc,
                     o.AttachFileID,
                     o.FileName,
-                    ImgUrlPath = o.UrlPath.Replace("~", Host),
-                    o.Fullname
+                    ImgUrlPath = o.AttachFileID != null ? o.UrlPath.Replace("~", Host) : "",
+                    o.Fullname,
+                    candidates = o.JobStatus == 6 ? 
+                        GetJobsCandidate.Get.GetByJobId(new SearchModel { gId= o.JobID, statusStr="1", statusOpt="more" })
+                            .Select(o => new { o.UserId, o.UserFullName, o.AttachFileName, UrlPath = o.UrlPathAPI }).ToList()
+                        : new List<JobCandidateModel>().Select(o => new { o.UserId, o.UserFullName, o.AttachFileName, UrlPath = o.UrlPathAPI }).ToList()
                 })));
 
             }
@@ -243,18 +248,19 @@ namespace cisApp.API.Controllers
                 {
                     return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
                 }
-                var job = GetJobs.Get.GetById(jobId);
-                if (job == null)
+                var jobs = GetJobs.Get.GetJobs(new SearchModel { gId= jobId });
+                if (jobs == null || jobs.Count == 0)
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
+                var job = jobs.First();
                 var data = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId= jobId, statusStr = status.ToString(), statusOpt= status == 5 ? "less":"" });
                 if(data == null || data.Count == 0)
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
                 
-                return Ok(resultJson.success("สำเร็จ", "success", new { jobId= job.JobId, job.JobFinalPrice, candidates = data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate, UrlPath = o.UrlPathAPI }).ToList() } ));
+                return Ok(resultJson.success("สำเร็จ", "success", new { jobId= job.JobId, job.JobFinalPrice, job.PayStatusDesc, candidates = data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate, UrlPath = o.UrlPathAPI }).ToList() } ));
             }
             catch (Exception ex)
             {
@@ -514,7 +520,7 @@ namespace cisApp.API.Controllers
                     data.First().IsCanEdit,
                     data.First().IsConfirmApprove,
                     data.First().IsCusFavorite,
-                    albums = data.Select(o => new { o.AlbumName, o.AlbumType, o.AlbumTypeDesc, o.Url, ImgUrlPath=o.ImgUrlPath.Replace("~", Host) }),
+                    albums = data.Where(o => o.AlbumName != null).Select(o => new { o.AlbumName, o.AlbumType, o.AlbumTypeDesc, o.Url, ImgUrlPath=o.ImgAttachFileID != null ? o.ImgUrlPath.Replace("~", Host):"" }),
                 } ));
             }
             catch (Exception ex)
@@ -603,7 +609,26 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// สำหรับปรับค่าสถานะใบงาน เป็น ขอไฟล์แบบติดตั้ง
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        [Route("api/jobs/requestinstallfile")]
+        [HttpPost]
+        public IActionResult RequestInstallFile(Guid jobId)
+        {
+            try
+            {
+                var data = GetJobs.Manage.UpdateRequestInstallFileStatus(jobId);
 
+                return Ok(resultJson.success("สำเร็จ", "success", new { data.JobId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
 
 
     }
