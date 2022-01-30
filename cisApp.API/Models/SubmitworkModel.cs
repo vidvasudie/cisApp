@@ -21,5 +21,6 @@ namespace cisApp.API.Models
         /// </summary>
         public string AlbumType { get; set; }
         public List<Guid> imgs { get; set; }
+        public int? albumId { get; set; }
     }
 }

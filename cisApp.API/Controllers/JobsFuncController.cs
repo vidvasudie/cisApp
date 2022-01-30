@@ -6,6 +6,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using cisApp.Function;
 using cisApp.Core;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,6 +17,12 @@ namespace cisApp.API.Controllers
     [ApiController]
     public class JobsFuncController : BaseController
     {
+
+        readonly static IConfigurationRoot config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+                      .AddJsonFile("appsettings.json")
+                      .Build();
+
         /// <summary>
         /// สร้างใบงาน
         /// </summary>
@@ -350,6 +358,79 @@ namespace cisApp.API.Controllers
         }
 
         [Route("api/jobs/submitwork")]
+        [HttpGet]
+        public IActionResult SubmitWork(Guid jobId, Guid userId)
+        {
+            try
+            {
+                string AlbumType = "1";
+
+                var job = GetJobs.Get.GetById(jobId);
+
+                
+
+                if (job.JobStatus < 4) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
+                {
+                    AlbumType = "1";
+
+                }
+                else if (job.JobStatus == 7) // 7 คือ ขอพิมพ์เขียวให้ type เป็น 5 คือพิมพ์เขียว
+                {
+                    AlbumType = "5";
+                }
+                else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
+                {
+                    AlbumType = "2";
+
+                }
+                else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
+                {
+                    if (job.JobStatus == 9)
+                    {
+                        AlbumType = "3";
+                    }
+                    else
+                    {
+                        AlbumType = "2";
+                    }
+                }
+                else if (job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
+                {
+                    if (job.JobStatus == 9)
+                    {
+                        AlbumType = "4";
+                    }
+                    else
+                    {
+                        AlbumType = "3";
+                    }
+                }
+                else
+                {
+                    AlbumType = "4";
+                    //return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "ใบงานดังกล่าวไม่ได้อยู่ในสถานะเปิดให้ส่งผลงาน", null)); ;
+                }
+
+                var album = GetAlbum.Get.GetByJobIdWithStatus(jobId, userId, AlbumType);
+
+                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+
+                List<AttachFile> attachFiles = new List<AttachFile>();
+
+                if (album != null)
+                {
+                    attachFiles = GetAlbum.Get.GetAttachFileByAlbumId(album.AlbumId.Value, webAdmin);
+                }
+
+                return Ok(resultJson.success("สำเร็จ", "success", new { album, attachFiles }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [Route("api/jobs/submitwork")]
         [HttpPost]
         public IActionResult SubmitWork([FromBody]SubmitworkModel value)
         {
@@ -360,6 +441,11 @@ namespace cisApp.API.Controllers
                     string AlbumType = "1";
 
                     var job = GetJobs.Get.GetById(value.JobId.Value);
+
+                    if (job.JobStatus >= 4 && value.UserId != job.JobCaUserId)
+                    {
+                        return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "เฉพาะผู้ผ่านการประกวดเท่านั้นที่สามารถส่งงานได้", null)); ;
+                    }
 
                     if (job.JobStatus < 5) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
                     {
@@ -377,11 +463,25 @@ namespace cisApp.API.Controllers
                     }
                     else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
                     {
-                        AlbumType = "3";
+                        if (job.JobStatus == 9)
+                        {
+                            AlbumType = "3";
+                        }
+                        else
+                        {
+                            AlbumType = "2";
+                        }
                     }
                     else if (job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
                     {
-                        AlbumType = "4";
+                        if (job.JobStatus == 9)
+                        {
+                            AlbumType = "4";
+                        }
+                        else
+                        {
+                            AlbumType = "3";
+                        }
                     }
                     else // เกินกว่านี้ เตะออก
                     {
@@ -397,14 +497,15 @@ namespace cisApp.API.Controllers
                         AlbumName = value.AlbumName,
                         Url = value.Url,
                         AlbumType = AlbumType,
-                        apiFiles = value.imgs
+                        apiFiles = value.imgs,
+                        AlbumId = value.albumId
                     };
 
                     
 
                     var result = GetAlbum.Manage.Update(model, value.UserId.Value);
 
-                    if (job.JobStatus < 5)
+                    if (job.JobStatus < 4)
                     {
 
                     }
@@ -412,15 +513,16 @@ namespace cisApp.API.Controllers
                     else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
                     {
                         GetJobs.Manage.UpdateEditCount(value.JobId.Value, 1);
-
                     }
-                    else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
+                    else if (job.JobStatus == 9 && job.EditSubmitCount == 1) // แก้ครั้งแรก
                     {
                         GetJobs.Manage.UpdateEditCount(value.JobId.Value, 2);
+                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
                     }
-                    else if (job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
+                    else if (job.JobStatus == 9 &&job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
                     {
                         GetJobs.Manage.UpdateEditCount(value.JobId.Value, 3);
+                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
                     }
 
                     if (job.JobStatus == 4)
