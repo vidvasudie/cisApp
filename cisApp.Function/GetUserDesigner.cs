@@ -247,7 +247,26 @@ namespace cisApp.Function
                     return new List<DesignerJobListModel>();
                 }
             }
+            public static List<DesignerJobListModel> GetJobDetailValid(Guid userId, Guid jobId)
+            {
+                try
+                {
+                    if (Guid.Empty == userId || Guid.Empty == jobId)
+                    {
+                        return new List<DesignerJobListModel>();
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", userId),
+                       new SqlParameter("@jobId", jobId)
+                    };
 
+                    return StoreProcedure.GetAllStored<DesignerJobListModel>("GetJobDetailValidate", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new List<DesignerJobListModel>();
+                }
+            }
             public static List<DesignerJobListModel> GetJobContestList(DesignerJobListSearch model)
             {
                 try

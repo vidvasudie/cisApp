@@ -37,7 +37,7 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
-
+                jobs = jobs.Where(o => o.UserID != userId).ToList();
                 List<DesignerJobListModel> tmp = new List<DesignerJobListModel>();
                 int maxDayWait = int.Parse(_config.GetSection("JobProcess:WaitCaSubmit").Value);
                 foreach (var j in jobs)
@@ -180,20 +180,15 @@ namespace cisApp.API.Controllers
         public IActionResult GetSubmitJobDetail(Guid userId, Guid jobId)
         {
             try
-            {
-                var model = new DesignerJobListSearch() { userId = userId };
-                //get list of jobs designer can sign
-                var jobs = GetUserDesigner.Get.GetJobListSearch(model);
+            { 
+                //get list of jobs designer can sign with validate massage
+                var jobs = GetUserDesigner.Get.GetJobDetailValid(userId, jobId);
                 if (jobs == null || jobs.Count() == 0)
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
-                }
-                var job = jobs.Where(o => o.JobID == jobId).FirstOrDefault();
-                if (job == null)
-                {
-                    return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
-                }
-                var j = job;
+                } 
+                var j = jobs.FirstOrDefault();  
+
                 //get candidate with status 2:อยู่ระหว่างประกวด  
                 j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = jobId, statusStr = "1" });
 
@@ -225,6 +220,8 @@ namespace cisApp.API.Controllers
                         j.UrlPathUserImage,
                         j.RecruitedPrice,
                         j.ContestPrice,
+                        j.ValidMassage,
+                        IsCanSubmit = String.IsNullOrEmpty(j.ValidMassage),
                         JobCandidates = j.jobCandidates.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, s.UrlPathAPI }),
                         JobsExamImages = j.jobsExamImages.Select(s => new { s.UrlPathAPI, s.JobsExTypeDesc })
                     }
@@ -250,6 +247,12 @@ namespace cisApp.API.Controllers
                 if (value.JobId == Guid.Empty || value.UserId == Guid.Empty)
                 {
                     return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
+
+                var jobs = GetUserDesigner.Get.GetJobDetailValid(value.UserId.Value, value.JobId.Value);
+                if (!String.IsNullOrEmpty(jobs.FirstOrDefault().ValidMassage))
+                {
+                    return Ok(resultJson.errors(jobs.FirstOrDefault().ValidMassage, "Can not submit job.", null));
                 }
 
                 var job = GetJobsCandidate.Manage.Add(value.JobId.Value, value.UserId.Value, value.Ip);

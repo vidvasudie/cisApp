@@ -579,15 +579,47 @@ namespace cisApp.Function
                 {
                     using (var context = new CAppContext())
                     {
-                        var job = context.Jobs.Find(jobId);
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            var job = context.Jobs.Find(jobId);
 
-                        job.JobStatus = 7;//ขอไฟล์แบบติดตั้ง
+                            job.JobStatus = 7;//ขอไฟล์แบบติดตั้ง 
+                            
+                            context.Jobs.Update(job); 
+                            context.SaveChanges();
+                                                       
+                            dbContextTransaction.Commit();
 
-                        context.Jobs.Update(job);
+                            return job;
+                        }
+                            
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            public static Jobs UpdateRequestEditStatus(Guid jobId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            var job = context.Jobs.Find(jobId);
 
-                        context.SaveChanges();
+                            job.JobStatus = 9;//แก้ไขผลงาน
+                            job.JobEndDate = DateTime.Now.AddHours((int)job.JobAreaSize / 10 * 2.5 * 24);
 
-                        return job;
+                            context.Jobs.Update(job);
+
+                            context.SaveChanges();
+
+                            return job;
+                        }
+                        
                     }
                 }
                 catch (Exception ex)

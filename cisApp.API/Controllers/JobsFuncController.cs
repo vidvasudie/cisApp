@@ -630,6 +630,26 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// สำหรับปรับค่าสถานะใบงาน เป็น แก้ไขผลงาน
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        [Route("api/jobs/requestedit")]
+        [HttpPost]
+        public IActionResult RequestEdit(Guid jobId)
+        {
+            try
+            {
+                var data = GetJobs.Manage.UpdateRequestEditStatus(jobId);
+
+                return Ok(resultJson.success("สำเร็จ", "success", new { data.JobId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
 
     }
 }
