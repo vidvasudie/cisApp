@@ -32,6 +32,24 @@ namespace cisApp.Function
                 }                
             }
 
+            public static Album GetByJobIdWithStatus(Guid id, Guid userId, string albumType)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.Album.Where(o => o.JobId == id && o.UserId == userId && o.AlbumType == albumType
+                        && o.IsActive == true && o.IsDeleted == false).FirstOrDefault();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
             public static List<AlbumModel> GetJobCandidateAlbum(SearchModel model)
             {
                 try
@@ -195,6 +213,48 @@ namespace cisApp.Function
                 }
             }
 
+            public static List<AttachFile> GetAttachFileByAlbumId(int id, string domain)
+            {
+                try
+                {
+                    List<AttachFile> attachFiles = new List<AttachFile>();
+
+                    var albumImages = GetAlbumImageByAlbumId(id);
+
+                    foreach (var item in albumImages)
+                    {
+                        AttachFile attach = GetAttachFile.Get.GetByRefId(item.ImgId.Value);
+
+                        attach.Path = domain + attach.UrlPathAPI;
+
+                        attachFiles.Add(attach);
+                    }
+
+                    return attachFiles;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static List<AlbumImage> GetAlbumImageByAlbumId(int id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var albumImages = context.AlbumImage.Where(o => o.AlbumId == id).ToList();
+
+                        return albumImages;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
         }
 
         public class Manage
@@ -210,7 +270,7 @@ namespace cisApp.Function
                             Album obj = new Album();
                             if (data.AlbumId != null)
                             {
-                                
+                                obj = context.Album.Find(data.AlbumId.Value);
                             }
                             else
                             {
@@ -331,12 +391,19 @@ namespace cisApp.Function
             {
                 try
                 {
+                    // need to delete previous img ?
+
+                    var albumImages = Get.GetAlbumImageByAlbumId(obj.AlbumId.Value);
+
+                    context.AlbumImage.RemoveRange(albumImages);
+
+                    context.SaveChanges();
+
                     if (imgs == null)
                     {
                         return 1;
                     }
-
-                    // need to delete previous img ?
+                                       
 
                     foreach(var file in imgs)
                     {

@@ -7,13 +7,20 @@ using cisApp.Function;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using cisApp.Core;
-
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace cisApp.API.Controllers
 { 
     [ApiController]
     public class PaymentController : BaseController
-    {        
+    {
+
+        public static IConfigurationRoot _config = new ConfigurationBuilder()
+                                    .SetBasePath(Directory.GetCurrentDirectory())
+                                    .AddJsonFile("appsettings.json")
+                                    .Build();
+
         [Route("api/Payment/Create")]
         [HttpPost]
         public IActionResult PaymentCreate([FromBody] PaymentModel value)
@@ -40,13 +47,21 @@ namespace cisApp.API.Controllers
 
                     var payment =  GetJobPayment.Manage.Update(data, value.UserId.Value, value.Ip);
 
+                    string accountBankName = _config.GetSection("Account:AccountBankName").Value;
+                    string accountName = _config.GetSection("Account:AccountName").Value;
+                    string accountNumber = _config.GetSection("Account:AccountNumber").Value;
+
                     return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new { JobPayId = payment.JobPayId
                         , JobId = payment.JobId
                         , UserId = value.UserId
                         , PayDate = payment.PayDate
                         , PayExpire = payment.PayDate.Value.AddMinutes(15)
                     , JobFinalPrice = job.JobFinalPrice
-                    , CandidateAccount = "0000000000"}));
+                    , CandidateAccount = "0000000000"
+                    , AccountBankName = accountBankName
+                    , AccountName = accountName
+                    , AccountNumber = accountNumber
+                    }));
                 }
 
                 return Ok(resultJson.errors("JobId And UserId Is Ruqired", "fail", null));                

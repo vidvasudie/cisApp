@@ -61,6 +61,16 @@ namespace cisApp.library
             return builder.ToString();
         }
 
+        public static string RandomOtpNumber(int size = 6)
+        {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < size; i++)
+            {
+                builder.Append(RandomNumber(0, 9));
+            }
+            return builder.ToString();
+        }
+
         public static string RandomString(int size, bool lowerCase)
         {
             StringBuilder builder = new StringBuilder();

@@ -573,6 +573,29 @@ namespace cisApp.Function
                 }
             }
 
+            public static Jobs UpdateJobStatus(Guid jobId, int status)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var job = context.Jobs.Find(jobId);
+
+                        job.JobStatus = status;
+
+                        context.Jobs.Update(job);
+
+                        context.SaveChanges();
+
+                        return job;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
             public static Jobs UpdateRequestInstallFileStatus(Guid jobId)
             {
                 try
