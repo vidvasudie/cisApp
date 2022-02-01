@@ -37,7 +37,7 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
-                jobs = jobs.Where(o => o.UserID != userId).ToList();
+                //jobs = jobs.Where(o => o.UserID != userId).ToList();
                 List<DesignerJobListModel> tmp = new List<DesignerJobListModel>();
                 int maxDayWait = int.Parse(_config.GetSection("JobProcess:WaitCaSubmit").Value);
                 foreach (var j in jobs)
