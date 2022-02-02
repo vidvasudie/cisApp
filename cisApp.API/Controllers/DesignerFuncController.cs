@@ -294,7 +294,13 @@ namespace cisApp.API.Controllers
                 {
                     //get candidate with already submit work
                     j.jobCandidates = GetJobsCandidate.Get.GetDesignerJobSubmitList(new SearchModel() { gId = j.JobID });
-                    j.JobUserSubmitCount = j.jobCandidates != null ? j.jobCandidates.Count() : 0;
+                    var albs = GetAlbum.Get.GetByJobId(j.JobID);
+                    int jobAlbCount = 0;
+                    if(albs != null && albs.Count > 0)
+                    {
+                        jobAlbCount = albs.Where(o => o.AlbumType == "1").Select(o => o.UserId).GroupBy(g => g.Value).Count();
+                    }
+                    j.JobUserSubmitCount = jobAlbCount;
                 }
 
                 return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", jobs, model.take, jobs.Count()));
