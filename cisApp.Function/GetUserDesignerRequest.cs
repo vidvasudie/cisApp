@@ -195,6 +195,10 @@ namespace cisApp.Function
                             objSub.DistrictId = data.DistrictId;
                             objSub.ProvinceId = data.ProvinceId;
                             objSub.PostCode = data.PostCode;
+                            objSub.AreaSqmrate = decimal.Parse("250");
+                            objSub.AreaSqmmax = 60;
+                            objSub.AreaSqmused = 0;
+                            objSub.AreaSqmmax = objSub.AreaSqmmax;
 
                             context.UserDesigner.Update(objSub);
                             context.SaveChanges();
