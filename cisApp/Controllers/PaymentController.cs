@@ -53,6 +53,7 @@ namespace cisApp.Controllers
 
 
         // id ในเคสแก้ไข ถ้าเพิ่มใหม่ใช่ jobId มาว่าจะเพิ่มให้ใบงานไหน
+        [HttpGet]
         public IActionResult Manage(int? id, Guid? jobId)
         {
             try
