@@ -58,6 +58,23 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
+            public static ChatGroup GetByName(string name)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.ChatGroup.Where(o => o.ChatGroupName == name).FirstOrDefault();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public class Manage
@@ -113,7 +130,7 @@ namespace cisApp.Function
                 }
             }
 
-            public static void AddUser(Guid userId, Guid groupId)
+            public static void AddUser(Guid userId, Guid groupId, bool noThrow = false)
             {
                 try
                 {
@@ -129,7 +146,14 @@ namespace cisApp.Function
 
                         if (chatGroupUser != null)
                         {
-                            throw new Exception("ผู้ใช้ดังกล่าวอยู่ในกลุ่มดังกล่าวอยู่แล้ว");
+                            if (!noThrow)
+                            {
+                                throw new Exception("ผู้ใช้ดังกล่าวอยู่ในกลุ่มดังกล่าวอยู่แล้ว");
+                            }
+                            else
+                            {
+                                return;
+                            }
                         }
 
                         // add user to group
@@ -154,6 +178,43 @@ namespace cisApp.Function
                         };
 
                         GetChatMessage.Manage.Add(chat, null, userId);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static void CreateChatGroupAfterPaymentSuccess(Guid jobId)
+            {
+                try
+                {
+                    var job = GetJobs.Get.GetById(jobId);
+
+                    var group = GetChatGroup.Get.GetByName(job.JobNo);
+
+                    //จะใช้ ชื่อ แชทเป็น เลขที่ใบงาน
+
+                    if (group == null)
+                    {
+                        var candidate = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = job.JobId, statusStr = "2" });
+
+                        ChatGroup chatGroup = new ChatGroup()
+                        {
+                            ChatGroupName = job.JobNo,
+                            CreatedBy = job.UserId,
+                            UpdatedBy = job.UserId,
+                            CreatedDate = DateTime.Now,
+                            UpdatedDate = DateTime.Now
+                        };
+
+                        var result = Update(chatGroup, job.UserId);
+
+                        foreach (var item in candidate)
+                        {
+                            AddUser(item.UserId.Value, result.ChatGroupId.Value, true);
+                        }
                     }
                 }
                 catch (Exception ex)

@@ -232,12 +232,14 @@ namespace cisApp.Function
                             {
                                 var job = GetJobs.Get.GetById(obj.JobId.Value);
 
+                                var previousJobStatus = job.JobStatus;
+
                                 job.JobStatus = 3;
 
                                 context.Jobs.Update(job);
                                 context.SaveChanges();
 
-                                var cadi = GetJobsCandidate.Get.GetByJobId(new SearchModel() { JobId = job.JobId });
+                                var cadi = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = job.JobId });
 
                                 foreach (var item in cadi)
                                 {
@@ -245,6 +247,13 @@ namespace cisApp.Function
                                 }
 
                                 context.JobsCandidate.UpdateRange(cadi);
+
+                                if (previousJobStatus == 2)
+                                {
+                                    // ต้องสร้างกลุ่มแชท
+                                    GetChatGroup.Manage.CreateChatGroupAfterPaymentSuccess(obj.JobId.Value);
+                                }
+
                                 context.SaveChanges();
                             }
 
@@ -345,16 +354,24 @@ namespace cisApp.Function
                         {
                             var job = GetJobs.Get.GetById(obj.JobId.Value);
 
+                            var previousJobStatus = job.JobStatus;
+
                             job.JobStatus = 3;
 
                             context.Jobs.Update(job);
                             context.SaveChanges();
 
-                            var cadi = GetJobsCandidate.Get.GetByJobId(new SearchModel() { JobId = job.JobId });
+                            var cadi = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = job.JobId });
 
                             foreach (var item in cadi)
                             {
                                 item.CaStatusId = 2;
+                            }
+
+                            if (previousJobStatus == 2)
+                            {
+                                // ต้องสร้างกลุ่มแชท
+                                GetChatGroup.Manage.CreateChatGroupAfterPaymentSuccess(obj.JobId.Value);
                             }
 
                             context.JobsCandidate.UpdateRange(cadi);
