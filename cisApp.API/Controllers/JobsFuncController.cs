@@ -369,7 +369,7 @@ namespace cisApp.API.Controllers
 
                 
 
-                if (job.JobStatus < 4) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
+                if (job.JobStatus <= 4) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
                 {
                     AlbumType = "1";
 
@@ -505,7 +505,7 @@ namespace cisApp.API.Controllers
 
                     var result = GetAlbum.Manage.Update(model, value.UserId.Value);
 
-                    if (job.JobStatus < 4)
+                    if (job.JobStatus <= 4)
                     {
 
                     }
@@ -525,11 +525,11 @@ namespace cisApp.API.Controllers
                         GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
                     }
 
-                    if (job.JobStatus == 4)
-                    {
-                        job.JobStatus = 5;
-                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
-                    }
+                    //if (job.JobStatus == 4)
+                    //{
+                    //    job.JobStatus = 5;
+                    //    GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
+                    //}
                     return Ok(resultJson.success("สำเร็จ", "success", new { result.JobId }));
                 }
                 return Ok(resultJson.errors("ข้อมูลไม่ถูกต้อง ModelState Not Valid", "fail", null));
