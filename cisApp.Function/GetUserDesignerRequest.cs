@@ -198,7 +198,7 @@ namespace cisApp.Function
                             objSub.AreaSqmrate = decimal.Parse("250");
                             objSub.AreaSqmmax = 60;
                             objSub.AreaSqmused = 0;
-                            objSub.AreaSqmmax = objSub.AreaSqmmax;
+                            objSub.AreaSqmremain = objSub.AreaSqmmax;
 
                             context.UserDesigner.Update(objSub);
                             context.SaveChanges();
