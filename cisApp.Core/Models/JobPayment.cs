@@ -63,5 +63,8 @@ namespace cisApp.Core
         
         [NotMapped]
         public string JobDescription { get; set; }
+
+        [NotMapped]
+        public string JobNo { get; set; }
     }
 }

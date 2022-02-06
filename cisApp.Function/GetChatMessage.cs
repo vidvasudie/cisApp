@@ -123,6 +123,8 @@ namespace cisApp.Function
 
                     var messages =  StoreProcedure.GetAllStored<ChatMessageModel>("GetChatMessageModel", parameter);
 
+                    Manage.MarkRead(model.SenderId.Value, model.RecieverId.Value);
+
                     if (messages != null)
                     {
                         string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
@@ -492,6 +494,30 @@ namespace cisApp.Function
                 catch (Exception ex)
                 {
                     throw ex;
+                }
+            }
+
+            public static void MarkRead(Guid currentUser, Guid target)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var chatMessages = context.ChatMessage.Where(o => o.RecieverId == currentUser && o.SenderId == target).ToList();
+
+                        foreach (var item in chatMessages)
+                        {
+                            item.ReadDate = DateTime.Now;
+                        }
+
+                        context.ChatMessage.UpdateRange(chatMessages);
+
+                        context.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
             }
         }

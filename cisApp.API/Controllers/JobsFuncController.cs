@@ -369,7 +369,7 @@ namespace cisApp.API.Controllers
 
                 
 
-                if (job.JobStatus < 4) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
+                if (job.JobStatus <= 4) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
                 {
                     AlbumType = "1";
 

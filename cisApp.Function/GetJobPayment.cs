@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using cisApp.Core;
+using cisApp.library;
 
 namespace cisApp.Function
 {
@@ -161,7 +162,16 @@ namespace cisApp.Function
                             {
                                 obj.PayDate = DateTime.Now;
                                 obj.JobId = data.JobId;
-                                obj.OrderId = "IDE-0001";
+                                var dataList = context.JobPayment.ToList();
+                                if (dataList != null && dataList.Count > 0)
+                                {
+                                    var dl = dataList.OrderBy(o => o.JobNo).LastOrDefault();
+                                    obj.OrderId = Utility.GenerateRequestCode("IDP{0}-{1}{2}", dl.JobPayId.Value + 1);
+                                }
+                                else
+                                {
+                                    obj.OrderId = Utility.GenerateRequestCode("IDP{0}-{1}{2}", 1);
+                                }                           
                                 obj.CreatedBy = userId;
                                 obj.CreatedDate = DateTime.Now;
                             }
@@ -222,12 +232,14 @@ namespace cisApp.Function
                             {
                                 var job = GetJobs.Get.GetById(obj.JobId.Value);
 
+                                var previousJobStatus = job.JobStatus;
+
                                 job.JobStatus = 3;
 
                                 context.Jobs.Update(job);
                                 context.SaveChanges();
 
-                                var cadi = GetJobsCandidate.Get.GetByJobId(new SearchModel() { JobId = job.JobId });
+                                var cadi = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = job.JobId });
 
                                 foreach (var item in cadi)
                                 {
@@ -235,6 +247,13 @@ namespace cisApp.Function
                                 }
 
                                 context.JobsCandidate.UpdateRange(cadi);
+
+                                if (previousJobStatus == 2)
+                                {
+                                    // ต้องสร้างกลุ่มแชท
+                                    GetChatGroup.Manage.CreateChatGroupAfterPaymentSuccess(obj.JobId.Value);
+                                }
+
                                 context.SaveChanges();
                             }
 
@@ -335,16 +354,24 @@ namespace cisApp.Function
                         {
                             var job = GetJobs.Get.GetById(obj.JobId.Value);
 
+                            var previousJobStatus = job.JobStatus;
+
                             job.JobStatus = 3;
 
                             context.Jobs.Update(job);
                             context.SaveChanges();
 
-                            var cadi = GetJobsCandidate.Get.GetByJobId(new SearchModel() { JobId = job.JobId });
+                            var cadi = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = job.JobId });
 
                             foreach (var item in cadi)
                             {
                                 item.CaStatusId = 2;
+                            }
+
+                            if (previousJobStatus == 2)
+                            {
+                                // ต้องสร้างกลุ่มแชท
+                                GetChatGroup.Manage.CreateChatGroupAfterPaymentSuccess(obj.JobId.Value);
                             }
 
                             context.JobsCandidate.UpdateRange(cadi);
