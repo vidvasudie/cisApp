@@ -345,8 +345,8 @@ namespace cisApp.API.Controllers
                     o.Fullname,
                     o.LastLogin,
                     o.UpdatedDateStr,
-                    o.AlbumName,
-                    works = data.Where(d => d.CaUserId == o.CaUserId && d.AlbumName != null).Select(s => new { s.AlbumAttachFileID, s.AlbumFileName, WorkUrlPath = s.AlbumAttachFileID == null ? null : s.WorkUrlPath.Replace("~", Host) })
+                    AlbumName = o.workImages != null ? o.workImages.First().AlbumName : null,
+                    works = o.workImages != null ? o.workImages.First().albf.Select(s => new { s.AlbumAttachFileID, s.AlbumFileName, WorkUrlPath = s.AlbumAttachFileID == null ? null : s.WorkUrlPath.Replace("~", Host) }) : null
                 })));
                 
 
