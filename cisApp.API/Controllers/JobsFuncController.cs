@@ -540,6 +540,35 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [Route("api/jobs/FinishWork")]
+        [HttpPost]
+        public IActionResult FinishWork(Guid? id)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    
+
+                    var job = GetJobs.Get.GetById(id.Value);
+
+                    if (job.JobStatus != 7)
+                    {
+                        return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "เฉพาะงานที่อยู่ในสถานะส่งแบบเท่านั้นที่จะยื่นเสร็จงานได้", null)); ;
+                    }
+
+                    GetJobs.Manage.UpdateJobStatus(job.JobId, 8);
+
+                    return Ok(resultJson.success("สำเร็จ", "success", new { id = id }));
+                }
+                return Ok(resultJson.errors("ข้อมูลไม่ถูกต้อง ModelState Not Valid", "fail", null));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
         /// <summary>
         /// บันทึกนักแบบที่ถูกคัดเลือก 
         /// job_status=4(ประกาศ)
