@@ -30,8 +30,9 @@ namespace cisApp.API.Controllers
                 }
                 else
                 {
+                    var otpValidate = GetOtp.Get.ValidateOtp(value.Tel, value.OTP);
                     // เช็ค otp
-                    if (value.OTP == "123456")
+                    if (otpValidate)
                     {
                         if ((value.NewPassword != value.ConfirmPassword) && value.NewPassword.Length < 8)
                         {
