@@ -262,7 +262,7 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
                 var job = jobs.First();
-                var data = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId= jobId, statusStr = status.ToString(), statusOpt= status == 5 ? "less":"" });
+                var data = GetJobsCandidate.Get.GetAvailableByJobId(new SearchModel() { gId= jobId, statusStr = status.ToString(), statusOpt= status == 5 ? "less":"" });
                 if(data == null || data.Count == 0)
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));

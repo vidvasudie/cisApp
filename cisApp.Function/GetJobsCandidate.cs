@@ -44,6 +44,23 @@ namespace cisApp.Function
                     return new List<JobCandidateModel>();
                 }
             }
+            public static List<JobCandidateModel> GetAvailableByJobId(SearchModel model)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@jobId", model.gId != null && model.gId != Guid.Empty ? model?.gId.ToString() : (object)DBNull.Value),
+                       new SqlParameter("@status", !String.IsNullOrEmpty(model.statusStr) ? model.statusStr : (object)DBNull.Value),
+                       new SqlParameter("@statusOpt", String.IsNullOrEmpty(model.statusOpt) ? "equal" : model.statusOpt)//equal, more, less, in
+                    };
+
+                    return StoreProcedure.GetAllStored<JobCandidateModel>("GetJobsCandidateAvailable", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new List<JobCandidateModel>();
+                }
+            }
 
             public static List<JobCandidateModel> GetUserCandidateModels(SearchModel model)
             {
