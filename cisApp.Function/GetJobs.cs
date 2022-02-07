@@ -648,6 +648,8 @@ namespace cisApp.Function
 
                             context.SaveChanges();
 
+                            dbContextTransaction.Commit();
+
                             return job;
                         }
                         
