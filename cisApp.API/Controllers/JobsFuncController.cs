@@ -369,7 +369,7 @@ namespace cisApp.API.Controllers
 
                 
 
-                if (job.JobStatus <= 4) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
+                if (job.JobStatus < 4) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
                 {
                     AlbumType = "1";
 
@@ -447,7 +447,7 @@ namespace cisApp.API.Controllers
                         return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "เฉพาะผู้ผ่านการประกวดเท่านั้นที่สามารถส่งงานได้", null)); ;
                     }
 
-                    if (job.JobStatus < 5) // ถ้า job status ไม่เท่ากับ 5 จะเป็นการประกวดทั้งหมด
+                    if (job.JobStatus < 4) // ถ้า job status ไม่เท่ากับ 4 จะเป็นการประกวดทั้งหมด
                     {
                         AlbumType = "1";
                         
