@@ -1,4 +1,5 @@
 ﻿using cisApp.library;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,7 +14,7 @@ namespace cisApp.Function
         public string FileName { get; set;}
         public string Fullname { get; set; }
         public DateTime? LastLogin { get; set; }
-        public string AlbumName { get; set; }
+        
         public DateTime? UpdatedDate { get; set; }
         public string UpdatedDateStr
         {
@@ -26,8 +27,6 @@ namespace cisApp.Function
                 UpdatedDate = value.ToDateTimeFormat();
             }
         }
-        public Guid? AlbumAttachFileID { get; set; }//id work image
-        public string AlbumFileName { get; set; }
         public string CaUrlPath
         {
             get
@@ -35,13 +34,16 @@ namespace cisApp.Function
                 return "~/Uploads" + "/" + this.AttachFileId + "/" + this.FileName;
             }
         }
-        public string WorkUrlPath
-        {
-            get
-            {
-                return "~/Uploads" + "/" + this.AlbumAttachFileID + "/" + this.AlbumFileName;
-            }
-        }
+       
         public List<DesignerSubmitWorkModel> works { get; set; }
+        public string DetailJson { get; set; }
+        public List<AlbumImageJsonModel> workImages 
+        {
+            get 
+            {  
+                return String.IsNullOrEmpty(this.DetailJson) ? null : JsonConvert.DeserializeObject<List<AlbumImageJsonModel>>(this.DetailJson); 
+            }  
+        }
+        
     }
 }

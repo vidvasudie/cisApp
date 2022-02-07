@@ -235,8 +235,7 @@ namespace cisApp.Function
                                 {
                                     ca.CaStatusId = 3;//3=คัดเลือก
                                     ca.UpdatedDate = DateTime.Now;
-                                    ca.UpdatedBy = value.UserId;
-                                    
+                                    ca.UpdatedBy = value.UserId; 
                                 }
                                 else
                                 {
@@ -520,6 +519,9 @@ namespace cisApp.Function
 
                                 context.JobsCandidate.Update(ca);
                                 context.SaveChanges();
+
+                                //unlock designer work slot when sign job
+                                GetJobsCandidate.Manage.ValidWorkSlot(context, ca.JobId.Value, ca.UserId.Value, "unlock");
                             }
 
                             //get massage cancel
@@ -586,6 +588,12 @@ namespace cisApp.Function
                         context.Jobs.Update(job);
 
                         context.SaveChanges();
+
+                        if (status == 8)
+                        {
+                            //unlock designer work slot when sign job
+                            GetJobsCandidate.Manage.ValidWorkSlot(context, jobId, job.JobCaUserId.Value, "unlock");
+                        }
 
                         return job;
                     }

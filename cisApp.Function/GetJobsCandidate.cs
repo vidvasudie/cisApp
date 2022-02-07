@@ -125,6 +125,9 @@ namespace cisApp.Function
 
                             context.SaveChanges();
 
+                            //lock designer work slot when sign job
+                            ValidWorkSlot(context, jobId, userId);
+
                             //add job log for every job activity 
                             JobsLogs log = new JobsLogs();
                             log.Description = ActionCommon.JobUpdate;
@@ -209,6 +212,9 @@ namespace cisApp.Function
 
                             context.SaveChanges();
 
+                            //unlock designer work slot when sign job
+                            ValidWorkSlot(context, obj.JobId.Value, userId, "unlock");
+
                             //add job log for every job activity  
                             JobsLogs log = new JobsLogs();
                             log.JobId = obj.JobId.Value;
@@ -253,6 +259,9 @@ namespace cisApp.Function
 
                             context.SaveChanges();
 
+                            //unlock designer work slot when sign job
+                            ValidWorkSlot(context, jobId, userId, "unlock");
+
                             //add job log for every job activity 
                             JobsLogs log = new JobsLogs();
                             log.Description = ActionCommon.JobUpdate;
@@ -273,7 +282,32 @@ namespace cisApp.Function
                 }
             }
 
-             
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="context"></param>
+            /// <param name="jobId"></param>
+            /// <param name="userId"></param>
+            /// <param name="mode">lock, unlock</param>
+            public static void ValidWorkSlot(CAppContext context, Guid jobId, Guid userId, string mode = "lock")//"unlock"
+            {
+                Jobs job = context.Jobs.Where(o => o.JobId == jobId).FirstOrDefault();
+                UserDesigner uds = context.UserDesigner.Where(o => o.UserId == userId).FirstOrDefault();
+                if (mode == "lock")
+                {
+                    uds.AreaSqmremain -= (int)job.JobAreaSize;
+                    uds.AreaSqmused = uds.AreaSqmmax - uds.AreaSqmremain;
+                }
+                else
+                {
+                    uds.AreaSqmused -= (int)job.JobAreaSize;
+                    uds.AreaSqmremain = uds.AreaSqmmax - uds.AreaSqmused;
+                }
+
+                context.UserDesigner.Add(uds);
+
+                context.SaveChanges();
+            }
 
         }
 
