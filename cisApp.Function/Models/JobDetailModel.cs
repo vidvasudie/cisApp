@@ -26,6 +26,7 @@ namespace cisApp.Function
         public decimal JobPricePerSqM { get; set; }
         public int JobStatus { get; set; }
         public string JobStatusDesc { get; set; }
+        public string Invname { get; set; }
         public bool IsInvRequired { get; set; }
         public string InvAddress { get; set; }
         public string InvPersonalID { get; set; }

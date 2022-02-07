@@ -727,6 +727,7 @@ namespace cisApp.API.Controllers
                     job.JobPrice,
                     job.JobPriceProceed,
                     job.JobFinalPrice,
+                    job.Invname,
                     job.IsInvRequired,
                     job.InvAddress,
                     job.InvPersonalID,
