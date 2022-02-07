@@ -368,14 +368,17 @@ namespace cisApp.Function
                                 item.CaStatusId = 2;
                             }
 
+                            context.JobsCandidate.UpdateRange(cadi);
+                            context.SaveChanges();
+
                             if (previousJobStatus == 2)
                             {
                                 // ต้องสร้างกลุ่มแชท
                                 GetChatGroup.Manage.CreateChatGroupAfterPaymentSuccess(obj.JobId.Value);
                             }
 
-                            context.JobsCandidate.UpdateRange(cadi);
-                            context.SaveChanges();
+                            
+                            
                         }
 
                         return obj;
