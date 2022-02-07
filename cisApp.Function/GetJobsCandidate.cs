@@ -243,7 +243,7 @@ namespace cisApp.Function
                     {
                         using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
-                            var objs = context.JobsCandidate.Where(o => o.JobId == jobId && o.UserId == caUserId);
+                            var objs = context.JobsCandidate.Where(o => o.JobId == jobId && o.UserId == caUserId && o.IsActive == true);
                             if(objs == null || objs.Count() == 0)
                             {
                                 return null;
