@@ -304,7 +304,7 @@ namespace cisApp.Function
                     uds.AreaSqmremain = uds.AreaSqmmax - uds.AreaSqmused;
                 }
 
-                context.UserDesigner.Add(uds);
+                context.UserDesigner.Update(uds);
 
                 context.SaveChanges();
             }
