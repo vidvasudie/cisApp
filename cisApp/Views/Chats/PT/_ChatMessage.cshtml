@@ -4,7 +4,8 @@
 @model List<ChatMessageModel>
 
 @{
-    var userId = cisApp.Controllers.BaseController._UserId.Value;
+    //var userId = cisApp.Controllers.BaseController._UserId().Value;
+    var userId = Guid.Parse(Context.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value);
 }
 
 @foreach (var item in Model)

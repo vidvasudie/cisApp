@@ -312,7 +312,7 @@ namespace cisApp.Function
                             {
                                 ChatMessageModel messageModel = new ChatMessageModel()
                                 {
-                                    SenderId = senderId,
+                                    SenderId = chatGroup.ChatGroupId.Value,
                                     RealSenderId = senderId,
                                     RecieverId = item.UserId,
                                     Message = message,
