@@ -301,7 +301,7 @@ namespace cisApp.Function
 
                     if (chatGroup != null)
                     {
-                        var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroup.ChatGroupId.Value);
+                        var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroup.ChatGroupId.Value).Where(o => o.UserId != senderId).ToList();
 
                         if (chatGroupUsers != null)
                         {
