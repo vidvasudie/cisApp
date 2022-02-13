@@ -55,10 +55,13 @@ namespace cisApp.SignalR
                 {
                     foreach (var item in messages)
                     {
-                        var sendTo = _CurrentConnection.Where(o => o.UserId == item.RecieverId).FirstOrDefault();
-                        if (sendTo != null)
+                        var sendTo = _CurrentConnection.Where(o => o.UserId == item.RecieverId).ToList();
+                        if (sendTo.Count > 0)
                         {
-                            await Clients.Client(sendTo.ConnectionId).SendAsync("SendMessage", item);
+                           foreach (var send in sendTo)
+                            {
+                                await Clients.Client(send.ConnectionId).SendAsync("SendMessage", item);
+                            }
                         }
                     }
                 }
