@@ -21,8 +21,8 @@ namespace cisApp.API.Controllers
         static string _DefaultProfile = "assets/media/users/100_1.jpg";
 
         // GET: api/<HomeController>
-        [HttpGet]
-        public object Get( string tags, string categories , string orderby = "", int? page = 1, int limit = 10)
+        [HttpPost]
+        public object Get( string tags, string categories , string orderby = "", int? page = 1, int limit = 10, List<Guid> imgs = null)
         {
             try
             {
@@ -33,7 +33,8 @@ namespace cisApp.API.Controllers
                     Categories = categories,
                     Orderby = orderby,
                     currentPage = page,
-                    pageSize = limit
+                    pageSize = limit,
+                    Imgs = imgs
                 };
                 List<AlbumImageModel> Obj = new List<AlbumImageModel>();
 
@@ -66,9 +67,9 @@ namespace cisApp.API.Controllers
 
                 var Obj = GetAlbum.Get.GetAlbumImageByAttachId(webAdmin, attachId.Value);
 
-                var Liked = GetPostLike.Get.GetByUserIdAndRefId(userId.Value, Obj.RefId.Value);
+                var Liked = GetPostLike.Get.GetByUserIdAndRefId(userId.Value, Obj.AlbumRefId.Value);
 
-                var comment = GetPostComment.Get.GetByRefId(Obj.RefId.Value);
+                var comment = GetPostComment.Get.GetByRefId(Obj.AlbumRefId.Value);
 
                 var user = GetUser.Get.GetById(Obj.UserId.Value);
 

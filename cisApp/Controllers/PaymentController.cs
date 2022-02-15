@@ -87,7 +87,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetJobPayment.Manage.Update(data, _UserId.Value);
+                var user = GetJobPayment.Manage.Update(data, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Payment")));
             }
@@ -125,7 +125,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetJobPayment.Manage.Status(data.JobPayId.Value, data.PayStatus.Value, data.Comment, _UserId.Value);
+                var user = GetJobPayment.Manage.Status(data.JobPayId.Value, data.PayStatus.Value, data.Comment, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Payment")));
             }

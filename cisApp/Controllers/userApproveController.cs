@@ -84,8 +84,8 @@ namespace cisApp.Controllers
             {
                 data.UserType = 1; 
                 data.Status = 1;//1=รอดำเนินการ 
-                data.CreatedBy = _UserId.Value;
-                data.UpdatedBy = _UserId.Value;
+                data.CreatedBy = _UserId().Value;
+                data.UpdatedBy = _UserId().Value;
                 int result = GetUserDesignerRequest.Manage.AddNewRequest(data);
                 if(result > 0)
                 {
@@ -132,8 +132,8 @@ namespace cisApp.Controllers
             try
             {
                 data.UserType = 2;
-                data.CreatedBy = _UserId.Value;
-                data.UpdatedBy = _UserId.Value;
+                data.CreatedBy = _UserId().Value;
+                data.UpdatedBy = _UserId().Value;
                 var result = GetUserDesignerRequest.Manage.UpdateRequestStatus(data);
                 if(result > 0)
                 {

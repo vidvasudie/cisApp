@@ -70,8 +70,8 @@ namespace cisApp.Controllers
                 data.JobPriceProceed = data.JobPrice * data.JobProceedRatio;
                 data.JobVatratio = GetTmProceedRatio.Get.GetFirst().Ratio;
                 data.JobFinalPrice = data.JobPriceProceed * data.JobVatratio; 
-                data.UpdatedBy = _UserId.Value;
-                data.CreatedBy = _UserId.Value;
+                data.UpdatedBy = _UserId().Value;
+                data.CreatedBy = _UserId().Value;
 
                 var result = GetJobs.Manage.Update(data, Request.HttpContext.Connection.RemoteIpAddress.ToString());
                 if (result != null)
@@ -97,7 +97,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                GetJobsCandidate.Manage.UpdateNewCandidate(model.userCandidates, _UserId.Value, Request.HttpContext.Connection.RemoteIpAddress.ToString());
+                GetJobsCandidate.Manage.UpdateNewCandidate(model.userCandidates, _UserId().Value, Request.HttpContext.Connection.RemoteIpAddress.ToString());
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));
             }
             catch (Exception ex)
@@ -112,7 +112,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetJobsCandidate.Manage.Delete(id, _UserId.Value, Request.HttpContext.Connection.RemoteIpAddress.ToString());
+                var user = GetJobsCandidate.Manage.Delete(id, _UserId().Value, Request.HttpContext.Connection.RemoteIpAddress.ToString());
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));
             }
@@ -241,7 +241,7 @@ namespace cisApp.Controllers
                 {
                     return Json(new ResponseModel().ResponseError("ไม่สามารถส่งงานดังกล่าวได้เนื่องจากสถานะงาน ไม่ได้อยู่ในสถานะที่ส่งงานได้"));
                 }
-                var result = GetAlbum.Manage.Update(data, _UserId.Value);
+                var result = GetAlbum.Manage.Update(data, _UserId().Value);
 
                 // update edit count
                 if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก

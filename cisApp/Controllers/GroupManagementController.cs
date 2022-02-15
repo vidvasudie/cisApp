@@ -53,8 +53,8 @@ namespace cisApp.Controllers
             try
             {
 
-                data.CreatedBy = _UserId.Value;
-                data.UpdatedBy = _UserId.Value;
+                data.CreatedBy = _UserId().Value;
+                data.UpdatedBy = _UserId().Value;
                 GetRole.Manage.Update(data, menulist);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "GroupManagement")));
@@ -71,7 +71,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                GetRole.Manage.Active(id, active, _UserId.Value);
+                GetRole.Manage.Active(id, active, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "GroupManagement")));
             }
@@ -86,7 +86,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                GetRole.Manage.Delete(id, _UserId.Value);
+                GetRole.Manage.Delete(id, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "GroupManagement")));
             }

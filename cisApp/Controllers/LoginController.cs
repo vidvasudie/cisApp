@@ -141,8 +141,8 @@ namespace cisApp.Controllers
         {
             Guid userCode = Guid.Empty;
             string userName = "";
-            if (_UserId.HasValue)
-                userCode = _UserId.Value;
+            if (_UserId().HasValue)
+                userCode = _UserId().Value;
             if (!string.IsNullOrEmpty(_UserName))
                 userName = _UserName;
             HttpContext.SignOutAsync();
