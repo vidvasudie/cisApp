@@ -540,6 +540,37 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [Route("api/jobs/submitexample")]
+        [HttpPost]
+        public IActionResult SubmitExample([FromBody] SubmitExampleModel value)
+        {
+            try
+            {
+                string AlbumType = "0";
+
+
+                AlbumModel model = new AlbumModel()
+                {
+                    JobId = Guid.Empty,
+                    UserId = value.UserId,
+                    Category = value.Category,
+                    Tags = value.Tags,
+                    AlbumName = value.AlbumName,
+                    Url = value.Url,
+                    AlbumType = AlbumType,
+                    apiFiles = value.imgs
+                };
+
+                var result = GetAlbum.Manage.Update(model, value.UserId.Value);
+                
+                return Ok(resultJson.success("สำเร็จ", "success", new { result.AlbumId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
         [Route("api/jobs/FinishWork")]
         [HttpPost]
         public IActionResult FinishWork(Guid? id)
