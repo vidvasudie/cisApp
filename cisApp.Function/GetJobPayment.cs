@@ -363,7 +363,7 @@ namespace cisApp.Function
 
                             var cadi = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = job.JobId });
 
-                            foreach (var item in cadi)
+                            foreach (var item in cadi.Where(o => o.CaStatusId == 1).ToList())
                             {
                                 item.CaStatusId = 2;
                             }
