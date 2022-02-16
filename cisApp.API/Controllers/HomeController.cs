@@ -22,7 +22,7 @@ namespace cisApp.API.Controllers
 
         // GET: api/<HomeController>
         [HttpPost]
-        public object Get( string tags, string categories , string orderby = "", int? page = 1, int limit = 10, List<Guid> imgs = null)
+        public object Post( string tags, string categories , string orderby = "", int? page = 1, int limit = 10, List<Guid> imgs = null)
         {
             try
             {
@@ -56,6 +56,42 @@ namespace cisApp.API.Controllers
             
 
         }
+
+        [HttpGet]
+        public object Get(string tags, string categories, string orderby = "", int? page = 1, int limit = 10)
+        {
+            try
+            {
+                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                SearchModel model = new SearchModel()
+                {
+                    Tags = tags,
+                    Categories = categories,
+                    Orderby = orderby,
+                    currentPage = page,
+                    pageSize = limit
+                };
+                List<AlbumImageModel> Obj = new List<AlbumImageModel>();
+
+                Obj = GetAlbum.Get.GetAlbumImage(model, webAdmin);
+
+                if (Obj.Count > 0)
+                {
+                    return Ok(resultJson.success(null, null, Obj.Select(o => new { o.AttachFileId, o.FileName, o.FullUrlPath, o.UserId, o.JobID, o.AlbumName, o.Category, o.Tags, o.AlbumRefId }).ToList(), null, null, page, page + 1));
+                }
+                else
+                {
+                    return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+                }
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+
+
+        }
+
 
         [HttpGet("GetByAttachId")]
         public object GetByAttachId(Guid? attachId, Guid? userId)
