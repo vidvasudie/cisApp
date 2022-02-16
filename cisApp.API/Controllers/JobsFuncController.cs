@@ -663,11 +663,11 @@ namespace cisApp.API.Controllers
         /// <returns></returns>
         [Route("api/jobs/getapprovedetail")]
         [HttpGet]
-        public IActionResult GetApproveDetail(Guid jobId)
+        public IActionResult GetApproveDetail(Guid jobId, Guid? caUserId)
         {
             try
             {
-                var data = GetJobs.Get.GetApproveDetail(jobId);
+                var data = GetJobs.Get.GetApproveDetail(jobId, caUserId);
                 if (data == null || data.Count == 0)
                 {
                     return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));

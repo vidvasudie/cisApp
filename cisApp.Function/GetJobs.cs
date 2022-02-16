@@ -178,7 +178,7 @@ namespace cisApp.Function
                 }
             }
 
-            public static List<JobDesignerApproveDetailModel> GetApproveDetail(Guid jobId)
+            public static List<JobDesignerApproveDetailModel> GetApproveDetail(Guid jobId, Guid? caUserId)
             {
                 try
                 {
@@ -186,7 +186,8 @@ namespace cisApp.Function
                         return null;
 
                     SqlParameter[] parameter = new SqlParameter[] {
-                       new SqlParameter("@jobId", jobId)
+                       new SqlParameter("@jobId", jobId),
+                       new SqlParameter("@caUserId", caUserId != null ? caUserId : (object)DBNull.Value)
                     };
 
                     return StoreProcedure.GetAllStored<JobDesignerApproveDetailModel>("GetJobDesignerDetailApprove ", parameter);
