@@ -33,6 +33,55 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [Route("api/Chat/GetChatGroupList")]
+        [HttpPost]
+        public IActionResult GetChatGroupList(Guid? id, Guid? chatGroupId)
+        {
+            try
+            {
+                if (id == null || chatGroupId == null)
+                {
+                    return Ok(resultJson.errors("ModelState not valid", "fail", null));
+                }
+
+
+                var chatModels = GetChatMessage.Get.GetChatList(id.Value);
+
+                // id = userId
+
+                List<ChatListModel> groupChatListModels = new List<ChatListModel>();
+
+                // first add chatgroup it aways not null
+                groupChatListModels.Add(chatModels.FirstOrDefault(o => o.UserId == chatGroupId.Value));
+
+                // then fill users chat it sometime null
+                var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroupId.Value).Where(o => o.UserId != id.Value);
+
+                foreach (var item in chatGroupUsers)
+                {
+                    var chat = chatModels.FirstOrDefault(o => o.UserId == item.UserId);
+
+                    if (chat != null)
+                    {
+                        groupChatListModels.Add(chat);
+                    }
+                    else
+                    {
+                        var mockChatModel = GetChatMessage.Get.MockChatModel(item.UserId);
+
+                        groupChatListModels.Add(mockChatModel);
+                    }
+                }
+
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", groupChatListModels));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
         [Route("api/Chat/GetMessage")]
         [HttpPost]
         public IActionResult GetMessage(Guid? senderId, Guid? recieverId, int page = 1, int limit = 10)

@@ -409,6 +409,53 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
+            public static ChatListModel MockChatModel(Guid userId)
+            {
+                try
+                {
+
+                    string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+
+                    var user = GetUser.Get.GetById(userId);
+
+                    ChatListModel chatListModel = new ChatListModel()
+                    {
+                        UserId = userId,
+                        ChatName = user.Fname + " " + user.Lname,
+                        UserType = user.UserType,
+                        Profiles = new List<AttachFileAPIModel>()
+                    };
+
+                    // get profile
+                    var profile = GetUser.Get.GetUserProfileImg(userId);
+
+                    if (profile != null)
+                    {
+                        chatListModel.Profiles.Add(new AttachFileAPIModel()
+                        {
+                            Name = profile.FileName,
+                            Path = webAdmin + profile.UrlPathAPI
+                        });
+                    }
+                    else
+                    {
+                        // insert default img
+                        chatListModel.Profiles.Add(new AttachFileAPIModel()
+                        {
+                            Name = "default",
+                            Path = webAdmin + _DefaultProfile
+                        });
+                    }
+
+                    return chatListModel;
+
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
         }
 
         public class Manage
