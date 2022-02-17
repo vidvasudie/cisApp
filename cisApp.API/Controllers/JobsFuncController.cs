@@ -660,14 +660,16 @@ namespace cisApp.API.Controllers
         /// แสดงรายละเอียดการส่งงานของนักออกแบบที่ได้รับเลือก (ตรวจสอบผลงาน)
         /// </summary>
         /// <param name="jobId"></param>
+        /// <param name="caUserId"></param>
+        /// <param name="jobStatus">สถานะใบงาน default=4</param>
         /// <returns></returns>
         [Route("api/jobs/getapprovedetail")]
         [HttpGet]
-        public IActionResult GetApproveDetail(Guid jobId, Guid? caUserId)
+        public IActionResult GetApproveDetail(Guid jobId, Guid? caUserId, int jobStatus = 4)
         {
             try
             {
-                var data = GetJobs.Get.GetApproveDetail(jobId, caUserId);
+                var data = GetJobs.Get.GetApproveDetail(jobId, caUserId, jobStatus);
                 if (data == null || data.Count == 0)
                 {
                     return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));
