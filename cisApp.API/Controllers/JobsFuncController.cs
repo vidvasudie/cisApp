@@ -221,7 +221,7 @@ namespace cisApp.API.Controllers
                 }
 
                 var pm = GetJobPayment.Get.GetByJobId(jobId);
-                if(pm.Where(o => o.PayStatus != 1 || o.PayStatus != 4).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน
+                if(pm.Where(o => o.PayStatus == 2 || o.PayStatus == 3).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน
                 {
                     //ถ้าจ่ายแล้ว ยกเลิกไม่ได้
                     return Ok(resultJson.errors("ไม่สามารถยกเลิกได้ เมื่อมีการชำระเงินแล้ว", "fail", null));
