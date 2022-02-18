@@ -494,7 +494,7 @@ namespace cisApp.Function
                             var jobPms = context.JobPayment.Where(o => o.JobId == jobId);
                             if (jobPms.Any())
                             {
-                                if(jobPms.Where(o => o.PayStatus != 1 || o.PayStatus != 4).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน 
+                                if(jobPms.Where(o => o.PayStatus == 2 || o.PayStatus == 2).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน 
                                     return null;
                             }
                                 
