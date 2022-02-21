@@ -300,6 +300,9 @@ namespace cisApp.API.Controllers
                     {
                         jobAlbCount = albs.Where(o => o.AlbumType == "1").Select(o => o.UserId).GroupBy(g => g.Value).Count();
                     }
+                    j.jobCandidates = (from jc in j.jobCandidates
+                                       join alb in albs.Where(o => o.AlbumType == "1") on jc.UserId equals alb.UserId
+                                       select jc).ToList();
                     j.JobUserSubmitCount = jobAlbCount;
                 }
 

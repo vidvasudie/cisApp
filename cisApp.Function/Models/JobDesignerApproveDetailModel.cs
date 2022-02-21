@@ -41,6 +41,7 @@ namespace cisApp.Function
         /// </summary>
         public bool IsConfirmApprove { get; set; } 
         public string AlbumName { get; set; }
+        public DateTime UpdatedDate { get; set; }
         public string Url { get; set; }
         public string AlbumType { get; set; }
         public string AlbumTypeDesc { get; set; }

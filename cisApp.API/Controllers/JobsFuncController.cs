@@ -694,7 +694,7 @@ namespace cisApp.API.Controllers
                     data.First().IsCanEdit,
                     data.First().IsConfirmApprove,
                     data.First().IsCusFavorite,
-                    albums = data.Where(o => o.AlbumName != null).Select(o => new { o.AlbumName, o.AlbumType, o.AlbumTypeDesc, o.Url, ImgUrlPath=o.ImgAttachFileID != null ? o.ImgUrlPath.Replace("~", Host):"" }),
+                    albums = data.Where(o => o.AlbumName != null).OrderByDescending(o => o.UpdatedDate).Select(o => new { o.AlbumName, o.AlbumType, o.AlbumTypeDesc, o.Url, ImgUrlPath=o.ImgAttachFileID != null ? o.ImgUrlPath.Replace("~", Host):"" }),
                 } ));
             }
             catch (Exception ex)
