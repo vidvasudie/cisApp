@@ -13,8 +13,19 @@ namespace cisApp.Controllers
 {
     public class BaseController : Controller
     {
-
-        public static Guid? _UserId {get; set;}
+        public Guid? _UserId()
+        {
+            var userId = HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
+            if (!String.IsNullOrEmpty(userId))
+            {
+                return Guid.Parse(userId);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        //public static Guid? _UserId {get; set;}
         public static int? _UserType { get; set; }
         public static Guid? _RoleId { get; set; }
         public static string _UserName { get; set; }
@@ -35,7 +46,7 @@ namespace cisApp.Controllers
                 var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
                 if (!String.IsNullOrEmpty(userId))
                 {
-                    _UserId = Guid.Parse(userId);
+                    //_UserId = Guid.Parse(userId);
                 } 
                 var roleId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "RoleId")?.Value;
                 if (!String.IsNullOrEmpty(roleId))

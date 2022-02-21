@@ -524,7 +524,7 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
-                var model = new DesignerJobListSearch() { userId = userId, skip = skip, take = take };
+                var model = new DesignerJobListSearch() { userId = userDesignerId, skip = skip, take = take };
                 var imgs = GetUserDesigner.Get.GetDesignerAlbumImage(model);
                 if (imgs == null)
                 {

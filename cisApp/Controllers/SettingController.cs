@@ -73,7 +73,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetSettings.Manage.Update(data, _UserId.Value);
+                var user = GetSettings.Manage.Update(data, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Setting")));
             }

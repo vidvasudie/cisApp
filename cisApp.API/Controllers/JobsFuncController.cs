@@ -221,7 +221,7 @@ namespace cisApp.API.Controllers
                 }
 
                 var pm = GetJobPayment.Get.GetByJobId(jobId);
-                if(pm.Where(o => o.PayStatus != 1 || o.PayStatus != 4).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน
+                if(pm.Where(o => o.PayStatus == 2 || o.PayStatus == 3).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน
                 {
                     //ถ้าจ่ายแล้ว ยกเลิกไม่ได้
                     return Ok(resultJson.errors("ไม่สามารถยกเลิกได้ เมื่อมีการชำระเงินแล้ว", "fail", null));
@@ -540,6 +540,37 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [Route("api/jobs/submitexample")]
+        [HttpPost]
+        public IActionResult SubmitExample([FromBody] SubmitExampleModel value)
+        {
+            try
+            {
+                string AlbumType = "0";
+
+
+                AlbumModel model = new AlbumModel()
+                {
+                    JobId = Guid.Empty,
+                    UserId = value.UserId,
+                    Category = value.Category,
+                    Tags = value.Tags,
+                    AlbumName = value.AlbumName,
+                    Url = value.Url,
+                    AlbumType = AlbumType,
+                    apiFiles = value.imgs
+                };
+
+                var result = GetAlbum.Manage.Update(model, value.UserId.Value);
+                
+                return Ok(resultJson.success("สำเร็จ", "success", new { result.AlbumId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
         [Route("api/jobs/FinishWork")]
         [HttpPost]
         public IActionResult FinishWork(Guid? id)
@@ -629,14 +660,16 @@ namespace cisApp.API.Controllers
         /// แสดงรายละเอียดการส่งงานของนักออกแบบที่ได้รับเลือก (ตรวจสอบผลงาน)
         /// </summary>
         /// <param name="jobId"></param>
+        /// <param name="caUserId"></param>
+        /// <param name="jobStatus">สถานะใบงาน default=4</param>
         /// <returns></returns>
         [Route("api/jobs/getapprovedetail")]
         [HttpGet]
-        public IActionResult GetApproveDetail(Guid jobId)
+        public IActionResult GetApproveDetail(Guid jobId, Guid? caUserId, int jobStatus = 4)
         {
             try
             {
-                var data = GetJobs.Get.GetApproveDetail(jobId);
+                var data = GetJobs.Get.GetApproveDetail(jobId, caUserId, jobStatus);
                 if (data == null || data.Count == 0)
                 {
                     return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));

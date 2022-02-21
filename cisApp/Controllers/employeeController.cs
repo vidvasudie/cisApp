@@ -74,7 +74,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetUser.Manage.Update(data, _UserId.Value);
+                var user = GetUser.Manage.Update(data, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Employee")));
             }
@@ -89,7 +89,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetUser.Manage.Active(id, active, _UserId.Value);
+                var user = GetUser.Manage.Active(id, active, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Employee")));
             }
@@ -104,7 +104,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetUser.Manage.Delete(id, _UserId.Value);
+                var user = GetUser.Manage.Delete(id, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Employee")));
             }

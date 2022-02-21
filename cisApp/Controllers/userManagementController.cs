@@ -68,7 +68,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetUser.Manage.Update(data, _UserId.Value);
+                var user = GetUser.Manage.Update(data, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
             }
@@ -83,7 +83,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetUser.Manage.Active(id, active, _UserId.Value);
+                var user = GetUser.Manage.Active(id, active, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
             }
@@ -98,7 +98,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetUser.Manage.Delete(id, _UserId.Value);
+                var user = GetUser.Manage.Delete(id, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "userManagement")));
             }
@@ -136,7 +136,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetUser.Manage.Downgrade(id, _UserId.Value);
+                var user = GetUser.Manage.Downgrade(id, _UserId().Value);
                 
                 return Json(new ResponseModel().ResponseSuccess("ลดขั้นผู้ใข้งานสำเร็จ", Url.Action("Index", "userManagement")));
             }

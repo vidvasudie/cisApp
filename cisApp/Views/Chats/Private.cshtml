@@ -27,7 +27,7 @@
 
         const _SignalRUrl = '@ViewData["SignalRWebSite"].ToString()'
 
-        const _UserID = '@cisApp.Controllers.BaseController._UserId.Value.ToString()'
+        const _UserID = '@Context.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value'
 
         $(document).ready(function () {
             initView();

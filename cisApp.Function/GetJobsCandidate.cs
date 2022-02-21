@@ -260,7 +260,7 @@ namespace cisApp.Function
                             context.SaveChanges();
 
                             //unlock designer work slot when sign job
-                            ValidWorkSlot(context, jobId, userId, "unlock");
+                            ValidWorkSlot(context, jobId, caUserId, "unlock");
 
                             //add job log for every job activity 
                             JobsLogs log = new JobsLogs();

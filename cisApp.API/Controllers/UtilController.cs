@@ -64,7 +64,7 @@ namespace cisApp.API.Controllers
                     item.FullUrlPath = webAdmin + attch.UrlPathAPI;
                 }
 
-                return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", obj));
+                return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", obj.OrderBy(o => o.CreatedDate).ToList()));
             }
             catch (Exception ex)
             {

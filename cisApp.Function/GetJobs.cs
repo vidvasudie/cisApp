@@ -178,7 +178,7 @@ namespace cisApp.Function
                 }
             }
 
-            public static List<JobDesignerApproveDetailModel> GetApproveDetail(Guid jobId)
+            public static List<JobDesignerApproveDetailModel> GetApproveDetail(Guid jobId, Guid? caUserId, int? jobStatus = null)
             {
                 try
                 {
@@ -186,7 +186,9 @@ namespace cisApp.Function
                         return null;
 
                     SqlParameter[] parameter = new SqlParameter[] {
-                       new SqlParameter("@jobId", jobId)
+                       new SqlParameter("@jobId", jobId),
+                       new SqlParameter("@caUserId", caUserId != null ? caUserId : (object)DBNull.Value),
+                       new SqlParameter("@jobStatus", jobStatus != null ? jobStatus : (object)DBNull.Value)
                     };
 
                     return StoreProcedure.GetAllStored<JobDesignerApproveDetailModel>("GetJobDesignerDetailApprove ", parameter);
@@ -224,7 +226,7 @@ namespace cisApp.Function
                              
                             List < UserDesigner > tmp = new List<UserDesigner>();
                             var usrDesginers = context.UserDesigner.ToList();
-                            var jobCas = context.JobsCandidate.Where(o => o.JobId == value.JobId);
+                            var jobCas = context.JobsCandidate.Where(o => o.JobId == value.JobId && o.CaStatusId != 5);
                             if (!jobCas.Any())
                             {
                                 return null;
@@ -492,7 +494,7 @@ namespace cisApp.Function
                             var jobPms = context.JobPayment.Where(o => o.JobId == jobId);
                             if (jobPms.Any())
                             {
-                                if(jobPms.Where(o => o.PayStatus != 1 || o.PayStatus != 4).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน 
+                                if(jobPms.Where(o => o.PayStatus == 2 || o.PayStatus == 2).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน 
                                     return null;
                             }
                                 
@@ -642,7 +644,7 @@ namespace cisApp.Function
                             var job = context.Jobs.Find(jobId);
 
                             job.JobStatus = 9;//แก้ไขผลงาน
-                            job.JobEndDate = DateTime.Now.AddHours((int)job.JobAreaSize / 10 * 2.5 * 24);
+                            job.JobEndDate = DateTime.Now.AddHours(Math.Ceiling((float)job.JobAreaSize / 10.0) * 2.5 * 24);
 
                             context.Jobs.Update(job);
 

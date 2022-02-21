@@ -56,7 +56,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var chatList = GetChatMessage.Get.GetChatList(_UserId.Value, type);
+                var chatList = GetChatMessage.Get.GetChatList(_UserId().Value, type);
 
                 if (!string.IsNullOrEmpty(text))
                 {
@@ -83,7 +83,7 @@ namespace cisApp.Controllers
 
                 SearchModel model = new SearchModel()
                 {
-                    SenderId = _UserId.Value,
+                    SenderId = _UserId().Value,
                     RecieverId = id.Value
                 };
 
@@ -113,7 +113,7 @@ namespace cisApp.Controllers
 
                 SearchModel model = new SearchModel()
                 {
-                    SenderId = _UserId.Value,
+                    SenderId = _UserId().Value,
                     RecieverId = id.Value,
                     currentPage = page
                 };
@@ -133,10 +133,10 @@ namespace cisApp.Controllers
         {
             try
             {
-                data.SenderId = _UserId.Value;
-                data.RealSenderId = _UserId.Value;
+                data.SenderId = _UserId().Value;
+                data.RealSenderId = _UserId().Value;
 
-                var result = GetChatMessage.Manage.Add(data, null, _UserId.Value);
+                var result = GetChatMessage.Manage.Add(data, null, _UserId().Value);
                 if (result != null)
                 {
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, result));
@@ -159,8 +159,8 @@ namespace cisApp.Controllers
             {
                 var chatMessage = new ChatMessage()
                 {
-                    SenderId = _UserId.Value,
-                    RealSenderId = _UserId.Value,
+                    SenderId = _UserId().Value,
+                    RealSenderId = _UserId().Value,
                     RecieverId = data.RecieverId
                 };
 
@@ -168,11 +168,11 @@ namespace cisApp.Controllers
 
                 foreach (var file in data.FileList)
                 {
-                    var fileUpload = GetAttachFile.Manage.UploadFile(file.Base64Str, file.FileName, file.FileSize, null, _UserId.Value);
+                    var fileUpload = GetAttachFile.Manage.UploadFile(file.Base64Str, file.FileName, file.FileSize, null, _UserId().Value);
                     uploadedFile.Add(fileUpload);
                 }
 
-                var result = GetChatMessage.Manage.Add(chatMessage, uploadedFile.Select(o => o.AttachFileId).ToList(), _UserId.Value);
+                var result = GetChatMessage.Manage.Add(chatMessage, uploadedFile.Select(o => o.AttachFileId).ToList(), _UserId().Value);
 
                 if (result != null)
                 {
@@ -199,7 +199,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetChatGroup.Manage.Update(data, _UserId.Value);
+                var user = GetChatGroup.Manage.Update(data, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Group", "Chats", new { Id = user.ChatGroupId })));
             }

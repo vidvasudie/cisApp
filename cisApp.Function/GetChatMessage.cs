@@ -301,7 +301,7 @@ namespace cisApp.Function
 
                     if (chatGroup != null)
                     {
-                        var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroup.ChatGroupId.Value);
+                        var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroup.ChatGroupId.Value).Where(o => o.UserId != senderId).ToList();
 
                         if (chatGroupUsers != null)
                         {
@@ -312,7 +312,7 @@ namespace cisApp.Function
                             {
                                 ChatMessageModel messageModel = new ChatMessageModel()
                                 {
-                                    SenderId = senderId,
+                                    SenderId = chatGroup.ChatGroupId.Value,
                                     RealSenderId = senderId,
                                     RecieverId = item.UserId,
                                     Message = message,
@@ -407,6 +407,53 @@ namespace cisApp.Function
                 catch (Exception ex)
                 {
                     throw ex;
+                }
+            }
+
+            public static ChatListModel MockChatModel(Guid userId)
+            {
+                try
+                {
+
+                    string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+
+                    var user = GetUser.Get.GetById(userId);
+
+                    ChatListModel chatListModel = new ChatListModel()
+                    {
+                        UserId = userId,
+                        ChatName = user.Fname + " " + user.Lname,
+                        UserType = user.UserType,
+                        Profiles = new List<AttachFileAPIModel>()
+                    };
+
+                    // get profile
+                    var profile = GetUser.Get.GetUserProfileImg(userId);
+
+                    if (profile != null)
+                    {
+                        chatListModel.Profiles.Add(new AttachFileAPIModel()
+                        {
+                            Name = profile.FileName,
+                            Path = webAdmin + profile.UrlPathAPI
+                        });
+                    }
+                    else
+                    {
+                        // insert default img
+                        chatListModel.Profiles.Add(new AttachFileAPIModel()
+                        {
+                            Name = "default",
+                            Path = webAdmin + _DefaultProfile
+                        });
+                    }
+
+                    return chatListModel;
+
+                }
+                catch (Exception ex)
+                {
+                    return null;
                 }
             }
         }

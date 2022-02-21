@@ -159,6 +159,13 @@ namespace cisApp.Function
             {
                 try
                 {
+                    List<string> imgString = new List<string>();
+
+                    if (model.Imgs != null)
+                    {
+                        imgString = model.Imgs.Select(o => "'" + o.ToString() + "'").ToList();                        
+                    }
+
                     int skip = (model.currentPage.Value - 1) * model.pageSize.Value;
                     SqlParameter[] parameter = new SqlParameter[] {
                         new SqlParameter("@stext", ""),
@@ -166,7 +173,8 @@ namespace cisApp.Function
                         new SqlParameter("@tags", model.Tags),
                         new SqlParameter("@categories", model.Categories),
                         new SqlParameter("@skip", skip),
-                        new SqlParameter("@take", model.pageSize.Value)
+                        new SqlParameter("@take", model.pageSize.Value),
+                        new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value)
                     };
 
                     var data = StoreProcedure.GetAllStored<AlbumImageModel>("GetAlbumImage", parameter);

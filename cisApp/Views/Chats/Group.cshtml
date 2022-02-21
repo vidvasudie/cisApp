@@ -27,7 +27,7 @@
 
         const _SignalRUrl = '@ViewData["SignalRWebSite"].ToString()'
 
-        const _UserID = '@cisApp.Controllers.BaseController._UserId.Value.ToString()'
+        const _UserID = '@Context.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value'
 
         function PagerClick(index) {
         var suc = function (html) {
@@ -37,7 +37,7 @@
             alert('error paging', e);
         }
 
-            var text = $('#kt_datatable_search_query').val()   
+            var text = $('#kt_datatable_search_query').val()
 
             var recieverId = $('#RecieverId').val();
 
