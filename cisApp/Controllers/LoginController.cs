@@ -21,7 +21,10 @@ namespace cisApp.Controllers
         public IActionResult Index()
         {
             var xx = Encryption.Decrypt("s9LrP8c+HjTWUbLOve8Xhg==");
-            return View(new LoginModel() { username= "admin@gmail.com", password="12345", userType = 3 });
+            //return View(new LoginModel() { username= "admin@gmail.com", password="12345", userType = 3 });
+
+
+            return View(new LoginModel() {  });
         }
 
         [HttpPost]
@@ -111,6 +114,12 @@ namespace cisApp.Controllers
                 return Json(new ResponseModel().ResponseError(messageError));
             }
         }
+
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
 
 
         private void SetCookie(UserModel model)

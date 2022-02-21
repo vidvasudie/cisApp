@@ -1,0 +1,366 @@
+﻿@model cisApp.Function.LoginModel
+@{
+    ViewData["Title"] = "เงื่อนไขการให้บริการ";
+    Layout = null;
+    ViewData["ControllerName"] = "Login";
+}
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+<!--begin::Head-->
+<head>
+
+    <base href="../../../../">
+
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <meta name="description" content="Login page example" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    @*<link rel="canonical" href="https://keenthemes.com/metronic" />*@
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
+    <!--end::Fonts-->
+    <!--begin::Page Custom Styles(used by this page)-->
+    <link href="@Url.Content("~/assets/css/pages/login/classic/login-5.css")" rel="stylesheet" type="text/css" />
+    <!--end::Page Custom Styles-->
+    <!--begin::Global Theme Styles(used by all pages)-->
+    <link href="@Url.Content("~/assets/plugins/global/plugins.bundle.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/assets/plugins/custom/prismjs/prismjs.bundle.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/assets/css/style.bundle.css")" rel="stylesheet" type="text/css" />
+    <!--end::Global Theme Styles-->
+    <!--begin::Layout Themes(used by all pages)-->
+    <!--end::Layout Themes-->
+    <link rel="shortcut icon" href="@Url.Content("~/assets/media/logos/favicon.ico")" />
+    <style>
+        .reset-this {
+            animation: none;
+            animation-delay: 0;
+            animation-direction: normal;
+            animation-duration: 0;
+            animation-fill-mode: none;
+            animation-iteration-count: 1;
+            animation-name: none;
+            animation-play-state: running;
+            animation-timing-function: ease;
+            backface-visibility: visible;
+            background: 0;
+            background-attachment: scroll;
+            background-clip: border-box;
+            background-color: transparent;
+            background-image: none;
+            background-origin: padding-box;
+            background-position: 0 0;
+            background-position-x: 0;
+            background-position-y: 0;
+            background-repeat: repeat;
+            background-size: auto auto;
+            border: 0;
+            border-style: none;
+            border-width: medium;
+            border-color: inherit;
+            border-bottom: 0;
+            border-bottom-color: inherit;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            border-bottom-style: none;
+            border-bottom-width: medium;
+            border-collapse: separate;
+            border-image: none;
+            border-left: 0;
+            border-left-color: inherit;
+            border-left-style: none;
+            border-left-width: medium;
+            border-radius: 0;
+            border-right: 0;
+            border-right-color: inherit;
+            border-right-style: none;
+            border-right-width: medium;
+            border-spacing: 0;
+            border-top: 0;
+            border-top-color: inherit;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-top-style: none;
+            border-top-width: medium;
+            bottom: auto;
+            box-shadow: none;
+            box-sizing: content-box;
+            caption-side: top;
+            clear: none;
+            clip: auto;
+            color: inherit;
+            columns: auto;
+            column-count: auto;
+            column-fill: balance;
+            column-gap: normal;
+            column-rule: medium none currentColor;
+            column-rule-color: currentColor;
+            column-rule-style: none;
+            column-rule-width: none;
+            column-span: 1;
+            column-width: auto;
+            content: normal;
+            counter-increment: none;
+            counter-reset: none;
+            cursor: auto;
+            direction: ltr;
+            display: inline;
+            empty-cells: show;
+            float: none;
+            font: normal;
+            font-family: inherit;
+            font-size: medium;
+            font-style: normal;
+            font-variant: normal;
+            font-weight: normal;
+            height: auto;
+            hyphens: none;
+            left: auto;
+            letter-spacing: normal;
+            line-height: normal;
+            list-style: none;
+            list-style-image: none;
+            list-style-position: outside;
+            list-style-type: disc;
+            margin: 0;
+            margin-bottom: 0;
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 0;
+            max-height: none;
+            max-width: none;
+            min-height: 0;
+            min-width: 0;
+            opacity: 1;
+            orphans: 0;
+            outline: 0;
+            outline-color: invert;
+            outline-style: none;
+            outline-width: medium;
+            overflow: visible;
+            overflow-x: visible;
+            overflow-y: visible;
+            padding: 0;
+            padding-bottom: 0;
+            padding-left: 0;
+            padding-right: 0;
+            padding-top: 0;
+            page-break-after: auto;
+            page-break-before: auto;
+            page-break-inside: auto;
+            perspective: none;
+            perspective-origin: 50% 50%;
+            position: static;
+            /* May need to alter quotes for different locales (e.g fr) */
+            quotes: '\201C' '\201D' '\2018' '\2019';
+            right: auto;
+            tab-size: 8;
+            table-layout: auto;
+            text-align: inherit;
+            text-align-last: auto;
+            text-decoration: none;
+            text-decoration-color: inherit;
+            text-decoration-line: none;
+            text-decoration-style: solid;
+            text-indent: 0;
+            text-shadow: none;
+            text-transform: none;
+            top: auto;
+            transform: none;
+            transform-style: flat;
+            transition: none;
+            transition-delay: 0s;
+            transition-duration: 0s;
+            transition-property: none;
+            transition-timing-function: ease;
+            unicode-bidi: normal;
+            vertical-align: baseline;
+            visibility: visible;
+            white-space: normal;
+            widows: 0;
+            width: auto;
+            word-spacing: normal;
+            z-index: auto;
+            /* basic modern patch */
+            all: initial;
+            all: unset;
+        }
+
+        /* basic modern patch */
+
+        #reset-this-root {
+            all: initial;
+            *
+
+        {
+            all: unset;
+        }
+
+        }
+    </style>
+</head>
+<!--end::Head-->
+<!--begin::Body-->
+<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed page-loading">
+    <!--begin::Main-->
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Login-->
+        <div class="  d-flex flex-row-fluid" id="kt_login">
+            <div class="d-flex flex-center bgi-size-cover bgi-no-repeat flex-row-fluid" style="background-image: url(assets/media/bg/bg-2.jpg);">
+                <div class="login-form text-center text-white p-7 position-relative overflow-hidden">
+                    <!--begin::Login Header-->
+                    <div class="d-flex flex-center mb-15">
+                        <a href="#">
+                            <img src="@Url.Content("~/assets/media/logos/Asset 9@4x 1.png")" class="max-h-75px" alt="" />
+                        </a>
+                    </div>
+                    <!--end::Login Header-->
+                    <!--begin::Login Sign in form-->
+                    <div class="login-signin">
+                        <div class="mb-20">
+                            <h3 class="opacity-40 font-weight-normal">ระบบจัดการ CIS APP</h3>
+                        </div>
+                    </div>
+                    <!--end::Login Sign in form-->
+
+                </div>
+            </div>
+            <div class="d-flex flex-column-fluid">
+                <!--begin::Container-->
+                <div class="container" id="box_update">
+
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b">
+                        <div class="card-body">
+                            <!--begin::Top-->
+                            <div class="d-flex">
+                                
+                                
+                               
+                               
+                                <!--begin: Info-->
+                                <div class="flex-grow-1">
+                                    <!--begin::Basic data-->
+                                    <div class="d-flex align-items-center justify-content-between flex-wrap mt-2" >
+
+                                        <div id="reset-this-root">
+                                            <h2 style="text-align: center;"><strong>นโยบายคุ้มครองข้อมูลส่วนบุคคล</strong></h2>
+                                            <h2 style="text-align: center;"><strong>cloudidea application</strong></h2>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">บริษัท บริษัท คลาวด์ไอเดีย จำกัด ("บริษัท") เป็นผู้พัฒนาและเจ้าของ cloudidea application ซึ่งถือเป็นบริการ หนึ่งของบริษัท ("บริการ") เมื่อท่านสมัครบัญชีใช้งานของบริษัทผ่าน cloudidea application ท่านจะถือว่าเป็น ผู้ใช้บริการของบริษัท ("ผู้ใช้บริการ") และในการให้บริการแก่ท่าน บริษัทมีความ จำเป็นต้องประมวลผลข้อมูลส่วนบุคคลของผู้ใช้บริการ ดังนั้น บริษัทจึงมีจุดประสงค์ประกาศนโยบาย คุ้มครองข้อมูลส่วนบุคคลฉบับนี้ขึ้น เพื่อแจ้ง เกี่ยวกับ สิทธิและหน้าที่ รวมถึงเงื่อนไขต่างๆ อันเกี่ยว เนื่องกับการเก็บ รวบรวม ใช้ และเปิดเผยข้อมูล ส่วนบุคคลที่บริษัท จะดำเนินการให้ผู้ใช้บริการ ในฐานะผู้ใช้บริการรับทราบ</span></p>
+                                            <p style="text-align: justify;">&nbsp;</p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">นโยบายความเป็นส่วนตัวฉบับนี้ มีผลใช้บังคับกับการให้บริการของบริษัทเท่านั้น ไม่มีผลใช้บังคับ กับ แอปพลิเคชั่นและบริการหรือเว็บไซต์อื่นๆ ที่อาจมีการเชื่อมต่อ ซึ่งเป็นของบุคคลภายนอก ที่บริษัทไม่มี อำนาจ ควบคุม และเป็นส่วนที่ผู้ใช้บริการต้องทำความตกลง และศึกษาเกี่ยวกับนโยบายข้อมูลส่วน บุคคล สำหรับ การใช้แอปพลิเคชั่น บริการ หรือเว็บไซต์ดังกล่าวแยกต่างหาก</span></p>
+                                            <p style="text-align: justify;">&nbsp;</p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">หากผู้ใช้บริการไม่ตกลงตามเงื่อนไขของนโยบายข้อมูลส่วนบุคคลฉบับนี้ หรือฉบับแก้ไขอื่นๆ บริษัท สงวนสิทธิที่จะห้าม หรือไม่อนุญาตให้ผู้ใช้บริการดังกล่าวใช้บริการของบริษัท เนื่องจากการประมวล ผลข้อมูลส่วนบุคคลภายใต้นโยบายฉบับนี้ มีความผลจำเป็นโดยตรงต่อ การปฏิบัติตามหน้าที่ให้ บริการโดยบริษัทแก่ ผู้ใช้บริการ&nbsp; ทั้งนี้ การที่ผู้ใช้บริการยังคงใช้บริการของบริษัทอยู่ ผู้ใช้บริการ ดังกล่าว จะถือว่า ยอมรับนโยบายฉบับนี้เสมอ</span></p>
+                                            <p style="text-align: justify;">&nbsp;</p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">บริษัทอาจปรับปรุงนโยบายฉบับนี้ตามแต่ละระยะเวลา เพื่อให้สอดคล้องกับแนวปฏิบัติและกฎหมาย ข้อบังคับที่เกี่ยวข้อง และให้สอดคล้องกับการให้บริการต่างๆของบริษัท ทั้งนี้ บริษัทจะแจ้งให้ผู้ใช้ บริการทราบถึงการเปลี่ยนแปลงด้วยการประกาศนโยบายฉบับปรับปรุงใหม่ให้ผู้ใช้บริการทราบ โดย นโยบาย นั้นจะถือว่ามีผลบังคับใช้ เมื่อบริษัทได้ประกาศ</span></p>
+                                            <p style="text-align: justify;">&nbsp;</p>
+                                            <p style="text-align: justify;"><span style="text-decoration: underline;"><strong>ลักษณะข้อมูลส่วนบุคคลที่บริษัทประมวลผลในการให้บริการของบริษัท</strong></span></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">ในการให้บริการ บริษัทจะเก็บรวบรวม และประมวลผลข้อมูลส่วนบุคคล จากการที่ผู้ใช้บริการดำเนิน การผ่านระบบการให้บริการ ดังต่อไปนี้</span></p>
+                                            <ol style="text-align: justify;">
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">ข้อมูลที่บ่งชี้ตัวตนโดยตรง อาทิ ชื่อ อายุ สัญชาติ วันเกิด</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">ข้อมูลการติดต่อ อาทิ ที่อยู่ สถานที่ติดต่อ เบอร์โทร อีเมล</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">ข้อมูลการชำระเงิน อาทิ รายละเอียดการชำระเงิน บัตรเครดิต และบัญชีธนาคาร</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">ข้อมูลการใช้บริการ อาทิ ชื่อบัญชีผู้ใช้ รหัสผ่าน ประวัติการทำธุรกรรมต่างๆ ที่ผู้ใช้บริการ ดำเนินการ รวมถึง ความสนใจของต่างๆของผู้ใช้บริการ</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">ข้อมูลทางเทคนิคในการระบุตัวตน อาทิ หมายเลขระบุตำแหน่งคอมพิวเตอร์ (IP Address) ข้อมูลการใช้งาน การตั้งค่าและการเชื่อมต่อบราวเซอร์ของอุปกรณ์ที่ผู้ใช้บริการ ใช้ในการใช้ บริการของบริษัท</span></li>
+                                            </ol>
+                                            <p style="text-align: justify;">&nbsp;</p>
+                                            <p style="text-align: justify;"><span style="text-decoration: underline;"><strong>วัตถุประสงค์ในการประมวลผลข้อมูล</strong></span></p>
+                                            <ol style="text-align: justify;">
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">บริษัทมีความจำเป็นเก็บ รวบรวม ใช้ข้อมูลส่วนบุคคลของผู้ใช้บริการ เพื่อการให้บริการที่ กำหนดและระบุไว้สำหรับแต่ละเงื่อนไขการให้บริการของบริษัท อันรวมถึง เพื่อการยืนยันตัว ตนและติดตามในการทำธุรกรรมต่างๆของผู้ใช้บริการ เพื่อการตรวจสอบเงื่อนไขการชำระเงิน ค่าบริการ เพื่อใช้ในการติดต่อสื่อสารกับผู้ใช้บริการ เป็นต้น</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">บริษัทมีความจำเป็นเก็บและใช้ข้อมูลส่วนบุคคลของผู้ใช้บริการ เพื่อการวิเคราะห์ความสนใจ ของผู้ใช้บริการ เพื่อให้สามารถเสนอสิทธิประโยชน์หรือบริการ ตามความสนใจของผู้ใช้ บริการได้มากขึ้น หรือ เพื่อการสร้างความสัมพันธ์ที่ดีขึ้นระหว่างบริษัทและผู้ใช้บริการ</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">บริษัทมีความจำเป็นจัดเก็บและใช้ข้อมูลส่วนบุคคลของผู้ใช้บริการ เพื่อวัตถุประสงค์ในการ ให้บริการสนับสนุนอื่นๆ เช่น การติดต่อสอบถามข้อมูลติชมแสดงความคิดเห็นหลังการบริการ หรือ การส่งคำร้องต่างๆ</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">บริษัทมีความจำเป็นจัดเก็บข้อมูลส่วนบุคคลของผู้ใช้บริการ เพื่อปฏิบัติตามข้อกฎหมาย และ ระเบียบบังคับใช้ของรัฐ เช่น การจัดทำเอกสารภาษี หัก ณ ที่จ่าย หรือการดำเนินการอื่นๆ ที่กฎหมายกำหนด</span></li>
+                                            </ol>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">ทั้งนี้ บริษัทจะเก็บและรวบรวมข้อมูลส่วนบุคคลของผู้ใช้บริการไว้ตลอดระยะเวลา ตราบเท่าที่ผู้ใช้ บริการยังคงเป็นผู้ใช้บริการของบริษัทอยู่ และบริษัทสงวนสิทธิเก็บข้อมูลไว้อีกเป็นระยะเวลา 3 ปีหลัง จากผู้ใช้บริการยกเลิกการใช้บริการ เพื่อประโยชน์ในการปกป้อง และต่อสู้สิทธิต่างๆของบริษัท เว้น แต่ กฎหมายที่เกี่ยวข้องกำหนดให้บริษัทมีหน้าที่เก็บข้อมูลส่วนบุคคลไว้เป็นระยะเวลาอื่น บริษัทอาจมี ความจำเป็นต้องเก็บข้อมูลไว้เป็นระยะเวลาที่ยาวนานกว่า 3 ปี</span></p>
+                                            <p style="text-align: justify;">&nbsp;</p>
+                                            <p style="text-align: justify;"><span style="text-decoration: underline;"><strong>การเปิดเผยข้อมูลส่วนบุคคล</strong></span></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">เพื่อการให้บริการ ตามเงื่อนไขที่ระบุไว้ บริษัทอาจมีความ จำเป็นต้องเปิดเผยข้อมูลส่วนบุคคลของผู้ ใช้บริการ ในกรณี ดังนี้</span></p>
+                                            <ol style="text-align: justify;">
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">บริษัทอาจมีความจำเป็นเปิดเผยให้แก่ผู้ให้บริการภายนอกของบริษัท ที่ได้รับการว่าจ้างจาก บริษัทให้ช่วยเหลือสนับสนุนการให้บริการของบริษัท เช่น ที่ปรึกษา ผู้รับจ้างให้บริการ ผู้รับ จ้างขนส่ง รวมถึงผู้ให้บริการภายนอกที่ให้บริการประเมินการบริการของบริษัท เช่น Google Analytics ทั้งนี้บริษัทจะเปิดเผยข้อมูลเฉพาะเท่าที่จำเป็นเท่านั้น</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">บริษัทอาจเปิดเผยด้วยการเก็บรักษาข้อมูลส่วนบุคคลของท่านไว้ในระบบระบบคอมพิวเตอร์ ที่ใช้บริการ ได้แก่ Phalcon Host server service</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">บริษัทอาจเปิดเผยข้อมูล ด้วยความจำเป็นเพื่อประโยชน์ในการปกป้องและต่อสู้สิทธิของบริษัท หรือเพื่อการป้องกันและตรวจสอบลักษณะการกระทำผิดที่เกี่ยวข้องกับการใช้บริการของบริษัท โดยผู้ใช้บริการ ในลักษณะต่างๆ โดยบริษัทจะดำเนินการดังกล่าวเท่าที่จำเป็น เท่านั้น</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">ในกรณีที่บริษัทมีหน้าที่ตามกฎหมาย หรืออยู่ภายใต้บังคับคำพิพากษา หรือคำสั่งของ หน่วยงานราชการ บริษัทอาจมีความจำเป็นต้องเปิดเผยข้อมูลให้แก่ หน่วยงานดังกล่าว เพื่อ เป็นการปฏิบัติตามหน้าที่ที่มีตามกฎหมาย</span></li>
+                                            </ol>
+                                            <p style="text-align: justify;">&nbsp;</p>
+                                            <p style="text-align: justify;"><span style="text-decoration: underline;"><strong>Cookies ที่บริษัทใช้ในการให้บริการ</strong></span></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">Cookies คือ text files ที่อยู่ในคอมพิวเตอร์ของผู้ใช้บริการ ใช้เพื่อจัดเก็บรายละเอียดข้อมูล log การ ใช้งานอินเตอร์เน็ต หรือพฤติกรรมการใช้บริการของผู้ใช้บริการ ทั้งนี้ เพื่อรับประกันประสิทธิภาพใน การให้บริการของบริษัทแก่ผู้ใช้บริการ บริษัทมีความจำเป็นต้องใช้คุกกี้หลายประเภทเพื่อจุดประสงค์ ต่างกันไป ดังที่ระบุต่อไปนี้</span></p>
+                                            <ol style="text-align: justify;">
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Functionality Cookies: ใช้ในการจดจำสิ่งที่ผู้ใช้บริการเลือก หรือตั้งค่าบนแพลตฟอร์ม เช่น ชื่อบัญชีผู้ใช้ ภาษา ฟ้อนต์ และรูปแบบแพลตฟอร์ม เพื่อการนำเสนอข้อมูลที่ตรงความต้องการ เฉพาะบุคคล ให้แก่ผู้ใช้บริการได้มากขึ้น ตามการตั้งค่าต่างที่เลือกไว้</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Advertising Cookies: ใช้ในการจดจำสิ่งที่ท่านเคยเยี่ยมชมและรวมถึง ลักษณะการใช้ บริการของผู้ใช้บริการ เพื่อนำเสนอสินค้า หรือบริการที่เกี่ยวข้องและตรงกับความสนใจของ ผู้ใช้บริการ และใช้เพื่อการประเมินประสิทธิผลของการใช้ฟังก์ชั่นต่างๆของระบบ</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">Strictly Necessary Cookies เป็นคุกกี้ประเภทที่มีความจำเป็นอย่างมากต่อการทำงานเพื่อ การให้บริการของบริษัท มีความจำเป็นเพื่อให้การใช้บริการโดยผู้ใช้งานสามารถทำได้ อย่างทั่วถึงและปลอดภัย</span></li>
+                                            </ol>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">แม้ว่าการใช้คุกกี้จะมีประโยชน์ในการเสริมประสิทธิภาพในการให้บริการ และการทำงานให้บริการ ของบริษัท แต่หากผู้ใช้บริการต้องการ ผู้ใช้บริการสามารถลบการตั้งค่าคุกกี้บน Browser ของตน เองได้ แต่อย่างไรก็ตาม ผู้ใช้บริการต้องรับทราบว่า การดำเนินการดังกล่าวอาจส่งผลกระทบต่อประ สิทธิภาพในการทำงานให้บริการของบริษัทได้ในบางส่วน ตามจุดประสงค์การทำงานของคุกกี้ที่ระบุไว้</span></p>
+                                            <p style="text-align: justify;">&nbsp;</p>
+                                            <p style="text-align: justify;"><span style="text-decoration: underline;"><strong>คำรับประกันการดำเนินมาตรการรักษาความมั่นคงปลอดภัยในข้อมูลที่เหมาะสม</strong></span></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">บริษัทรับประกันจัดให้มีมาตรการการรักษาความมั่นคงปลอดภัยที่เหมาะสม เพื่อป้องกัน การเข้าถึง การใช้ การเปลี่ยนแปลง การแก้ไข หรือการเปิดเผยข้อมูลส่วนบุคคลโดยปราศจากอำนาจหรือโดย มิชอบ นอกจากนี้ บริษัทได้กำหนดแนวปฏิบัติภายในเพื่อกำหนดสิทธิในการเข้าถึงหรือการใช้ข้อมูล ส่วนบุคคลของเจ้าของข้อมูลส่วนบุคคล เพื่อรักษาความลับ และความปลอดภัยของข้อมูล ทั้งนี้ บริษัทจะจัดให้มีการทบทวนมาตรการดังกล่าวเป็นระยะเพื่อความเหมาะสม ตามกฎหมายที่เกี่ยวข้อง</span></p>
+                                            <p style="text-align: justify;">&nbsp;</p>
+                                            <p style="text-align: justify;"><span style="text-decoration: underline;"><strong>สิทธิของเจ้าของข้อมูล</strong></span></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">บริษัทรับทราบ และเคารพสิทธิตามกฎหมายของผู้ใช้บริการ ในส่วนที่เกี่ยวข้องกับข้อมูลส่วนบุคคล ของท่านผู้ใช้บริการ ซึ่งได้แก่ สิทธิ ดังนี้</span></p>
+                                            <ol style="text-align: justify;">
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">สิทธิขอเข้าถึงและขอรับสำเนาข้อมูลส่วนบุคคล รวมถึงสิทธิในการขอแก้ไขข้อมูลดังกล่าวให้ เป็นปัจจุบันและถูกต้อง</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">สิทธิขอรับข้อมูลส่วนบุคคล ในกรณีที่บริษัททำให้ข้อมูลนั้นอยู่ในรูปแบบที่สามารถอ่านหรือใช้ งานโดยทั่วไปด้วยเครื่องมือหรืออุปกรณ์ที่ทำงานได้โดยอัตโนมัติ รวมถึง สิทธิขอให้ส่งหรือ โอน ข้อมูลรูปแบบดังกล่าวไปยังผู้ควบคุมข้อมูลส่วนบุคคลอื่น</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">สิทธิคัดค้านการประมวลผลข้อมูลส่วนบุคคล</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">สิทธิขอให้ลบหรือทำลาย หรือทำให้ข้อมูลส่วนบุคคลเป็นข้อมูลที่ไม่สามารถระบุตัวบุคคลได้ เมื่อข้อมูลนั้นหมดความจำเป็นหรือเมื่อเจ้าของข้อมูลส่วนบุคคลถอนความยินยอม</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">สิทธิในการขอให้ระงับการใช้ข้อมูลส่วนบุคคลได้ ในกรณีเมื่อเป็นข้อมูลส่วนบุคคลที่ต้องลบ หรือ เมื่อข้อมูลดังกล่าวหมดความจำเป็น</span></li>
+                                                <li style="font-weight: 400;" aria-level="1"><span style="font-weight: 400;">สิทธิถอนความยินยอม ในการประมวลผลข้อมูลที่ผู้ใช้บริการเคยให้ไว้</span></li>
+                                            </ol>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">ทั้งนี้ ผู้ใช้บริการสามารถติดต่อมายังบริษัท เพื่อขอใช้สิทธิข้างต้นได้ ตามรายละเอียดการติดต่อที่ บริษัทได้กำหนดไว้ โดยไม่ต้องเสียค่าใช้จ่ายใดๆ และบริษัทจะพิจารณา และแจ้งผลการพิจารณาการ ขอใช้สิทธิ ให้ผู้ใช้บริการทราบภายใน 30 วันนับแต่วันที่เราได้รับคำร้องขอดังกล่าว</span></p>
+                                            <p style="text-align: justify;">&nbsp;</p>
+                                            <p style="text-align: justify;"><span style="text-decoration: underline;"><strong>ช่องทางการติดต่อ</strong></span></p>
+                                            <p style="text-align: justify;"><strong>รายละเอียดผู้ควบคุมข้อมูล</strong></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">ชื่อ: บริษัท คลาวด์ไอเดีย จำกัด</span></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">สถานที่ติดต่อ: 28/73 หมู่บ้าน สิริ อเวนิว เพชรเกษม 81 ถนนมาเจริญ แขวงหนองแขม เขตหนองแขม กรุงเทพมหานคร 10600</span></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">ช่องทางการติดต่อ: 02 007 1811</span></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">อีเมล: cullidea_studio@hotmail.com</span></p>
+                                            <p style="text-align: justify;"><br /><br /></p>
+                                            <p style="text-align: justify;"><strong>รายละเอียดตัวแทนผู้รับผิดชอบ</strong></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">ชื่อ: นาย ศิวภัทร อินทศร</span></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">สถานที่ติดต่อ: 28/73 หมู่บ้าน สิริ อเวนิว เพชรเกษม 81 ถนนมาเจริญ แขวงหนองแขม เขตหนองแขม กรุงเทพมหานคร 10600</span></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">ช่องทางการติดต่อ: 02 007 1811</span></p>
+                                            <p style="text-align: justify;"><span style="font-weight: 400;">อีเมล: cullidea_studio@hotmail.com</span></p>
+                                        </div>
+                                    </div>
+                                    <!--end::Basic data--> 
+                                </div>
+                                <!--end::Info-->
+                            </div>
+                            <!--end::Top-->
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Container-->
+            </div>
+
+
+        </div>
+        <!--end::Login-->
+    
+    
+    
+    </div>
+    <!--end::Main-->
+    @*<script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>*@
+    <!--begin::Global Config(global config for global JS scripts)-->
+    <script>var KTAppSettings = { "breakpoints": { "sm": 576, "md": 768, "lg": 992, "xl": 1200, "xxl": 1400 }, "colors": { "theme": { "base": { "white": "#ffffff", "primary": "#3699FF", "secondary": "#E5EAEE", "success": "#1BC5BD", "info": "#8950FC", "warning": "#FFA800", "danger": "#F64E60", "light": "#E4E6EF", "dark": "#181C32" }, "light": { "white": "#ffffff", "primary": "#E1F0FF", "secondary": "#EBEDF3", "success": "#C9F7F5", "info": "#EEE5FF", "warning": "#FFF4DE", "danger": "#FFE2E5", "light": "#F3F6F9", "dark": "#D6D6E0" }, "inverse": { "white": "#ffffff", "primary": "#ffffff", "secondary": "#3F4254", "success": "#ffffff", "info": "#ffffff", "warning": "#ffffff", "danger": "#ffffff", "light": "#464E5F", "dark": "#ffffff" } }, "gray": { "gray-100": "#F3F6F9", "gray-200": "#EBEDF3", "gray-300": "#E4E6EF", "gray-400": "#D1D3E0", "gray-500": "#B5B5C3", "gray-600": "#7E8299", "gray-700": "#5E6278", "gray-800": "#3F4254", "gray-900": "#181C32" } }, "font-family": "Poppins" };</script>
+    <!--end::Global Config-->
+    <!--begin::Global Theme Bundle(used by all pages)-->
+    <script src="@Url.Content("~/assets/plugins/global/plugins.bundle.js")"></script>
+    <script src="@Url.Content("~/assets/plugins/custom/prismjs/prismjs.bundle.js")"></script>
+    <script src="@Url.Content("~/assets/js/scripts.bundle.js")"></script>
+    <!--end::Global Theme Bundle-->
+
+    <script type="text/javascript" src="@Url.Content("~/lib/jquery-validation/dist/jquery.validate.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/lib/jquery-unobtrusive-ajax/jquery.unobtrusive-ajax.js")"></script>
+
+
+    <!--begin::Page Scripts(used by this page)-->
+    @*<script src="@Url.Content("~/assets/js/pages/custom/login/login-general.js")"></script>*@
+    <script type="text/javascript" src="@Url.Content("~/js/Utils.js")"></script>
+    <!--end::Page Scripts-->
+</body>
+<!--end::Body-->
+</html>
