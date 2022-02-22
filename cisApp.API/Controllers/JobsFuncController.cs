@@ -772,7 +772,7 @@ namespace cisApp.API.Controllers
                     job.RecruitedPrice,
                     job.ContestPrice,
                     JobCandidates = data.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, s.UrlPathAPI, s.IsLike, s.PriceRate, s.UserRate }).ToList(),
-                    JobsExamImages = jobimgex.Select(s => new { s.UrlPathAPI, s.JobsExTypeDesc })
+                    JobsExamImages = jobimgex.Select(s => new { s.UrlPathAPI, s.JobsExTypeDesc, s.JobsExTypeId }).OrderBy(o => o.JobsExTypeId)
                 }));
             }
             catch (Exception ex)

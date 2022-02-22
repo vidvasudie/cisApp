@@ -223,7 +223,7 @@ namespace cisApp.API.Controllers
                         j.ValidMassage,
                         IsCanSubmit = String.IsNullOrEmpty(j.ValidMassage),
                         JobCandidates = j.jobCandidates.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, s.UrlPathAPI }),
-                        JobsExamImages = j.jobsExamImages.Select(s => new { s.UrlPathAPI, s.JobsExTypeDesc })
+                        JobsExamImages = j.jobsExamImages.Select(s => new { s.UrlPathAPI, s.JobsExTypeDesc, s.JobsExTypeId }).OrderBy(o => o.JobsExTypeId)
                     }
                 })); 
             }
