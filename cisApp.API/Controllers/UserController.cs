@@ -293,6 +293,47 @@ namespace cisApp.API.Controllers
 
         }
 
+        [HttpPost("registerstatus")]
+        public object resetpass(Guid? userId)
+        {
+            try
+            {
+                var Obj = GetUser.Get.GetById(userId.Value);
+
+                if (Obj == null)
+                {
+                    return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+                }
+
+                int registerStatus = 0;
+
+                if (Obj.UserType == 2 || Obj.UserType == 3)
+                {
+                    registerStatus = 2;
+                }
+                else
+                {
+                    var userRequest = GetUserDesignerRequest.Get.GetByUserIdAndStatus(userId.Value, 1);
+                    if (userRequest.Count == 0)
+                    {
+                        registerStatus = 0;
+                    }
+                    else
+                    {
+                        registerStatus = 1;
+                    }
+                }
+
+                
+
+                var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
+                return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new { registerStatus }));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+            }
+        }
 
     }
 }
