@@ -90,6 +90,24 @@ namespace cisApp.Function
                 }
             }
 
+            public static List<UserDesignerRequest> GetByUserIdAndStatus(Guid userId, int status)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.UserDesignerRequest.Where(o => o.UserId == userId && o.Status == status).ToList();
+
+                        return data;
+                        
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
         }
         public class Manage
         {
