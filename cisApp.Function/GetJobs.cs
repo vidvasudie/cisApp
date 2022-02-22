@@ -318,7 +318,15 @@ namespace cisApp.Function
                                 if (dataList != null && dataList.Count > 0)
                                 {
                                     var dl = dataList.OrderBy(o => o.JobNo).LastOrDefault();
-                                    obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", Int32.Parse(dl.JobNo.Substring(7, 5)) + 1, dl.JobNo.Substring(5, 2) != DateTime.Now.Month.ToString("00"));
+                                    if (String.IsNullOrEmpty(dl.JobNo))
+                                    {
+                                        obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", 0, true);
+                                    }
+                                    else
+                                    {
+                                        obj.JobNo = Utility.GenerateRequestCode("ID{0}-{1}{2}", Int32.Parse(dl.JobNo.Substring(7, 5)) + 1, dl.JobNo.Substring(5, 2) != DateTime.Now.Month.ToString("00"));
+                                    }
+                                    
                                 }
                                 else
                                 {
