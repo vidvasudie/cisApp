@@ -221,7 +221,7 @@ namespace cisApp.API.Controllers
                 }
 
                 var pm = GetJobPayment.Get.GetByJobId(jobId);
-                if(pm.Where(o => o.PayStatus != 1 || o.PayStatus != 4).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน
+                if(pm.Where(o => o.PayStatus == 2 || o.PayStatus == 3).Count() > 0) //1=รอชำระเงิน, 4=ไม่อนุมัติ/คืนเงิน
                 {
                     //ถ้าจ่ายแล้ว ยกเลิกไม่ได้
                     return Ok(resultJson.errors("ไม่สามารถยกเลิกได้ เมื่อมีการชำระเงินแล้ว", "fail", null));
@@ -660,14 +660,16 @@ namespace cisApp.API.Controllers
         /// แสดงรายละเอียดการส่งงานของนักออกแบบที่ได้รับเลือก (ตรวจสอบผลงาน)
         /// </summary>
         /// <param name="jobId"></param>
+        /// <param name="caUserId"></param>
+        /// <param name="jobStatus">สถานะใบงาน default=4</param>
         /// <returns></returns>
         [Route("api/jobs/getapprovedetail")]
         [HttpGet]
-        public IActionResult GetApproveDetail(Guid jobId, Guid? caUserId)
+        public IActionResult GetApproveDetail(Guid jobId, Guid? caUserId, int jobStatus = 4)
         {
             try
             {
-                var data = GetJobs.Get.GetApproveDetail(jobId, caUserId);
+                var data = GetJobs.Get.GetApproveDetail(jobId, caUserId, jobStatus);
                 if (data == null || data.Count == 0)
                 {
                     return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));
@@ -692,7 +694,7 @@ namespace cisApp.API.Controllers
                     data.First().IsCanEdit,
                     data.First().IsConfirmApprove,
                     data.First().IsCusFavorite,
-                    albums = data.Where(o => o.AlbumName != null).Select(o => new { o.AlbumName, o.AlbumType, o.AlbumTypeDesc, o.Url, ImgUrlPath=o.ImgAttachFileID != null ? o.ImgUrlPath.Replace("~", Host):"" }),
+                    albums = data.Where(o => o.AlbumName != null).OrderByDescending(o => o.UpdatedDate).Select(o => new { o.AlbumName, o.AlbumType, o.AlbumTypeDesc, o.Url, ImgUrlPath=o.ImgAttachFileID != null ? o.ImgUrlPath.Replace("~", Host):"" }),
                 } ));
             }
             catch (Exception ex)
