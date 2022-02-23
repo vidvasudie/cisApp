@@ -155,12 +155,40 @@ namespace cisApp.API.Controllers
                 {
                     //get candidate with status 2:อยู่ระหว่างประกวด
                     j.jobCandidates = GetJobsCandidate.Get.GetByJobId(new SearchModel() { gId = j.JobID, statusStr = "1" });
-
+                        
                     //get jobeximage 
                     j.jobsExamImages = GetJobsExamImage.Get.GetImageByJobId(j.JobID);
                 }
 
-                return Ok(resultJson.success("สร้างใบงานสำเร็จ", "success", jobs.OrderByDescending(o => o.CreatedDate), model.take, jobs.Count()));
+                return Ok(resultJson.success("สร้างใบงานสำเร็จ", "success", jobs.OrderByDescending(o => o.CreatedDate).Select(o => new { 
+                    o.IsCusFavorite,
+                    o.JobID,
+                    o.JobNo,
+                    o.JobTypeName,
+                    o.JobDescription,
+                    o.JobAreaSize,
+                    o.JobPrice,
+                    o.JobPriceProceed,
+                    o.JobFinalPrice,
+                    o.JobPricePerSqM,
+                    o.JobStatus,
+                    o.IsInvRequired,
+                    o.InvAddress,
+                    o.InvPersonalID,
+                    o.CreatedDate,
+                    o.CreatedDateStr,
+                    o.UserID,
+                    o.Fullname,
+                    o.AttachFileID,
+                    o.FileName,
+                    UrlPathUserImage = o.AttachFileID != Guid.Empty ? o.UrlPathUserImage : null,
+                    o.RecruitedPrice,
+                    o.ContestPrice,
+                    jobCandidates = o.jobCandidates.Select(s => new { UrlPathAPI=s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null }),
+                    jobsExamImages = o.jobsExamImages.Select(s => new { UrlPathAPI=s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null }),
+                    o.IsCanSubmit,
+                    o.WarningText
+                }), model.take, jobs.Count()));
             }
             catch (Exception ex)
             {
@@ -222,8 +250,8 @@ namespace cisApp.API.Controllers
                         j.ContestPrice,
                         j.ValidMassage,
                         IsCanSubmit = String.IsNullOrEmpty(j.ValidMassage),
-                        JobCandidates = j.jobCandidates.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, s.UrlPathAPI }),
-                        JobsExamImages = j.jobsExamImages.Select(s => new { s.UrlPathAPI, s.JobsExTypeDesc, s.JobsExTypeId }).OrderBy(o => o.JobsExTypeId)
+                        JobCandidates = j.jobCandidates.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, UrlPathAPI=s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null }),
+                        JobsExamImages = j.jobsExamImages.Select(s => new { UrlPathAPI=s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null, s.JobsExTypeDesc, s.JobsExTypeId }).OrderBy(o => o.JobsExTypeId)
                     }
                 })); 
             }
@@ -499,7 +527,7 @@ namespace cisApp.API.Controllers
                     IsWin=!String.IsNullOrEmpty(o.WinText),
                     o.WinText,
                     ImgCoverUrl = aLImg.First().FullUrlPath,
-                    PicUrlPath = o.UrlPath.Replace("~", Host)
+                    PicUrlPath = o.PicAttachFileID != Guid.Empty ? o.UrlPath.Replace("~", Host) : null
                 }) ));
             }
             catch (Exception ex)

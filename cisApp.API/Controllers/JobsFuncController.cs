@@ -268,7 +268,11 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
                 
-                return Ok(resultJson.success("สำเร็จ", "success", new { jobId= job.JobId, job.JobFinalPrice, job.PayStatusDesc, candidates = data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate, UrlPath = o.UrlPathAPI }).ToList() } ));
+                return Ok(resultJson.success("สำเร็จ", "success", new { 
+                    jobId= job.JobId, 
+                    job.JobFinalPrice, 
+                    job.PayStatusDesc, 
+                    candidates = data.Select(o => new { o.UserId, o.UserFullName, o.IsLike, o.PriceRate, o.UserRate, UrlPath = o.AttachFileId != Guid.Empty ? o.UrlPathAPI : null }).ToList() } ));
             }
             catch (Exception ex)
             {
@@ -771,8 +775,8 @@ namespace cisApp.API.Controllers
                     job.UrlPathUserImage,
                     job.RecruitedPrice,
                     job.ContestPrice,
-                    JobCandidates = data.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, s.UrlPathAPI, s.IsLike, s.PriceRate, s.UserRate }).ToList(),
-                    JobsExamImages = jobimgex.Select(s => new { s.UrlPathAPI, s.JobsExTypeDesc, s.JobsExTypeId }).OrderBy(o => o.JobsExTypeId)
+                    JobCandidates = data.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, UrlPathAPI = s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null, s.IsLike, s.PriceRate, s.UserRate }).ToList(),
+                    JobsExamImages = jobimgex.Select(s => new { UrlPathAPI=s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null, s.JobsExTypeDesc, s.JobsExTypeId }).OrderBy(o => o.JobsExTypeId)
                 }));
             }
             catch (Exception ex)
