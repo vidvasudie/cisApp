@@ -78,8 +78,8 @@ namespace cisApp.API.Controllers
                     o.UrlPathUserImage,
                     o.RecruitedPrice,
                     o.ContestPrice,
-                    JobCandidates = o.jobCandidates.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, s.UrlPathAPI }),
-                    JobsExamImages = o.jobsExamImages.Select(s => new { s.UrlPathAPI })
+                    JobCandidates = o.jobCandidates.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, UrlPathAPI= s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null }),
+                    JobsExamImages = o.jobsExamImages.Select(s => new { UrlPathAPI=s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null })
                 }).ToList(), model.take, jobs.Count()));
             }
             catch (Exception ex)
