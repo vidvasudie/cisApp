@@ -195,6 +195,34 @@ namespace cisApp.Function
                 }
             }
 
+            public static int GetAlbumImageTotal(SearchModel model)
+            {
+                try
+                {
+
+                    List<string> imgString = new List<string>();
+
+                    if (model.Imgs != null)
+                    {
+                        imgString = model.Imgs.Select(o => "'" + o.ToString() + "'").ToList();
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                        new SqlParameter("@stext", ""),
+                        new SqlParameter("@orderBy", model.Orderby),
+                        new SqlParameter("@tags", model.Tags),
+                        new SqlParameter("@categories", model.Categories),
+                        new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value)
+                    };
+
+                    var dt = StoreProcedure.GetAllStoredDataTable("GetAlbumImageTotal", parameter);
+                    return (int)dt.Rows[0]["TotalCount"];
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+
             public static AlbumImageModel GetAlbumImageByAttachId(string domainUrl, Guid id)
             {
                 try
@@ -220,6 +248,8 @@ namespace cisApp.Function
                     return null;
                 }
             }
+
+            
 
             public static List<AttachFile> GetAttachFileByAlbumId(int id, string domain)
             {
@@ -428,6 +458,27 @@ namespace cisApp.Function
                     }
 
                     return 1;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static void DeleteAttachFileImage(Guid id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var attachFile = context.AttachFile.Find(id);
+
+                        var albumImage = context.AlbumImage.Where(o => o.ImgId == attachFile.RefId).FirstOrDefault();
+
+                        context.AlbumImage.Remove(albumImage);
+
+                        context.SaveChanges();
+                    }
                 }
                 catch (Exception ex)
                 {
