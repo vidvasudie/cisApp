@@ -43,7 +43,7 @@ namespace cisApp.Controllers
             string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
 
             if (model == null) model = new SearchModel();
-
+            
             model.Orderby = "LastedCreate";
 
             List<AlbumImageModel> _model = GetAlbum.Get.GetAlbumImage(model, webAdmin);
