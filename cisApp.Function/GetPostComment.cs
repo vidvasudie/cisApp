@@ -32,6 +32,24 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
+            public static int GetByRefIdTotal(Guid refId)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[]
+                    {
+                        new SqlParameter("@refId", refId)
+                    };
+
+                    var dt = StoreProcedure.GetAllStoredDataTable("GetPostCommentByRefIDTotal", parameter);
+                    return (int)dt.Rows[0]["TotalCount"];
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public class Manage
