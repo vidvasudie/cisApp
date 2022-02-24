@@ -99,6 +99,9 @@ namespace cisApp.Function
         public int JobWaitingStatusTotal { get; set; }
         public int JobProcessStatusTotal { get; set; }
         public int JobTotal { get; set; }
+        public int LikeOtherCount { get; set; }
+        public int OtherLikedCount { get; set; }
+
 
         [NotMapped]
         public List<FileAttachModel> files { get; set; }

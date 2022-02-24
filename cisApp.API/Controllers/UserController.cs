@@ -163,7 +163,7 @@ namespace cisApp.API.Controllers
                     return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
                 }
                 var Obj = GetUser.Get.GetById(id.Value);
-                return Ok(resultJson.success(null, null, new { Obj.Fname, Obj.Lname, Obj.Tel, Obj.Email  }, null, null, null, null));
+                return Ok(resultJson.success(null, null, new { Obj.Fname, Obj.Lname, Obj.Tel, Obj.Email, Obj.LikeOtherCount, Obj.OtherLikedCount  }, null, null, null, null));
             }
             catch (Exception ex)
             {
