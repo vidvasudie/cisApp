@@ -326,7 +326,7 @@ namespace cisApp.API.Controllers
 
                 
 
-                var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
+                //var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
                 return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new { registerStatus }));
             }
             catch (Exception ex)
