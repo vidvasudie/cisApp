@@ -465,7 +465,7 @@ namespace cisApp.Function
                 }
             }
 
-            public static void DeleteAttachFileImage(Guid id)
+            public static void DeleteAttachFileImage(Guid id, Guid userId)
             {
                 try
                 {
@@ -475,6 +475,12 @@ namespace cisApp.Function
 
                         var albumImage = context.AlbumImage.Where(o => o.ImgId == attachFile.RefId).FirstOrDefault();
 
+                        attachFile.IsActive = false;
+                        attachFile.DeletedBy = userId;
+                        attachFile.DeletedDate = DateTime.Now;
+
+
+                        context.AttachFile.Update(attachFile);
                         context.AlbumImage.Remove(albumImage);
 
                         context.SaveChanges();

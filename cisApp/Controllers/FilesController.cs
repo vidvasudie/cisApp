@@ -57,7 +57,7 @@ namespace cisApp.Controllers
         {
             try
             {
-                GetAlbum.Manage.DeleteAttachFileImage(id);
+                GetAlbum.Manage.DeleteAttachFileImage(id, _UserId().Value);
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Files")));
             }
