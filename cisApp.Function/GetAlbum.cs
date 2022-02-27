@@ -195,6 +195,34 @@ namespace cisApp.Function
                 }
             }
 
+            public static int GetAlbumImageTotal(SearchModel model)
+            {
+                try
+                {
+
+                    List<string> imgString = new List<string>();
+
+                    if (model.Imgs != null)
+                    {
+                        imgString = model.Imgs.Select(o => "'" + o.ToString() + "'").ToList();
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                        new SqlParameter("@stext", ""),
+                        new SqlParameter("@orderBy", model.Orderby),
+                        new SqlParameter("@tags", model.Tags),
+                        new SqlParameter("@categories", model.Categories),
+                        new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value)
+                    };
+
+                    var dt = StoreProcedure.GetAllStoredDataTable("GetAlbumImageTotal", parameter);
+                    return (int)dt.Rows[0]["TotalCount"];
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+
             public static AlbumImageModel GetAlbumImageByAttachId(string domainUrl, Guid id)
             {
                 try
@@ -220,6 +248,8 @@ namespace cisApp.Function
                     return null;
                 }
             }
+
+            
 
             public static List<AttachFile> GetAttachFileByAlbumId(int id, string domain)
             {
@@ -263,11 +293,28 @@ namespace cisApp.Function
                 }
             }
 
+            public static Album GetById(int id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.Album.Find(id);
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
         }
 
         public class Manage
         {
-            public static Album Update(AlbumModel data, Guid userId)
+            public static Album Update(AlbumModel data, Guid userId, bool isFormAPI = true)
             {
                 try
                 {
@@ -307,9 +354,17 @@ namespace cisApp.Function
 
                             //validate insert and remove image 
                             //insert job image ex
-                            ManageImages(context, data.files, obj);
+                            if (isFormAPI)
+                            {
+                                ManageImageApi(context, data.apiFiles, obj, userId);
+                            }
+                            else
+                            {
+                                ManageImages(context, data.files, obj);
+                            }
+                            
 
-                            ManageImageApi(context, data.apiFiles, obj, userId);
+                            
 
                             //add job tracking for jobStatus 
                             //JobsTracking tracking = new JobsTracking();
@@ -341,6 +396,13 @@ namespace cisApp.Function
 
             private static int ManageImages(CAppContext context, List<FileAttachModel> imgs, Album obj)
             {
+
+                var albumImages = Get.GetAlbumImageByAlbumId(obj.AlbumId.Value);
+
+                context.AlbumImage.RemoveRange(albumImages);
+
+                context.SaveChanges();
+
                 if (imgs == null || imgs.Count == 0)
                 {
                     return 0;
@@ -378,7 +440,7 @@ namespace cisApp.Function
                     attachFile.Path = virtualPath;
                     attachFile.Size = file.Size;
 
-                    attachFile.CreatedBy = obj.CreatedBy.Value;
+                    attachFile.CreatedBy = obj.UpdatedBy.Value;
                     attachFile.CreatedDate = DateTime.Now;
                     attachFile.UpdatedBy = obj.UpdatedBy.Value;
                     attachFile.UpdatedDate = DateTime.Now;
@@ -390,6 +452,20 @@ namespace cisApp.Function
 
                     context.AttachFile.Add(attachFile);
                     context.SaveChanges();
+                }
+
+                foreach (var file in imgs.Where(o => o != null && String.IsNullOrEmpty(o.FileBase64)))
+                {
+                    AlbumImage map = new AlbumImage()
+                    {
+                        AlbumId = obj.AlbumId.Value,
+                        UserId = obj.UserId
+                    };
+
+                    context.AlbumImage.Add(map);
+                    context.SaveChanges();
+
+                    GetAttachFile.Manage.ChangeRefId(file.AttachFileId, map.ImgId.Value, obj.UpdatedBy.Value);
                 }
 
                 return 1;
@@ -433,6 +509,61 @@ namespace cisApp.Function
                 {
                     throw ex;
                 }
+            }
+
+            public static void DeleteAttachFileImage(Guid id, Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var attachFile = context.AttachFile.Find(id);
+
+                        var albumImage = context.AlbumImage.Where(o => o.ImgId == attachFile.RefId).FirstOrDefault();
+
+                        attachFile.IsActive = false;
+                        attachFile.DeletedBy = userId;
+                        attachFile.DeletedDate = DateTime.Now;
+
+
+                        context.AttachFile.Update(attachFile);
+                        context.AlbumImage.Remove(albumImage);
+
+                        context.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public class Utils
+        {
+            public static AlbumModel ToAlbumModel(Album data)
+            {
+                AlbumModel model = new AlbumModel()
+                {
+                    AlbumId = data.AlbumId,
+                    JobId = data.JobId,
+                    UserId = data.UserId,
+                    Category = data.Category,
+                    Tags = data.Tags,
+                    AlbumName = data.AlbumName,
+                    Url = data.Url,
+                    AlbumType = data.AlbumType,
+                    CreatedDate = data.CreatedDate,
+                    CreatedBy = data.CreatedBy,
+                    UpdatedDate = data.UpdatedDate,
+                    UpdatedBy = data.UpdatedBy,
+                    DeletedDate = data.DeletedDate,
+                    DeletedBy = data.DeletedBy,
+                    IsDeleted = data.IsDeleted,
+                    IsActive = data.IsActive
+                };
+
+                return model;
             }
         }
     }

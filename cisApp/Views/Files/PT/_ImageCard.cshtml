@@ -1,0 +1,106 @@
+﻿@using cisApp.Function
+@using cisApp.Common
+@model AlbumImageModel
+
+@{ 
+    ViewData["ControllerName"] = "Files";
+}
+
+<!--begin::Col-->
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
+    <!--begin::Card-->
+    <div class="card card-custom gutter-b card-stretch">
+        <div class="card-header border-0 m-0">
+
+
+            <h3 class="card-title">
+            </h3>
+
+
+
+            <div class="card-toolbar">
+                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="Quick actions" data-placement="left">
+                    <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="ki ki-bold-more-hor"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+                        <!--begin::Navigation-->
+                        <ul class="navi navi-hover py-5">
+                            <li class="navi-item">
+                                <a href="@Url.Action("Manage", "Album", new { id = Model.AlbumId })" class="navi-link">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-drop"></i>
+                                    </span>
+                                    <span class="navi-text">เปิดอัลบั้ม</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="@Url.Action("Profile", "Designer", new { id = Model.DesignerUserId })" target="_blank" class="navi-link">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-list-3"></i>
+                                    </span>
+                                    <span class="navi-text">Profile @Model.DesignerFullName</span>
+                                </a>
+                            </li>                            
+                            <li class="navi-item">
+                                <a href="#" data-url="@Url.Action("DeleteImage", ViewData["ControllerName"].ToString(), new { id = Model.AttachFileId })" class="navi-link bt-delete">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-bell-2"></i>
+                                    </span>
+                                    <span class="navi-text">ลบภาพ</span>
+                                </a>
+                            </li>
+                            <li class="navi-separator my-3"></li>
+                            <li class="navi-item">
+                                <a href="@Url.Content("~/" + Model.UrlPath)" download="@Model.FileName" class="navi-link">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-magnifier-tool"></i>
+                                    </span>
+                                    <span class="navi-text">ดาวน์โหลด</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-bell-2"></i>
+                                    </span>
+                                    <span class="navi-text">ดาวโหลดอัลบั้ม</span>
+                                    <span class="navi-link-badge">
+                                        <span class="label label-light-danger label-rounded font-weight-bold">15</span>
+                                    </span>
+                                </a>
+                            </li>
+
+                        </ul>
+                        <!--end::Navigation-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="d-flex flex-column align-items-center">
+                <!--begin: Icon-->
+                @*<img alt="" class="max-h-65px" src="" />*@
+                <img src="@Url.Content("~/" + Model.UrlPath)" alt="@Model.AlbumName" class="img-thumbnail">
+                <!--end: Icon-->
+                <!--begin: Tite-->
+                <a href="#" class="text-dark-75 font-weight-bold mt-15 font-size-lg">@Model.FileName</a>
+                <!--end: Tite-->
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="mb-10 mt-5">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-dark-75 font-weight-bolder mr-2">ประเภทงาน :</span>
+                    <a href="#" class="text-muted text-hover-primary">@Model.Category</a>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-dark-75 font-weight-bolder mr-2">Tags :</span>
+                    <a href="#" class="text-muted text-hover-primary">@Model.Tags</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end:: Card-->
+</div>
+<!--end::Col-->

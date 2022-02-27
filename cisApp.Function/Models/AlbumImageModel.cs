@@ -39,6 +39,9 @@ namespace cisApp.Function
             }
         }
 
+        public string DesignerFullName { get; set; }
+        public Guid? DesignerUserId { get; set; }
+
         public string FullUrlPath { get; set; }
         public int? LikeCount { get; set; }
         public bool IsLiked { get; set; }

@@ -245,5 +245,29 @@ namespace cisApp.Function
                 }
             }
         }
+
+        public class Utils
+        {
+            public static FileAttachModel ToFileAttachModel(AttachFile data)
+            {
+                FileAttachModel model = new FileAttachModel()
+                {
+                    AttachFileId = data.AttachFileId,
+                    RefId = data.RefId,
+                    FileName = data.FileName,
+                    Path = data.Path,
+                    Size = data.Size,
+                    IsActive = data.IsActive,
+                    CreatedDate = data.CreatedDate,
+                    UpdatedDate = data.UpdatedDate,
+                    CreatedBy = data.CreatedBy,
+                    UpdatedBy = data.UpdatedBy,
+                    DeletedDate = data.DeletedDate,
+                    DeletedBy = data.DeletedBy
+                };
+
+                return model;
+            }
+        }
     }
 }
