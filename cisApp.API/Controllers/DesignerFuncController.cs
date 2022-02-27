@@ -117,7 +117,7 @@ namespace cisApp.API.Controllers
                 }
 
                 var jobCa = GetJobsCandidate.Manage.StatusUpdate(jobId, userId, userId, 7, ip);
-                if (job == null)
+                if (jobCa == null)
                 {
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
                 }

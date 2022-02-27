@@ -256,7 +256,7 @@ namespace cisApp.Function
                     {
                         using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
-                            JobsCandidate obj = context.JobsCandidate.Where(o => o.JobId == jobId && o.UserId == caUserId).FirstOrDefault();
+                            JobsCandidate obj = context.JobsCandidate.Where(o => o.JobId == jobId && o.UserId == caUserId && (o.CaStatusId == 1 || o.CaStatusId == 2 || o.CaStatusId == 3)).FirstOrDefault();
 
                             obj.CaStatusId = status;
 
