@@ -248,7 +248,7 @@ namespace cisApp.Function
                 }
             }
 
-            public static JobsCandidate StatusUpdate(Guid jobId, Guid caUserId, Guid userId, int status)
+            public static JobsCandidate StatusUpdate(Guid jobId, Guid caUserId, Guid userId, int status, string ip=null)
             {
                 try
                 {
@@ -266,20 +266,20 @@ namespace cisApp.Function
                             context.JobsCandidate.Update(obj); 
                             context.SaveChanges();
 
-                            if (obj.CaStatusId == 4 || obj.CaStatusId == 5 || obj.CaStatusId == 6)
+                            if (obj.CaStatusId == 4 || obj.CaStatusId == 5 || obj.CaStatusId == 6 || obj.CaStatusId == 7)
                             {
                                 //unlock designer work slot when sign job
                                 ValidWorkSlot(context, obj.JobId.Value, userId, "unlock");
                             }
 
-                            //add job log for every job activity  
-                            //JobsLogs log = new JobsLogs();
-                            //log.JobId = obj.JobId.Value;
-                            //log.Description = ActionCommon.JobCandidateAdd;
-                            //log.Ipaddress = ip;
-                            //log.CreatedDate = DateTime.Now;
-                            //context.JobsLogs.Add(log);
-                            //context.SaveChanges();
+                            //add job log for every job activity
+                            JobsLogs log = new JobsLogs();
+                            log.JobId = obj.JobId.Value;
+                            log.Description = ActionCommon.JobCandidateCancel;
+                            log.Ipaddress = ip;
+                            log.CreatedDate = DateTime.Now;
+                            context.JobsLogs.Add(log);
+                            context.SaveChanges();
 
                             dbContextTransaction.Commit();
                             return obj;

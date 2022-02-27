@@ -147,7 +147,7 @@ namespace cisApp.Controllers
                         if (jca != null)
                         {
                             //ปฎิเสธ ผู้ชนะคนเดิม ก่อน และคืน slot งาน
-                            GetJobsCandidate.Manage.StatusUpdate(job.JobId, jca.UserId.Value, _UserId().Value, 5);
+                            GetJobsCandidate.Manage.StatusUpdate(job.JobId, jca.UserId.Value, _UserId().Value, 5, Request.HttpContext.Connection.RemoteIpAddress.ToString());
                             
                         }
                         //เพิ่มผู้สมัคร

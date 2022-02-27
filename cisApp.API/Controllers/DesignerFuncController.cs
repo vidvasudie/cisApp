@@ -116,7 +116,7 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("ไม่สามารถยกเลิกได้", "fail", null));
                 }
 
-                var jobCa = GetJobsCandidate.Manage.Reject(jobId, userId, userId, ip);
+                var jobCa = GetJobsCandidate.Manage.StatusUpdate(jobId, userId, userId, 7, ip);
                 if (job == null)
                 {
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
@@ -596,7 +596,7 @@ namespace cisApp.API.Controllers
             }
 
         }
+         
 
-        
     }
 }

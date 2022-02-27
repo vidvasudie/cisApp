@@ -14,7 +14,8 @@ namespace cisApp
         public const string JobDelete = "ลบข้อมูลใบงาน";
 
         public const string JobCandidateAdd = "เพิ่มผู้ร่วมประกวด";
-        public const string JobCandidateDelete = "ลบร่วมประกวด";
+        public const string JobCandidateReject = "ปฏิเสธผู้ร่วมประกวด";
+        public const string JobCandidateCancel = "ยกเลิกเข้าร่วมประกวด";
 
         public const string JobCandidateSelected = "เลือกผู้ร่วมประกวด";
         public const string JobCandidateRejected = "ปฎิเสธเสธผู้ร่วมประกวด";
