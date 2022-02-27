@@ -55,6 +55,21 @@ function redirect(data) {
         )
     }
 }
+
+function SuccessSwal() {
+    Swal.fire(
+        "บันทึกข้อมูลสำเร็จ",
+        "ดำเนินการบันทึกข้อมูลเรียบร้อยแล้ว",
+        "success"
+    ) 
+}
+function ErrorSwal(message) {
+    Swal.fire(
+        "บันทึกข้อมูลไม่สำเร็จ",
+        message,
+        "error"
+    ) 
+}
 function redirectLogin(data) {
     if (data.success) { 
         window.setTimeout(function () {

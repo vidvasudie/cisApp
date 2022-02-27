@@ -15,8 +15,8 @@ namespace cisApp.library
                      "MM/dd/yyyy hh:mm", "M/dd/yyyy hh:mm",
                      "ddd, dd MMM yyyy HH:mm:ss zzz", "ddd, dd MMM yyyy H:mm:ss zzz",
                      "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd H:mm:ss",
-                      "yyyy-MM-dd"};
-        private static List<MonthPair> MonthList = new List<MonthPair>() { 
+                      "yyyy-MM-dd","dd/MM/yyyy", "yyyyMMdd"};
+        private static List<MonthPair> MonthList = new List<MonthPair>() {
             new MonthPair(){ id="01", th_full="มกราคม", th_abbr="ม.ค.", en_full="JANUARY", en_abbr="Jan." },
             new MonthPair(){ id="02", th_full="กุมภาพันธ์", th_abbr="ก.พ.", en_full="FEBRUARY", en_abbr="Feb." },
             new MonthPair(){ id="03", th_full="มีนาคม", th_abbr="มี.ค.", en_full="MARCH", en_abbr="Mar." },
@@ -44,7 +44,7 @@ namespace cisApp.library
         {
             switch (format)
             {
-                case DateTimeFormat.FULL: 
+                case DateTimeFormat.FULL:
                     return lan == Language.TH ? MonthList.Select(o => new MonthObject { id = o.id, text = o.th_full }).ToList() : MonthList.Select(o => new MonthObject { id = o.id, text = o.en_full }).ToList();
                 case DateTimeFormat.ABBR:
                     return lan == Language.TH ? MonthList.Select(o => new MonthObject { id = o.id, text = o.th_abbr }).ToList() : MonthList.Select(o => new MonthObject { id = o.id, text = o.en_abbr }).ToList();
@@ -57,7 +57,21 @@ namespace cisApp.library
             if (dt == null) return "";
             var dtList = GetMonthFormat(format, lan);
             var year = dt?.Year > 2500 ? dt?.Year : dt?.Year + 543;
-            var text = String.Format("{0} {1} {2}", dt?.Day.ToString("00"), dtList.Where(o => o.id == dt?.Month.ToString("00")).FirstOrDefault().text, year);
+            var text = String.Format("{0} {1} {2}", dt?.Day.ToString("0"), dtList.Where(o => o.id == dt?.Month.ToString("00")).FirstOrDefault().text, year);
+            return text;
+        }
+        public static string ToStringFormatWithTime(this DateTime? dt, DateTimeFormat format = DateTimeFormat.ABBR, Language lan = Language.TH)
+        {
+            if (dt == null) return "";
+            var dtList = GetMonthFormat(format, lan);
+            var year = dt?.Year > 2500 ? dt?.Year : dt?.Year + 543;
+            var text = String.Format("{0} {1} {2} {3}", dt?.Day.ToString("00"), dtList.Where(o => o.id == dt?.Month.ToString("00")).FirstOrDefault().text, year, dt.Value.ToString("H:mm:ss"));
+            return text;
+        }
+        public static string ToStringFormatDatepicker(this DateTime? dt)
+        {
+            if (dt == null) return "";
+            var text = dt.Value.ToString("dd/MM/yyyy");
             return text;
         }
         public static DateTime? ToDateTimeFormat(this string dt)
@@ -65,19 +79,20 @@ namespace cisApp.library
             if (dt == null) return null;
             DateTime dateValue;
             if (DateTime.TryParseExact(dt, formats,
-                                    new CultureInfo("en-US"),
+                                    //new CultureInfo("en-US"),
+                                    new CultureInfo("th-TH"),
                                     DateTimeStyles.None,
                                     out dateValue))
             {
                 return dateValue;
             }
-            return null; 
+            return null;
         }
 
         public class MonthObject
         {
             public string id { get; set; }
-            public string text { get; set; } 
+            public string text { get; set; }
         }
         private class MonthPair
         {
@@ -88,6 +103,5 @@ namespace cisApp.library
             public string en_abbr { get; set; }
         }
     }
-    
-    
+
 }

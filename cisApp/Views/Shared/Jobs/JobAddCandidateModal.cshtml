@@ -37,7 +37,7 @@
                     <!--end::Table-->
                     <hr />
                     <h4 id="new_ca" class="col-12">รายการเพิ่ม</h4>
-                    <form class="form" id="kt_form_modal" asp-action="AddNewCandidate" asp-controller=@ViewData["ControllerName"] method="post" data-ajax-confirm="@MessageCommon.Confirm" data-ajax="true" data-ajax-success="complatedModal">
+                    <form class="form" id="kt_form_modal" asp-action="AddNewCandidate" asp-controller=@ViewData["ControllerName"] method="post" data-ajax="true" data-ajax-success="complatedModal">
                         @Html.HiddenFor(m => m.JobId)
                         <div class="col-12 " id="selected_user">
 

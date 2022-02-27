@@ -511,6 +511,8 @@ namespace cisApp.Function
                                 return null;
 
                             var data = datas.FirstOrDefault();
+                            //string desc = "เปลี่ยนสถานะใบงานจาก " + data.JobStatus + " เป็น 6";
+
                             data.CancelId = cancelId;
                             data.JobStatus = 6;//ยกเลิก
                             data.UpdatedDate = DateTime.Now;
@@ -540,15 +542,22 @@ namespace cisApp.Function
                                 var cc = context.TmCauseCancel.Where(o => o.Id == cancelId).FirstOrDefault();
                                 cancelMsg = cc.Description;
                             }
+                            //add job tracking for jobStatus 
+                            JobsTracking tracking = new JobsTracking();
+                            tracking.JobId = data.JobId;
+                            tracking.StatusDate = DateTime.Now;
+                            tracking.JobStatus = 6;
+                            context.JobsTracking.Add(tracking);
+                            context.SaveChanges();
 
                             //add job log for every job activity 
-                            JobsLogs log = new JobsLogs();
-                            log.Description = cancelMsg;
-                            log.JobId = data.JobId;
-                            log.Ipaddress = ip;
-                            log.CreatedDate = DateTime.Now;
-                            context.JobsLogs.Add(log);
-                            context.SaveChanges();
+                            //JobsLogs log = new JobsLogs();
+                            //log.Description = desc;
+                            //log.JobId = data.JobId;
+                            //log.Ipaddress = ip;
+                            //log.CreatedDate = DateTime.Now;
+                            //context.JobsLogs.Add(log);
+                            //context.SaveChanges();
 
                             dbContextTransaction.Commit();
 
@@ -585,27 +594,66 @@ namespace cisApp.Function
                 }
             }
 
-            public static Jobs UpdateJobStatus(Guid jobId, int status)
+            public static Jobs UpdateJobStatus(Guid jobId, int status, Guid? userId = null, string ip=null)
             {
                 try
                 {
                     using (var context = new CAppContext())
                     {
-                        var job = context.Jobs.Find(jobId);
-
-                        job.JobStatus = status;
-
-                        context.Jobs.Update(job);
-
-                        context.SaveChanges();
-
-                        if (status == 8)
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
-                            //unlock designer work slot when sign job
-                            GetJobsCandidate.Manage.ValidWorkSlot(context, jobId, job.JobCaUserId.Value, "unlock");
-                        }
+                            var job = context.Jobs.Where(o => o.JobId == jobId).FirstOrDefault();
+                            //string desc = "เปลี่ยนสถานะใบงานจาก "+job.JobStatus +" เป็น "+ status;
+                            job.JobStatus = status;
 
-                        return job;
+                            context.Jobs.Update(job); 
+                            context.SaveChanges();
+
+                            if (status == 8)
+                            {
+                                //unlock designer work slot when finish job
+                                GetJobsCandidate.Manage.ValidWorkSlot(context, jobId, job.JobCaUserId.Value, "unlock");
+                            }
+                            else if (status == 6)
+                            {
+                                var caList = context.JobsCandidate.Where(o => o.JobId == jobId).ToList();
+                                foreach (var item in caList)
+                                {
+                                    item.CaStatusId = 6;//ใบงานถูกยกเลิก
+                                    item.UpdatedDate = DateTime.Now;
+                                    item.UpdatedBy = userId == null ? item.CreatedBy : userId;
+                                }
+                                context.JobsCandidate.UpdateRange(caList);
+                                context.SaveChanges();
+
+                                foreach (var item in caList)
+                                {
+                                    //unlock designer work slot when job end 
+                                    GetJobsCandidate.Manage.ValidWorkSlot(context, jobId, item.UserId.Value, "unlock");
+                                }
+                            }
+                            //add job tracking for jobStatus 
+                            JobsTracking tracking = new JobsTracking();
+                            tracking.JobId = jobId;
+                            tracking.StatusDate = DateTime.Now;
+                            tracking.JobStatus = status;
+                            context.JobsTracking.Add(tracking);
+                            context.SaveChanges();
+
+                            //add job log for every job activity 
+                            //JobsLogs log = new JobsLogs();
+                            //log.Description = desc;
+                            //log.JobId = jobId;
+                            //log.Ipaddress = ip;
+                            //log.CreatedDate = DateTime.Now;
+                            //context.JobsLogs.Add(log);
+                            //context.SaveChanges();
+
+                            dbContextTransaction.Commit();
+
+                            return job;
+                        }
+                            
                     }
                 }
                 catch (Exception ex)
@@ -623,12 +671,21 @@ namespace cisApp.Function
                         using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
                             var job = context.Jobs.Find(jobId);
+                            //string desc = "เปลี่ยนสถานะใบงานจาก " + job.JobStatus + " เป็น 7";
 
                             job.JobStatus = 7;//ขอไฟล์แบบติดตั้ง 
                             
                             context.Jobs.Update(job); 
                             context.SaveChanges();
-                                                       
+
+                            //add job tracking for jobStatus 
+                            JobsTracking tracking = new JobsTracking();
+                            tracking.JobId = jobId;
+                            tracking.StatusDate = DateTime.Now;
+                            tracking.JobStatus = 7;
+                            context.JobsTracking.Add(tracking);
+                            context.SaveChanges(); 
+
                             dbContextTransaction.Commit();
 
                             return job;
@@ -654,8 +711,15 @@ namespace cisApp.Function
                             job.JobStatus = 9;//แก้ไขผลงาน
                             job.JobEndDate = DateTime.Now.AddHours(Math.Ceiling((float)job.JobAreaSize / 10.0) * 2.5 * 24);
 
-                            context.Jobs.Update(job);
+                            context.Jobs.Update(job); 
+                            context.SaveChanges();
 
+                            //add job tracking for jobStatus 
+                            JobsTracking tracking = new JobsTracking();
+                            tracking.JobId = jobId;
+                            tracking.StatusDate = DateTime.Now;
+                            tracking.JobStatus = 9;
+                            context.JobsTracking.Add(tracking);
                             context.SaveChanges();
 
                             dbContextTransaction.Commit();

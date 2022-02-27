@@ -27,8 +27,23 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
-            
 
+            public static List<JobDesignerReview> GetByUserDesignerId(Guid caUserId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.JobDesignerReview.Where(o => o.DesignerUserId == caUserId).ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public class Manage

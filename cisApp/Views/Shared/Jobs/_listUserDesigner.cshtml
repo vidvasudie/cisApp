@@ -2,7 +2,7 @@
 @using cisApp.Function
 @model JobCandidateModel
 @{
-    var users = GetJobsCandidate.Get.GetUserCandidateModels(new SearchModel() { gId=Model.JobId });
+    var users = GetJobsCandidate.Get.GetUserCandidateModels(new SearchModel());
 }
 
 

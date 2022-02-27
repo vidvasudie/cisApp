@@ -155,25 +155,35 @@ namespace cisApp.Function
                     {
                         using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
+                            int result = 0;
+                            var job = new Jobs();
                             JobsLogs log = new JobsLogs();
                             if (list != null && list.Count > 0)
                             {
+                                job = GetJobs.Get.GetById(list.First().JobId.Value);
+                                var status = 1;// รอประกวด
+                                if(job.JobStatus == 3)
+                                {
+                                    status = 2;//อยู่ระหว่างประกวด
+                                } 
                                 foreach (var item in list)
                                 {
                                     log.JobId = item.JobId.Value;
                                     JobsCandidate obj = new JobsCandidate();
-                                    obj.CaStatusId = 1;//รอประกวด
+                                    obj.CaStatusId = status;
                                     obj.JobId = item.JobId;
                                     obj.UserId = item.UserId;
                                     obj.CreatedDate = DateTime.Now;
                                     obj.CreatedBy = _user;
 
-                                    context.JobsCandidate.Update(obj); 
+                                    context.JobsCandidate.Update(obj);
+                                    context.SaveChanges();
+
+                                    //lock designer work slot when sign job
+                                    GetJobsCandidate.Manage.ValidWorkSlot(context, job.JobId, item.UserId.Value);
                                 }
                             }
-
-                            int result = context.SaveChanges();
-
+                             
                             //add job log for every job activity  
                             log.Description = ActionCommon.JobCandidateAdd;  
                             log.Ipaddress = ip;
@@ -182,6 +192,7 @@ namespace cisApp.Function
                             context.SaveChanges();
 
                             dbContextTransaction.Commit();
+                            result = 1;
 
                             return result;
                         }
@@ -203,17 +214,19 @@ namespace cisApp.Function
                         {
                             JobsCandidate obj = context.JobsCandidate.Find(id);
 
-                            obj.IsDeleted = true;
+                            obj.CaStatusId = 5;//ปฏิเสธ
+                            obj.UpdatedDate = DateTime.Now;
+                            obj.UpdatedBy = userId;
 
-                            obj.DeletedDate = DateTime.Now;
-                            obj.DeletedBy = userId;
+                            //obj.IsDeleted = true; 
+                            //obj.DeletedDate = DateTime.Now;
+                            //obj.DeletedBy = userId;
 
-                            context.JobsCandidate.Update(obj);
-
+                            context.JobsCandidate.Update(obj); 
                             context.SaveChanges();
 
                             //unlock designer work slot when sign job
-                            ValidWorkSlot(context, obj.JobId.Value, userId, "unlock");
+                            ValidWorkSlot(context, obj.JobId.Value, obj.UserId.Value, "unlock");
 
                             //add job log for every job activity  
                             JobsLogs log = new JobsLogs();
@@ -223,6 +236,50 @@ namespace cisApp.Function
                             log.CreatedDate = DateTime.Now;
                             context.JobsLogs.Add(log);
                             context.SaveChanges();
+
+                            dbContextTransaction.Commit();
+                            return obj;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            public static JobsCandidate StatusUpdate(Guid jobId, Guid caUserId, Guid userId, int status)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            JobsCandidate obj = context.JobsCandidate.Where(o => o.JobId == jobId && o.UserId == caUserId).FirstOrDefault();
+
+                            obj.CaStatusId = status;
+
+                            obj.UpdatedDate = DateTime.Now;
+                            obj.UpdatedBy = userId;
+
+                            context.JobsCandidate.Update(obj); 
+                            context.SaveChanges();
+
+                            if (obj.CaStatusId == 4 || obj.CaStatusId == 5 || obj.CaStatusId == 6)
+                            {
+                                //unlock designer work slot when sign job
+                                ValidWorkSlot(context, obj.JobId.Value, userId, "unlock");
+                            }
+
+                            //add job log for every job activity  
+                            //JobsLogs log = new JobsLogs();
+                            //log.JobId = obj.JobId.Value;
+                            //log.Description = ActionCommon.JobCandidateAdd;
+                            //log.Ipaddress = ip;
+                            //log.CreatedDate = DateTime.Now;
+                            //context.JobsLogs.Add(log);
+                            //context.SaveChanges();
 
                             dbContextTransaction.Commit();
                             return obj;

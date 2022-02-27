@@ -521,18 +521,18 @@ namespace cisApp.API.Controllers
                     else if (job.JobStatus == 9 && job.EditSubmitCount == 1) // แก้ครั้งแรก
                     {
                         GetJobs.Manage.UpdateEditCount(value.JobId.Value, 2);
-                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
+                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5, value.UserId);
                     }
                     else if (job.JobStatus == 9 &&job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
                     {
                         GetJobs.Manage.UpdateEditCount(value.JobId.Value, 3);
-                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
+                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5, value.UserId);
                     }
 
                     if (job.JobStatus == 4)
                     {
                         job.JobStatus = 5;
-                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
+                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5, value.UserId);
                     }
                     return Ok(resultJson.success("สำเร็จ", "success", new { result.JobId }));
                 }

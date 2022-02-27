@@ -1,0 +1,85 @@
+﻿@using cisApp.Function
+@model JobModel
+
+@{
+    //ViewData["Title"] = "จัดการข้อมูลผู้ใช้งาน" + (!string.IsNullOrEmpty(Model)?"ดีไซต์เนอร์": "ทั่วไป");
+    ViewData["Title"] = "รายละเอียดกิจกรรม";
+    ViewData["ControllerName"] = "Jobs"; 
+}
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">Cludidea</h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="" class="text-muted">Dashbaord</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="@Url.Action("Index", "Jobs")" class="text-muted">รายการคำขอสมัครนักออกแบบ</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="@Url.Action("Detail", "Jobs", new { JobId=Model.JobId })" class="text-muted">รายละเอียดใบงาน</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:void(0)" class="text-muted">@ViewData["Title"]</a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center">
+                <!--begin::Actions-->
+                <a href="#" class="btn btn-light-primary font-weight-bolder btn-sm">Actions</a>
+                <!--end::Actions-->
+                
+            </div>
+            <!--end::Toolbar-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Card-->
+            <div class="card card-custom card-sticky" id="kt_page_sticky_card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3 class="card-label">
+                            @ViewData["Title"]
+                            <i class="mr-2"></i>
+                        </h3>
+                    </div>
+                    <div class="card-toolbar">
+                        <a href="@Url.Action("Detail", "Jobs", new { JobId=Model.JobId })" class="btn btn-light-primary font-weight-bolder mr-2">
+                            <i class="ki ki-long-arrow-back icon-sm"></i>ย้อนกลับ
+                        </a> 
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!--begin::Form-->
+                    @await Html.PartialAsync("~/Views/Shared/Jobs/_LogsJob.cshtml", Model)
+                    <!--end::Form-->
+                </div>
+            </div>
+            <!--end::Card-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+ 

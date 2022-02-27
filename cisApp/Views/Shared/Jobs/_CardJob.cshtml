@@ -14,20 +14,41 @@
                     @Html.Raw(Model.JobNo)
                 </h4>
                 @{
-                    string statusColor = "";
-                    switch (Model.JobStatus)
-                    {
-                        case 1: statusColor = " symbol-light-info "; break;
-                        case 2: statusColor = " symbol-light-dark "; break;
-                        case 3: statusColor = " symbol-light-warning "; break;
-                        case 4: statusColor = " symbol-light-primary "; break;
-                        case 5: statusColor = " symbol-light-success "; break;
-                        case 6: statusColor = " symbol-light-danger "; break;
-                    }
+                    var statusText = "";
+                        var statusColor = "";
+                        if (Model.JobStatus == 1)//"ร่าง"
+                        {
+                            statusColor = "symbol-light-info";
+                            statusText = Model.JobStatusDesc;
+                        }
+                        else if (Model.JobStatus == 2)//"รอ"
+                        {
+                            statusColor = "symbol-light-dark";
+                            statusText = Model.JobStatusDesc;
+                        }
+                        else if (Model.JobStatus == 3 || Model.JobStatus == 9)//ประกวด || ขอแก้ไขผลงาน
+                        {
+                            statusColor = "symbol-light-warning";
+                            statusText = Model.JobStatusDesc; 
+                        } 
+                        else if (Model.JobStatus == 4 || Model.JobStatus == 5 || Model.JobStatus == 7)//ประกาศ || ส่งแนบ
+                        {
+                            statusColor = "symbol-light-primary";
+                            statusText = Model.JobStatusDesc; 
+                        } 
+                        else if (Model.JobStatus == 8)//สิ้นสุด
+                        {
+                            statusColor = "symbol-light-success";
+                            statusText = Model.JobStatusDesc;
+                        }
+                        else // ยกเลิก=6
+                        {
+                            statusColor = "symbol-light-danger";
+                            statusText = Model.JobStatusDesc; 
+                        }
                 }
-                <div class="symbol symbol-50 symbol-lg-120 @statusColor mr-3">
-
-                    <span class="symbol-label font-size-h5">@Model.JobStatusDesc</span>
+                <div class="symbol symbol-50 symbol-lg-120 @statusColor mr-3"> 
+                    <span class="symbol-label font-size-h5">@statusText</span>
                 </div>
             </div>
             <!--end::Pic-->
@@ -172,15 +193,18 @@
                         <span class="font-weight-bold mr-4">Progress</span>
                         <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
                             @{ 
-                            int progress = 0;
+                            double progress = 0.0;
                             switch (Model.JobStatus)
                             {
-                                case 1: progress = 0; break;
-                                case 2: progress = 25; break;
-                                case 3: progress = 50; break;
-                                case 4: progress = 75; break;
-                                case 5: progress = 100; break;
-                                case 6: progress = 100; break;
+                                case 2: progress = 16.66; break;//รอ
+                                case 3: progress = 33.32; break;//ประกวด
+                                case 4: progress = 49.98; break;//ประกาศ
+                                case 5: progress = 64.64; break;//ส่งแนบ
+                                case 9: progress = 64.64; break;//ขอแก้ไขผลงาน
+                                case 8: progress = 100.00; break;//สิ้นสุด
+                                case 7: progress = 83.30; break;//ขอไฟล์แบบติดตั้ง
+                                case 6: progress = 100.00; break;//ยกเลิก
+                                default: progress = 0.00; break; //ร่าง=1
                             }
                             }
                             <div class="progress-bar bg-success" role="progressbar" style="width: @Html.Raw(progress+"%");" aria-valuenow="@Html.Raw(progress)" aria-valuemin="0" aria-valuemax="100"></div>

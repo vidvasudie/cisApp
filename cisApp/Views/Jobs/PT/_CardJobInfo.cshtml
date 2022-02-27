@@ -1,239 +1,245 @@
 ﻿@using cisApp.Controllers
-@model cisApp.Function.JobModel
+@using cisApp.Function
+@model JobModel
 @{
 }
 
 <!--begin::Card-->
-    <div class="card card-custom gutter-b">
-        <div class="card-body">
-            <div class="d-flex">
-                <!--begin: Pic-->
-                <div class="flex-shrink-0 mr-7 mt-lg-0 mt-3">
-
-                    @if (Model.JobStatus == 1)//"ร่าง"
+<div class="card card-custom gutter-b">
+    <div class="card-body">
+        <div class="d-flex">
+            <!--begin: Pic-->
+            <div class="flex-shrink-0 mr-7 mt-lg-0 mt-3">
+                @{
+                    var statusText = "";
+                    var statusColor = "";
+                    if (Model.JobStatus == 1)//"ร่าง"
                     {
-                        <div class="symbol symbol-50 symbol-lg-120 symbol-light-info">
-                            <span class="symbol-label font-size-h5">ร่าง</span>
-                        </div>
+                        statusColor = "symbol-light-info";
+                        statusText = Model.JobStatusDesc;
                     }
                     else if (Model.JobStatus == 2)//"รอ"
                     {
-                        <div class="symbol symbol-50 symbol-lg-120 symbol-light-dark">
-                            <span class="symbol-label font-size-h5">รอ</span>
-                        </div>
-
+                        statusColor = "symbol-light-dark";
+                        statusText = Model.JobStatusDesc;
                     }
-                    else if (Model.JobStatus == 3)//"ประกวด"
+                    else if (Model.JobStatus == 3 || Model.JobStatus == 9)//ประกวด || ขอแก้ไขผลงาน
                     {
-                        <div class="symbol symbol-50 symbol-lg-120 symbol-light-warning">
-                            <span class="symbol-label font-size-h5">ประกวด</span>
-                        </div>
+                        statusColor = "symbol-light-warning";
+                        statusText = Model.JobStatusDesc;
                     }
-
-                    else if (Model.JobStatus == 4)//"ประกาศ"
+                    else if (Model.JobStatus == 4 || Model.JobStatus == 5 || Model.JobStatus == 7)//ประกาศ || ส่งแนบ
                     {
-                        <div class="symbol symbol-50 symbol-lg-120 symbol-light-primary">
-                            <span class="symbol-label font-size-h5">ประกาศ</span>
-                        </div>
+                        statusColor = "symbol-light-primary";
+                        statusText = Model.JobStatusDesc;
                     }
-                    else if (Model.JobStatus == 5)//"ส่งแบบ"
+                    else if (Model.JobStatus == 8)//สิ้นสุด
                     {
-                        <div class="symbol symbol-50 symbol-lg-120 symbol-light-success">
-                            <span class="symbol-label font-size-h5">ส่งแบบ</span>
-                        </div>
+                        statusColor = "symbol-light-success";
+                        statusText = Model.JobStatusDesc;
                     }
-                    else
+                    else // ยกเลิก=6
                     {
-                        <div class="symbol symbol-50 symbol-lg-120 symbol-light-danger">
-                            <span class="symbol-label font-size-h5">ยกเลิก</span>
-                        </div>
+                        statusColor = "symbol-light-danger";
+                        statusText = Model.JobStatusDesc;
                     }
-                    
-                    <div class="symbol symbol-50 symbol-lg-120 symbol-primary d-none">
-                        <span class="font-size-h3 symbol-label font-weight-boldest">JM</span>
-                    </div>
+                }
+                <div class="symbol symbol-50 symbol-lg-120 @statusColor">
+                    <span class="symbol-label font-size-h5">@statusText</span>
                 </div>
-                <!--end: Pic-->
-                <!--begin: Info-->
-                <div class="flex-grow-1">
-                    <!--begin: Title-->
-                    <div class="d-flex align-items-center justify-content-between flex-wrap">
-                        <div class="mr-3">
-                            <!--begin::Name-->
-                            <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">
-                                @Html.Raw(Model.UserFullName)
-                                <i class="flaticon2-correct text-success icon-md ml-2"></i>
+
+
+                <div class="symbol symbol-50 symbol-lg-120 symbol-primary d-none">
+                    @*<span class="font-size-h3 symbol-label font-weight-boldest">JM</span>*@
+                </div>
+            </div>
+            <!--end: Pic-->
+            <!--begin: Info-->
+            <div class="flex-grow-1">
+                <!--begin: Title-->
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                    <div class="mr-3">
+                        <!--begin::Name-->
+                        <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3">
+                            @Html.Raw(Model.UserFullName)
+                            <i class="flaticon2-correct text-success icon-md ml-2"></i>
+                        </a>
+                        <!--end::Name-->
+                        <!--begin::Contacts-->
+                        <div class="d-flex flex-wrap my-2">
+                            <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+                                <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
+                                    <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo13\dist/../src/media/svg/icons\Communication\Mail-unocked.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24" />
+                                            <path d="M3,17 L3,16 C3,15.4477153 2.55228475,15 2,15 C1.44771525,15 1,15.4477153 1,16 L0,16 C-1.48029737e-16,14.8954305 0.8954305,14 2,14 C3.1045695,14 4,14.8954305 4,16 L4,17 L8,17 C8.55228475,17 9,17.4477153 9,18 L9,21 C9,21.5522847 8.55228475,22 8,22 L3,22 C2.44771525,22 2,21.5522847 2,21 L2,18 C2,17.4477153 2.44771525,17 3,17 Z" fill="#000000" opacity="0.3" />
+                                            <path d="M12.9835977,18 C12.7263047,14.0909841 9.47412135,11 5.5,11 C4.98630124,11 4.48466491,11.0516454 4,11.1500272 L4,7 C4,5.8954305 4.8954305,5 6,5 L20,5 C21.1045695,5 22,5.8954305 22,7 L22,16 C22,17.1045695 21.1045695,18 20,18 L12.9835977,18 Z M19.1444251,6.83964668 L13,10.1481833 L6.85557487,6.83964668 C6.4908718,6.6432681 6.03602525,6.77972206 5.83964668,7.14442513 C5.6432681,7.5091282 5.77972206,7.96397475 6.14442513,8.16035332 L12.6444251,11.6603533 C12.8664074,11.7798822 13.1335926,11.7798822 13.3555749,11.6603533 L19.8555749,8.16035332 C20.2202779,7.96397475 20.3567319,7.5091282 20.1603533,7.14442513 C19.9639747,6.77972206 19.5091282,6.6432681 19.1444251,6.83964668 Z" fill="#000000" />
+                                        </g>
+                                    </svg><!--end::Svg Icon-->
+                                </span>@Html.Raw(Model.UserTypeDesc)
                             </a>
-                            <!--end::Name-->
-                            <!--begin::Contacts-->
-                            <div class="d-flex flex-wrap my-2">
-                                <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
-                                    <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
-                                        <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo13\dist/../src/media/svg/icons\Communication\Mail-unocked.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <path d="M3,17 L3,16 C3,15.4477153 2.55228475,15 2,15 C1.44771525,15 1,15.4477153 1,16 L0,16 C-1.48029737e-16,14.8954305 0.8954305,14 2,14 C3.1045695,14 4,14.8954305 4,16 L4,17 L8,17 C8.55228475,17 9,17.4477153 9,18 L9,21 C9,21.5522847 8.55228475,22 8,22 L3,22 C2.44771525,22 2,21.5522847 2,21 L2,18 C2,17.4477153 2.44771525,17 3,17 Z" fill="#000000" opacity="0.3" />
-                                                <path d="M12.9835977,18 C12.7263047,14.0909841 9.47412135,11 5.5,11 C4.98630124,11 4.48466491,11.0516454 4,11.1500272 L4,7 C4,5.8954305 4.8954305,5 6,5 L20,5 C21.1045695,5 22,5.8954305 22,7 L22,16 C22,17.1045695 21.1045695,18 20,18 L12.9835977,18 Z M19.1444251,6.83964668 L13,10.1481833 L6.85557487,6.83964668 C6.4908718,6.6432681 6.03602525,6.77972206 5.83964668,7.14442513 C5.6432681,7.5091282 5.77972206,7.96397475 6.14442513,8.16035332 L12.6444251,11.6603533 C12.8664074,11.7798822 13.1335926,11.7798822 13.3555749,11.6603533 L19.8555749,8.16035332 C20.2202779,7.96397475 20.3567319,7.5091282 20.1603533,7.14442513 C19.9639747,6.77972206 19.5091282,6.6432681 19.1444251,6.83964668 Z" fill="#000000" />
-                                            </g>
-                                        </svg><!--end::Svg Icon-->
-                                    </span>@Html.Raw(Model.UserTypeDesc)
-                                </a>
 
-                                <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
-                                    <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-notification.svg-->
-                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <path d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z" fill="#000000" />
-                                                <circle fill="#000000" opacity="0.3" cx="19.5" cy="17.5" r="2.5" />
-                                            </g>
-                                        </svg>
-                                        <!--end::Svg Icon-->
-                                    </span>@Html.Raw(Model.UserEmail)
-                                </a>
-                                <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
-                                    <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
-                                        <!--begin::Svg Icon | path:assets/media/svg/icons/General/Lock.svg-->
-                                        <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo13\dist/../src/media/svg/icons\Devices\Phone.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                <rect x="0" y="0" width="24" height="24" />
-                                                <path d="M7.13888889,4 L7.13888889,19 L16.8611111,19 L16.8611111,4 L7.13888889,4 Z M7.83333333,1 L16.1666667,1 C17.5729473,1 18.25,1.98121694 18.25,3.5 L18.25,20.5 C18.25,22.0187831 17.5729473,23 16.1666667,23 L7.83333333,23 C6.42705272,23 5.75,22.0187831 5.75,20.5 L5.75,3.5 C5.75,1.98121694 6.42705272,1 7.83333333,1 Z" fill="#000000" fill-rule="nonzero" />
-                                                <polygon fill="#000000" opacity="0.3" points="7 4 7 19 17 19 17 4" />
-                                                <circle fill="#000000" cx="12" cy="21" r="1" />
-                                            </g>
-                                        </svg><!--end::Svg Icon-->
-                                        <!--end::Svg Icon-->
-                                    </span>@Html.Raw(Model.UserTel)
-                                </a>
-                            </div>
-                            <!--end::Contacts-->
+                            <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+                                <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Mail-notification.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24" />
+                                            <path d="M21,12.0829584 C20.6747915,12.0283988 20.3407122,12 20,12 C16.6862915,12 14,14.6862915 14,18 C14,18.3407122 14.0283988,18.6747915 14.0829584,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,8 C3,6.8954305 3.8954305,6 5,6 L19,6 C20.1045695,6 21,6.8954305 21,8 L21,12.0829584 Z M18.1444251,7.83964668 L12,11.1481833 L5.85557487,7.83964668 C5.4908718,7.6432681 5.03602525,7.77972206 4.83964668,8.14442513 C4.6432681,8.5091282 4.77972206,8.96397475 5.14442513,9.16035332 L11.6444251,12.6603533 C11.8664074,12.7798822 12.1335926,12.7798822 12.3555749,12.6603533 L18.8555749,9.16035332 C19.2202779,8.96397475 19.3567319,8.5091282 19.1603533,8.14442513 C18.9639747,7.77972206 18.5091282,7.6432681 18.1444251,7.83964668 Z" fill="#000000" />
+                                            <circle fill="#000000" opacity="0.3" cx="19.5" cy="17.5" r="2.5" />
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>@Html.Raw(Model.UserEmail)
+                            </a>
+                            <a href="#" class="text-muted text-hover-primary font-weight-bold mr-lg-8 mr-5 mb-lg-0 mb-2">
+                                <span class="svg-icon svg-icon-md svg-icon-gray-500 mr-1">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/General/Lock.svg-->
+                                    <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo13\dist/../src/media/svg/icons\Devices\Phone.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24" />
+                                            <path d="M7.13888889,4 L7.13888889,19 L16.8611111,19 L16.8611111,4 L7.13888889,4 Z M7.83333333,1 L16.1666667,1 C17.5729473,1 18.25,1.98121694 18.25,3.5 L18.25,20.5 C18.25,22.0187831 17.5729473,23 16.1666667,23 L7.83333333,23 C6.42705272,23 5.75,22.0187831 5.75,20.5 L5.75,3.5 C5.75,1.98121694 6.42705272,1 7.83333333,1 Z" fill="#000000" fill-rule="nonzero" />
+                                            <polygon fill="#000000" opacity="0.3" points="7 4 7 19 17 19 17 4" />
+                                            <circle fill="#000000" cx="12" cy="21" r="1" />
+                                        </g>
+                                    </svg><!--end::Svg Icon-->
+                                    <!--end::Svg Icon-->
+                                </span>@Html.Raw(Model.UserTel)
+                            </a>
                         </div>
-                        <div class="my-lg-0 my-1">
-                            <a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">พิมพ์สัญญา</a>
-                        </div>
+                        <!--end::Contacts-->
                     </div>
-                    <!--end: Title-->
-                    <!--begin: Content-->
-                    <div class="d-flex align-items-center flex-wrap justify-content-between">
-                        <div class="flex-grow-1 font-weight-bold text-dark-50 py-5 py-lg-2 mr-5 w-100">
-                            @Html.Raw("ขอบเขตงาน - " + Model.JobDescription) 
-                        </div>
-                        <div class="d-flex flex-wrap align-items-center py-2">
-                            <div class="d-flex align-items-center mr-10">
-                                <div class="mr-6">
-                                    <div class="font-weight-bold mb-2">เริ่ม</div>
-                                    <span class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold">@Html.Raw(String.IsNullOrEmpty(Model.JobBeginDateStr) ? "ไม่ระบุ" : Model.JobBeginDateStr)</span>
-                                </div>
-                                <div class="">
-                                    <div class="font-weight-bold mb-2">สิ้นสุด</div>
-                                    <span class="btn btn-sm btn-text btn-light-danger text-uppercase font-weight-bold">@Html.Raw(String.IsNullOrEmpty(Model.JobEndDateStr) ? "ไม่ระบุ" : Model.JobEndDateStr)</span>
-                                </div>
+                    <div class="my-lg-0 my-1">
+                        @*<a href="#" class="btn btn-sm btn-info font-weight-bolder text-uppercase">พิมพ์สัญญา</a>*@
+                    </div>
+                </div>
+                <!--end: Title-->
+                <!--begin: Content-->
+                <div class="d-flex align-items-center flex-wrap justify-content-between">
+                    <div class="flex-grow-1 font-weight-bold text-dark-50 py-5 py-lg-2 mr-5 w-100">
+                        @Html.Raw("ขอบเขตงาน - " + Model.JobDescription)
+                    </div>
+                    <div class="d-flex flex-wrap align-items-center py-2">
+                        <div class="d-flex align-items-center mr-10">
+                            <div class="mr-6">
+                                <div class="font-weight-bold mb-2">เริ่ม</div>
+                                <span class="btn btn-sm btn-text btn-light-primary text-uppercase font-weight-bold">@Html.Raw(String.IsNullOrEmpty(Model.JobBeginDateStr) ? "ไม่ระบุ" : Model.JobBeginDateStr)</span>
                             </div>
-                            <div class="flex-grow-1 flex-shrink-0 w-150px w-xl-300px mt-4 mt-sm-0">
-                                @{
-                                    int progress = 0;
-                                    switch (Model.JobStatus)
-                                    {
-                                        case 1: progress = 0; break;
-                                        case 2: progress = 25; break;
-                                        case 3: progress = 50; break;
-                                        case 4: progress = 75; break;
-                                        case 5: progress = 100; break;
-                                        case 6: progress = 100; break;
-                                    }
+                            <div class="">
+                                <div class="font-weight-bold mb-2">สิ้นสุด</div>
+                                <span class="btn btn-sm btn-text btn-light-danger text-uppercase font-weight-bold">@Html.Raw(String.IsNullOrEmpty(Model.JobEndDateStr) ? "ไม่ระบุ" : Model.JobEndDateStr)</span>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 flex-shrink-0 w-150px w-xl-300px mt-4 mt-sm-0">
+                            @{
+                                double progress = 0.0;
+                                switch (Model.JobStatus)
+                                {
+                                    case 2: progress = 16.66; break;//รอ
+                                    case 3: progress = 33.32; break;//ประกวด
+                                    case 4: progress = 49.98; break;//ประกาศ
+                                    case 5: progress = 64.64; break;//ส่งแนบ
+                                    case 9: progress = 64.64; break;//ขอแก้ไขผลงาน
+                                    case 8: progress = 100.00; break;//สิ้นสุด
+                                    case 7: progress = 83.30; break;//ขอไฟล์แบบติดตั้ง
+                                    case 6: progress = 100.00; break;//ยกเลิก
+                                    default: progress = 0.00; break; //ร่าง=1
                                 }
-                                <span class="font-weight-bold">Progress</span>
-                                <div class="progress progress-xs mt-2 mb-2">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: @Html.Raw(progress+"%");" aria-valuenow="@Html.Raw(progress)" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <span class="font-weight-bolder text-dark">@Html.Raw(progress + "%")</span>
+                            }
+                            <span class="font-weight-bold">Progress</span>
+                            <div class="progress progress-xs mt-2 mb-2">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: @Html.Raw(progress+"%");" aria-valuenow="@Html.Raw(progress)" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
+                            <span class="font-weight-bolder text-dark">@Html.Raw(progress + "%")</span>
                         </div>
                     </div>
-                    <!--end: Content-->
                 </div>
-                <!--end: Info-->
+                <!--end: Content-->
             </div>
-
-            @*buttom info*@
-            <div class="separator separator-solid my-7"></div>
-            <!--begin: Items-->
-            <div class="d-flex align-items-center flex-wrap">
-                <!--begin: Item-->
-                <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                    <span class="mr-4">
-                        <i class="flaticon-piggy-bank icon-2x text-muted font-weight-bold"></i>
-                    </span>
-                    <div class="d-flex flex-column text-dark-75">
-                        <span class="font-weight-bolder font-size-sm">มูลค่างาน</span>
-                        <span class="font-weight-bolder font-size-h5">
-                            @Html.Raw(Model.JobPrice + " บาท")
-                        </span>
-                    </div>
-                </div>
-                <!--end: Item-->
-                <!--begin: Item-->
-                <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                    <span class="mr-4">
-                        <i class="flaticon-confetti icon-2x text-muted font-weight-bold"></i>
-                    </span>
-                    <div class="d-flex flex-column text-dark-75">
-                        <span class="font-weight-bolder font-size-sm">ราคา/ตรม</span>
-                        <span class="font-weight-bolder font-size-h5">
-                            @Html.Raw(Model.JobPricePerSqM)
-                        </span>
-                    </div>
-                </div>
-                <!--end: Item-->
-                <!--begin: Item-->
-                <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                    <span class="mr-4">
-                        <i class="flaticon-pie-chart icon-2x text-muted font-weight-bold"></i>
-                    </span>
-                    <div class="d-flex flex-column text-dark-75">
-                        <span class="font-weight-bolder font-size-sm">ขนาด</span>
-                        <span class="font-weight-bolder font-size-h5">
-                            @Html.Raw(Model.JobAreaSize+" ตรม") 
-                        </span>
-                    </div>
-                </div>
-                <!--end: Item-->
-                <!--begin: Item-->
-                <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                    <span class="mr-4">
-                        <i class="flaticon-file-2 icon-2x text-muted font-weight-bold"></i>
-                    </span>
-                    <div class="d-flex flex-column flex-lg-fill">
-                        <span class="text-dark-75 font-weight-bolder font-size-sm">73 กิจกรรม</span>
-                        <a href="#" class="text-primary font-weight-bolder">View</a>
-                    </div>
-                </div>
-                <!--end: Item-->
-                <!--begin: Item-->
-                <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                    <span class="mr-4">
-                        <i class="flaticon-chat-1 icon-2x text-muted font-weight-bold"></i>
-                    </span>
-                    <div class="d-flex flex-column">
-                        <span class="text-dark-75 font-weight-bolder font-size-sm">648 Comments</span>
-                        <a href="#" class="text-primary font-weight-bolder">View</a>
-                    </div>
-                </div>
-                <!--end: Item-->
-                <!--begin: Item-->
-                <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
-                    <span class="mr-4">
-                        <i class="flaticon-chat-1 icon-2x text-muted font-weight-bold"></i>
-                    </span>
-                    <div class="d-flex flex-column">
-                        <span class="text-dark-75 font-weight-bolder font-size-sm">สถานะ</span>
-                        <a href="#" class="text-primary font-weight-bolder">รอชำระเงิน</a>
-                    </div>
-                </div>
-                <!--end: Item-->
-            </div>
-            <!--begin: Items-->
+            <!--end: Info-->
         </div>
+
+        @*buttom info*@
+        <div class="separator separator-solid my-7"></div>
+        <!--begin: Items-->
+        <div class="d-flex align-items-center flex-wrap">
+            <!--begin: Item-->
+            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                <span class="mr-4">
+                    <i class="flaticon-piggy-bank icon-2x text-muted font-weight-bold"></i>
+                </span>
+                <div class="d-flex flex-column text-dark-75">
+                    <span class="font-weight-bolder font-size-sm">มูลค่างาน</span>
+                    <span class="font-weight-bolder font-size-h5">
+                        @Html.Raw(Model.JobPrice + " บาท")
+                    </span>
+                </div>
+            </div>
+            <!--end: Item-->
+            <!--begin: Item-->
+            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                <span class="mr-4">
+                    <i class="flaticon-confetti icon-2x text-muted font-weight-bold"></i>
+                </span>
+                <div class="d-flex flex-column text-dark-75">
+                    <span class="font-weight-bolder font-size-sm">ราคา/ตรม</span>
+                    <span class="font-weight-bolder font-size-h5">
+                        @Html.Raw(Model.JobPricePerSqM)
+                    </span>
+                </div>
+            </div>
+            <!--end: Item-->
+            <!--begin: Item-->
+            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                <span class="mr-4">
+                    <i class="flaticon-pie-chart icon-2x text-muted font-weight-bold"></i>
+                </span>
+                <div class="d-flex flex-column text-dark-75">
+                    <span class="font-weight-bolder font-size-sm">ขนาด</span>
+                    <span class="font-weight-bolder font-size-h5">
+                        @Html.Raw(Model.JobAreaSize + " ตรม.")
+                    </span>
+                </div>
+            </div>
+            <!--end: Item-->
+            <!--begin: Item-->
+            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                <span class="mr-4">
+                    <i class="flaticon-file-2 icon-2x text-muted font-weight-bold"></i>
+                </span>
+                <div class="d-flex flex-column flex-lg-fill">
+                    @{
+                        var logs = GetJobsLogs.Get.GetByJobId(Model.JobId);
+                    }
+                    <span class="text-dark-75 font-weight-bolder font-size-sm">@logs.Count กิจกรรม</span>
+                    <a href="@Url.Action("LogDetail", "Jobs", new { JobId=Model.JobId })" target="_blank" class="text-primary font-weight-bolder">รายละเอียด</a>
+                </div>
+            </div>
+            <!--end: Item-->
+            <!--begin: Item-->
+            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                <span class="mr-4">
+                    <i class="flaticon-chat-1 icon-2x text-muted font-weight-bold"></i>
+                </span>
+                <div class="d-flex flex-column">
+                    <span class="text-dark-75 font-weight-bolder font-size-sm">Chat</span>
+                    <a href="#" class="text-primary font-weight-bolder">รายละเอียด</a>
+                </div>
+            </div>
+            <!--end: Item-->
+            <!--begin: Item-->
+            <div class="d-flex align-items-center flex-lg-fill mr-5 my-1">
+                <span class="mr-4">
+                    <i class="flaticon-chat-1 icon-2x text-muted font-weight-bold"></i>
+                </span>
+                <div class="d-flex flex-column">
+                    <span class="text-dark-75 font-weight-bolder font-size-sm">สถานะ</span>
+                    <a href="#" class="text-primary font-weight-bolder">@Model.PayStatusDesc</a>
+                </div>
+            </div>
+            <!--end: Item-->
+        </div>
+        <!--begin: Items-->
     </div>
+</div>
 <!--end::Card-->

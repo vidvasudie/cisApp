@@ -41,7 +41,27 @@ namespace cisApp.Controllers
 
             return View(new JobModel());
         }
-
+        public IActionResult LogDetail(JobModel data)
+        { 
+            return View(data);
+        }
+        [HttpPost]
+        public JsonResult JobStatusUpdate(JobModel data)
+        {
+            try
+            {
+                var res = GetJobs.Manage.UpdateJobStatus(data.JobId, data.JobStatus, _UserId());
+                if(res != null)
+                {
+                    return Json(new { success = true, message = "success", redirectUrl = "" });
+                }
+                return Json(new { success = false, message = "fail", redirectUrl = "" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success=false, message= ex.ToString(), redirectUrl="" });
+            }
+        }
         public IActionResult Manage(SearchModel model)
         {
             if(model != null && model.gId != null && model.gId != Guid.Empty)
@@ -94,10 +114,65 @@ namespace cisApp.Controllers
 
         [HttpPost]
         public JsonResult AddNewCandidate(JobCandidateModel model)
-        {
+        { 
             try
             {
-                GetJobsCandidate.Manage.UpdateNewCandidate(model.userCandidates, _UserId().Value, Request.HttpContext.Connection.RemoteIpAddress.ToString());
+                bool isCanProcess = true;
+                var jobCa = GetJobsCandidate.Get.GetByJobId(new SearchModel { gId= model.JobId, statusStr = "1,2,3", statusOpt="in" });
+                var job = GetJobs.Get.GetById(model.JobId.Value);
+                if (jobCa != null && jobCa.Where(o => o.CaStatusId != 3).Count() > 0 && job != null)
+                {
+                    if(job.JobStatus == 2 || job.JobStatus == 3)
+                    {
+                        if ((model.userCandidates != null && (model.userCandidates.Count() + jobCa.Where(o => o.CaStatusId != 3).Count()) > 3) || jobCa.Count() >= 3)
+                        {
+                            //กรณีใบงาน ยังอยู่ในสถานะ รอ หรือประกวด
+                            //ถ้าจำนวนผู้สมัครครบ 3 คน จะเพิ่มไม่ได้อีก
+                            //*** นอกเหนือจากนั้น ไม่ต้องนับจำนวนคน เพราะจะจัดการผู้ชนะเท่านั้น
+                            isCanProcess = false; 
+                        }
+                    }
+                    if ((job.JobStatus == 4 || job.JobStatus == 5 || job.JobStatus == 7 || job.JobStatus == 9) && (model.userCandidates != null && model.userCandidates.Count() > 1))
+                    {
+                        return Json(new ResponseModel().ResponseError("ไม่สามารถเพิ่มผู้ชนะประกวดได้มากกว่า 1 คน"));
+                    }
+                }
+                if (isCanProcess)
+                {
+                    //ให้ทำการเพิ่มผู้สมัครได้ 
+                    if ((job.JobStatus == 4 || job.JobStatus == 5 || job.JobStatus == 7 || job.JobStatus == 9) && (model.userCandidates != null && model.userCandidates.Count() > 1))
+                    {
+                        //จัดการผู้ชนะเท่านั้น และเพิ่มได้ คนเดียวเท่านั้น
+                        var jca = jobCa.Where(o => o.CaStatusId == 3).FirstOrDefault();
+                        if (jca != null)
+                        {
+                            //ปฎิเสธ ผู้ชนะคนเดิม ก่อน และคืน slot งาน
+                            GetJobsCandidate.Manage.StatusUpdate(job.JobId, jca.UserId.Value, _UserId().Value, 5);
+                            
+                        }
+                        //เพิ่มผู้สมัคร
+                        GetJobsCandidate.Manage.UpdateNewCandidate(model.userCandidates, _UserId().Value, Request.HttpContext.Connection.RemoteIpAddress.ToString());
+                        //ปรับสถานะ ให้เป็นผู้ชนะ และอัพเดตสถานะใบงาน กลับไปเป็นสถานะ ประกวด = 4
+                        GetJobs.Manage.UpdateCandidate(new CandidateSelectModel { JobId = job.JobId, CaUserId = jca.UserId.Value, UserId = _UserId().Value, ip = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
+                    }
+                    else
+                    {
+                        if(model.userCandidates != null && model.userCandidates.Count <= 3)
+                        {
+                            //เพิ่มผู้สมัคร และlock slot งานนักออกแบบ
+                            GetJobsCandidate.Manage.UpdateNewCandidate(model.userCandidates, _UserId().Value, Request.HttpContext.Connection.RemoteIpAddress.ToString());
+                        }
+                        else
+                        {
+                            return Json(new ResponseModel().ResponseError("ไม่สามารถเพิ่มผู้สมัคร หรือผู้ร่วมประกวดได้มากกว่า 3 คน"));
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new ResponseModel().ResponseError("ไม่สามารถเพิ่มผู้สมัคร หรือผู้ร่วมประกวดได้มากกว่า 3 คน"));
+                }
+                
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));
             }
             catch (Exception ex)
@@ -112,7 +187,8 @@ namespace cisApp.Controllers
         {
             try
             {
-                var user = GetJobsCandidate.Manage.Delete(id, _UserId().Value, Request.HttpContext.Connection.RemoteIpAddress.ToString());
+                //ปฎิเสธ และคืน slot งาน
+                var user = GetJobsCandidate.Manage.Delete(id, _UserId().Value, Request.HttpContext.Connection.RemoteIpAddress.ToString()); 
 
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));
             }
@@ -130,6 +206,7 @@ namespace cisApp.Controllers
         [HttpPost]
         public PartialViewResult CandidateUserList(JobCandidateModel model)
         {
+
             return PartialView("~/Views/Shared/Jobs/_listUserDesigner.cshtml", model);
         }
 
