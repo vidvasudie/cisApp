@@ -8,20 +8,50 @@
      /// <summary>
         /// แบ่งเป็นเป็น 1=ประกวด,2=ส่งงานงวดที่1,3=ส่งงานงวดที่2,4=ส่งงานงวดที่3
         /// </summary>
-    int max = 4;
+    int max = 5;
     for (int x = 2; x <= max; x++)
     {
+        var albumlist = GetAlbum.Get.GetJobSubmitAlbum(new SearchModel() { gId = Model.JobId, type = x });
         <!--begin::image-->
         <div class="card card-custom gutter-b">
             <div class="card-header h-auto border-0">
                 <div class="card-title py-5">
                     <h3 class="card-label">
-                        <span class="d-block text-dark font-weight-bolder">ส่งแบบครั้งที่ @Html.Raw(x-1)</span>
+                        @if (x == 5)
+                        {
+                            <span class="d-block text-dark font-weight-bolder">ส่งพิมพ์เขียว</span>
+                        }
+                        else
+                        {
+                            <span class="d-block text-dark font-weight-bolder">ส่งแบบครั้งที่ @Html.Raw(x - 1)</span>
+                        }
                     </h3>
+                    <a href="@Html.Raw(albumlist != null && albumlist.Count > 0 ? Url.Action("Editwork", "Album", new { albumId=albumlist.First().AlbumId }) : Url.Action("Submitwork", "Album", new { id=Model.JobId, userId=Model.JobCaUserId }))" class="btn btn-info btn-hover-bg-primary">เพิ่ม/แก้ไขข้อมูล</a>
                 </div>
             </div>
+            <div class="card-body mb-n8 mt-n6">
+                <h4 class="d-flex">
+                    <span class="d-block text-dark font-weight-bolder">ชื่ออัลบัม: @Html.Raw(albumlist != null && albumlist.Count > 0 ? albumlist.First().AlbumName : "-")</span>
+                </h4>
+                @if (x == 5)
+                {
+                    if (albumlist != null && albumlist.Count > 0)
+                    {
+                        <h4 class="d-flex">
+                            <a href="@Html.Raw(albumlist.First().Url)" target="_blank" class="d-block text-dark font-weight-bolder">ลิ้งส่งงาน: @Html.Raw(albumlist.First().Url)</a>
+                        </h4>
+                    }
+                    else
+                    {
+                        <h4 class="d-flex">
+                            <span class="d-block text-dark font-weight-bolder">ลิ้งส่งงาน: -</span>
+                        </h4>
+                    }
 
-            <div class="card-body">
+                }
+
+            </div>
+            <div class="card-body"> 
                 <div class="d-flex">
                     <!--begin: Info-->
                     <div class="flex-grow-1">
@@ -29,7 +59,7 @@
                         <div class=" align-items-center flex-wrap justify-content-between">
                             <div class="row gallery">
                                 @{
-                                    var albumlist = GetAlbum.Get.GetJobSubmitAlbum(new SearchModel() { gId = Model.JobId, type = x });
+                                    
                                     if (albumlist != null && albumlist.Count > 0)
                                     {
                                         int idx = 0;

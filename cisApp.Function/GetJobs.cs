@@ -219,6 +219,7 @@ namespace cisApp.Function
                             obj = data.FirstOrDefault();
                             obj.JobCaUserId = value.CaUserId;
                             obj.JobStatus = 4;//ประกาศ
+                            obj.EditSubmitCount = 0;
                             obj.UpdatedDate = DateTime.Now;
                             obj.UpdatedBy = value.UserId;
                             context.Jobs.Update(obj);
@@ -604,6 +605,7 @@ namespace cisApp.Function
                         {
                             var job = context.Jobs.Where(o => o.JobId == jobId).FirstOrDefault();
                             //string desc = "เปลี่ยนสถานะใบงานจาก "+job.JobStatus +" เป็น "+ status;
+                            int oldStatus = job.JobStatus;
                             job.JobStatus = status;
 
                             context.Jobs.Update(job); 
@@ -630,6 +632,26 @@ namespace cisApp.Function
                                 {
                                     //unlock designer work slot when job end 
                                     GetJobsCandidate.Manage.ValidWorkSlot(context, jobId, item.UserId.Value, "unlock");
+                                }
+                            }
+                            else if (status == 3)
+                            {
+                                if(oldStatus < status)
+                                {
+                                    //ปรับจาก รอ เป็น ประกวด ให้ปรับสถานะผู้ประกวด เป็น 2=ประกวด
+                                    var jobCas = context.JobsCandidate.Where(o => o.JobId == jobId && o.CaStatusId == 1).ToList();
+                                    if(jobCas != null && jobCas.Count > 0)
+                                    {
+                                        foreach (var ca in jobCas)
+                                        {
+                                            ca.CaStatusId = 2;//ประกวด
+                                            ca.UpdatedDate = DateTime.Now;
+                                            ca.UpdatedBy = userId;
+
+                                            context.JobsCandidate.Update(ca);
+                                            context.SaveChanges();
+                                        }
+                                    }
                                 }
                             }
                             //add job tracking for jobStatus 

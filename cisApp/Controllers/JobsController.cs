@@ -50,7 +50,21 @@ namespace cisApp.Controllers
         {
             try
             {
-                var res = GetJobs.Manage.UpdateJobStatus(data.JobId, data.JobStatus, _UserId());
+                var job = GetJobs.Get.GetById(data.JobId);
+                if(job == null)
+                {
+                    return Json(new { success = false, message = "ไม่พบข้อมูล", redirectUrl = "" });
+                }
+                if (job.JobStatus == 3 && data.JobStatus == 4)
+                {
+                    var jobca = GetJobsCandidate.Get.GetByJobId(new SearchModel { gId=data.JobId, statusStr="3", statusOpt= "equal" });
+                    if(jobca == null || jobca.Count == 0)
+                    {
+                        return Json(new { success = false, message = "ต้องเลือกผู้ชนะก่อน", data=new { status= job.JobStatus }, redirectUrl = "" });
+                    }
+                }
+
+                var res = GetJobs.Manage.UpdateJobStatus(data.JobId, data.JobStatus, _UserId(), Request.HttpContext.Connection.RemoteIpAddress.ToString());
                 if(res != null)
                 {
                     return Json(new { success = true, message = "success", redirectUrl = "" });
@@ -60,6 +74,24 @@ namespace cisApp.Controllers
             catch (Exception ex)
             {
                 return Json(new { success=false, message= ex.ToString(), redirectUrl="" });
+            }
+        }
+         
+        public IActionResult JobUpdateCandidateSelect(Guid jobId, Guid caUserId)
+        {
+            try
+            {  
+                var job = GetJobs.Manage.UpdateCandidate(new CandidateSelectModel { JobId = jobId, CaUserId = caUserId, UserId = _UserId().Value, ip = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
+                if (job == null)
+                {
+                    return BadRequest("บันทึกข้อมูลไม่สำเร็จ");
+                }
+
+                return RedirectToAction("Detail", new { jobId= job.JobId });
+            }
+            catch(Exception ex)
+            {
+                return BadRequest();
             }
         }
         public IActionResult Manage(SearchModel model)
@@ -140,7 +172,7 @@ namespace cisApp.Controllers
                 if (isCanProcess)
                 {
                     //ให้ทำการเพิ่มผู้สมัครได้ 
-                    if ((job.JobStatus == 4 || job.JobStatus == 5 || job.JobStatus == 7 || job.JobStatus == 9) && (model.userCandidates != null && model.userCandidates.Count() > 1))
+                    if ((job.JobStatus == 4 || job.JobStatus == 5 || job.JobStatus == 7 || job.JobStatus == 9) && (model.userCandidates != null && model.userCandidates.Count() == 1))
                     {
                         //จัดการผู้ชนะเท่านั้น และเพิ่มได้ คนเดียวเท่านั้น
                         var jca = jobCa.Where(o => o.CaStatusId == 3).FirstOrDefault();
@@ -153,7 +185,7 @@ namespace cisApp.Controllers
                         //เพิ่มผู้สมัคร
                         GetJobsCandidate.Manage.UpdateNewCandidate(model.userCandidates, _UserId().Value, Request.HttpContext.Connection.RemoteIpAddress.ToString());
                         //ปรับสถานะ ให้เป็นผู้ชนะ และอัพเดตสถานะใบงาน กลับไปเป็นสถานะ ประกวด = 4
-                        GetJobs.Manage.UpdateCandidate(new CandidateSelectModel { JobId = job.JobId, CaUserId = jca.UserId.Value, UserId = _UserId().Value, ip = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
+                        GetJobs.Manage.UpdateCandidate(new CandidateSelectModel { JobId = job.JobId, CaUserId = model.userCandidates.First().UserId.Value, UserId = _UserId().Value, ip = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
                     }
                     else
                     {

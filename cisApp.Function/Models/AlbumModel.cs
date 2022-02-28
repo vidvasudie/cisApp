@@ -8,6 +8,8 @@ namespace cisApp.Function
 {
     public class AlbumModel : Album
     {
+        public Guid CaUserId { get; set; }
+        public int CaStatusId { get; set; }
         public string CreatedDateStr
         {
             get
@@ -23,7 +25,7 @@ namespace cisApp.Function
         {
             get
             {
-                return "~/Uploads" + "/" + this.AttachFileId + "/" + this.AttachFileName;
+                return this.AttachFileId != Guid.Empty ? "~/Uploads" + "/" + this.AttachFileId + "/" + this.AttachFileName : null;
             }
         }
         public int CandidateSelected { get; set; }

@@ -220,12 +220,28 @@
                     if (res.success) {
                         window.location.replace(res.redirectUrl);
                     }
+                    else {
+                        $('#JobStatus').val(res.data.status).trigger('change');
+                        MassageSwal("ไม่สามารถดำเนินการได้", res.message, "error")
+                    }
                 }
                 var err = function (e) {
                     console.log('error ca modal', e);
                 }
                 CallAjax('@Url.Action("JobStatusUpdate", "Jobs")', 'POST', { JobId:'@Model.JobId', JobStatus: status }, suc, err);
-            })
+            }) 
+            $('body').on('click', 'a.ca-select', function (e) {
+                //e.preventDefault();
+                var check = $(this).attr('data-check');
+                if (check.length > 0) {
+                    MassageSwal("ไม่สามารถดำเนินการได้", check, "error")
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            });
+
         });
 
     </script>
