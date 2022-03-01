@@ -25,15 +25,7 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
                         <!--begin::Navigation-->
-                        <ul class="navi navi-hover py-5">
-                            <li class="navi-item">
-                                <a href="@Url.Action("Manage", "Album", new { id = Model.AlbumId })" class="navi-link">
-                                    <span class="navi-icon">
-                                        <i class="flaticon2-drop"></i>
-                                    </span>
-                                    <span class="navi-text">เปิดอัลบั้ม</span>
-                                </a>
-                            </li>
+                        <ul class="navi navi-hover py-5">                            
                             <li class="navi-item">
                                 <a href="@Url.Action("Profile", "Designer", new { id = Model.DesignerUserId })" target="_blank" class="navi-link">
                                     <span class="navi-icon">
@@ -41,16 +33,8 @@
                                     </span>
                                     <span class="navi-text">Profile @Model.DesignerFullName</span>
                                 </a>
-                            </li>                            
-                            <li class="navi-item">
-                                <a href="#" data-url="@Url.Action("DeleteImage", ViewData["ControllerName"].ToString(), new { id = Model.AttachFileId })" class="navi-link bt-delete">
-                                    <span class="navi-icon">
-                                        <i class="flaticon2-bell-2"></i>
-                                    </span>
-                                    <span class="navi-text">ลบภาพ</span>
-                                </a>
                             </li>
-                            <li class="navi-separator my-3"></li>
+                            @*<li class="navi-separator my-3"></li>
                             <li class="navi-item">
                                 <a href="@Url.Content("~/" + Model.UrlPath)" download="@Model.FileName" class="navi-link">
                                     <span class="navi-icon">
@@ -58,7 +42,7 @@
                                     </span>
                                     <span class="navi-text">ดาวน์โหลด</span>
                                 </a>
-                            </li>
+                            </li>*@
                             @*<li class="navi-item">
                                 <a href="#" class="navi-link">
                                     <span class="navi-icon">
@@ -81,10 +65,16 @@
             <div class="d-flex flex-column align-items-center">
                 <!--begin: Icon-->
                 @*<img alt="" class="max-h-65px" src="" />*@
-                <img src="@Url.Content("~/" + Model.UrlPath)" alt="@Model.AlbumName" class="img-thumbnail">
-                <!--end: Icon-->
-                <!--begin: Tite-->
-                <a href="#" class="text-dark-75 font-weight-bold mt-15 font-size-lg">@Model.FileName</a>
+                @if (Model.Thumbnails != null && Model.Thumbnails.Count > 0)
+                {
+                    var thumbnail = Model.Thumbnails.FirstOrDefault();
+
+                    <img src="@Url.Content("~/" + thumbnail.UrlPath)" alt="@Model.AlbumName" class="img-thumbnail">
+                    <!--end: Icon-->
+                    <!--begin: Tite-->
+                    <a href="#" class="text-dark-75 font-weight-bold mt-15 font-size-lg">@thumbnail.FileName</a>
+                }
+
                 <!--end: Tite-->
             </div>
         </div>

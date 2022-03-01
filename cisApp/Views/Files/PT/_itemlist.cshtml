@@ -7,7 +7,14 @@
 {
     foreach (var item in Model)
     {
-        @await Html.PartialAsync("PT/_ImageCard", item)
+        if (ViewData["FileMode"].ToString() == "image")
+        {
+            @await Html.PartialAsync("PT/_ImageCard", item)
+        }
+        else
+        {
+            @await Html.PartialAsync("PT/_AlbumCard", item)
+        }
     }
 }
 

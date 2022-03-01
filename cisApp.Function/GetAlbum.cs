@@ -155,6 +155,96 @@ namespace cisApp.Function
                 }
             }
 
+            public static List<AlbumImageModel> GetAlbum(SearchModel model, string domainUrl = "")
+            {
+                try
+                {
+                    List<string> imgString = new List<string>();
+
+                    if (model.Imgs != null)
+                    {
+                        imgString = model.Imgs.Select(o => "'" + o.ToString() + "'").ToList();
+                    }
+
+                    int skip = (model.currentPage.Value - 1) * model.pageSize.Value;
+                    SqlParameter[] parameter = new SqlParameter[] {
+                        new SqlParameter("@stext", ""),
+                        new SqlParameter("@orderBy", model.Orderby),
+                        new SqlParameter("@tags", model.Tags),
+                        new SqlParameter("@categories", model.Categories),
+                        new SqlParameter("@skip", skip),
+                        new SqlParameter("@take", model.pageSize.Value),
+                        new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value),
+                        new SqlParameter("@designer", model.Designer != null ? model.Designer : (object)DBNull.Value)
+                    };
+
+                    var data = StoreProcedure.GetAllStored<AlbumImageModel>("GetAlbum", parameter);
+
+                    if (data != null)
+                    {
+                        foreach (var item in data)
+                        {
+                            var albumImgs = GetAlbumImageByAlbumId(new SearchModel()
+                            {
+                                AlbumId = item.AlbumId,
+                                pageSize = 5
+                            }, domainUrl);
+
+                            item.Thumbnails = new List<AlbumThumbnail>();
+
+                            if (albumImgs != null)
+                            {
+                                foreach (var img in albumImgs)
+                                {
+                                    item.Thumbnails.Add(new AlbumThumbnail()
+                                    {
+                                        AttachId = img.AttachFileId,
+                                        FileName = img.FileName,
+                                        UrlPath = img.UrlPath,
+                                        FullUrlPath = img.FullUrlPath
+                                    });
+                                }
+                            }
+                        }
+                    }
+
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return new List<AlbumImageModel>();
+                }
+            }
+
+            public static int GetAlbumTotal(SearchModel model)
+            {
+                try
+                {
+
+                    List<string> imgString = new List<string>();
+
+                    if (model.Imgs != null)
+                    {
+                        imgString = model.Imgs.Select(o => "'" + o.ToString() + "'").ToList();
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                        new SqlParameter("@stext", ""),
+                        new SqlParameter("@orderBy", model.Orderby),
+                        new SqlParameter("@tags", model.Tags),
+                        new SqlParameter("@categories", model.Categories),
+                        new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value),
+                        new SqlParameter("@designer", model.Designer != null ? model.Designer : (object)DBNull.Value)
+                    };
+
+                    var dt = StoreProcedure.GetAllStoredDataTable("GetAlbumTotal", parameter);
+                    return (int)dt.Rows[0]["TotalCount"];
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+
             public static List<AlbumImageModel> GetAlbumImage(SearchModel model, string domainUrl = "")
             {
                 try
@@ -174,7 +264,8 @@ namespace cisApp.Function
                         new SqlParameter("@categories", model.Categories),
                         new SqlParameter("@skip", skip),
                         new SqlParameter("@take", model.pageSize.Value),
-                        new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value)
+                        new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value),
+                        new SqlParameter("@designer", model.Designer != null ? model.Designer : (object)DBNull.Value)
                     };
 
                     var data = StoreProcedure.GetAllStored<AlbumImageModel>("GetAlbumImage", parameter);
@@ -211,6 +302,69 @@ namespace cisApp.Function
                         new SqlParameter("@orderBy", model.Orderby),
                         new SqlParameter("@tags", model.Tags),
                         new SqlParameter("@categories", model.Categories),
+                        new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value),
+                        new SqlParameter("@designer", model.Designer != null ? model.Designer : (object)DBNull.Value)
+                    };
+
+                    var dt = StoreProcedure.GetAllStoredDataTable("GetAlbumImageTotal", parameter);
+                    return (int)dt.Rows[0]["TotalCount"];
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+
+            public static List<AlbumImageModel> GetAlbumImageByAlbumId(SearchModel model, string domainUrl = "")
+            {
+                try
+                {
+                    List<string> imgString = new List<string>();
+
+                    if (model.Imgs != null)
+                    {
+                        imgString = model.Imgs.Select(o => "'" + o.ToString() + "'").ToList();
+                    }
+
+                    int skip = (model.currentPage.Value - 1) * model.pageSize.Value;
+                    SqlParameter[] parameter = new SqlParameter[] {
+                        new SqlParameter("@albumId", model.AlbumId.ToString()),
+                        new SqlParameter("@skip", skip),
+                        new SqlParameter("@take", model.pageSize.Value),
+                        new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value)
+                    };
+
+                    var data = StoreProcedure.GetAllStored<AlbumImageModel>("GetAlbumImage", parameter);
+
+                    if (data != null)
+                    {
+                        foreach (var item in data)
+                        {
+                            item.FullUrlPath = domainUrl + item.UrlPath;
+                        }
+                    }
+
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return new List<AlbumImageModel>();
+                }
+            }
+
+            public static int GetAlbumImageByAlbumIdTotal(SearchModel model)
+            {
+                try
+                {
+
+                    List<string> imgString = new List<string>();
+
+                    if (model.Imgs != null)
+                    {
+                        imgString = model.Imgs.Select(o => "'" + o.ToString() + "'").ToList();
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                        new SqlParameter("@albumId", model.AlbumId.ToString()),
                         new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value)
                     };
 
@@ -307,6 +461,36 @@ namespace cisApp.Function
                 catch (Exception ex)
                 {
                     throw ex;
+                }
+            }
+
+            public static List<CountValueModel> GetAlbumCategories()
+            {
+                try
+                {
+
+                    var data = StoreProcedure.GetAllStoredNonparam<CountValueModel>("GetAlbumCategories");
+
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return new List<CountValueModel>();
+                }
+            }
+
+            public static List<CountValueModel> GetAlbumTags()
+            {
+                try
+                {
+
+                    var data = StoreProcedure.GetAllStoredNonparam<CountValueModel>("GetAlbumTags");
+
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return new List<CountValueModel>();
                 }
             }
 
