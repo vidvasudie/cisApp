@@ -1,9 +1,20 @@
 ﻿@using cisApp.library;
 @using cisApp.Function;
-@model PaginatedList<AlbumImageModel>
+@model FilePageModel
 @{
     ViewData["Title"] = "ผลงาน";
     ViewData["ControllerName"] = "Files";
+
+    string albumActive = "", imageActive = "";
+
+    if (Model.SearchBy == "album")
+    {
+        albumActive = "active";
+    }
+    else
+    {
+        imageActive = "active";
+    }
 }
 
 <!--begin::Content-->
@@ -74,7 +85,11 @@
             <!--begin::Todo Files-->
             <div class="d-flex flex-row">
                 <!--begin::Aside-->
-                @await Html.PartialAsync("Pt/_AsideFilter")
+                @await Html.PartialAsync("Pt/_AsideFilter", Model)
+
+                @Html.HiddenFor(m => m.Category)
+                @Html.HiddenFor(m => m.Tag)
+                @Html.HiddenFor(m => m.SearchBy)
                 <!--end::Aside-->
                 <!--begin::List-->
                 <div class="flex-row-fluid d-flex flex-column ml-lg-8">
@@ -89,26 +104,26 @@
                                     <h3 class="font-weight-bold mb-0 mr-10">แสดงทั้งหมด</h3>
                                     <!--end::Title-->
                                     <!--begin::Navigation-->
-                                    <!--<div class="d-flex mr-3">-->
+                                    <div class="d-flex mr-3">
                                     <!--begin::Navi-->
-                                    <!--<div class="navi navi-hover navi-active navi-link-rounded navi-bold d-flex flex-row">-->
+                                    <div class="navi navi-hover navi-active navi-link-rounded navi-bold d-flex flex-row">
                                     <!--begin::Item-->
-                                    <!--<div class="navi-item mr-2">
-                                        <a href="custom/apps/todo/tasks.html" class="navi-link">
+                                    <div class="navi-item mr-2">
+                                        <a href="javascript:void(0)" class="navi-link custom-search-by @albumActive" keyword-data="album">
                                             <span class="navi-text">อัลบั้ม</span>
                                         </a>
-                                    </div>-->
+                                    </div>
                                     <!--end::Item-->
                                     <!--begin::Item-->
-                                    <!--<div class="navi-item mr-2">
-                                        <a href="custom/apps/todo/files.html" class="navi-link active">
+                                    <div class="navi-item mr-2">
+                                        <a href="javascript:void(0)" class="navi-link custom-search-by @imageActive" keyword-data="image">
                                             <span class="navi-text">รายการ</span>
                                         </a>
-                                    </div>-->
+                                    </div>
                                     <!--end::Item-->
-                                    <!--</div>-->
+                                    </div>
                                     <!--end::Navi-->
-                                    <!--</div>-->
+                                    </div>
                                     <!--end::Navigation-->
                                 </div>
                                 <!--end::Info-->
@@ -137,6 +152,8 @@
 
 @section scripts {
 
+    <script src="@Url.Content("~/js/pages/file/file.js")"></script>
+
     <script>
 
     function PagerClick(index) {
@@ -149,11 +166,19 @@
 
         //var text = $('#kt_datatable_search_query').val()
         //var active = $('#kt_datatable_search_status').val()
+        var tag = $('#Tag').val()
+        var category = $('#Category').val()
+        var searchBy = $('#SearchBy').val()
+        var designer = $('#Designer').val()
 
 
         CallAjax('@Url.Action("ItemList", ViewData["ControllerName"])', 'POST'
             , {
-                currentPage: index
+                categories: category
+                , tags: tag
+                , searchBy: searchBy
+                , designer: designer
+                ,currentPage: index
                 , pageSize: $('#pageSize').val()
             }
             , suc, err);

@@ -1,5 +1,6 @@
 ﻿using cisApp.Function;
 using cisApp.library;
+using cisApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -32,9 +33,15 @@ namespace cisApp.Controllers
             _HostingEnvironment = environment;
         }
 
-        public IActionResult Index(int pageIndex = 1)
+        public IActionResult Index(string searchBy = "image", Guid? designer = null, string category = "", string tag = "", int pageIndex = 1)
         {
-            return View(new PaginatedList<AlbumImageModel>(_model, _model.Count, pageIndex, 2));
+            FilePageModel model = new FilePageModel();
+            model.SearchBy = searchBy;
+            model.Designer = designer;
+            model.Category = category;
+            model.Tag = tag;
+            model.ImageModel = new PaginatedList<AlbumImageModel>(_model, _model.Count, pageIndex, 2);
+            return View(model);
         }
 
         [HttpPost]
@@ -42,14 +49,44 @@ namespace cisApp.Controllers
         {
             string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
 
-            if (model == null) model = new SearchModel();
             
+
+            if (model == null) model = new SearchModel();
+
+            if (model.pageSize == 10) model.pageSize = 12;
+
             model.Orderby = "LastedCreate";
 
-            List<AlbumImageModel> _model = GetAlbum.Get.GetAlbumImage(model, webAdmin);
-            int count = GetAlbum.Get.GetAlbumImageTotal(model);
+            
 
-            return PartialView("PT/_itemlist", new PaginatedList<AlbumImageModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
+            if (model.SearchBy == "album")
+            {
+
+                ViewData["FileMode"] = "album";
+
+                List<AlbumImageModel> _model = GetAlbum.Get.GetAlbum(model, webAdmin);
+                int count = GetAlbum.Get.GetAlbumTotal(model);
+
+                var paginationModel = new PaginatedList<AlbumImageModel>(_model, count, model.currentPage.Value, model.pageSize.Value);
+                paginationModel.PageList = new List<int>() { 12, 24, 48 };
+
+                return PartialView("PT/_itemlist", paginationModel);
+            }
+            else
+            {
+
+                ViewData["FileMode"] = "image";
+
+                List<AlbumImageModel> _model = GetAlbum.Get.GetAlbumImage(model, webAdmin);
+                int count = GetAlbum.Get.GetAlbumImageTotal(model);
+
+                var paginationModel = new PaginatedList<AlbumImageModel>(_model, count, model.currentPage.Value, model.pageSize.Value);
+                paginationModel.PageList = new List<int>() { 12, 24, 48 };
+
+                return PartialView("PT/_itemlist", paginationModel);
+            }
+
+            
         }
 
         [HttpPost]

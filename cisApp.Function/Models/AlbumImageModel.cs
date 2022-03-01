@@ -47,5 +47,15 @@ namespace cisApp.Function
         public bool IsLiked { get; set; }
         public Guid? AlbumRefId { get; set; }
 
+        public List<AlbumThumbnail> Thumbnails { get; set; }
+
+    }
+
+    public class AlbumThumbnail
+    {
+        public Guid AttachId { get; set; }
+        public string FileName { get; set; }
+        public string UrlPath { get; set; }
+        public string FullUrlPath { get; set; }
     }
 }

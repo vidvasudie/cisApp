@@ -27,7 +27,7 @@ namespace cisApp
               .AddCookie("CookieAuthentication", config =>
               {
                   //config.Cookie.Expiration = 120;
-                  config.Cookie.Name = "cisApp";
+                  config.Cookie.Name = "cisAppMirorsite";
                   config.LoginPath = "/Login";
               });
 
