@@ -24,6 +24,11 @@
             <h3 class="card-label">
                 <span class="d-block text-dark font-weight-bolder">รูปที่ลูกค้าแนบมา</span>
             </h3>
+            
+            @if (Model.JobStatus != 6 && Model.JobStatus != 8)
+            {
+        <a href="@Url.Action("ManageImgExam", "Jobs", new { gId=Model.JobId })" target="_blank" class="btn btn-info btn-hover-bg-primary">เพิ่ม/แก้ไขข้อมูล</a>
+            }
         </div>
     </div>
 
@@ -34,8 +39,9 @@
             foreach (var cat in exImgTypeList)
             {
                 optionClass = first ? " mt-n8 " : "";
-                <div class="row @optionClass">
+                <div class="col-12 @optionClass">
                     <h5 class="col-12 mb-10" style="color: #8408d9;"><strong>❏ @Html.Raw(cat.Description)</strong></h5>
+                   
                     <div class="d-flex">
                         <!--begin: Info-->
                         <div class="flex-grow-1">
@@ -55,12 +61,8 @@
                                                 @await Html.PartialAsync("~/Views/Shared/Common/_ImageItem.cshtml", item)
                                                 idx++;
                                             }
-                                            @*foreach (var item in items)
-                                            {
-                                                <a href="javascript:void(0);" class="col-12 col-md-2">
-                                                    <img src="@Url.Content(item.UrlPath)" x alt="@item.FileName" class="img-thumbnail img-list my-3 mx-3">
-                                                </a>
-                                            }*@
+                                            
+
                                         }
                                         else
                                         {

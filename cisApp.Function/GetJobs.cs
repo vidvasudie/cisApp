@@ -430,25 +430,29 @@ namespace cisApp.Function
                     return 0;
                 }
                 //get old data ที่ไม่อยุ่ในรายการที่ o.FileBase64 ไม่มีค่า = ลบทิ้ง
-                string listId = String.Join(",", imgs.Where(o => o != null && String.IsNullOrEmpty(o.FileBase64)).Select(o => o.gId.ToString()));
+                // 1.ดึงข้อมูล id ที่มี
+                string listId = String.Join(",", imgs.Where(o => o != null && (String.IsNullOrEmpty(o.FileBase64) && o.AttachFileId != Guid.Empty)).Select(o => o.AttachFileId.ToString()));
                 SqlParameter[] parameter = new SqlParameter[] { 
                        new SqlParameter("@jobId", obj.JobId), //jobid
                        new SqlParameter("@imgList", listId), //list
                        new SqlParameter("@mode", "1")//not in
                     };
+                //2. ดึงข้อมูลที่หายไป
                 var delList = StoreProcedure.GetAllStored<FileAttachModel>("GetJobsExImageFile", parameter);
 
+                //3. ลบข้อมูลที่หายไป 
                 foreach (var file in delList)
                 {
                     var item = context.AttachFile.Where(o => o.AttachFileId == file.AttachFileId).FirstOrDefault();
                     item.IsActive = false;
                     item.UpdatedDate = obj.UpdatedDate.Value;
                     item.UpdatedBy = obj.UpdatedBy.Value;
-                    context.AttachFile.Remove(item);
+                    context.AttachFile.Update(item);
                     context.SaveChanges();
+                    
                 }
                 
-
+                //4. เพิ่มข้อมูลใหม่
                 // ถ้ามีไฟล์อัพมาใหม่ fileBase64 จะมีค่า
                 foreach (var file in imgs.Where(o => o != null && !String.IsNullOrEmpty(o.FileBase64)))
                 {
@@ -491,7 +495,28 @@ namespace cisApp.Function
 
                 return 1; 
             } 
+            public static int UpdateImageExam(List<FileAttachModel> imgs, Jobs obj)
+            {
+                try
+                {
+                    var result = 0;
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+                            result = ManageImages(context, imgs, obj);
 
+                            dbContextTransaction.Commit();
+                        }
+                    }
+
+                    return result;
+                }
+                catch(Exception ex)
+                {
+                    return 0;
+                }
+            }
             public static Jobs CancelJob(Guid jobId, Guid userId, int cancelId, string cancelMsg, string ip)
             {
                 try

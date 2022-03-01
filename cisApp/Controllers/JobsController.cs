@@ -142,6 +142,44 @@ namespace cisApp.Controllers
              
         }
 
+        public IActionResult ManageImgExam(SearchModel model)
+        {
+            JobModel job = new JobModel();
+            job.JobId = model.gId.Value;
+
+            var files = GetJobsExamImage.Get.GetImageByJobId(model.gId.Value);
+            if(files != null && files.Count > 0)
+            {
+                job.files = files.Select(o => new FileAttachModel { 
+                    TypeId=o.JobsExTypeId.Value, 
+                    Description = o.JobsExTypeDesc,
+                    AttachFileId=o.AttachFileId,
+                    FileName=o.FileName,
+                    Size=o.Size
+                }).ToList();
+            }
+            return View(job);
+        }
+
+        [HttpPost]
+        public JsonResult JobUpdateImgExam(JobModel data)
+        {
+            try
+            {
+                var result = GetJobs.Manage.UpdateImageExam(data.files, new Jobs { JobId=data.JobId, UpdatedDate = DateTime.Now, UpdatedBy = _UserId().Value, CreatedDate = DateTime.Now, CreatedBy = _UserId().Value });
+                if(result == 1)
+                {
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Detail", "Jobs", new { gId = data.JobId })));
+                }
+                return Json(new ResponseModel().ResponseError("บันทึกข้อมูลไม่สำเร็จ"));
+            }
+            catch(Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
+
+
         #region Candidate
 
         [HttpPost]

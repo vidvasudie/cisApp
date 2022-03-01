@@ -26,7 +26,11 @@
                             <span class="d-block text-dark font-weight-bolder">ส่งแบบครั้งที่ @Html.Raw(x - 1)</span>
                         }
                     </h3>
-                    <a href="@Html.Raw(albumlist != null && albumlist.Count > 0 ? Url.Action("Editwork", "Album", new { albumId=albumlist.First().AlbumId }) : Url.Action("Submitwork", "Album", new { id=Model.JobId, userId=Model.JobCaUserId }))" class="btn btn-info btn-hover-bg-primary">เพิ่ม/แก้ไขข้อมูล</a>
+                    @if (Model.JobStatus != 6 && Model.JobStatus != 8)
+                    {
+                        <a href="@Html.Raw(albumlist != null && albumlist.Count > 0 ? Url.Action("Editwork", "Album", new { albumId=albumlist.First().AlbumId }) : Url.Action("Submitwork", "Album", new { id=Model.JobId, userId=Model.JobCaUserId }))" class="btn btn-info btn-hover-bg-primary">เพิ่ม/แก้ไขข้อมูล</a>
+                    }
+
                 </div>
             </div>
             <div class="card-body mb-n8 mt-n6">
