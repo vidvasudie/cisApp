@@ -70,6 +70,13 @@ function ErrorSwal(message) {
         "error"
     ) 
 }
+function MassageSwal(message = "บันทึกข้อมูลสำเร็จ", message2 = "ดำเนินการเรียบร้อยแล้ว", mode = "success") {
+    Swal.fire(
+        message,
+        message2,
+        mode
+    )
+}
 function redirectLogin(data) {
     if (data.success) { 
         window.setTimeout(function () {
