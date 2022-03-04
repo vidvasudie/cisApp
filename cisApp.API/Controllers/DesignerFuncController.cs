@@ -184,7 +184,7 @@ namespace cisApp.API.Controllers
                     UrlPathUserImage = o.AttachFileID != Guid.Empty ? o.UrlPathUserImage : null,
                     o.RecruitedPrice,
                     o.ContestPrice,
-                    jobCandidates = o.jobCandidates.Select(s => new { UrlPathAPI=s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null }),
+                    jobCandidates = o.jobCandidates.Select(s => new { s.UserId, s.UserFullName, UrlPathAPI=s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null }),
                     jobsExamImages = o.jobsExamImages.Select(s => new { UrlPathAPI=s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null }),
                     o.IsCanSubmit,
                     o.WarningText
