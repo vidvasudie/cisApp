@@ -138,8 +138,25 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", null));
                 }
+                
+                foreach (var j in data)
+                {
+                    j.jobCandidates = GetJobsCandidate.Get.GetAvailableByJobId(new SearchModel() { gId = j.JobID, statusStr = "4", statusOpt = "less" }); 
+                }
 
-                return Ok(resultJson.success("สำเร็จ", "success", data));
+                return Ok(resultJson.success("สำเร็จ", "success", data.Select(o => new {
+                    o.JobType,
+                    o.JobAreaSize,
+                    o.CandidateCount,
+                    o.JobID,
+                    o.JobNo,
+                    o.DueDate,
+                    o.DueDateStr,
+                    o.JobStatus,
+                    o.CandidateWorkSubmitCount,
+                    o.EditSubmitCount,
+                    jobCandidates= o.jobCandidates.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, UrlPathAPI = s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null }).ToList()
+                })));
 
             }
             catch (Exception ex)
