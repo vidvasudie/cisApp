@@ -605,7 +605,7 @@ namespace cisApp.API.Controllers
                     dpf.PositionName,
                     dpf.IsFavorite,
                     dpf.Caption,
-                    albums = imgs.Where(o => o.AttachFileName != null).Select(o => new { o.AlbumName, imageUrl = o.UrlPath.Replace("~", Host), o.AttachFileName }),
+                    albums = imgs.Where(o => o.AttachFileName != null).Select(o => new { o.AttachFileId,o.AlbumName, imageUrl = o.UrlPath.Replace("~", Host), o.AttachFileName }),
                     DesignerAlbums
                 }));
             }

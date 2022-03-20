@@ -155,6 +155,7 @@ namespace cisApp.API.Controllers
                     o.JobStatus,
                     o.CandidateWorkSubmitCount,
                     o.EditSubmitCount,
+                    o.BlueprintSubmit,
                     jobCandidates= o.jobCandidates.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, UrlPathAPI = s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null }).ToList()
                 })));
 
