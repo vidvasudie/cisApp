@@ -155,6 +155,7 @@ namespace cisApp.API.Controllers
                     o.JobStatus,
                     o.CandidateWorkSubmitCount,
                     o.EditSubmitCount,
+                    o.BlueprintSubmit,
                     jobCandidates= o.jobCandidates.Select(s => new { caUserId = s.UserId, caFullname = s.UserFullName, UrlPathAPI = s.AttachFileId != Guid.Empty ? s.UrlPathAPI : null }).ToList()
                 })));
 
@@ -697,6 +698,22 @@ namespace cisApp.API.Controllers
                 }
 
                 string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
+
+                var DesignerAlbums = GetAlbum.Get.GetAlbum(new SearchModel() { pageSize = 999, Designer = caUserId }, Host);
+
+                foreach (var item in DesignerAlbums)
+                {
+                    var albumImgs = GetAlbum.Get.GetAlbumImageByAlbumId(new SearchModel() { AlbumId = item.AlbumId, pageSize = 999 }, Host);
+
+                    var thumbnails = albumImgs.Select(o => new AlbumThumbnail
+                    {
+                        AttachId = o.AttachFileId,
+                        FileName = o.FileName,
+                        UrlPath = o.UrlPath,
+                        FullUrlPath = o.FullUrlPath
+                    }).ToList();
+                }
+
                 bool removeLast = Host.Last() == '/';
                 string PicUrlPath = data.First().PicUrlPath;
                 if (removeLast)
@@ -716,6 +733,7 @@ namespace cisApp.API.Controllers
                     data.First().IsConfirmApprove,
                     data.First().IsCusFavorite,
                     albums = data.Where(o => o.AlbumName != null).OrderByDescending(o => o.UpdatedDate).Select(o => new { o.AlbumName, o.AlbumType, o.AlbumTypeDesc, o.Url, ImgUrlPath=o.ImgAttachFileID != null ? o.ImgUrlPath.Replace("~", Host):"" }),
+                    DesignerAlbums
                 } ));
             }
             catch (Exception ex)

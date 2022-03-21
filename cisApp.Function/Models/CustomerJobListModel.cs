@@ -25,5 +25,6 @@ namespace cisApp.Function
         public int CandidateWorkSubmitCount { get; set; }
         public int? EditSubmitCount { get; set; }
         public List<JobCandidateModel> jobCandidates { get; set; }
+        public int BlueprintSubmit { get; set; }
     }
 }

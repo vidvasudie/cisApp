@@ -563,13 +563,31 @@ namespace cisApp.API.Controllers
                 }
                  
                 string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
+
+                var albs = imgs.Select(o => o.AlbumName).Distinct();
+
+                var DesignerAlbums = GetAlbum.Get.GetAlbum(new SearchModel() { pageSize = 999, Designer = userDesignerId }, Host);
+
+                foreach (var item in DesignerAlbums)
+                {
+                    var albumImgs = GetAlbum.Get.GetAlbumImageByAlbumId(new SearchModel() { AlbumId = item.AlbumId, pageSize = 999 }, Host);
+
+                    var thumbnails = albumImgs.Select(o => new AlbumThumbnail
+                    {
+                        AttachId = o.AttachFileId,
+                        FileName = o.FileName,
+                        UrlPath = o.UrlPath,
+                        FullUrlPath = o.FullUrlPath
+                    }).ToList();
+                }
+
                 bool removeLast = Host.Last() == '/';
                 if (removeLast)
                 {
                     Host = Host.Remove(Host.Length - 1);
                 }
 
-                var albs = imgs.Select(o => o.AlbumName).Distinct();
+                
 
 
                 return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", new 
@@ -587,7 +605,8 @@ namespace cisApp.API.Controllers
                     dpf.PositionName,
                     dpf.IsFavorite,
                     dpf.Caption,
-                    albums = imgs.Where(o => o.AttachFileName != null).Select(o => new { o.AlbumName, imageUrl = o.UrlPath.Replace("~", Host), o.AttachFileName })
+                    albums = imgs.Where(o => o.AttachFileName != null).Select(o => new { o.AttachFileId,o.AlbumName, imageUrl = o.UrlPath.Replace("~", Host), o.AttachFileName }),
+                    DesignerAlbums
                 }));
             }
             catch (Exception ex)
