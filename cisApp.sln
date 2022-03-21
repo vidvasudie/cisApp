@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp.Function", "cisApp.F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp.API", "cisApp.API\cisApp.API.csproj", "{980DC8A7-0ED3-4A09-B00C-E0A926973483}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cisApp.SignalR", "cisApp.SignalR\cisApp.SignalR.csproj", "{1A1F90C3-96E9-4559-87C5-6919A6DE6B86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cisApp.SignalR", "cisApp.SignalR\cisApp.SignalR.csproj", "{1A1F90C3-96E9-4559-87C5-6919A6DE6B86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cisApp.Designer", "cisApp.Designer\cisApp.Designer.csproj", "{06319DF1-F6F0-4DDD-81C9-D0B083FB3C01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{1A1F90C3-96E9-4559-87C5-6919A6DE6B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A1F90C3-96E9-4559-87C5-6919A6DE6B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A1F90C3-96E9-4559-87C5-6919A6DE6B86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06319DF1-F6F0-4DDD-81C9-D0B083FB3C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06319DF1-F6F0-4DDD-81C9-D0B083FB3C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06319DF1-F6F0-4DDD-81C9-D0B083FB3C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06319DF1-F6F0-4DDD-81C9-D0B083FB3C01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
