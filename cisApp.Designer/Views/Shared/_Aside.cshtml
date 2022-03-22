@@ -1,0 +1,16 @@
+﻿<div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
+    <!--begin::Brand-->
+    <div class="brand flex-column-auto" id="kt_brand">
+        <!--begin::Logo-->
+        <a href="@Url.Action("Index", "Home")" class="brand-logo">
+            <img alt="Logo" class="w-65px" src="@Url.Content("~/assets/media/logos/Asset 9@4x 1.png") " />
+        </a>
+        <!--end::Logo-->
+    </div>
+    <!--end::Brand-->
+    <!--begin::Aside Menu-->
+    <div class="aside-menu-wrapper flex-column-fluid" id="kt_aside_menu_wrapper">
+        @{Html.RenderPartial("_Menu");}
+    </div>
+    <!--end::Aside Menu-->
+</div>

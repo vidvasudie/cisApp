@@ -28,11 +28,27 @@ namespace cisApp.Designer.Controllers
             }
         }
 
+        public string _UserName()
+        {
+            var UserName = HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserName")?.Value;
+            return UserName;
+        }
+
+        public string _FullName()
+        {
+            var FullName = HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
+            return FullName;
+        }
+
         public class CustomActionExecuteAttribute : ActionFilterAttribute
         { 
             public override void OnActionExecuting(ActionExecutingContext context)
-            { 
-
+            {
+                var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
+                if (String.IsNullOrEmpty(userId) && context.HttpContext.Request.Path == "")
+                {
+                    context.Result = new RedirectToActionResult("Logout", "Login", null);
+                }
 
                 base.OnActionExecuting(context);
             }

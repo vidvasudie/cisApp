@@ -1,0 +1,91 @@
+﻿@using cisApp.Core
+@using cisApp.Function
+@using cisApp
+@model JobPayment
+
+<div class="col-xl-8">
+    <!--begin::Card-->
+    <div class="card card-custom gutter-b">
+        <!--begin::Header-->
+        <div class="card-header card-header-tabs-line">
+            <div class="card-toolbar">
+                <ul class="nav nav-tabs nav-tabs-space-lg nav-tabs-line nav-bold nav-tabs-line-3x" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#kt_apps_contacts_view_tab_1">
+                            <span class="nav-icon mr-2">
+                                <span class="svg-icon mr-3">
+                                    <!--begin::Svg Icon | path:assets/media/svg/icons/General/Notification2.svg-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                            <rect x="0" y="0" width="24" height="24" />
+                                            <path d="M13.2070325,4 C13.0721672,4.47683179 13,4.97998812 13,5.5 C13,8.53756612 15.4624339,11 18.5,11 C19.0200119,11 19.5231682,10.9278328 20,10.7929675 L20,17 C20,18.6568542 18.6568542,20 17,20 L7,20 C5.34314575,20 4,18.6568542 4,17 L4,7 C4,5.34314575 5.34314575,4 7,4 L13.2070325,4 Z" fill="#000000" />
+                                            <circle fill="#000000" opacity="0.3" cx="18.5" cy="5.5" r="2.5" />
+                                        </g>
+                                    </svg>
+                                    <!--end::Svg Icon-->
+                                </span>
+                            </span>
+                            <span class="nav-text">ดำเนินการ</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--end::Header-->
+        <!--begin::Body-->
+        <div class="card-body px-0">
+            <div class="tab-content pt-5">
+                <!--begin::Tab Content-->
+                <div class="tab-pane active" id="kt_apps_contacts_view_tab_1" role="tabpanel">
+                    <div class="container">
+                        <form class="form" id="kt_form" asp-action="ManageStatus" asp-controller="Payment" method="post" data-ajax-confirm="@MessageCommon.Confirm" data-ajax="true" data-ajax-success="redirect">
+                            <div class="form-group row">
+                                <label class="col-3 col-form-label">สถานะดำเนินการ</label>
+                                <div class="col-9 col-form-label">
+
+                                    @Html.HiddenFor(m => m.JobPayId)
+
+                                    <div class="radio-inline">
+                                        @{
+                                            var radioPaymentStatus = JobPaymentStatus.GetAll();
+                                        }
+
+                                        @foreach (var item in radioPaymentStatus)
+                                        {
+                                            <label class="radio radio-Primary">
+                                                @if (item.key == Model.PayStatus)
+                                                {
+                                                    <input type="radio" name="PayStatus" value="@item.key" checked="checked">
+                                                }
+                                                else
+                                                {
+                                                    <input type="radio" name="PayStatus" value="@item.key">
+                                                }
+
+                                                <span></span>@item.value
+                                            </label>
+                                        }
+
+                                    </div>
+                                </div>
+                                <div class="form-group col-12 d-flex justify-content-end">
+                                    @Html.TextAreaFor(m => m.Comment, new { @class = "form-control form-control-lg form-control-solid", @rows = "3", @placeholder = "บันทึกหมายเหตุ" })
+                                    @*<textarea class="form-control form-control-lg form-control-solid" id="exampleTextarea" rows="3" placeholder="บันทึกหมายเหตุ"></textarea>*@
+                                </div>
+                                <div class="row col-12">
+                                    <div class="col">
+                                        <a href="#" class="btn btn-light-primary font-weight-bold btn-submit">บันทึก</a>
+                                        <a href="#" class="btn btn-clean font-weight-bold">ยกเลิก</a>
+                                    </div>
+                                </div>
+                        </form>
+                        <div class="separator separator-dashed my-10"></div>
+                    </div>
+                </div>
+                <!--end::Tab Content-->
+            </div>
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::Card-->
+</div>

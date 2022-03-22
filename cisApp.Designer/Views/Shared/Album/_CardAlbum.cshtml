@@ -1,0 +1,144 @@
+﻿@using cisApp.Designer.Controllers
+@model cisApp.Function.AlbumModel
+@{
+    var selectedBD = Model.CandidateSelected == 1 ? " border border-5  border-danger " : "";
+    var selectedBG = Model.CandidateSelected == 1 ? " bg-primary " : "";
+    var selectedStyle = Model.CandidateSelected == 1 ? "color: #fff !important;" : "";
+    var selectedICON = Model.CandidateSelected == 1 ? " <i class=\"flaticon2-correct text-warning icon-md ml-2\"></i> " : "";
+}
+
+<!--begin::Col-->
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-6">
+    <!--begin::Card-->
+    <div class="card card-custom gutter-b card-stretch @selectedBD">
+        <div class="card-header border-0 m-0">
+
+            <h3 class="card-title">
+            </h3>
+
+            <div class="card-toolbar">
+                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="จัดการ" data-placement="left">
+                    <a href="#" class="btn btn-clean btn-hover-light-primary btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="ki ki-bold-more-hor"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">
+                        <!--begin::Navigation-->
+                        <ul class="navi navi-hover py-5">
+                            @if (Model.CaStatusId == 2)//อยู่ระหว่างประกวด
+                            {
+                                string check = "";
+                                if (Model.AlbumId == null)
+                                {
+                                    check = "ยังไม่ส่งงาน";
+                                }
+                                <li class="navi-item">
+                                    <a href="@Url.Action("JobUpdateCandidateSelect", "Jobs", new { jobId=Model.JobId, caUserId=Model.CaUserId })" class="navi-link ca-select" data-check='@check'>
+                                        <span class="navi-icon">
+                                            <i class="flaticon2-drop"></i>
+                                        </span>
+                                        <span class="navi-text">เลือกผู้ชนะ</span>
+                                    </a>
+                                </li>
+                            }
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-list-3"></i>
+                                    </span>
+                                    <span class="navi-text">@Html.Raw(String.IsNullOrEmpty(Model.UserFullName) ? "-" : Model.UserFullName)</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-drop"></i>
+                                    </span>
+                                    <span class="navi-text">เปิดอัลบั้ม</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="@Url.Action("Submitwork", "Album", new { id=Model.JobId, userId=Model.CaUserId })" class="navi-link" target="_blank">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-bell-2"></i>
+                                    </span>
+                                    <span class="navi-text">เพิ่มข้อมูล</span>
+                                </a>
+                            </li>
+                            @if (Model.AlbumId != null)
+                            {
+                                <li class="navi-item">
+                                    <a href="@Url.Action("Editwork", "Album", new { albumId=Model.AlbumId })" class="navi-link" target="_blank">
+                                        <span class="navi-icon">
+                                            <i class="flaticon2-bell-2"></i>
+                                        </span>
+                                        <span class="navi-text">แก้ไขข้อมูล</span>
+                                    </a>
+                                </li>
+                            }
+
+                            @*<li class="navi-separator my-3"></li>
+        <li class="navi-item">
+            <a href="#" class="navi-link">
+                <span class="navi-icon">
+                    <i class="flaticon2-magnifier-tool"></i>
+                </span>
+                <span class="navi-text">ดาวน์โหลด</span>
+            </a>
+        </li>
+        <li class="navi-item">
+            <a href="#" class="navi-link">
+                <span class="navi-icon">
+                    <i class="flaticon2-bell-2"></i>
+                </span>
+                <span class="navi-text">ดาวโหลดอัลบั้ม</span>
+                <span class="navi-link-badge">
+                    <span class="label label-light-danger label-rounded font-weight-bold">15</span>
+                </span>
+            </a>
+        </li>*@
+
+                        </ul>
+                        <!--end::Navigation-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body @selectedBG">
+            <div class="d-flex flex-column align-items-center">
+                @if (String.IsNullOrEmpty(Model.UrlPath))
+                {
+                <div class="dt-center text-muted">
+                    <h3>ไม่พบข้อมูล</h3>
+                </div>
+                }
+                else
+                {
+                    <!--begin: Icon-->
+                    <img src="@Url.Content(Model.UrlPath)" alt="@Html.Raw(String.IsNullOrEmpty(Model.AttachFileName) ? "-" : Model.AttachFileName)" style="height: 330px !important;" class="img-thumbnail">
+                    <!--end: Icon-->
+                }
+                <!--begin: Tite-->
+                <a href="#" class="text-dark-75 font-weight-bold mt-15 font-size-lg" style="@selectedStyle">@Html.Raw(String.IsNullOrEmpty(Model.UserFullName) ? "-" : Model.UserFullName) @Html.Raw(selectedICON)</a>
+                <!--end: Tite-->
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="mb-10 mt-5">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-dark-75 font-weight-bolder mr-2">ประเภทงาน :</span>
+                    <a href="#" class="text-muted text-hover-primary">@Html.Raw(String.IsNullOrEmpty(Model.Category) ? "-" : Model.Category)</a>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-dark-75 font-weight-bolder mr-2">Tags :</span>
+                    <a href="#" class="text-muted text-hover-primary">@Html.Raw(String.IsNullOrEmpty(Model.Tags) ? "-" : Model.Tags)</a>
+                </div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-dark-75 font-weight-bolder mr-2">วันที่ส่งประกวด :</span>
+                    <a href="#" class="text-muted text-hover-primary">@Html.Raw(String.IsNullOrEmpty(Model.CreatedDateStr) ? "-" : Model.CreatedDateStr)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end:: Card-->
+</div>
+<!--end::Col-->
