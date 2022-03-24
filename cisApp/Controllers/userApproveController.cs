@@ -8,6 +8,8 @@ using cisApp.Core;
 using cisApp.Function;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace cisApp.Controllers
 { 
@@ -21,6 +23,12 @@ namespace cisApp.Controllers
             _PermissionMenuId = Guid.Parse("33A0E193-2812-4783-9A7C-480762AC5A54"); 
             _PermissionManage = 2;// สิทธิ์ผู้ใช้งาน
         }
+
+        readonly static IConfigurationRoot config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+                      .AddJsonFile("appsettings.json")
+                      .Build();
+
         public IActionResult Index()
         {  
             return View();
@@ -119,6 +127,21 @@ namespace cisApp.Controllers
                 //get upgrade file attach
                 var fatchs = GetUserDesignerRequest.Get.GetUserDesignerRequestFiles(data.ReqId);
                 data.files = fatchs;
+
+                try
+                {
+                    string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+
+                    var album = GetAlbum.Get.GetUserExampleAlbum(data.UserId.Value);
+                    SearchModel searchModel = new SearchModel()
+                    {
+                        AlbumId = album.AlbumId.Value,
+                        pageSize = 999,
+                        currentPage = 1
+                    };
+                    data.Images = GetAlbum.Get.GetAlbumImageByAlbumId(searchModel, webAdmin);
+                }
+                catch (Exception ex) { }
 
                 return View(data);
             }

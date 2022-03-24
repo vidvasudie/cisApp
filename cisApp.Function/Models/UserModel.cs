@@ -107,6 +107,9 @@ namespace cisApp.Function
         public List<FileAttachModel> files { get; set; }
 
         [NotMapped]
+        public List<AlbumImageModel> Images { get; set; }
+
+        [NotMapped]
         public AttachFile AttachFileImage { get; set; }
         [NotMapped]
         public Guid AttachFileId { get; set; }
