@@ -38,7 +38,7 @@ namespace cisApp.Function
         public string Categories { get; set; }
         public string Orderby { get; set; }
         public string SearchBy { get; set; }
-        public int AlbumId { get; set; }
+        public int? AlbumId { get; set; }
         public Guid? Designer { get; set; }
     }
 }

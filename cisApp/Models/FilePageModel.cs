@@ -14,5 +14,6 @@ namespace cisApp.Models
         public string Category { get; set; }
         public string Tag { get; set; }
         public Guid? Designer { get; set; }
+        public int? AlbumId { get; set; }
     }
 }

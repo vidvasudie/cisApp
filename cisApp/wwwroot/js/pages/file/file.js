@@ -3,7 +3,10 @@
 $(document).ready(function () {
     console.log('document ready')
 
-
+    try {
+        $('#Designer').trigger('change')
+    }
+    catch (ex) {}
 })
 
 $('body').on('click', '.custom-category', function () {
@@ -65,4 +68,18 @@ $('body').on('change', '#Designer', function () {
     var elem = $(this)
     console.log('keyword=', elem.val());
     PagerClick(1)
+
+    var suc = function (html) {
+        $('#designer_box').html(html);
+    }
+    var err = function (e) {
+        alert('error paging', e);
+    }
+
+    var designer = $('#Designer').val()
+    var url = _DesignerProfileUrl.replace('__id__', designer)
+
+    CallAjax(url, 'Get'
+        , null
+        , suc, err);
 })
