@@ -24,7 +24,14 @@
                         };
                         SelectList designers = new SelectList(GetUser.Get.GetUserModels(searchModel), "UserId", "FullName");
                     }
-                    @Html.DropDownListFor(m => m.Designer, designers, "เลือกดีไซน์นเอร์", new { @class = "form-control form-control-solid",})
+                    @if (Model.AlbumId == null)
+                    {
+                        @Html.DropDownListFor(m => m.Designer, designers, "เลือกดีไซน์นเอร์", new { @class = "form-control form-control-solid", })
+                    }
+                    else
+            {
+                @Html.HiddenFor(m => m.Designer)
+            }
                 </div>
 
                 <!--begin:Item-->

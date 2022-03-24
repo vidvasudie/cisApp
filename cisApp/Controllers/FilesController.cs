@@ -44,6 +44,15 @@ namespace cisApp.Controllers
             return View(model);
         }
 
+        public IActionResult Album(int id, int pageIndex = 1)
+        {
+            FilePageModel model = new FilePageModel();
+            model.SearchBy = "image";
+            model.AlbumId = id;
+            model.ImageModel = new PaginatedList<AlbumImageModel>(_model, _model.Count, pageIndex, 2);
+            return View("Index", model);
+        }
+
         [HttpPost]
         public PartialViewResult ItemList(SearchModel model)
         {
@@ -77,8 +86,20 @@ namespace cisApp.Controllers
 
                 ViewData["FileMode"] = "image";
 
-                List<AlbumImageModel> _model = GetAlbum.Get.GetAlbumImage(model, webAdmin);
-                int count = GetAlbum.Get.GetAlbumImageTotal(model);
+                List<AlbumImageModel> _model = new List<AlbumImageModel>();
+                int count = 0;
+
+                if (model.AlbumId == null)
+                {
+                    _model = GetAlbum.Get.GetAlbumImage(model, webAdmin);
+                    count = GetAlbum.Get.GetAlbumImageTotal(model);
+                }
+                else
+                {
+                    _model = GetAlbum.Get.GetAlbumImageByAlbumId(model, webAdmin);
+                    count = GetAlbum.Get.GetAlbumImageByAlbumIdTotal(model);
+                }
+               
 
                 var paginationModel = new PaginatedList<AlbumImageModel>(_model, count, model.currentPage.Value, model.pageSize.Value);
                 paginationModel.PageList = new List<int>() { 12, 24, 48 };
@@ -87,6 +108,21 @@ namespace cisApp.Controllers
             }
 
             
+        }
+
+        [HttpGet]
+        public PartialViewResult DesignerProfile(Guid id)
+        {
+            try
+            {
+                var user = GetUser.Get.GetById(id);
+
+                return PartialView("PT/_CardUser", user);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         [HttpPost]

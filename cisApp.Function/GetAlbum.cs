@@ -32,6 +32,23 @@ namespace cisApp.Function
                 }                
             }
 
+            public static Album GetUserExampleAlbum(Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.Album.Where(o => o.UserId == userId && o.AlbumType == "0" && o.IsDeleted == false).FirstOrDefault();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
             public static Album GetByJobIdWithStatus(Guid id, Guid userId, string albumType)
             {
                 try

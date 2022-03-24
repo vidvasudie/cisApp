@@ -90,6 +90,7 @@
                 @Html.HiddenFor(m => m.Category)
                 @Html.HiddenFor(m => m.Tag)
                 @Html.HiddenFor(m => m.SearchBy)
+                @Html.HiddenFor(m => m.AlbumId)
                 <!--end::Aside-->
                 <!--begin::List-->
                 <div class="flex-row-fluid d-flex flex-column ml-lg-8">
@@ -132,6 +133,9 @@
                         </div>
                         <!--end::Head-->
                         <!--begin::Row-->
+                        <div class="" id="designer_box">
+
+                        </div>
                         <div class="row" id="box_update">
                             @*@await Html.PartialAsync("PT/_itemlist")*@
                         </div>
@@ -156,6 +160,8 @@
 
     <script>
 
+        const _DesignerProfileUrl = '@Url.Action("DesignerProfile", "Files", new { id = "__id__" })'
+
     function PagerClick(index) {
         var suc = function (html) {
             $('#box_update').html(html);
@@ -170,6 +176,7 @@
         var category = $('#Category').val()
         var searchBy = $('#SearchBy').val()
         var designer = $('#Designer').val()
+        var albumId = $('#AlbumId').val()
 
 
         CallAjax('@Url.Action("ItemList", ViewData["ControllerName"])', 'POST'
@@ -178,6 +185,7 @@
                 , tags: tag
                 , searchBy: searchBy
                 , designer: designer
+                , albumId: albumId
                 ,currentPage: index
                 , pageSize: $('#pageSize').val()
             }
