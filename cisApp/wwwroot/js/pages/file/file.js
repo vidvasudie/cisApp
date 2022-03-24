@@ -4,7 +4,10 @@ $(document).ready(function () {
     console.log('document ready')
 
     try {
-        $('#Designer').trigger('change')
+        if ($('#Designer').val().length > 0) {
+            $('#Designer').trigger('change')
+        }
+        
     }
     catch (ex) {}
 })
