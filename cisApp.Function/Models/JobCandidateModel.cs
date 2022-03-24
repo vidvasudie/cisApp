@@ -24,6 +24,7 @@ namespace cisApp.Function
         public int UserMessageCount { get; set; }
         public string CaStatusDesc { get; set; }
         public string PayStatusDesc { get; set; }
+        public bool IsCaSubmitWork { get; set; }
         public int RegisterDays
         {
             get
