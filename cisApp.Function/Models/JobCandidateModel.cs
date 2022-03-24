@@ -47,22 +47,37 @@ namespace cisApp.Function
         {
             get
             {
-                return "~/Uploads" + "/" + this.AttachFileId + "/" + this.AttachFileName;
+                if (this.AttachFileId == Guid.Empty)
+                {
+                    return null;
+                }
+                else
+                {
+                    return "~/Uploads" + "/" + this.AttachFileId + "/" + this.AttachFileName;
+                }
             }
         }
         public string UrlPathAPI
         {
             get
             {
-                string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
-                bool removeLast = Host.Last() == '/';
-                string UrlPath = "~/Uploads" + "/" + this.AttachFileId + "/" + this.AttachFileName;
-                if (removeLast)
+                if(this.AttachFileId == Guid.Empty)
                 {
-                    Host = Host.Remove(Host.Length - 1);
+                    return null;
                 }
-                UrlPath = UrlPath.Replace("~", Host);
-                return UrlPath;
+                else
+                {
+                    string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
+                    bool removeLast = Host.Last() == '/';
+                    string UrlPath = "~/Uploads" + "/" + this.AttachFileId + "/" + this.AttachFileName;
+                    if (removeLast)
+                    {
+                        Host = Host.Remove(Host.Length - 1);
+                    }
+                    UrlPath = UrlPath.Replace("~", Host);
+                    return UrlPath;
+                }
+                
             }
         }
         [NotMapped]

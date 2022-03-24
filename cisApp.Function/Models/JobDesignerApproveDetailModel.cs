@@ -16,7 +16,14 @@ namespace cisApp.Function
         {
             get
             {
-                return "~/Uploads" + "/" + this.PicAttachFileID + "/" + this.PicFileName;
+                if (this.PicAttachFileID == Guid.Empty)
+                {
+                    return null;
+                }
+                else
+                {
+                    return "~/Uploads" + "/" + this.PicAttachFileID + "/" + this.PicFileName;
+                }
             }
         }
         public DateTime? LastLogin { get; set; }

@@ -714,13 +714,21 @@ namespace cisApp.API.Controllers
                     }).ToList();
                 }
 
-                bool removeLast = Host.Last() == '/';
-                string PicUrlPath = data.First().PicUrlPath;
-                if (removeLast)
+                string PicUrlPath = "";
+                if (data.First().PicUrlPath != null)
                 {
-                    Host = Host.Remove(Host.Length - 1);
+                    bool removeLast = Host.Last() == '/';
+                    PicUrlPath = data.First().PicUrlPath;
+                    if (removeLast)
+                    {
+                        Host = Host.Remove(Host.Length - 1);
+                    }
+                    PicUrlPath = PicUrlPath.Replace("~", Host);
                 }
-                PicUrlPath = PicUrlPath.Replace("~", Host);
+                else
+                {
+                    PicUrlPath = null;
+                }
                 
                 return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", new { 
                     data.First().JobId,
