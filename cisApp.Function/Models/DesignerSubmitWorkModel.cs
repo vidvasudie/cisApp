@@ -31,7 +31,14 @@ namespace cisApp.Function
         {
             get
             {
-                return "~/Uploads" + "/" + this.AttachFileId + "/" + this.FileName;
+                if (this.AttachFileId == null || this.AttachFileId == Guid.Empty)
+                {
+                    return null;
+                }
+                else
+                {
+                    return "~/Uploads" + "/" + this.AttachFileId + "/" + this.FileName;
+                }                
             }
         }
        
