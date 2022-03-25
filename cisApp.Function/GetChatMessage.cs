@@ -53,13 +53,15 @@ namespace cisApp.Function
                                     {
                                         // get profile
                                         var profile = GetUser.Get.GetUserProfileImg(user.UserId);
+                                        var userModel = GetUser.Get.GetById(user.UserId);
 
                                         if (profile != null)
                                         {
                                             item.Profiles.Add(new AttachFileAPIModel()
                                             {
                                                 Name = profile.FileName,
-                                                Path = webAdmin + profile.UrlPathAPI
+                                                Path = webAdmin + profile.UrlPathAPI,
+                                                Description = userModel.Fname
                                             });
                                         }
                                         else
@@ -68,7 +70,8 @@ namespace cisApp.Function
                                             item.Profiles.Add(new AttachFileAPIModel()
                                             {
                                                 Name = "default",
-                                                Path = webAdmin + _DefaultProfile
+                                                Path = webAdmin + _DefaultProfile,
+                                                Description = userModel.Fname
                                             });
                                         }
                                     }
@@ -77,14 +80,16 @@ namespace cisApp.Function
                             else
                             {
                                 // get profile
-                                var profile = GetUser.Get.GetUserProfileImg(item.SenderId);
+                                var profile = GetUser.Get.GetUserProfileImg(refId);
+                                var userModel = GetUser.Get.GetById(refId);
 
                                 if (profile != null)
                                 {
                                     item.Profiles.Add(new AttachFileAPIModel()
                                     {
                                         Name = profile.FileName,
-                                        Path = webAdmin + profile.UrlPathAPI
+                                        Path = webAdmin + profile.UrlPathAPI,
+                                        Description = userModel.Fname
                                     });
                                 }
                                 else
@@ -93,7 +98,8 @@ namespace cisApp.Function
                                     item.Profiles.Add(new AttachFileAPIModel()
                                     {
                                         Name = "default",
-                                        Path = webAdmin + _DefaultProfile
+                                        Path = webAdmin + _DefaultProfile,
+                                        Description = userModel.Fname
                                     });
                                 }
                             }
