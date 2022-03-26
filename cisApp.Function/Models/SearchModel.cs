@@ -40,5 +40,7 @@ namespace cisApp.Function
         public string SearchBy { get; set; }
         public int? AlbumId { get; set; }
         public Guid? Designer { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }

@@ -232,7 +232,7 @@ namespace cisApp.API.Controllers
                     o.Rownum,
                     o.UserId,
                     o.Fullname,
-                    UrlPath = o.UrlPath == null ? null : o.UrlPath.Replace("~", Host),
+                    UrlPath = string.IsNullOrEmpty(o.AttachFileName) ? null : o.UrlPath.Replace("~", Host),
                     o.WinCount
                 })));
             }
