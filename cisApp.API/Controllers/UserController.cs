@@ -74,7 +74,7 @@ namespace cisApp.API.Controllers
                     return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
                 }
 
-                var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
+                var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value, true);
                 return Ok(resultJson.success(null, null, new { Status = true, Message = "ระบบได้ทำการส่งลิงก์รีเซ็ตรหัสผ่านไปยังอีเมลของท่านแล้ว" }, null, null, null, null));
             }
             catch (Exception ex)

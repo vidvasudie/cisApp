@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap-datepicker/css/bootstrap-datepicker.css")">
 
 
-    <script src="@Url.Content("~/lib/bootstrap-datepicker/js/bootstrap-datepicker.min.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap-datepicker/locales/bootstrap-datepicker.th.min.js")"></script>
 
 <script>
     $(document).ready(function () {
@@ -140,14 +141,14 @@
                                     <label class="col-3 col-form-label">วันที่จ่ายเงิน</label>
                                     <div class="col-9">
                                         <div class="input-group ">
-                                            @Html.TextBoxFor(m => m.PaymentDate, new { @class = "form-control form-control-solid datepicker", @placeholder = "วันที่จ่ายเงิน", @Required = "Required", @autocomplete = "off" })
+                                            @Html.TextBoxFor(m => m.PaymentDateStr, new { @class = "form-control form-control-solid datepicker", @placeholder = "วันที่จ่ายเงิน", @Required = "Required", @autocomplete = "off" })
 
 
                                             <div class="input-group-append">
                                                 <span class="btn input-group-text date-icon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
-                                         @Html.ValidationMessageFor(m => m.PaymentDate, "", new { @class = "text-danger" })
+                                         @Html.ValidationMessageFor(m => m.PaymentDateStr, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 

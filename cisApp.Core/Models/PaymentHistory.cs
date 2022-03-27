@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
 
 namespace cisApp.Core
 {
@@ -29,7 +30,8 @@ namespace cisApp.Core
         {
             get
             {
-                return PaymentDate.ToStringFormat();
+                CultureInfo cultureInfo = new CultureInfo("th-TH");
+                return (PaymentDate != null) ? PaymentDate.Value.ToString("dd/MM/yyyy", cultureInfo) : "";
             }
             set
             {
