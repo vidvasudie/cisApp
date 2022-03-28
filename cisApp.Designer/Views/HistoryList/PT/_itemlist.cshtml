@@ -8,6 +8,7 @@
 {
     foreach (var item in Model)
     {
+        item.IsView = true;
         @await Html.PartialAsync("~/Views/Shared/Jobs/_CardJob.cshtml", item)
     }
 }
