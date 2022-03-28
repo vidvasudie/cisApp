@@ -72,6 +72,7 @@ namespace cisApp.Core
         public virtual DbSet<Faq> Faq { get; set; }
         public virtual DbSet<UserHelp> UserHelp { get; set; }
         public virtual DbSet<Otp> Otp { get; set; }
+        public virtual DbSet<PaymentHistory> PaymentHistory { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -843,6 +844,23 @@ namespace cisApp.Core
                 entity.Property(e => e.UserId)
                     .HasColumnName("userID")
                     .HasComment("ลงทะเบียนใหม่ จะไม่มี");
+            });
+
+            modelBuilder.Entity<PaymentHistory>(entity =>
+            {
+                entity.Property(e => e.PaymentHistoryId)
+                    .HasColumnName("PaymentHistoryID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Amount).HasColumnType("decimal(8, 2)");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.IsActive).HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
             });
 
 

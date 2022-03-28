@@ -51,7 +51,7 @@ namespace cisApp.Function
 
         public class Manage
         {
-            public static UsersResetPassword Add(Guid userId)
+            public static UsersResetPassword Add(Guid userId, bool mobileLink = false)
             {
                 try
                 {
@@ -90,21 +90,43 @@ namespace cisApp.Function
                         // SendEmail
 
                         var user = context.Users.Find(userId);
-
-                        string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
-
-                        EmailModel emailModel = new EmailModel()
+                        if (mobileLink)
                         {
-                            ToMail = user.Email,
-                            Subject = "คำขอรีเซ็ตรหัสผ่าน",
-                            TemplateFileName = "UserResetPassword.htm",
-                            Body = new List<string>()
+                            string webAdmin = config.GetSection("WebConfig:MobileLink").Value;
+
+                            EmailModel emailModel = new EmailModel()
+                            {
+                                ToMail = user.Email,
+                                Subject = "คำขอรีเซ็ตรหัสผ่าน",
+                                TemplateFileName = "UserResetPassword.htm",
+                                Body = new List<string>()
+                            {
+                                user.Fname + " " + user.Lname, webAdmin + "ResetPassword/ChangPassword/" + obj.Token
+                            }
+                            };
+
+                            SendMail.Send(emailModel);
+                        }
+                        else
+                        {
+                            string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+
+                            EmailModel emailModel = new EmailModel()
+                            {
+                                ToMail = user.Email,
+                                Subject = "คำขอรีเซ็ตรหัสผ่าน",
+                                TemplateFileName = "UserResetPassword.htm",
+                                Body = new List<string>()
                             {
                                 user.Fname + " " + user.Lname, webAdmin + "ResetPassword/Index?token=" + obj.Token
                             }
-                        };
+                            };
 
-                        SendMail.Send(emailModel);
+                            SendMail.Send(emailModel);
+                        }
+                        
+
+                        
 
                         return obj;
                     }

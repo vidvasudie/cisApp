@@ -1,0 +1,208 @@
+﻿@using cisApp.Function
+
+@model SearchModel
+@{
+    ViewData["Title"] = "ประวัติการจ่ายเงิน";
+    ViewData["ControllerName"] = "PaymentHistory";
+}
+
+
+@section scripts {
+
+    <!--begin::Page Scripts(used by this page)-->
+    <script src="@Url.Content("~/assets/js/pages/crud/ktdatatable/base/html-table.js")"></script>
+
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap-datepicker/css/bootstrap-datepicker.css")">
+
+
+    <script src="@Url.Content("~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap-datepicker/locales/bootstrap-datepicker.th.min.js")"></script>
+    <!--end::Page Scripts-->
+
+    <script>
+    var _callback=null
+    function PagerClick(index) {
+        var suc = function (html) {
+            $('#box_update').html(html);
+        }
+        var err = function (e) {
+            alert('error paging', e);
+        }
+        var userId = $('#UserId').val()
+        CallAjax('@Url.Action("ItemList", ViewData["ControllerName"])', 'POST', { userId: userId, currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
+    }
+    function CallAjax(url, method, data, success, error) {
+        if (data != null && data !== undefined) {
+            $.ajax({
+                method: method,
+                url: $("<div/>").html(url).text(),
+                data: data,
+                success: success,
+                error: error
+            });
+        }
+        else {
+            $.ajax({
+                method: method,
+                url: $("<div/>").html(url).text(),
+                success: success,
+                error: error
+            });
+        }
+    }
+
+    $(function () {
+        $('body').on('change', '#pageSize', function () {
+            PagerClick(1);
+        });
+        PagerClick(1);
+
+        $('body').on('click', '.btn-search', function () {
+            PagerClick(1);
+        })
+    });
+
+        $('.datepicker')
+            .datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                clearBtn: true,
+                language: "th",
+                todayHighlight: true,
+                autoclose: true,
+                endDate: '+1d',
+                datesDisabled: '+1d',
+            })
+    </script>
+}
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">@ViewData["Title"]</h5>
+                    <!--end::Page Title-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center">
+                <!--begin::Button-->
+                <a href="#" class=""></a>
+                <!--end::Button-->
+                <!--begin::Button-->
+                <a href="@Url.Action("Manage",ViewData["ControllerName"])" class="btn btn-light-primary font-weight-bold ml-2">เพิ่มประวัติการจ่ายเงิน</a>
+                <!--end::Button-->                
+            </div>
+            <!--end::Toolbar-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+
+
+
+            <!--begin::Card-->
+            <div class="card card-custom">
+                <div class="card-header flex-wrap border-0 pt-6 pb-0">
+                    <div class="card-title">
+                        <h3 class="card-label">
+                            ประวัติการจ่ายเงิน
+                            @*<span class="d-block text-muted pt-2 font-size-sm">Datatable initialized from HTML table</span>*@
+                        </h3>
+                    </div>
+
+                </div>
+                <div class="card-body">
+                    <!--begin: Search Form-->
+                    <!--begin::Search Form-->
+                    <div class="mb-7">
+                        <div class="row align-items-center">
+                            <div class="col-lg-9 col-xl-8">
+                                <div class="row align-items-center">
+
+
+                                    <div class="col-md-12 my-2 my-md-0">
+                                        <div class="">
+                                            @{
+                                                SearchModel searchModel = new SearchModel()
+                                                {
+                                                    pageSize = 10000,
+                                                    type = 23
+                                                };
+                                                SelectList designers = new SelectList(GetUser.Get.GetUserModels(searchModel), "UserId", "FullName");
+                                            } 
+                                            @Html.DropDownListFor(m => m.UserId, designers, "เลือกดีไซน์เนอร์", new { @class = "form-control", })
+                                        </div>
+                                    </div>
+                                    @*<div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <div class="input-group ">
+                                                @Html.TextBoxFor(m => m.StartDate, new
+                                            {
+                                                @class = "form-control form-control-solid datepicker"
+                                           ,
+                                                @placeholder = "จากวันที่",
+                                                @autocomplete = "off"
+                                            })
+
+                                                <div class="input-group-append">
+                                                    <span class="btn input-group-text date-icon"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                            
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <div class="input-group ">
+                                                @Html.TextBoxFor(m => m.EndDate, new
+                                            {
+                                                @class = "form-control form-control-solid datepicker"
+                                           ,
+                                                @placeholder = "ถึงวันที่",
+                                                @autocomplete = "off"
+                                            })
+
+                                                <div class="input-group-append">
+                                                    <span class="btn input-group-text date-icon"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>*@
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
+                                <a href="#" class="btn btn-light-primary px-6 font-weight-bold btn-search" >Search</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Search Form-->
+                    <!--end: Search Form-->
+                    <!--begin: Datatable-->
+                    <div class="card card-custom" id="box_update">
+
+                    </div>
+
+                    <!--end: Datatable-->
+                </div>
+            </div>
+            <!--end::Card-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->

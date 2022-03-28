@@ -61,7 +61,11 @@ namespace cisApp.API.Controllers
                 {
                     var attch = GetUser.Get.GetUserProfileImg(item.UserId);
 
-                    item.FullUrlPath = webAdmin + attch.UrlPathAPI;
+                    if (attch != null)
+                    {
+                        item.FullUrlPath = webAdmin + attch.UrlPathAPI;
+                    }
+                    
                 }
 
                 return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", obj.OrderBy(o => o.CreatedDate).ToList()));
@@ -232,7 +236,7 @@ namespace cisApp.API.Controllers
                     o.Rownum,
                     o.UserId,
                     o.Fullname,
-                    UrlPath = o.UrlPath == null ? null : o.UrlPath.Replace("~", Host),
+                    UrlPath = string.IsNullOrEmpty(o.AttachFileName) ? null : o.UrlPath.Replace("~", Host),
                     o.WinCount
                 })));
             }
