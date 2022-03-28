@@ -43,6 +43,7 @@ namespace cisApp.Function
         }
         public DateTime? StatusDate { get; set; }
         public Guid UserID { get; set; }
+        public string UserTypeDesc { get; set; }
         public string Fullname { get; set; }
         public Guid AttachFileID { get; set; }
         public string FileName { get; set; }

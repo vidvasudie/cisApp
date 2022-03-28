@@ -1,0 +1,15 @@
+﻿@using HtmlHelpers.BeginCollectionItemCore
+@model cisApp.Function.JobCandidateModel
+@{
+}
+
+@using (Html.BeginCollectionItem("userCandidates"))
+{
+    <div class="row">
+        <div class="col-12">
+            <span style="color:chartreuse;font-size: 20px;"><strong>&#x2b;</strong> @Html.Raw(Model.UserFullName)</span>
+            @Html.HiddenFor(m => m.UserId)
+            @Html.HiddenFor(m => m.JobId)
+        </div>
+    </div>
+}
