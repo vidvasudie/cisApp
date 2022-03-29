@@ -27,23 +27,11 @@ namespace cisApp.Designer.Controllers
         [HttpPost]
         public PartialViewResult ItemList(SearchModel model)
         {
-            var dmodel = new DesignerJobListSearch() { userId = _UserId().Value, text = model.text, skip = model.currentPage.HasValue ? (model.currentPage - 1) * model.pageSize : 0, take = model.pageSize.HasValue ? model.pageSize.Value : 10 };
-            var histList = GetUserDesigner.Get.GetJobsHistory(dmodel);
-            List<JobModel> _model = new List<JobModel>();
-            if (histList != null)
-            {
-                foreach (var item in histList)
-                {
-                    if (_model.Where(o => o.JobId == item.JobId).Count() == 0)
-                    {
-                        var jobs = GetJobs.Get.GetJobs(new SearchModel { gId = item.JobId });
-                        _model.Add(jobs.First());
-                    }
-                }
-            }
-            int count = GetUserDesigner.Get.GetJobsHistoryTotal(dmodel);
+            model.UserId = _UserId().Value;
+            List<PaymentHistoryModel> _model = GetPaymentHistory.Get.GetBySearch(model);
+            int count = GetPaymentHistory.Get.GetBySearchTotal(model);
 
-            return PartialView("PT/_itemlist", new PaginatedList<JobModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
+            return PartialView("PT/_itemlist", new PaginatedList<PaymentHistoryModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
     }
 }
