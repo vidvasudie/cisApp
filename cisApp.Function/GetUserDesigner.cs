@@ -266,7 +266,30 @@ namespace cisApp.Function
                     return new List<DesignerJobListModel>();
                 }
             }
-            public static int GetJobListSearchTotal(DesignerJobListSearch model, bool IsSubmit = false)
+            public static List<DesignerJobListModel> GetDesignerJobListSearch(DesignerJobListSearch model, bool IsSubmit = false)
+            {
+                try
+                {
+                    if (Guid.Empty == model.userId)
+                    {
+                        return new List<DesignerJobListModel>();
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", model.userId),
+                       new SqlParameter("@jobTypeName", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@submitList", IsSubmit ? 1 : 0),
+                       new SqlParameter("@skip", model.skip),
+                       new SqlParameter("@take", model.take)
+                    };
+
+                    return StoreProcedure.GetAllStored<DesignerJobListModel>("GetJobListByDesignerSearch2", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new List<DesignerJobListModel>();
+                }
+            }
+            public static int GetDesignerJobListSearchTotal(DesignerJobListSearch model, bool IsSubmit = false)
             {
                 try
                 {
@@ -280,7 +303,7 @@ namespace cisApp.Function
                        new SqlParameter("@submitList", IsSubmit ? 1 : 0) 
                     };
 
-                    var dt = StoreProcedure.GetAllStoredDataTable("GetJobListByDesignerSearchTotal", parameter);
+                    var dt = StoreProcedure.GetAllStoredDataTable("GetJobListByDesignerSearch2Total", parameter);
                     return (int)dt.Rows[0]["TotalCount"];
                 }
                 catch (Exception ex)

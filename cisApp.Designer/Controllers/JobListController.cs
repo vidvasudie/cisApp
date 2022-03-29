@@ -30,7 +30,7 @@ namespace cisApp.Designer.Controllers
         public PartialViewResult ItemList(SearchModel model)
         {
             var dmodel = new DesignerJobListSearch() { userId = _UserId().Value, text = model.text, skip = model.currentPage.HasValue ? (model.currentPage - 1) * model.pageSize:0, take = model.pageSize.HasValue ? model.pageSize.Value:10 };
-            var djobs = GetUserDesigner.Get.GetJobListSearch(dmodel, true);// 
+            var djobs = GetUserDesigner.Get.GetDesignerJobListSearch(dmodel, true);// 
             List<JobModel> _model = new List<JobModel>();
             if (djobs != null)
             {
@@ -43,7 +43,7 @@ namespace cisApp.Designer.Controllers
                     } 
                 }
             } 
-            int count = GetUserDesigner.Get.GetJobListSearchTotal(dmodel, true);
+            int count = GetUserDesigner.Get.GetDesignerJobListSearchTotal(dmodel, true);
 
             return PartialView("PT/_itemlist", new PaginatedList<JobModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
