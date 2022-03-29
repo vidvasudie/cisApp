@@ -8,6 +8,7 @@ namespace cisApp.Function
 {
     public class JobModel : Jobs
     {
+        public bool IsView { get; set; } = false;
         public bool IsDraft { get; set; } = false;
         public string UserFullName { get; set; }
         public string UserTypeDesc { get; set; }

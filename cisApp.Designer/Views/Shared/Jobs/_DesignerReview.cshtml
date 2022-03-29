@@ -1,0 +1,49 @@
+﻿@using cisApp.Function
+@using cisApp.library
+@model JobCandidateModel
+@{
+    var reviews = GetUserDesigner.Get.GetReview(new DesignerJobListSearch { userId=Model.UserId.Value, skip=0, take=999999 });
+}
+
+    <div class="card-body pt-0 pb-3">
+        <!--begin::Table-->
+        <div class="table-responsive">
+            <table id="kt_datatable" class="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                <thead>
+                    <tr class="text-uppercase">
+                        <th class="text-center pl-7" style="min-width: 100px">
+                            <span class="text-dark-75">ชื่อผู้ใช้งาน</span>
+                        </th>
+                        <th class="text-center" style="min-width: 250px">
+                            <span class="text-dark-75">ข้อความ</span></th>
+                        <th class="text-center" style="min-width: 100px">
+                            <span class="text-dark-75">คะแนน</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (reviews != null && reviews.Count > 0)
+                        {
+                            foreach (var item in reviews)
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        <p>@Html.Raw(item.DesignerFullname)</p> 
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.Message)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.Raw(item.Rate)
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        <!--end::Table-->
+    </div>

@@ -126,7 +126,7 @@
         var err = function (e) {
             alert('error paging', e);
         }
-        CallAjax('@Url.Action("ItemList", "Jobs")', 'POST', { text: text, Id: '@Model.Id', currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
+        CallAjax('@Url.Action("ItemList", "JobList")', 'POST', { text: text, Id: '@Model.Id', currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
     }
     function Search() {
         var text = $('#kt_subheader_search_form').val();

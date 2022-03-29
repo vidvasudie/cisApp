@@ -16,7 +16,7 @@ namespace cisApp.Core
         public string AlbumName { get; set; }
         public string Url { get; set; }
         /// <summary>
-        /// แบ่งเป็นเป็น 1=ประกวด,2=ส่งงานงวดที่1,3=ส่งงานงวดที่2,4=ส่งงานงวดที่3
+        /// แบ่งเป็นเป็น 1=ประกวด,2=ส่งงานงวดที่1,3=ส่งงานงวดที่2,4=ส่งงานงวดที่3,5=ส่งพิมพ์เขียว
         /// </summary>
         public string AlbumType { get; set; }
         public DateTime? CreatedDate { get; set; }

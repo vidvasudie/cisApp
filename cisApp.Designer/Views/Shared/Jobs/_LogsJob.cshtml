@@ -1,0 +1,49 @@
+﻿@using cisApp.Function
+@using cisApp.library
+@model JobModel
+@{
+    var logs = GetJobsLogs.Get.GetByJobId(Model.JobId);
+}
+
+    <div class="card-body pt-0 pb-3">
+        <!--begin::Table-->
+        <div class="table-responsive">
+            <table id="kt_datatable" class="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                <thead>
+                    <tr class="text-uppercase">
+                        <th class="text-center pl-7" style="min-width: 100px">
+                            <span class="text-dark-75">วันที่ดำเนิการ</span>
+                        </th>
+                        <th class="text-center" style="min-width: 250px">
+                            <span class="text-dark-75">รายละเอียด</span></th>
+                        <th class="text-center" style="min-width: 100px">
+                            <span class="text-dark-75">IP</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (logs != null && logs.Count > 0)
+                        {
+                            foreach (var item in logs)
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        @Html.Raw(item.CreatedDate.ToStringFormat(DateTimeUtil.DateTimeFormat.FULL))
+                                    </td>
+                                    <td>
+                                        @Html.Raw(item.Description)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.Raw(item.Ipaddress)
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    }
+
+                </tbody>
+            </table>
+        </div>
+        <!--end::Table-->
+    </div>
