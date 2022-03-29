@@ -1,0 +1,56 @@
+﻿@model cisApp.Function.JobCandidateModel
+@{ 
+    ViewData["ControllerName"] = "Jobs";
+}
+
+<div class="modal fade" id="addNewCandidateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">เพิ่มนักออกแบบ</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mt-4">
+                   @* <div class="col-9">
+                        <div class="form-group">
+                            <label for="Text">ชื่อ/นามสกุล/เลขประจำตัวประชาชน</label>
+                            <input type="text" name="search_add_text" class="form-control datatable-input" maxlength="50" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group mt-8">
+                            <button class="btn btn-primary btn-primary-icon mr-2" id="kt_search">
+                                <span>
+                                    <i class="la la-search"></i>
+                                    <span>ค้นหา</span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>*@
+                    <!--begin::Table-->
+                    <div class="col-12 table-responsive" id="table_user">
+
+                    </div>
+                    <!--end::Table-->
+                    <hr />
+                    <h4 id="new_ca" class="col-12">รายการเพิ่ม</h4>
+                    <form class="form" id="kt_form_modal" asp-action="AddNewCandidate" asp-controller=@ViewData["ControllerName"] method="post" data-ajax="true" data-ajax-success="complatedModal">
+                        @Html.HiddenFor(m => m.JobId)
+                        <div class="col-12 " id="selected_user">
+
+                        </div>
+                    </form>
+
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">ปิด</button>
+                <button type="button" class="btn btn-primary btn-modal-submit">เพิ่ม</button>
+            </div>
+        </div>
+    </div>
+</div>

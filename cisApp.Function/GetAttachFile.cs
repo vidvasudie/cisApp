@@ -152,7 +152,8 @@ namespace cisApp.Function
 
                     Guid id = Guid.NewGuid();
 
-                    string uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", _UploadDir, id.ToString());
+                    //string uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", _UploadDir, id.ToString());
+                    string uploadPath = Path.Combine(_config.GetSection("Upload:Path").Value, _UploadDir, id.ToString());
 
                     string virtualPath = Path.Combine(_UploadDir, id.ToString(), uploadFile.FileName);
 

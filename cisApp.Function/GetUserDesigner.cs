@@ -166,6 +166,25 @@ namespace cisApp.Function
                     return null;
                 }
             }
+            public static int GetJobsHistoryTotal(DesignerJobListSearch model)
+            {
+                try
+                {
+                    if (model.userId == Guid.Empty)
+                    {
+                        return 0;
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", model.userId)
+                    };
+                    var dt = StoreProcedure.GetAllStoredDataTable("GetJobDesignerHistoryTotal", parameter);
+                    return (int)dt.Rows[0]["TotalCount"];
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
             public static List<DesignerListReviewModel> GetReview(DesignerJobListSearch model)
             {
                 try
@@ -245,6 +264,51 @@ namespace cisApp.Function
                 catch (Exception ex)
                 {
                     return new List<DesignerJobListModel>();
+                }
+            }
+            public static List<DesignerJobListModel> GetDesignerJobListSearch(DesignerJobListSearch model, bool IsSubmit = false)
+            {
+                try
+                {
+                    if (Guid.Empty == model.userId)
+                    {
+                        return new List<DesignerJobListModel>();
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", model.userId),
+                       new SqlParameter("@jobTypeName", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@submitList", IsSubmit ? 1 : 0),
+                       new SqlParameter("@skip", model.skip),
+                       new SqlParameter("@take", model.take)
+                    };
+
+                    return StoreProcedure.GetAllStored<DesignerJobListModel>("GetJobListByDesignerSearch2", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new List<DesignerJobListModel>();
+                }
+            }
+            public static int GetDesignerJobListSearchTotal(DesignerJobListSearch model, bool IsSubmit = false)
+            {
+                try
+                {
+                    if (Guid.Empty == model.userId)
+                    {
+                        return 0;
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userId", model.userId),
+                       new SqlParameter("@jobTypeName", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@submitList", IsSubmit ? 1 : 0) 
+                    };
+
+                    var dt = StoreProcedure.GetAllStoredDataTable("GetJobListByDesignerSearch2Total", parameter);
+                    return (int)dt.Rows[0]["TotalCount"];
+                }
+                catch (Exception ex)
+                {
+                    return 0;
                 }
             }
             public static List<DesignerJobListModel> GetJobDetailValid(Guid userId, Guid jobId)

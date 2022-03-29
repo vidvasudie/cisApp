@@ -25,6 +25,8 @@ namespace cisApp.Core
         public Guid? DeletedBy { get; set; }
         public bool? IsDeleted { get; set; }
         public bool? IsActive { get; set; }
+        public bool? IsPaid { get; set; } = false;
+        public string RefCode { get; set; }
         [NotMapped]
         public string PaymentDateStr
         {

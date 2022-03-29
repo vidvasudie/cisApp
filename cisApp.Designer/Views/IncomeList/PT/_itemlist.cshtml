@@ -1,15 +1,14 @@
 ﻿@using cisApp.library;
 @using cisApp.Function;
-@model PaginatedList<JobModel>
+@model PaginatedList<PaymentHistoryModel>
 @{
 }
 
 @if (Model != null && Model.Count > 0)
 {
     foreach (var item in Model)
-    {
-        item.IsView = false;
-        @await Html.PartialAsync("~/Views/Shared/Jobs/_CardJob.cshtml", item)
+    { 
+        @await Html.PartialAsync("_CardItem.cshtml", item)
     }
 }
 else

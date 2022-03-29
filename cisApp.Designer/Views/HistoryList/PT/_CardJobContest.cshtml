@@ -1,0 +1,37 @@
+﻿@using cisApp.Function
+@model JobModel
+@{
+    var albumList = GetAlbum.Get.GetJobCandidateAlbum(new SearchModel() { gId=Model.JobId });
+}
+
+<div class="card card-custom gutter-b" id="contest_list">
+    <div class="card-header h-auto border-0">
+        <div class="card-title py-5">
+            <h3 class="card-label">
+                <span class="d-block text-dark font-weight-bolder">ประกวดผลงาน</span>
+            </h3>
+        </div>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            @{
+                if (albumList != null && albumList.Count > 0)
+                {
+                    foreach (var item in albumList)
+                    {
+                        @await Html.PartialAsync("~/Views/Shared/Album/_CardAlbum.cshtml", item)
+                    }
+                }
+                else
+                {
+                    <div class="col-12 text-center pl-15 mt-n10">
+                        <h2 class=" text-muted my-19"><i class="fas fa-exclamation-triangle fa-1x"></i> ไม่พบข้อมูล</h2>
+                    </div>
+                }
+            } 
+
+        </div>
+
+    </div>
+</div>

@@ -18,6 +18,9 @@ namespace cisApp.Function
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
                         new SqlParameter("@userId", model.UserId != null ? model.UserId : (object)DBNull.Value),
+                        new SqlParameter("@isPaid", model.IsPaid != null ? model.IsPaid : (object)DBNull.Value),
+                        new SqlParameter("@startDate", model.StartDate != null ? model.StartDate.Value : (object)DBNull.Value),
+                        new SqlParameter("@endDate", model.EndDate != null ? model.EndDate.Value : (object)DBNull.Value),
                        new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
                        new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
                     };
@@ -35,7 +38,7 @@ namespace cisApp.Function
                 try
                 {
                     SqlParameter[] parameter = new SqlParameter[] {
-                        new SqlParameter("@userId", model.UserId != null ? model.UserId : (object)DBNull.Value)
+                        new SqlParameter("@userId", model.UserId != null ? model.UserId : (object)DBNull.Value),
                     };
                     var dt = StoreProcedure.GetAllStoredDataTable("GetPaymentHistoryTotal", parameter);
                     return (int)dt.Rows[0]["TotalCount"];
@@ -92,6 +95,8 @@ namespace cisApp.Function
                             obj.UserId = data.UserId;
                             obj.PaymentDate = data.PaymentDate;
                             obj.Amount = data.Amount;
+                            obj.IsPaid = data.IsPaid;
+                            obj.RefCode = data.RefCode;
                             obj.UpdatedBy = userId;
                             obj.UpdatedDate = DateTime.Now;
 

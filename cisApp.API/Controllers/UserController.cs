@@ -294,7 +294,7 @@ namespace cisApp.API.Controllers
         }
 
         [HttpPost("registerstatus")]
-        public object resetpass(Guid? userId)
+        public object registerstatus(Guid? userId)
         {
             try
             {
@@ -320,7 +320,17 @@ namespace cisApp.API.Controllers
                     }
                     else
                     {
-                        registerStatus = 1;
+                        var lastRequest = userRequest.OrderByDescending(o => o.UpdatedDate).FirstOrDefault();
+
+                        if (lastRequest.Status == 3)
+                        {
+                            registerStatus = 3;
+                        }
+                        else
+                        {
+                            registerStatus = 1;
+                        }
+                        
                     }
                 }
 

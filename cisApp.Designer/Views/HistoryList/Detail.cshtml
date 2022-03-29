@@ -1,0 +1,127 @@
+﻿@model JobModel
+@using cisApp.Core
+@using cisApp.Function
+@{
+    ViewData["Title"] = "รายละเอียดใบงาน";
+}
+
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
+        <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Details-->
+            <div class="d-flex align-items-center flex-wrap mr-2">
+                <!--begin::Title-->
+                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">@ViewData["Title"]</h5>
+                <!--end::Title-->
+                <!--begin::Separator-->
+                <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
+                <!--begin::Title-->
+                <h5 class="text-dark font-weight-bold mt-2 mb-2 mr-5">@Model.JobNo</h5>
+                <!--end::Title-->
+                <!--end::Separator-->
+               
+            </div>
+            <!--end::Details-->
+            <!--begin::Toolbar-->
+            <div class="d-flex align-items-center">
+                 
+            </div>
+            <!--end::Toolbar-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container-fluid">
+             
+            @await Html.PartialAsync("PT/_CardJobInfo.cshtml", Model)
+            <!--end::Card-->
+            <!--begin::image-->
+            <div class="" id="job_img_info">
+                @await Html.PartialAsync("PT/_CardJobExImages.cshtml", Model)
+            </div>
+            <!--end::image-->
+
+            @if (Model.JobStatus != 1)//ร่าง
+            {
+                <!--begin::Row-->
+                <div class="row" id="candidate_list">
+                    @await Html.PartialAsync("PT/_CardJobCandidate.cshtml", Model)
+                </div>
+                <!--end::Row-->
+            }
+            @if (Model.JobStatus > 2)//ประกวด
+            {
+                <!--begin::image-->
+                <div class="" id="contest_list">
+                    @await Html.PartialAsync("PT/_CardJobContest.cshtml", Model)
+                </div>
+                <!--end::image-->
+
+                if (Model.JobCaUserId != null)
+                {
+                    <div id="job_img_submit">
+                        @await Html.PartialAsync("PT/_CardJobSubmitInfo.cshtml", Model)
+                    </div>
+                }
+            }
+
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content--> 
+
+@await Html.PartialAsync("~/Views/Shared/Album/_ImagesViewModal.cshtml")
+
+@section Scripts {
+
+    <link href="@Url.Content("~/css/image-modal.css")" rel="stylesheet" type="text/css" />
+
+    <link href="@Url.Content("~/assets/plugins/custom/datatables/datatables.bundle.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/assets/plugins/custom/datatables/datatables.bundle.js")"></script>
+
+    <script>
+        var _table = null; 
+         
+        function GetCandidateList() {
+            var suc = function (html) {
+                $('#candidate_list').html(html);
+                initDataTable('#kt_datatable');
+            }
+            var err = function (e) {
+                alert('error ca modal', e);
+            }
+            CallAjax('@Url.Action("CardCandidateList", "Jobs")', 'POST', { JobId:'@Model.JobId' }, suc, err);
+        }
+        
+        function initDataTable(elementId, style=0) {
+            _table = $(elementId).DataTable({
+                language: {
+                    search: 'ค้นหา:',
+                    emptyTable: 'ไม่พบข้อมูล',
+                    info: 'แสดง _START_ ถึง _END_ จาก _TOTAL_ รายการ',
+                    lengthMenu: 'แสดง _MENU_ รายการ',
+                    infoFiltered: 'กรองจากทั้งหมด _MAX_ รายการ'
+                },
+                lengthChange: false,
+                pageLength : 5,
+                dom: style == 1 ? "<f<t>ip>" : "<lf<t>ip>"
+            });
+        }
+
+
+        $(function () {
+             
+            initDataTable('#kt_datatable'); 
+               
+        });
+
+    </script>
+
+}
