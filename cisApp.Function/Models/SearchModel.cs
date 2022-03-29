@@ -1,5 +1,7 @@
-﻿using System;
+﻿using cisApp.library;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace cisApp.Function
@@ -42,5 +44,32 @@ namespace cisApp.Function
         public Guid? Designer { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public string StartDateStr
+        {
+            get
+            {
+                CultureInfo cultureInfo = new CultureInfo("th-TH");
+                return (StartDate != null) ? StartDate.Value.ToString("dd/MM/yyyy", cultureInfo) : "";
+            }
+            set
+            {
+                StartDate = value.ToDateTimeFormat();
+            }
+        }
+        public string EndDateStr
+        {
+            get
+            {
+                CultureInfo cultureInfo = new CultureInfo("th-TH");
+                return (EndDate != null) ? EndDate.Value.ToString("dd/MM/yyyy", cultureInfo) : "";
+            }
+            set
+            {
+                EndDate = value.ToDateTimeFormat();
+            }
+        }
+
+        public bool? IsPaid { get; set; }
+        public string RefCode { get; set; }
     }
 }
