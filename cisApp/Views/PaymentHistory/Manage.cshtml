@@ -128,12 +128,12 @@
                                         @Html.DropDownListFor(m => m.UserId, designers, "กรุณาเลือก", new { @class = "form-control", @Required = "Required" })
                                         @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
                                     </div>
-                                    
+
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-3 col-form-label">จำนวนเงิน</label>
                                     <div class="col-9">
-                                        @Html.TextBoxFor(m => m.Amount, new { @class = "form-control form-control-solid", @placeholder = "จำนวนเงิน", @type ="number", @step=".01", @Required = "Required", @min="0", @autocomplete = "off" })
+                                        @Html.TextBoxFor(m => m.Amount, new { @class = "form-control form-control-solid", @placeholder = "จำนวนเงิน", @type = "number", @step = ".01", @Required = "Required", @min = "0", @autocomplete = "off" })
                                         @Html.ValidationMessageFor(m => m.Amount, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -148,7 +148,38 @@
                                                 <span class="btn input-group-text date-icon"><i class="fa fa-calendar"></i></span>
                                             </div>
                                         </div>
-                                         @Html.ValidationMessageFor(m => m.PaymentDateStr, "", new { @class = "text-danger" })
+                                        @Html.ValidationMessageFor(m => m.PaymentDateStr, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                @{
+                                    var checkedOne = Model.IsPaid.Value ? "checked" : "";
+                                    var checkedTwo = !Model.IsPaid.Value ? "checked" : "";
+
+                                }
+                                <div class="form-group row">
+                                    @Html.LabelFor(m => m.IsActive, "", new { @class = "col-lg-3 col-form-label text-lg-right" })
+                                    <div class="col-lg-7 col-form-label">
+                                        <div class="radio-inline">
+                                            <label class="radio radio-primary">
+                                                <input type="radio" id="Status1" name="IsPaid" value="true" @checkedOne />
+                                                <span></span>
+                                                โอนเงินแล้ว
+                                            </label>
+                                            <label class="radio radio-primary">
+                                                <input type="radio" id="Status2" name="IsPaid" value="false" @checkedTwo />
+                                                <span></span>
+                                                ยังไม่โอเงิน
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-3 col-form-label">เลขอ้างอิง</label>
+                                    <div class="col-9">
+                                        @Html.TextBoxFor(m => m.RefCode, new { @class = "form-control form-control-solid", @placeholder = "เลขอ้างอิง", @autocomplete = "off" })
+                                        @Html.ValidationMessageFor(m => m.RefCode, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 

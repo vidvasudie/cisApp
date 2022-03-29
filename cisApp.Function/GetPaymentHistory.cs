@@ -92,6 +92,8 @@ namespace cisApp.Function
                             obj.UserId = data.UserId;
                             obj.PaymentDate = data.PaymentDate;
                             obj.Amount = data.Amount;
+                            obj.IsPaid = data.IsPaid;
+                            obj.RefCode = data.RefCode;
                             obj.UpdatedBy = userId;
                             obj.UpdatedDate = DateTime.Now;
 
