@@ -73,8 +73,23 @@
                     <!--begin::Content-->
                     <div class="d-flex align-items-center flex-wrap justify-content-between">
                         <!--begin::Progress-->
-                        <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
-                            วันที่จ่ายเงิน @item.PaymentDateStr
+                        @if (item.IsPaid == true)
+                        {
+                            <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
+                                จ่ายเงินแล้ว (@item.RefCode)
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
+                                ยังไม่จ่ายเงิน
+                            </div>
+                        }
+                        <!--end::Progress-->
+                        <!--begin::Progress-->
+                        <div class="d-flex mt-4 mt-sm-0">
+                            <span class="font-weight-bold mr-4">วันที่จ่ายเงิน @item.PaymentDateStr</span>
+
                         </div>
                         <!--end::Progress-->
                     </div>

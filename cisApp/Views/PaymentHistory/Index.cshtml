@@ -29,7 +29,10 @@
             alert('error paging', e);
         }
         var userId = $('#UserId').val()
-        CallAjax('@Url.Action("ItemList", ViewData["ControllerName"])', 'POST', { userId: userId, currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
+        var isPaid = $('#IsPaid').val()
+        var startDate = $('#StartDateStr').val()
+        var endDate = $('#EndDateStr').val()
+        CallAjax('@Url.Action("ItemList", ViewData["ControllerName"])', 'POST', { userId: userId, isPaid: isPaid, startDate: startDate, endDate: endDate, currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
     }
     function CallAjax(url, method, data, success, error) {
         if (data != null && data !== undefined) {
@@ -70,8 +73,8 @@
                 language: "th",
                 todayHighlight: true,
                 autoclose: true,
-                endDate: '+1d',
-                datesDisabled: '+1d',
+                //endDate: '+1d',
+                //datesDisabled: '+1d',
             })
     </script>
 }
@@ -99,7 +102,7 @@
                 <!--end::Button-->
                 <!--begin::Button-->
                 <a href="@Url.Action("Manage",ViewData["ControllerName"])" class="btn btn-light-primary font-weight-bold ml-2">เพิ่มประวัติการจ่ายเงิน</a>
-                <!--end::Button-->                
+                <!--end::Button-->
             </div>
             <!--end::Toolbar-->
         </div>
@@ -132,7 +135,7 @@
                                 <div class="row align-items-center">
 
 
-                                    <div class="col-md-12 my-2 my-md-0">
+                                    <div class="col-md-3 my-2 my-md-0">
                                         <div class="">
                                             @{
                                                 SearchModel searchModel = new SearchModel()
@@ -141,51 +144,56 @@
                                                     type = 23
                                                 };
                                                 SelectList designers = new SelectList(GetUser.Get.GetUserModels(searchModel), "UserId", "FullName");
-                                            } 
+                                            }
                                             @Html.DropDownListFor(m => m.UserId, designers, "เลือกดีไซน์เนอร์", new { @class = "form-control", })
                                         </div>
                                     </div>
-                                    @*<div class="col-md-4 my-2 my-md-0">
-                                        <div class="input-icon">
-                                            <div class="input-group ">
-                                                @Html.TextBoxFor(m => m.StartDate, new
-                                            {
-                                                @class = "form-control form-control-solid datepicker"
-                                           ,
-                                                @placeholder = "จากวันที่",
-                                                @autocomplete = "off"
-                                            })
-
-                                                <div class="input-group-append">
-                                                    <span class="btn input-group-text date-icon"><i class="fa fa-calendar"></i></span>
-                                                </div>
-                                            </div>
-                                            
-
+                                    <div class="col-md-3 my-2 my-md-0">
+                                        <div class="d-flex align-items-center">
+                                            <label class="mr-3 mb-0 d-none d-md-block">สถานะ</label>
+                                            <select class="form-control" id="IsPaid">
+                                                <option value="">ทั้งหมด</option>
+                                                <option value="true">จ่ายเงินแล้ว</option>
+                                                <option value="false">ยังไม่จ่ายเงิน</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 my-2 my-md-0">
-                                        <div class="input-icon">
-                                            <div class="input-group ">
-                                                @Html.TextBoxFor(m => m.EndDate, new
-                                            {
-                                                @class = "form-control form-control-solid datepicker"
-                                           ,
-                                                @placeholder = "ถึงวันที่",
-                                                @autocomplete = "off"
-                                            })
 
-                                                <div class="input-group-append">
-                                                    <span class="btn input-group-text date-icon"><i class="fa fa-calendar"></i></span>
-                                                </div>
+
+                                    <div class="col-md-3 my-2 my-md-0">
+                                        <div class="input-group ">
+                                            @Html.TextBoxFor(m => m.StartDateStr, new
+                                        {
+                                            @class = "form-control form-control-solid datepicker"
+                                       ,
+                                            @placeholder = "จากวันที่",
+                                            @autocomplete = "off"
+                                        })
+
+                                            <div class="input-group-append">
+                                                <span class="btn input-group-text date-icon"><i class="fa fa-calendar"></i></span>
                                             </div>
-                                            
                                         </div>
-                                    </div>*@
+                                    </div>
+                                    <div class="col-md-3 my-2 my-md-0">
+                                        <div class="input-group ">
+                                            @Html.TextBoxFor(m => m.EndDateStr, new
+                                        {
+                                            @class = "form-control form-control-solid datepicker"
+                                       ,
+                                            @placeholder = "ถึงวันที่",
+                                            @autocomplete = "off"
+                                        })
+
+                                            <div class="input-group-append">
+                                                <span class="btn input-group-text date-icon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
-                                <a href="#" class="btn btn-light-primary px-6 font-weight-bold btn-search" >Search</a>
+                                <a href="#" class="btn btn-light-primary px-6 font-weight-bold btn-search">Search</a>
                             </div>
                         </div>
                     </div>
