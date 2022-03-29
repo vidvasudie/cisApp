@@ -861,6 +861,8 @@ namespace cisApp.Core
                 entity.Property(e => e.IsDeleted).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.Property(e => e.IsPaid).HasDefaultValueSql("((0))");
             });
 
 
