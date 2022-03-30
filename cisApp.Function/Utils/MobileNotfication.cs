@@ -124,10 +124,7 @@ namespace cisApp.Function
                     break;
                
             }
-            GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body);
-            
-
-
+ 
             GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body);
             var _c = GetUserClientId.Get.GetbyUserid(userId);
             if (_c != null)

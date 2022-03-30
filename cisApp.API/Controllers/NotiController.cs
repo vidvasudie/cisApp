@@ -16,7 +16,7 @@ namespace cisApp.API.Controllers
     {
      
         // GET api/<NotiController>/5
-        [HttpGet("{id}")]
+        [HttpGet()]
         public object Get(Guid userId)
         {
             var result = GetNotification.Get.GetbyUserID(userId);
@@ -27,7 +27,7 @@ namespace cisApp.API.Controllers
         }
        
         // PUT api/<NotiController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{userId}")]
         public object Put(Guid userId , [FromBody]NotiModel value)
         {
 
