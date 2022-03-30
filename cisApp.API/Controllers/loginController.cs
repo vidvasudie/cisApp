@@ -30,6 +30,7 @@ namespace cisApp.API.Controllers
                     var users = GetUser.Get.GetUserLogin(new LoginModel() { username = value.email, password = value.password, userType = -1 });
                     if (users.Count > 0)
                     {
+                        GetUserClientId.Manage.Add(users.FirstOrDefault().UserId.Value, value.ClientId);
                         return Ok(resultJson.success(null, null, new LoginResult { uSID = users.FirstOrDefault().UserId.Value, Fname = users.FirstOrDefault().Fname, Lname = users.FirstOrDefault().Lname, isDesigner = (users.FirstOrDefault().UserType == 1) ? false : true }));
                     }
                     else
