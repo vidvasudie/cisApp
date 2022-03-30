@@ -24,7 +24,8 @@ namespace cisApp.Function
                     using (var dbContextTransaction = context.Database.BeginTransaction())
                     {
 
-                        obj  = context.Notification.Where(o => o.UserId == userID && o.IsActive == true).ToList(); 
+                        //obj  = context.Notification.Where(o => o.UserId == userID && o.IsActive == true).ToList(); 
+                        obj = context.Notification.ToList();
 
                     }
                 }
