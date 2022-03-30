@@ -50,7 +50,7 @@ namespace cisApp.Function
                         obj.IsRead = false;
                         obj.ReadDate = null;
                         obj.Page = null;
-                        obj.JobsID = null;
+                        obj.JobsId = null;
 
 
 
