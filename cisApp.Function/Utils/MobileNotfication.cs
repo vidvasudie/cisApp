@@ -7,7 +7,7 @@ using DIGITAL_ID.library;
 using Newtonsoft.Json; 
 namespace cisApp.Function
 {
-    public   class MobileNotfication
+    public class MobileNotfication
     {
 
         #region สำหรับนักออกแบบ

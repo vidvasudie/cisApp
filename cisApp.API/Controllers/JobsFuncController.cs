@@ -62,6 +62,16 @@ namespace cisApp.API.Controllers
 
                 var result = GetJobs.Manage.Update(job, value.Ip);
 
+                //ส่ง Noti ให้นักออกแบบที่ถูก กด  Like ทั้งหมด 
+                var ulikes = GetUserFavoriteDesigner.Get.GetFavoriteList(job.UserId, 1, 1000000);
+                if(ulikes != null && ulikes.Count > 0)
+                {
+                    foreach (var u in ulikes)
+                    {
+                        new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.favorite, u.UserId.Value);
+                    }
+                }
+
                 return Ok(resultJson.success("สร้างใบงานสำเร็จ", "success", new { result.JobId, result.JobNo }));
 
             }
@@ -552,6 +562,10 @@ namespace cisApp.API.Controllers
                         job.JobStatus = 5;
                         GetJobs.Manage.UpdateJobStatus(job.JobId, 5, value.UserId);
                     }
+
+                    //นักออกแบบ ส่งงานสำเร็จ
+                    new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId);
+
                     return Ok(resultJson.success("สำเร็จ", "success", new { result.JobId }));
                 }
                 return Ok(resultJson.errors("ข้อมูลไม่ถูกต้อง ModelState Not Valid", "fail", null));
@@ -644,7 +658,10 @@ namespace cisApp.API.Controllers
                 if(job == null)
                 {
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
-                } 
+                }
+
+                //Noti แจ้งนักออกแบบ
+                new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.winner, value.CaUserId);
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { JobId=job.JobId, CaUserId=job.JobCaUserId }));
             }

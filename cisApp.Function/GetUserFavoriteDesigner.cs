@@ -27,7 +27,13 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
-
+            /// <summary>
+            /// ดึงรายการนักออกแบบที่ถูก กด Like ทั้งหมด
+            /// </summary>
+            /// <param name="userId">ลูกค้า</param>
+            /// <param name="page"></param>
+            /// <param name="limit"></param>
+            /// <returns></returns>
             public static List<JobCandidateModel> GetFavoriteList(Guid userId, int page=1, int limit = 10)
             {
                 try
