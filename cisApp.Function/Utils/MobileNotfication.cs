@@ -22,10 +22,10 @@ namespace cisApp.Function
             alert  // เมื่อลูกค้าแจ้งขอแก้ไขงาน 
         }
 
-        public async void Fordesigner(ModeDesigner modeDesigner, string clientID, Guid userId)
+        public async void Fordesigner(ModeDesigner modeDesigner,   Guid userId)
         {
             NotiModel obj = new NotiModel();
-            obj.to = clientID;
+      
             obj.notification = new notification();
 
             switch (modeDesigner.ToString())
@@ -62,8 +62,14 @@ namespace cisApp.Function
                     //obj.notification.icon = ""; 
                     break; 
             } 
+             
             GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body); 
-            await NotifyAsync(obj);
+            var _c = GetUserClientId.Get.GetbyUserid(userId);
+            if (_c != null)
+            {
+                obj.to = _c.ClientId; 
+                await NotifyAsync(obj);
+            }
         }
          
         public class NotiModel
@@ -86,13 +92,13 @@ namespace cisApp.Function
         }
         #endregion
 
-        public async void Forcustomer(Modecustomer modeDesigner, string clientID, Guid userId)
+        public async void Forcustomer(Modecustomer modeDesigner,   Guid userId)
         {
 
 
 
             NotiModel obj = new NotiModel();
-            obj.to = clientID;
+       
             obj.notification = new notification();
 
             switch (modeDesigner.ToString())
@@ -119,7 +125,16 @@ namespace cisApp.Function
                
             }
             GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body);
-            await NotifyAsync(obj);
+            
+
+
+            GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body);
+            var _c = GetUserClientId.Get.GetbyUserid(userId);
+            if (_c != null)
+            {
+                obj.to = _c.ClientId;
+                await NotifyAsync(obj);
+            }
         }
 
 

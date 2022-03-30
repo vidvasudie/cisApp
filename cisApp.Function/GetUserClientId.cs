@@ -2,13 +2,22 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Linq;
 namespace cisApp.Function
 {
     public static class GetUserClientId
     {
         public class Get
         {
+            public static UsersClientId GetbyUserid(Guid userId)
+            {
+                using (var context = new CAppContext())
+                { 
+                    return   context.UsersClientId.Where(o => o.UserId == userId).OrderByDescending(o=>o.CreatedDate).FirstOrDefault(); 
+                }
+
+            }
+
 
         }
 
