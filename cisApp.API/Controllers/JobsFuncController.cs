@@ -68,7 +68,7 @@ namespace cisApp.API.Controllers
                 {
                     foreach (var u in ulikes)
                     {
-                        new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.favorite, u.UserId.Value, u.JobId.Value);
+                        new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.favorite, u.UserId.Value, result.JobId);
                     }
                 }
 
