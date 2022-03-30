@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using cisApp.API.Models;
 using cisApp.Function;
+using cisApp.library;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,5 +44,16 @@ namespace cisApp.API.Controllers
             }
             return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid request.", null));
         }
+        [HttpGet]
+        public object Get() 
+        {
+            MobileNotfication mobileNotfication = new MobileNotfication();
+            mobileNotfication.Fordesigner(MobileNotfication.ModeDesigner.favorite, "cBH85wFyTwe-eewKlMuUhv:APA91bFG1nNvhI3my-Y9GC_6T8Vng5HtrSN8MTIgW36iY0-SSHGg6Si_LfJKNQ5cQR50de_-ldGLbGEVGWiAnUTDJVMz9sJX8yKNWu-zkU-Zl0zmE1VHTdFfjlod2HKh8PPRzmy3wQ_h");
+            return Ok();
+
+
+        }
+    
+    
     }
 }
