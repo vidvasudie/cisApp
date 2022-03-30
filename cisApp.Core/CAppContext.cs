@@ -890,12 +890,9 @@ namespace cisApp.Core
                     .HasDefaultValueSql("((1))");
 
                 entity.Property(e => e.Title)
-                    .HasColumnName("title")
-                    .HasMaxLength(1);
+                    .HasColumnName("title");
 
-                entity.Property(e => e.Url)
-                    .HasMaxLength(1)
-                    .IsUnicode(false);
+                entity.Property(e => e.Url);
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
                 entity.Property(e => e.Page).HasColumnName("Page");
