@@ -288,7 +288,19 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ นักออกแบบไม่สามารถสมัครงานเดิมได้เกิน 2 ครั้ง", "fail", null));
                 }
-                
+
+                var jc = GetJobsCandidate.Get.GetByJobId(new SearchModel { gId= value.JobId });
+                if(jc != null && jc.Count > 0 && jc.Where(o => o.CaStatusId == 1).Count() == 3)
+                {
+                    //นักออกแบบ ครบ 3 คน
+                    new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.regist3, jobs.First().UserID, job.JobId.Value);
+                }
+                else
+                {
+                    //นักออกแบบ สมัครงานสำเร็จ
+                    new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.regist, jobs.First().UserID, job.JobId.Value);
+                }
+
                 return Ok(resultJson.success("สำเร็จ", "success", new { job.JobId }));
             }
             catch (Exception ex)

@@ -62,6 +62,16 @@ namespace cisApp.API.Controllers
 
                 var result = GetJobs.Manage.Update(job, value.Ip);
 
+                //ส่ง Noti ให้นักออกแบบที่ถูก กด  Like ทั้งหมด 
+                var ulikes = GetUserFavoriteDesigner.Get.GetFavoriteList(job.UserId, 1, 1000000);
+                if(ulikes != null && ulikes.Count > 0)
+                {
+                    foreach (var u in ulikes)
+                    {
+                        new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.favorite, u.UserId.Value, u.JobId.Value);
+                    }
+                }
+
                 return Ok(resultJson.success("สร้างใบงานสำเร็จ", "success", new { result.JobId, result.JobNo }));
 
             }
@@ -442,10 +452,7 @@ namespace cisApp.API.Controllers
                 if (album != null)
                 {
                     attachFiles = GetAlbum.Get.GetAttachFileByAlbumId(album.AlbumId.Value, webAdmin);
-                }
-
-                MobileNotfication mobileNotfication = new MobileNotfication();
-                mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId);
+                } 
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { album, attachFiles }));
             }
@@ -556,8 +563,8 @@ namespace cisApp.API.Controllers
                         GetJobs.Manage.UpdateJobStatus(job.JobId, 5, value.UserId);
                     }
 
-                    MobileNotfication mobileNotfication = new MobileNotfication();
-                    mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId);
+                    //นักออกแบบ ส่งงานสำเร็จ
+                    new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId, job.JobId);
 
                     return Ok(resultJson.success("สำเร็จ", "success", new { result.JobId }));
                 }
@@ -651,7 +658,10 @@ namespace cisApp.API.Controllers
                 if(job == null)
                 {
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
-                } 
+                }
+
+                //Noti แจ้งนักออกแบบ
+                new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.winner, value.CaUserId, value.JobId);
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { JobId=job.JobId, CaUserId=job.JobCaUserId }));
             }
@@ -868,6 +878,9 @@ namespace cisApp.API.Controllers
             try
             {
                 var data = GetJobs.Manage.UpdateRequestEditStatus(jobId);
+
+                //Noti เมื่อขอแก้ไขผลงาน 
+                new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.alert, data.JobCaUserId.Value, data.JobId);
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { data.JobId }));
             }
