@@ -15,5 +15,10 @@ namespace cisApp.Core
         public DateTime CreatedDate { get; set; }
         public bool? IsRead { get; set; }
         public DateTime? ReadDate { get; set; }
+
+        public string Page { get; set; }
+        public Guid? JobsID { get; set; }
+
+
     }
 }

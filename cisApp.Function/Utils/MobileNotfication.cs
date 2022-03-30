@@ -22,12 +22,12 @@ namespace cisApp.Function
             alert  // เมื่อลูกค้าแจ้งขอแก้ไขงาน 
         }
 
-        public async void Fordesigner(ModeDesigner modeDesigner,   Guid userId)
+        public async void Fordesigner(ModeDesigner modeDesigner,   Guid userId,Guid JobsID)
         {
             NotiModel obj = new NotiModel();
       
             obj.notification = new notification();
-
+            string page = "";
             switch (modeDesigner.ToString())
             {
                 case "favorite":
@@ -35,39 +35,49 @@ namespace cisApp.Function
                     obj.notification.body = "มีใบงานที่กดถูกใจคุณ ถูกสร้างขึ้นคลิ๊กเลย";
                     obj.notification.title = "มีลูกค้าสนใจคุณ!";
                     //obj.notification.icon = "";
-
+                    page = "worksheet";
                     break;
                 case "contest":
 
                     obj.notification.body = "มีใบงานที่คุณได้รับคัดเลือกเข้าประกวดงาน อย่าลืมสอบถามรายละเอียดความต้องการละ คลิ๊กเลยเพื่อดูรายละเอียด ";
                     obj.notification.title = "คุณได้รับคัดเลือกในกวดเข้าร่วมประกวดงาน";
                     //obj.notification.icon = ""; 
+                    page = "worksheet";
+
                     break;
                 case "winner":
 
                     obj.notification.body = "เราขอแสดงความยินดีด้วยงานของคุณได้รับเลือกให้เป็นผู้ชนะในครั้งนี้ อย่าลืมส่งรายละเอียดการออกแบบให้ลูกค้า คลิ๊กเลยเพื่อดูรายละเอียด ";
                     obj.notification.title = "ขอแสดงความยินดี";
+                    page = "worksheet";
+
                     //obj.notification.icon = ""; 
                     break;
                 case "submit":
 
                     obj.notification.body = "เราแจ้งเตือนการส่งงานเนื่องจากงานที่ท่านได้ประกวดไว้ใกล้ถึงกำหนดส่ง คลิ๊กเลยเพื่อดูรายละเอียด";
                     obj.notification.title = "ใกล้ถึงเวลาส่งงานแล้วนะ!";
+                    page = "worksheet";
+
                     //obj.notification.icon = ""; 
                     break;
                 case "alert":
 
                     obj.notification.body = "เราขอแจ้งให้ท่านทราบว่า ใบงานของท่านได้ถูกขอแก้ไขโดยลูกค้า อย่าลืมสอบถามรายละเอียดความต้องการละ คลิ๊กเลยเพื่อดูรายละเอียด";
                     obj.notification.title = "มีใบงานถูกขอแก้ไข!";
+                    page = "worksheet";
+
                     //obj.notification.icon = ""; 
                     break; 
-            } 
-             
-            GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body); 
+            }
+
+            var NotiID = GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body, page, JobsID);  
             var _c = GetUserClientId.Get.GetbyUserid(userId);
             if (_c != null)
             {
-                obj.to = _c.ClientId; 
+                obj.to = _c.ClientId;
+                obj.notification.click_action = string.Format("https://cloudidea.app/Notifacation/:{0}", NotiID.Id);
+
                 await NotifyAsync(obj);
             }
         }
@@ -92,10 +102,10 @@ namespace cisApp.Function
         }
         #endregion
 
-        public async void Forcustomer(Modecustomer modeDesigner,   Guid userId)
+        public async void Forcustomer(Modecustomer modeDesigner,   Guid userId,Guid JobsID)
         {
 
-
+            string page = "";
 
             NotiModel obj = new NotiModel();
        
@@ -108,28 +118,32 @@ namespace cisApp.Function
                     obj.notification.body = "กรุณาเลือกและคอนเฟิร์มฟรีแลนซ์เพื่อเริ่มงาน";
                     obj.notification.title = "ฟรีแลนซ์ส่งงานให้คุณแล้ว";
                     //obj.notification.icon = "";
-
+                    page = "worksheet";
                     break;
                 case "regist3":
 
                     obj.notification.body = "กรุณาคอนเฟิร์มฟรีแลนซ์เพื่อเริ่มงาน";
                     obj.notification.title = "เราหาฟรีแลนซ์ให้คุณครบแล้ว";
                     //obj.notification.icon = ""; 
+                    page = "worksheet";
                     break;
                 case "submit":
 
                     obj.notification.body = "เข้าดูงานที่ได้รับของคุณ";
                     obj.notification.title = "ฟรีแลนซ์ส่งงานให้คุณแล้ว";
                     //obj.notification.icon = ""; 
+                    page = "worksheet";
+
                     break;
                
             }
  
-            GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body);
+        var NotiID =     GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body, page, JobsID);
             var _c = GetUserClientId.Get.GetbyUserid(userId);
             if (_c != null)
             {
                 obj.to = _c.ClientId;
+                obj.notification.click_action = string.Format("https://cloudidea.app/Notifacation/:{0}", NotiID.Id) ;
                 await NotifyAsync(obj);
             }
         }

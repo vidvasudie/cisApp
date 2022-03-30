@@ -898,6 +898,8 @@ namespace cisApp.Core
                     .IsUnicode(false);
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
+                entity.Property(e => e.Page).HasColumnName("Page");
+                entity.Property(e => e.JobsID).HasColumnName("JobsID");
             });
 
             modelBuilder.Entity<UsersClientId>(entity =>
