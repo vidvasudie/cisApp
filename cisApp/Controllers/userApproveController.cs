@@ -154,12 +154,20 @@ namespace cisApp.Controllers
         {
             try
             {
-                data.UserType = 2;
+                //data.UserType = 2;
+                if (data.Status == 2)
+                {
+                    data.UserType = 2;
+                }
                 data.CreatedBy = _UserId().Value;
                 data.UpdatedBy = _UserId().Value;
                 var result = GetUserDesignerRequest.Manage.UpdateRequestStatus(data);
                 if(result > 0)
                 {
+                    if (data.Status == 3)
+                    {
+                        GetAlbum.Manage.DeleteAlbumExample(data.UserId.Value);
+                    }
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "UserApprove")));
                 }
                 else

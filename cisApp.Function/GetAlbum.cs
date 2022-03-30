@@ -738,6 +738,29 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
+            public static void DeleteAlbumExample(Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var album = context.Album.Where(o => o.UserId == userId && o.IsDeleted != true && o.AlbumType == "0").FirstOrDefault();
+
+                        album.IsDeleted = true;
+                        album.DeletedDate = DateTime.Now;
+                        album.DeletedBy = userId;
+
+                        context.Album.Update(album);
+
+                        context.SaveChanges();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
         public class Utils
