@@ -444,6 +444,9 @@ namespace cisApp.API.Controllers
                     attachFiles = GetAlbum.Get.GetAttachFileByAlbumId(album.AlbumId.Value, webAdmin);
                 }
 
+                MobileNotfication mobileNotfication = new MobileNotfication();
+                mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId);
+
                 return Ok(resultJson.success("สำเร็จ", "success", new { album, attachFiles }));
             }
             catch (Exception ex)
@@ -552,6 +555,10 @@ namespace cisApp.API.Controllers
                         job.JobStatus = 5;
                         GetJobs.Manage.UpdateJobStatus(job.JobId, 5, value.UserId);
                     }
+
+                    MobileNotfication mobileNotfication = new MobileNotfication();
+                    mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId);
+
                     return Ok(resultJson.success("สำเร็จ", "success", new { result.JobId }));
                 }
                 return Ok(resultJson.errors("ข้อมูลไม่ถูกต้อง ModelState Not Valid", "fail", null));
