@@ -88,7 +88,7 @@ namespace cisApp.Controllers
             try
             {
                 var user = GetJobPayment.Manage.Update(data, _UserId().Value);
-
+                
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Payment")));
             }
             catch (Exception ex)
@@ -104,7 +104,7 @@ namespace cisApp.Controllers
                 JobPayment data = new JobPayment();
                 if (id != null)
                 {
-                    data = GetJobPayment.Get.GetById(id.Value);
+                    data = GetJobPayment.Get.GetById(id.Value); 
                 }
                 else
                 {
@@ -126,7 +126,20 @@ namespace cisApp.Controllers
             try
             {
                 var user = GetJobPayment.Manage.Status(data.JobPayId.Value, data.PayStatus.Value, data.Comment, _UserId().Value);
-
+                if (data.PayStatus.Value == 3)
+                {
+                    //Noti นักออกแบบปรับสถานะเป็น ประกวดงาน เมื่อการชำระเงินสำเร็จ
+                    var jc = GetJobsCandidate.Get.GetByJobId(new SearchModel { gId = user.JobId });
+                    if (jc != null && jc.Count > 0)
+                    {
+                        foreach (var u in jc.Where(o => o.CaStatusId == 2))
+                        //เฉพาะผู้ประกวดผลงาน
+                        {
+                            new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.contest, u.UserId.Value, user.JobId.Value);
+                        }
+                    }
+                }
+                    
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Payment")));
             }
             catch (Exception ex)

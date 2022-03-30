@@ -68,7 +68,7 @@ namespace cisApp.API.Controllers
                 {
                     foreach (var u in ulikes)
                     {
-                        new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.favorite, u.UserId.Value);
+                        new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.favorite, u.UserId.Value, u.JobId.Value);
                     }
                 }
 
@@ -452,10 +452,7 @@ namespace cisApp.API.Controllers
                 if (album != null)
                 {
                     attachFiles = GetAlbum.Get.GetAttachFileByAlbumId(album.AlbumId.Value, webAdmin);
-                }
-
-                MobileNotfication mobileNotfication = new MobileNotfication();
-                mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId);
+                } 
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { album, attachFiles }));
             }
@@ -567,7 +564,7 @@ namespace cisApp.API.Controllers
                     }
 
                     //นักออกแบบ ส่งงานสำเร็จ
-                    new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId);
+                    new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId, job.JobId);
 
                     return Ok(resultJson.success("สำเร็จ", "success", new { result.JobId }));
                 }
@@ -664,7 +661,7 @@ namespace cisApp.API.Controllers
                 }
 
                 //Noti แจ้งนักออกแบบ
-                new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.winner, value.CaUserId);
+                new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.winner, value.CaUserId, value.JobId);
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { JobId=job.JobId, CaUserId=job.JobCaUserId }));
             }
@@ -881,6 +878,9 @@ namespace cisApp.API.Controllers
             try
             {
                 var data = GetJobs.Manage.UpdateRequestEditStatus(jobId);
+
+                //Noti เมื่อขอแก้ไขผลงาน 
+                new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.alert, data.JobCaUserId.Value, data.JobId);
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { data.JobId }));
             }

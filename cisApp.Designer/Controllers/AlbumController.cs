@@ -188,6 +188,9 @@ namespace cisApp.Designer.Controllers
 
                 if (result != null)
                 {
+                    //นักออกแบบ ส่งงานสำเร็จ
+                    new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId, job.JobId);
+
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "JobList")));
                 }
                 else

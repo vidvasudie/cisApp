@@ -293,12 +293,12 @@ namespace cisApp.API.Controllers
                 if(jc != null && jc.Count > 0 && jc.Where(o => o.CaStatusId == 1).Count() == 3)
                 {
                     //นักออกแบบ ครบ 3 คน
-                    new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.regist3, jobs.First().UserID);
+                    new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.regist3, jobs.First().UserID, job.JobId.Value);
                 }
                 else
                 {
                     //นักออกแบบ สมัครงานสำเร็จ
-                    new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.regist, jobs.First().UserID);
+                    new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.regist, jobs.First().UserID, job.JobId.Value);
                 }
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { job.JobId }));
