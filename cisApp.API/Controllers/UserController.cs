@@ -235,6 +235,8 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "Data not found.", new { model.Fname, model.Lname, model.Email }));
                 }
 
+                GetUserClientId.Manage.Add(user.UserId.Value, model.ClientId);
+
                 return Ok(resultJson.success("สำเร็จ", "success", new LoginResult { uSID = user.UserId.Value, Fname = user.Fname, Lname = user.Lname, isDesigner = (user.UserType == 1) ? false : true }));
             }
             catch (Exception ex)
