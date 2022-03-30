@@ -20,7 +20,7 @@
         {
             <span class="float-right position-relative mr-n5 mb-n4 bt-img-del"> <i class="flaticon-circle icon-lg text-danger position-static zindex-2"></i></span>
         }
-        <img src="@Url.Content(String.IsNullOrEmpty(Model.FileBase64) ? Model.UrlPath : Model.FileBase64)" data-id="@Model.AttachFileId" alt="@Html.Raw(Model.FileName)" class="img-thumbnail mx-3 my-3 img-list" data-target="#carouselPreview" data-slide-to="@Model.NextImg">
+        <img src="@Url.Content(String.IsNullOrEmpty(Model.FileBase64) ? Model.AdminUrlBase+Model.UrlPathAPI : Model.FileBase64)" data-id="@Model.AttachFileId" alt="@Html.Raw(Model.FileName)" class="img-thumbnail mx-3 my-3 img-list" data-target="#carouselPreview" data-slide-to="@Model.NextImg">
     </div>
 }
  
