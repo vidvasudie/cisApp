@@ -54,24 +54,62 @@ namespace cisApp.API.Controllers
                 // first add chatgroup it aways not null
                 groupChatListModels.Add(chatModels.FirstOrDefault(o => o.UserId == chatGroupId.Value));
 
-                // then fill users chat it sometime null
-                var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroupId.Value).Where(o => o.UserId != id.Value);
+                bool isUserOwnJob = true;
 
-                foreach (var item in chatGroupUsers)
+                var chatGroup = GetChatGroup.Get.GetById(chatGroupId.Value);
+
+                if (chatGroup != null)
                 {
-                    var chat = chatModels.FirstOrDefault(o => o.UserId == item.UserId);
-
-                    if (chat != null)
+                    if (chatGroup.JobId != null)
                     {
-                        groupChatListModels.Add(chat);
+                        var job = GetJobs.Get.GetById(chatGroup.JobId.Value);
+
+                        if (job != null)
+                        {
+                            if (job.UserId != id)
+                            {
+                                isUserOwnJob = false;
+                            }
+                        }
                     }
                     else
                     {
-                        var mockChatModel = GetChatMessage.Get.MockChatModel(item.UserId);
+                        var job = GetJobs.Get.GetByJobNo(chatGroup.ChatGroupName);
 
-                        groupChatListModels.Add(mockChatModel);
+                        if (job != null)
+                        {
+                            if (job.UserId != id)
+                            {
+                                isUserOwnJob = false;
+                            }
+                        }
                     }
                 }
+
+
+                if (isUserOwnJob)
+                {
+                    // then fill users chat it sometime null
+                    var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroupId.Value).Where(o => o.UserId != id.Value);
+
+                    foreach (var item in chatGroupUsers)
+                    {
+                        var chat = chatModels.FirstOrDefault(o => o.UserId == item.UserId);
+
+                        if (chat != null)
+                        {
+                            groupChatListModels.Add(chat);
+                        }
+                        else
+                        {
+                            var mockChatModel = GetChatMessage.Get.MockChatModel(item.UserId);
+
+                            groupChatListModels.Add(mockChatModel);
+                        }
+                    }
+                }
+
+                
 
 
                 return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", groupChatListModels));
