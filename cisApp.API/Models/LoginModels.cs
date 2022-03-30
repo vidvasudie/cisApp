@@ -12,6 +12,7 @@ namespace cisApp.API.Models
         public string email { get; set; }
         [Required]
         public string password { get; set; }
+        public string ClientId { get; set; }
     }
     public class LoginResult
     {

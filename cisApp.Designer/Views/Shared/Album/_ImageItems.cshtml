@@ -27,7 +27,7 @@
             classActive = " active ";
         }
         <div class="carousel-item @classActive">
-            <img class="d-block w-100" style="object-fit: contain;" src="@Url.Content(item.UrlPath)" alt="@item.FileName">
+            <img class="d-block w-100" style="object-fit: contain;" src="@Url.Content(item.AdminUrlBase+item.UrlPathAPI)" alt="@item.FileName">
         </div>
     }
     @*<div class="carousel-item active">
