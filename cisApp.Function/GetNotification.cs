@@ -30,7 +30,7 @@ namespace cisApp.Function
         }
         public class Manage
         {
-            public static void add(Guid UserID,string Url, string title , string Msg)
+            public static Notification add(Guid UserID,string Url, string title , string Msg,string Page, Guid JobsID)
             {
                 using (var context = new CAppContext())
                 {
@@ -45,8 +45,14 @@ namespace cisApp.Function
                         obj.CreatedDate = DateTime.Now;
                         obj.IsRead = false;
                         obj.ReadDate = null;
+                        obj.Page = null;
+                        obj.JobsID = null;
+
+
+
                         context.Notification.Add(obj);
-                        context.SaveChanges(); 
+                        context.SaveChanges();
+                        return obj;
                     }
                 }
 
