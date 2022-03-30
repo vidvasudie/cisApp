@@ -187,6 +187,9 @@ namespace cisApp.Controllers
 
                 if (result != null)
                 {
+                    MobileNotfication mobileNotfication = new MobileNotfication();
+                    mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId);
+
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Jobs")));
                 }
                 else
@@ -246,6 +249,10 @@ namespace cisApp.Controllers
 
                 if (result != null)
                 {
+                    var job = GetJobs.Get.GetById(data.JobId);
+                    MobileNotfication mobileNotfication = new MobileNotfication();
+                    mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId);
+
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Jobs")));
                 }
                 else
