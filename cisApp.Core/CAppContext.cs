@@ -73,6 +73,8 @@ namespace cisApp.Core
         public virtual DbSet<UserHelp> UserHelp { get; set; }
         public virtual DbSet<Otp> Otp { get; set; }
         public virtual DbSet<PaymentHistory> PaymentHistory { get; set; }
+        public virtual DbSet<ClientConfig> ClientConfig { get; set; }
+        public virtual DbSet<Notification> Notification { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -865,6 +867,37 @@ namespace cisApp.Core
                 entity.Property(e => e.IsPaid).HasDefaultValueSql("((0))");
             });
 
+            modelBuilder.Entity<ClientConfig>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.ClientId)
+                    .HasColumnName("ClientID")
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+            });
+
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.Title)
+                    .HasColumnName("title")
+                    .HasMaxLength(1);
+
+                entity.Property(e => e.Url)
+                    .HasMaxLength(1)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+            });
 
             OnModelCreatingPartial(modelBuilder);
         }
