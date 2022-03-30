@@ -44,6 +44,27 @@ namespace cisApp.API.Controllers
             }
             return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid request.", null));
         }
+
+        [HttpPost("PostClientId")]
+        public object PostClientId([FromBody] PostClientIdModel value)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var clientId = GetUserClientId.Manage.Add(value.UserId, value.ClientId);
+
+                    return Ok(resultJson.success(null, null, clientId ));
+
+                }
+                catch (Exception ex)
+                {
+                    return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "Internal server error.", ex));
+                }
+            }
+            return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid request.", null));
+        }
+
         [HttpGet]
         public object Get() 
         {
