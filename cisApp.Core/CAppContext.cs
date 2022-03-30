@@ -75,6 +75,7 @@ namespace cisApp.Core
         public virtual DbSet<PaymentHistory> PaymentHistory { get; set; }
         public virtual DbSet<ClientConfig> ClientConfig { get; set; }
         public virtual DbSet<Notification> Notification { get; set; }
+        public virtual DbSet<UsersClientId> UsersClientId { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -895,6 +896,22 @@ namespace cisApp.Core
                 entity.Property(e => e.Url)
                     .HasMaxLength(1)
                     .IsUnicode(false);
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+            });
+
+            modelBuilder.Entity<UsersClientId>(entity =>
+            {
+                entity.HasKey(e => e.UserClientId)
+                    .HasName("PK__Users_Cl__A5FB1195D80DD63D");
+
+                entity.ToTable("Users_ClientID");
+
+                entity.Property(e => e.UserClientId)
+                    .HasColumnName("UserClientID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.ClientId).HasColumnName("ClientID");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
             });

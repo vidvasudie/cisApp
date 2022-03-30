@@ -4,9 +4,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using DIGITAL_ID.library;
-using Newtonsoft.Json;
-
-namespace cisApp.library
+using Newtonsoft.Json; 
+namespace cisApp.Function
 {
     public   class MobileNotfication
     {
@@ -23,7 +22,7 @@ namespace cisApp.library
             alert  // เมื่อลูกค้าแจ้งขอแก้ไขงาน 
         }
 
-        public async void Fordesigner(ModeDesigner modeDesigner, string clientID)
+        public async void Fordesigner(ModeDesigner modeDesigner, string clientID, Guid userId)
         {
             NotiModel obj = new NotiModel();
             obj.to = clientID;
@@ -62,16 +61,11 @@ namespace cisApp.library
                     obj.notification.title = "มีใบงานถูกขอแก้ไข!";
                     //obj.notification.icon = ""; 
                     break; 
-            }
+            } 
+            GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body); 
             await NotifyAsync(obj);
         }
-
-
-
-
-
-
-
+         
         public class NotiModel
         { 
          public string to { get; set; } 
@@ -80,15 +74,8 @@ namespace cisApp.library
         public class notification {
             public string body { get; set; }
             public string title { get; set; }
-            public string click_action { get; set; }
-
-
-        }
-
-
-
-
-
+            public string click_action { get; set; } 
+        } 
         #endregion
         #region สำหรับลูกค้า
         public enum Modecustomer
@@ -99,7 +86,7 @@ namespace cisApp.library
         }
         #endregion
 
-        public async void Forcustomer(Modecustomer modeDesigner, string clientID)
+        public async void Forcustomer(Modecustomer modeDesigner, string clientID, Guid userId)
         {
 
 
@@ -112,25 +99,26 @@ namespace cisApp.library
             {
                 case "regist":
 
-                    obj.notification.body = "นักออกแบบบางท่านได้เข้ามา  คลิ๊กเลยเพื่อดูรายละเอียด";
-                    obj.notification.title = "มีนักออกแบบสนใจงานของคุณ";
+                    obj.notification.body = "กรุณาเลือกและคอนเฟิร์มฟรีแลนซ์เพื่อเริ่มงาน";
+                    obj.notification.title = "ฟรีแลนซ์ส่งงานให้คุณแล้ว";
                     //obj.notification.icon = "";
 
                     break;
                 case "regist3":
 
-                    obj.notification.body = "ใบงานที่ท่านได้ทำรายการไว้มีผู้สมัครครบเรียบร้อยแล้ว กรุณาเข้าสู่ขั้นตอนถัดไป คลิ๊กเลยเพื่อดูรายละเอียด ";
-                    obj.notification.title = "ใบงานของท่านมีผู้สมัครครบแล้ว";
+                    obj.notification.body = "กรุณาคอนเฟิร์มฟรีแลนซ์เพื่อเริ่มงาน";
+                    obj.notification.title = "เราหาฟรีแลนซ์ให้คุณครบแล้ว";
                     //obj.notification.icon = ""; 
                     break;
                 case "submit":
 
-                    obj.notification.body = "เราขอแสดงความยินดีด้วยงานของคุณได้รับเลือกให้เป็นผู้ชนะในครั้งนี้ อย่าลืมส่งรายละเอียดการออกแบบให้ลูกค้า คลิ๊กเลยเพื่อดูรายละเอียด ";
-                    obj.notification.title = "ขอแสดงความยินดี";
+                    obj.notification.body = "เข้าดูงานที่ได้รับของคุณ";
+                    obj.notification.title = "ฟรีแลนซ์ส่งงานให้คุณแล้ว";
                     //obj.notification.icon = ""; 
                     break;
                
             }
+            GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body);
             await NotifyAsync(obj);
         }
 

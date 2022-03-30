@@ -44,15 +44,36 @@ namespace cisApp.API.Controllers
             }
             return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid request.", null));
         }
-        [HttpGet]
-        public object Get() 
+
+        [HttpPost("PostClientId")]
+        public object PostClientId([FromBody] PostClientIdModel value)
         {
-            MobileNotfication mobileNotfication = new MobileNotfication();
-            mobileNotfication.Fordesigner(MobileNotfication.ModeDesigner.favorite, "cBH85wFyTwe-eewKlMuUhv:APA91bFG1nNvhI3my-Y9GC_6T8Vng5HtrSN8MTIgW36iY0-SSHGg6Si_LfJKNQ5cQR50de_-ldGLbGEVGWiAnUTDJVMz9sJX8yKNWu-zkU-Zl0zmE1VHTdFfjlod2HKh8PPRzmy3wQ_h");
-            return Ok();
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var clientId = GetUserClientId.Manage.Add(value.UserId, value.ClientId);
 
+                    return Ok(resultJson.success(null, null, clientId ));
 
+                }
+                catch (Exception ex)
+                {
+                    return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "Internal server error.", ex));
+                }
+            }
+            return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid request.", null));
         }
+
+        //[HttpGet]
+        //public object Get() 
+        //{
+        //    MobileNotfication mobileNotfication = new MobileNotfication();
+        //    mobileNotfication.Fordesigner(MobileNotfication.ModeDesigner.favorite, "cBH85wFyTwe-eewKlMuUhv:APA91bFG1nNvhI3my-Y9GC_6T8Vng5HtrSN8MTIgW36iY0-SSHGg6Si_LfJKNQ5cQR50de_-ldGLbGEVGWiAnUTDJVMz9sJX8yKNWu-zkU-Zl0zmE1VHTdFfjlod2HKh8PPRzmy3wQ_h");
+        //    return Ok();
+
+
+        //}
     
     
     }
