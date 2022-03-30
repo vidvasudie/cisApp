@@ -889,17 +889,21 @@ namespace cisApp.Core
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
 
+                entity.Property(e => e.JobsId).HasColumnName("JobsID");
+
+                entity.Property(e => e.Page)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
-                    .HasMaxLength(1);
+                    .HasMaxLength(255);
 
                 entity.Property(e => e.Url)
-                    .HasMaxLength(1)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
-                entity.Property(e => e.Page).HasColumnName("Page");
-                entity.Property(e => e.JobsID).HasColumnName("JobsID");
             });
 
             modelBuilder.Entity<UsersClientId>(entity =>
