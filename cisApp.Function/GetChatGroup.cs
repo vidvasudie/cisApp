@@ -206,7 +206,8 @@ namespace cisApp.Function
                             CreatedBy = job.UserId,
                             UpdatedBy = job.UserId,
                             CreatedDate = DateTime.Now,
-                            UpdatedDate = DateTime.Now
+                            UpdatedDate = DateTime.Now,
+                            JobId = jobId
                         };
 
                         var result = Update(chatGroup, job.UserId);

@@ -12,5 +12,6 @@ namespace cisApp.Core
         public DateTime UpdatedDate { get; set; }
         public Guid CreatedBy { get; set; }
         public Guid UpdatedBy { get; set; }
+        public Guid? JobId { get; set; }
     }
 }
