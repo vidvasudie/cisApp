@@ -4,9 +4,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using DIGITAL_ID.library;
-using Newtonsoft.Json;
-
-namespace cisApp.library
+using Newtonsoft.Json; 
+namespace cisApp.Function
 {
     public   class MobileNotfication
     {
@@ -23,7 +22,7 @@ namespace cisApp.library
             alert  // เมื่อลูกค้าแจ้งขอแก้ไขงาน 
         }
 
-        public async void Fordesigner(ModeDesigner modeDesigner, string clientID)
+        public async void Fordesigner(ModeDesigner modeDesigner, string clientID, Guid userId)
         {
             NotiModel obj = new NotiModel();
             obj.to = clientID;
@@ -62,7 +61,8 @@ namespace cisApp.library
                     obj.notification.title = "มีใบงานถูกขอแก้ไข!";
                     //obj.notification.icon = ""; 
                     break; 
-            }
+            } 
+            GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body); 
             await NotifyAsync(obj);
         }
          
@@ -86,7 +86,7 @@ namespace cisApp.library
         }
         #endregion
 
-        public async void Forcustomer(Modecustomer modeDesigner, string clientID)
+        public async void Forcustomer(Modecustomer modeDesigner, string clientID, Guid userId)
         {
 
 
@@ -118,6 +118,7 @@ namespace cisApp.library
                     break;
                
             }
+            GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body);
             await NotifyAsync(obj);
         }
 
