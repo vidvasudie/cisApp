@@ -16,15 +16,19 @@ namespace cisApp.Function
         {
             public static List<Notification> GetbyUserID(Guid userID)
             {
+                List<Notification> obj = new List<Notification>();
+
+
                 using (var context = new CAppContext())
                 {
                     using (var dbContextTransaction = context.Database.BeginTransaction())
                     {
 
-                        return context.Notification.Where(o => o.UserId == userID && o.IsActive == true).ToList(); 
+                        obj  = context.Notification.Where(o => o.UserId == userID && o.IsActive == true).ToList(); 
 
                     }
-                } 
+                }
+                return obj;
             }
 
         }
