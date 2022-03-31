@@ -103,9 +103,9 @@ namespace cisApp.API.Controllers
 
                 var Obj = GetAlbum.Get.GetAlbumImageByAttachId(webAdmin, attachId.Value);
 
-                var Liked = GetPostLike.Get.GetByUserIdAndRefId(userId.Value, Obj.AlbumRefId.Value);
+                var Liked = GetPostLike.Get.GetByUserIdAndRefId(userId.Value, Obj.AttachFileId);
 
-                var comment = GetPostComment.Get.GetByRefId(Obj.AlbumRefId.Value);
+                var comment = GetPostComment.Get.GetByRefId(Obj.AttachFileId);
 
                 var user = GetUser.Get.GetById(Obj.UserId.Value);
 
