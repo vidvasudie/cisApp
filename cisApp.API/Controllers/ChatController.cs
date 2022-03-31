@@ -58,6 +58,8 @@ namespace cisApp.API.Controllers
 
                 var chatGroup = GetChatGroup.Get.GetById(chatGroupId.Value);
 
+                Guid? jobOwnerUserId = null;
+
                 if (chatGroup != null)
                 {
                     if (chatGroup.JobId != null)
@@ -69,6 +71,7 @@ namespace cisApp.API.Controllers
                             if (job.UserId != id)
                             {
                                 isUserOwnJob = false;
+                                jobOwnerUserId = job.UserId;
                             }
                         }
                     }
@@ -81,6 +84,7 @@ namespace cisApp.API.Controllers
                             if (job.UserId != id)
                             {
                                 isUserOwnJob = false;
+                                jobOwnerUserId = job.UserId;
                             }
                         }
                     }
@@ -91,6 +95,27 @@ namespace cisApp.API.Controllers
                 {
                     // then fill users chat it sometime null
                     var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroupId.Value).Where(o => o.UserId != id.Value);
+
+                    foreach (var item in chatGroupUsers)
+                    {
+                        var chat = chatModels.FirstOrDefault(o => o.UserId == item.UserId);
+
+                        if (chat != null)
+                        {
+                            groupChatListModels.Add(chat);
+                        }
+                        else
+                        {
+                            var mockChatModel = GetChatMessage.Get.MockChatModel(item.UserId);
+
+                            groupChatListModels.Add(mockChatModel);
+                        }
+                    }
+                }
+                else
+                {
+                    // then fill users chat it sometime null
+                    var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroupId.Value).Where(o => o.UserId != id.Value && o.UserId == jobOwnerUserId);
 
                     foreach (var item in chatGroupUsers)
                     {
