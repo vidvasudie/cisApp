@@ -719,18 +719,25 @@ namespace cisApp.Function
                     using (var context = new CAppContext())
                     {
                         var attachFile = context.AttachFile.Find(id);
+                        if(attachFile != null)
+                        {
+                            var albumImage = context.AlbumImage.Where(o => o.ImgId == attachFile.RefId).FirstOrDefault();
 
-                        var albumImage = context.AlbumImage.Where(o => o.ImgId == attachFile.RefId).FirstOrDefault();
+                            if (albumImage != null)
+                            {
+                                attachFile.IsActive = false;
+                                attachFile.DeletedBy = userId;
+                                attachFile.DeletedDate = DateTime.Now;
 
-                        attachFile.IsActive = false;
-                        attachFile.DeletedBy = userId;
-                        attachFile.DeletedDate = DateTime.Now;
 
+                                context.AttachFile.Update(attachFile);
+                                context.AlbumImage.Remove(albumImage);
 
-                        context.AttachFile.Update(attachFile);
-                        context.AlbumImage.Remove(albumImage);
-
-                        context.SaveChanges();
+                                context.SaveChanges();
+                            }
+                            
+                        }
+                        
                     }
                 }
                 catch (Exception ex)
@@ -746,14 +753,17 @@ namespace cisApp.Function
                     using (var context = new CAppContext())
                     {
                         var album = context.Album.Where(o => o.UserId == userId && o.IsDeleted != true && o.AlbumType == "0").FirstOrDefault();
+                        if (album != null)
+                        {
+                            album.IsDeleted = true;
+                            album.DeletedDate = DateTime.Now;
+                            album.DeletedBy = userId;
 
-                        album.IsDeleted = true;
-                        album.DeletedDate = DateTime.Now;
-                        album.DeletedBy = userId;
+                            context.Album.Update(album);
 
-                        context.Album.Update(album);
-
-                        context.SaveChanges();
+                            context.SaveChanges();
+                        }
+                        
                     }
                 }
                 catch (Exception ex)

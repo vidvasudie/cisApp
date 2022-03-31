@@ -286,7 +286,7 @@ namespace cisApp.API.Controllers
                 var job = GetJobsCandidate.Manage.Add(value.JobId.Value, value.UserId.Value, value.Ip);
                 if (job == null)
                 {
-                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ นักออกแบบไม่สามารถสมัครงานเดิมได้เกิน 2 ครั้ง", "fail", null));
+                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ นักออกแบบไม่สามารถสมัครงานเดิมได้เกิน 2 ครั้ง (ถูกปฏิเสธ) และไม่เกิน 5 ครั้ง (ยกเลิกสมัคร)", "fail", null));
                 }
 
                 var jc = GetJobsCandidate.Get.GetByJobId(new SearchModel { gId= value.JobId });

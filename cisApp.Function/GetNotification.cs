@@ -57,6 +57,8 @@ namespace cisApp.Function
 
                         context.Notification.Add(obj);
                         context.SaveChanges();
+
+                        dbContextTransaction.Commit();
                         return obj;
                     }
                 }
@@ -77,6 +79,8 @@ namespace cisApp.Function
                             obj.ReadDate = DateTime.Now;
                             context.Notification.Add(obj);
                             context.SaveChanges();
+
+                            dbContextTransaction.Commit();
                         }
                     }
                 }

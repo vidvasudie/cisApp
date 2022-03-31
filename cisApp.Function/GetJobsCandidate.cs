@@ -106,8 +106,13 @@ namespace cisApp.Function
                     {
                         using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
-                            int dbCount = context.JobsCandidate.Where(o => o.JobId == jobId && o.UserId == userId).Count();
+                            int dbCount = context.JobsCandidate.Where(o => o.JobId == jobId && o.UserId == userId && o.CaStatusId == 5).Count();
                             if(dbCount >= 2)
+                            {
+                                return null;
+                            }
+                            dbCount = context.JobsCandidate.Where(o => o.JobId == jobId && o.UserId == userId && o.CaStatusId == 7).Count();
+                            if (dbCount > 5)
                             {
                                 return null;
                             }
