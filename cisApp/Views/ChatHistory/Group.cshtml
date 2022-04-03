@@ -1,0 +1,198 @@
+﻿
+@{
+    ViewData["Title"] = "แชทกลุ่ม";
+    ViewData["ControllerName"] = "Chats";
+}
+@using cisApp.Function
+
+@model SearchModel
+
+@section Scripts{
+    <!--begin::Page Scripts(used by this page)-->
+    <!--Reference the SignalR library. -->
+    <script src="@Url.Content("~/microsoft/signalr/dist/browser/signalr.min.js")"></script>
+
+    <script src="@Url.Content("~/assets/js/pages/custom/chat/chat.js")"></script>
+    <!--end::Page Scripts-->
+
+    <script src="@Url.Content("~/js/pages/chat/index.js")"></script>
+    <script src="@Url.Content("~/js/pages/chat/signalRChat.js")"></script>
+
+    <script>
+        const _ChatListUrl = '@Url.Action("GetChatList", ViewData["ControllerName"].ToString(), new {type = "2"})'
+        const _ChatCardUrl = '@Url.Action("GetChatCard", ViewData["ControllerName"].ToString(), new { Id = Model.Id })'
+        const _ChatMessageUrl = '@Url.Action("GetChatMessagePage", ViewData["ControllerName"].ToString(), new { Id = "__id__", page = "__page__" })'
+        const _SendMessageUrl = '@Url.Action("SendMessage", ViewData["ControllerName"].ToString())'
+        const _SendMessageFileUrl = '@Url.Action("SendMessageFiles", ViewData["ControllerName"].ToString())'
+
+        const _SignalRUrl = '@ViewData["SignalRWebSite"].ToString()'
+
+        const _UserID = '@Context.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value'
+
+        function PagerClick(index) {
+        var suc = function (html) {
+            $('#box_update').html(html);
+        }
+        var err = function (e) {
+            alert('error paging', e);
+        }
+
+            var text = $('#kt_datatable_search_query').val()
+
+            var recieverId = $('#RecieverId').val();
+
+        CallAjax('@Url.Action("ItemList", ViewData["ControllerName"])', 'POST'
+            , {
+                text,
+                groupId: recieverId
+                , currentPage: index
+                , pageSize: $('#pageSize').val()
+            }
+            , suc, err);
+    }
+
+    $(function () {
+        $('body').on('change', '#pageSize', function () {
+            PagerClick(1);
+        });
+        //PagerClick(1);
+    });
+
+        $(document).ready(function () {
+            initView();
+        })
+    </script>
+
+
+    @await Html.PartialAsync("~/Views/Shared/Album/_ImagesViewModal.cshtml")
+
+}
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Chat-->
+            <div class="d-flex flex-row">
+                <!--begin::Aside-->
+                <div class="flex-row-auto offcanvas-mobile w-350px w-xl-400px" id="kt_chat_aside">
+                    <!--begin::Card-->
+                    <div class="card card-custom">
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <!--begin:Search-->
+                            <div class="card card-custom mb-2">
+                                <a href="@Url.Action("CreateGroup", @ViewData["ControllerName"])" class="btn btn-outline-primary">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-drop"></i>
+                                    </span>
+                                    <span class="navi-text">สร้างกลุ่มใหม่</span>
+                                </a>
+                            </div>
+                            
+                            <div class="input-group input-group-solid">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <span class="svg-icon svg-icon-lg">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/General/Search.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                    <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control py-4 h-auto" placeholder="ค้นหารายชื่อ" id="chatSearchText" />
+                            </div>
+                            <!--end:Search-->
+                            <!--begin:Users-->
+                            <div class="mt-7 scroll scroll-pull" id="chat-list">
+
+
+                            </div>
+                            <!--end:Users-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Aside-->
+
+                
+                <!--begin::Content-->
+                <div class="flex-row-fluid ml-lg-8" id="kt_chat_content">
+                    <!--begin::Card-->
+                    <div class="card card-custom">
+
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Content-->
+            </div>
+            <!--end::Chat-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--begin::Card-->
+                <div class="card card-custom gutter-b">
+                    <div class="card-body">
+
+                        <!--begin::Search Form-->
+                        <div class="mb-12">
+                            <div class="row align-items-center">
+                                <div class="col-lg-9 col-xl-8">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-12 my-2 my-md-0">
+                                            <div class="input-icon">
+                                                <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" />
+                                                <span>
+                                                    <i class="flaticon2-search-1 text-muted"></i>
+                                                </span>
+                                            </div>
+                                        </div>                                        
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 col-xl-4 mt-5 mt-lg-0">
+                                    <a href="#" class="btn btn-light-primary px-6 font-weight-bold" onclick="PagerClick(1)">Search</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Search Form-->
+                        <!--begin::Separator-->
+                        <div class="separator separator-solid my-7"></div>
+                        <!--end::Separator-->
+                    </div>
+                </div>
+                <!--end::Card-->
+
+                <div class="card card-custom" id="box_update">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

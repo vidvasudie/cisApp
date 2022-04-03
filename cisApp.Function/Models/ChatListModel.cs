@@ -14,5 +14,8 @@ namespace cisApp.Function
 
         public List<AttachFileAPIModel> Profiles { get; set; }
 
+        public Guid? TmpSenderId { get; set; }
+        public Guid? TmpRecieverId { get; set; }
+
     }
 }

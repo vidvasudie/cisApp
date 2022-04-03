@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewData["Title"] = "ประวัติแชทรายบุคคล";
+    ViewData["ControllerName"] = "ChatHistory";
+}
+@using cisApp.Function
+
+@model SearchModel
+
+@section Scripts{
+    <!--begin::Page Scripts(used by this page)-->
+    <!--Reference the SignalR library. -->
+    @*<script src="@Url.Content("~/microsoft/signalr/dist/browser/signalr.min.js")"></script>*@
+
+    <script src="@Url.Content("~/assets/js/pages/custom/chat/chat.js")"></script>
+    <!--end::Page Scripts-->
+
+    <script src="@Url.Content("~/js/pages/chat/historyPrivate.js")"></script>
+    @*<script src="@Url.Content("~/js/pages/chat/signalRChat.js")"></script>*@
+
+    <script>
+        const _ChatListUrl = '@Url.Action("GetChatList", ViewData["ControllerName"].ToString(), new {type = "1"})'
+        const _ChatCardUrl = '@Url.Action("GetChatCard", ViewData["ControllerName"].ToString(), new { Id = Model.Id })'
+        const _ChatMessageUrl = '@Url.Action("GetChatMessagePage", ViewData["ControllerName"].ToString(), new { Id1 = "__id1__", Id2 = "__id2__", page = "__page__" })'
+        @*const _SendMessageUrl = '@Url.Action("SendMessage", ViewData["ControllerName"].ToString())'
+        const _SendMessageFileUrl = '@Url.Action("SendMessageFiles", ViewData["ControllerName"].ToString())'*@
+
+        @*const _SignalRUrl = '@ViewData["SignalRWebSite"].ToString()'*@
+
+
+        $(document).ready(function () {
+            initView();
+        })
+    </script>
+
+
+    @await Html.PartialAsync("~/Views/Shared/Album/_ImagesViewModal.cshtml")
+
+}
+
+<!--begin::Content-->
+<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <!--begin::Entry-->
+    <div class="d-flex flex-column-fluid">
+        <!--begin::Container-->
+        <div class="container">
+            <!--begin::Chat-->
+            <div class="d-flex flex-row">
+                <!--begin::Aside-->
+                <div class="flex-row-auto offcanvas-mobile w-350px w-xl-400px" id="kt_chat_aside">
+                    <!--begin::Card-->
+                    <div class="card card-custom">
+                        <!--begin::Body-->
+                        <div class="card-body">
+                            <!--begin:Search-->
+                            <div class="input-group input-group-solid">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                        <span class="svg-icon svg-icon-lg">
+                                            <!--begin::Svg Icon | path:assets/media/svg/icons/General/Search.svg-->
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                    <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero" />
+                                                </g>
+                                            </svg>
+                                            <!--end::Svg Icon-->
+                                        </span>
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control py-4 h-auto" placeholder="ค้นหารายชื่อ" id="chatSearchText"/>
+                            </div>
+                            <!--end:Search-->
+                            <!--begin:Users-->
+                            <div class="mt-7 scroll scroll-pull" id="chat-list">
+
+
+                            </div>
+                            <!--end:Users-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Aside-->
+                <!--begin::Content-->
+                <div class="flex-row-fluid ml-lg-8" id="kt_chat_content">
+                    <!--begin::Card-->
+                    <div class="card card-custom">
+
+                    </div>
+                    <!--end::Card-->
+                </div>
+                <!--end::Content-->
+            </div>
+            <!--end::Chat-->
+        </div>
+        <!--end::Container-->
+    </div>
+    <!--end::Entry-->
+</div>
+<!--end::Content-->
