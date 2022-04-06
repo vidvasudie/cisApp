@@ -52,13 +52,23 @@ namespace cisApp.Controllers
         }
 
         [HttpGet]
-        public PartialViewResult GetChatList(string text, string type = "") // 1 is private , 2 is group
+        public PartialViewResult GetChatList(string text, string type = "1") // 1 is private , 2 is group
         {
             try
             {
-                var chatList = GetChatHistory.Get.GetChatList(text);
-                                
-                return PartialView("PT/_ChatList", chatList);
+                if (type == "1")
+                {
+                    var chatList = GetChatHistory.Get.GetChatList(text);
+
+                    return PartialView("PT/_ChatList", chatList);
+                }
+                else
+                {
+                    var chatList = GetChatHistory.Get.GetChatGroupList(text);
+
+                    return PartialView("PT/_ChatList", chatList);
+                }
+                
             }
             catch (Exception ex)
             {

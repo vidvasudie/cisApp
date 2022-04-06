@@ -25,7 +25,14 @@ namespace cisApp.API.Controllers
 
                 var chatModels = GetChatMessage.Get.GetChatList(id.Value);
 
-                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", chatModels));
+                int unReadChat = 0;
+
+                if (chatModels != null)
+                {
+                   unReadChat = chatModels.Where(o => o.UnRead > 0).ToList().Count;
+                }
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success",new { chatModels, unReadChat}));
             }
             catch (Exception ex)
             {

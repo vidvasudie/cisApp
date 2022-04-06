@@ -1,7 +1,7 @@
 ﻿
 @{
     ViewData["Title"] = "แชทกลุ่ม";
-    ViewData["ControllerName"] = "Chats";
+    ViewData["ControllerName"] = "ChatHistory";
 }
 @using cisApp.Function
 
@@ -10,24 +10,23 @@
 @section Scripts{
     <!--begin::Page Scripts(used by this page)-->
     <!--Reference the SignalR library. -->
-    <script src="@Url.Content("~/microsoft/signalr/dist/browser/signalr.min.js")"></script>
+    @*<script src="@Url.Content("~/microsoft/signalr/dist/browser/signalr.min.js")"></script>*@
 
     <script src="@Url.Content("~/assets/js/pages/custom/chat/chat.js")"></script>
     <!--end::Page Scripts-->
 
-    <script src="@Url.Content("~/js/pages/chat/index.js")"></script>
-    <script src="@Url.Content("~/js/pages/chat/signalRChat.js")"></script>
+    <script src="@Url.Content("~/js/pages/chat/historyPrivate.js")"></script>
+    @*<script src="@Url.Content("~/js/pages/chat/signalRChat.js")"></script>*@
 
     <script>
         const _ChatListUrl = '@Url.Action("GetChatList", ViewData["ControllerName"].ToString(), new {type = "2"})'
         const _ChatCardUrl = '@Url.Action("GetChatCard", ViewData["ControllerName"].ToString(), new { Id = Model.Id })'
         const _ChatMessageUrl = '@Url.Action("GetChatMessagePage", ViewData["ControllerName"].ToString(), new { Id = "__id__", page = "__page__" })'
-        const _SendMessageUrl = '@Url.Action("SendMessage", ViewData["ControllerName"].ToString())'
+        @*const _SendMessageUrl = '@Url.Action("SendMessage", ViewData["ControllerName"].ToString())'
         const _SendMessageFileUrl = '@Url.Action("SendMessageFiles", ViewData["ControllerName"].ToString())'
 
-        const _SignalRUrl = '@ViewData["SignalRWebSite"].ToString()'
+        const _SignalRUrl = '@ViewData["SignalRWebSite"].ToString()'*@
 
-        const _UserID = '@Context.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value'
 
         function PagerClick(index) {
         var suc = function (html) {
@@ -84,12 +83,7 @@
                         <div class="card-body">
                             <!--begin:Search-->
                             <div class="card card-custom mb-2">
-                                <a href="@Url.Action("CreateGroup", @ViewData["ControllerName"])" class="btn btn-outline-primary">
-                                    <span class="navi-icon">
-                                        <i class="flaticon2-drop"></i>
-                                    </span>
-                                    <span class="navi-text">สร้างกลุ่มใหม่</span>
-                                </a>
+                                
                             </div>
                             
                             <div class="input-group input-group-solid">

@@ -96,6 +96,81 @@ namespace cisApp.Function
                 }
             }
 
+            public static List<ChatListModel> GetChatGroupList(string name = "")
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@name", !string.IsNullOrEmpty(name) ? name : (object)DBNull.Value)
+                    };
+
+                    var chatGroups = StoreProcedure.GetAllStored<ChatGroup>("GetChatGroupListHistory", parameter);
+
+                    List<ChatListModel> messages = chatGroups.Select(o => new ChatListModel()
+                    {
+                        ChatName = o.ChatGroupName,
+                        UserId = o.ChatGroupId.Value,
+                        RecieverId = o.ChatGroupId.Value,
+                        TmpRecieverId = o.ChatGroupId.Value,
+                    }).ToList();
+
+                    if (messages != null)
+                    {
+                        string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                        foreach (var item in messages)
+                        {
+
+                            var chatGroup = GetChatGroup.Get.GetById(item.UserId);
+
+                            item.Profiles = new List<AttachFileAPIModel>();
+
+                            if (chatGroup != null)
+                            {
+                                var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroup.ChatGroupId.Value);
+
+                                if (chatGroupUsers != null)
+                                {
+                                    item.SenderId = chatGroupUsers.OrderBy(o => o.UserId).FirstOrDefault().UserId;
+                                    item.TmpSenderId = chatGroupUsers.OrderBy(o => o.UserId).FirstOrDefault().UserId;
+                                    foreach (var user in chatGroupUsers)
+                                    {
+                                        // get profile
+                                        var profile = GetUser.Get.GetUserProfileImg(user.UserId);
+                                        var userModel = GetUser.Get.GetById(user.UserId);
+
+                                        if (profile != null)
+                                        {
+                                            item.Profiles.Add(new AttachFileAPIModel()
+                                            {
+                                                Name = profile.FileName,
+                                                Path = webAdmin + profile.UrlPathAPI,
+                                                Description = userModel.Fname
+                                            });
+                                        }
+                                        else
+                                        {
+                                            // insert default img
+                                            item.Profiles.Add(new AttachFileAPIModel()
+                                            {
+                                                Name = "default",
+                                                Path = webAdmin + _DefaultProfile,
+                                                Description = userModel.Fname
+                                            });
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    return messages;
+                }
+                catch (Exception ex)
+                {
+                    return new List<ChatListModel>();
+                }
+            }
+
             public static ChatDetailModel GetChatDetail(Guid id1, Guid id2)
             {
                 try
