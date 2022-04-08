@@ -170,8 +170,10 @@ namespace cisApp.Function
                 using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, "https://fcm.googleapis.com/fcm/send"))
                 {
                     httpRequest.Headers.TryAddWithoutValidation("Authorization", serverKey);
-                 //   httpRequest.Headers.TryAddWithoutValidation("Sender", senderId);
-                    httpRequest.Content = new StringContent(JsonConvert.SerializeObject(obj) , Encoding.UTF8, "application/json");
+                    //   httpRequest.Headers.TryAddWithoutValidation("Sender", senderId);
+
+                    string _data = JsonConvert.SerializeObject(obj);
+                    httpRequest.Content = new StringContent(_data, Encoding.UTF8, "application/json");
 
                     using (var httpClient = new HttpClient())
                     {

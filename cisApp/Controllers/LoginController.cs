@@ -24,6 +24,12 @@ namespace cisApp.Controllers
             //return View(new LoginModel() { username= "admin@gmail.com", password="12345", userType = 3 });
 
 
+
+
+         //      MobileNotfication mobileNotfication = new MobileNotfication();
+         //     mobileNotfication.Fordesigner(MobileNotfication.ModeDesigner.alert, Guid.Parse("E5DB061F-C01E-4FD8-B92A-10C2A351355D"), Guid.Parse("180AFBE8-769F-41C0-B2AE-0511C557302E"));
+
+
             return View(new LoginModel() {  });
         }
 
