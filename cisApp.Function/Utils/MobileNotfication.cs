@@ -25,30 +25,30 @@ namespace cisApp.Function
             notApprove  // ไม่อนุมัติ คำขอเป็นนักออกแบบ
         }
 
-        public async void Fordesigner(ModeDesigner modeDesigner,   Guid userId,Guid JobsID)
+        public async void Fordesigner(ModeDesigner modeDesigner, Guid userId, Guid? JobsID)
         {
             NotiModel obj = new NotiModel();
-      
+
             obj.notification = new notification();
             string page = "";
             switch (modeDesigner.ToString())
             {
-                case "favorite": 
+                case "favorite":
                     obj.notification.body = "มีใบงานที่กดถูกใจคุณ ถูกสร้างขึ้นคลิ๊กเลย";
                     obj.notification.title = "มีลูกค้าสนใจคุณ!";
                     //obj.notification.icon = "";
                     page = "worksheet";
                     break;
-                case "contest": 
+                case "contest":
                     obj.notification.body = "มีใบงานที่คุณได้รับคัดเลือกเข้าประกวดงาน อย่าลืมสอบถามรายละเอียดความต้องการละ คลิ๊กเลยเพื่อดูรายละเอียด ";
                     obj.notification.title = "คุณได้รับคัดเลือกในกวดเข้าร่วมประกวดงาน";
                     //obj.notification.icon = ""; 
-                    page = "worksheet"; 
+                    page = "worksheet";
                     break;
-                case "winner": 
+                case "winner":
                     obj.notification.body = "เราขอแสดงความยินดีด้วยงานของคุณได้รับเลือกให้เป็นผู้ชนะในครั้งนี้ อย่าลืมส่งรายละเอียดการออกแบบให้ลูกค้า คลิ๊กเลยเพื่อดูรายละเอียด ";
                     obj.notification.title = "ขอแสดงความยินดี";
-                    page = "worksheet"; 
+                    page = "worksheet";
                     //obj.notification.icon = ""; 
                     break;
                 case "submit":
@@ -86,16 +86,22 @@ namespace cisApp.Function
                     break;
 
 
-                     
-            }
 
-            var NotiID = GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body, page, JobsID);  
+            }
+            var NotiID = new Core.Notification();
+
+            if (JobsID != null)
+            {
+                 NotiID = GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body, page, JobsID.Value);
+            }
             var _c = GetUserClientId.Get.GetbyUserid(userId);
             if (_c != null)
             {
                 obj.to = _c.ClientId;
-                obj.notification.click_action = string.Format("https://cloudidea.app/Notifacation/:{0}", NotiID.Id);
-
+                if (NotiID != null)
+                {
+                    obj.notification.click_action = string.Format("https://cloudidea.app/Notifacation/:{0}", NotiID.Id);
+                }
                 await NotifyAsync(obj);
             }
         }
