@@ -19,38 +19,36 @@ namespace cisApp.Function
             contest, // เมื่อได้รับเลือกในการเข้าประกวด
             winner, // เมื่อได้รับการเลือกจากลูกค้า
             submit, //เมื่อต้อง ถึงเวล่ใกล้ส่งงาน
-            alert  // เมื่อลูกค้าแจ้งขอแก้ไขงาน 
+            alert,  // เมื่อลูกค้าแจ้งขอแก้ไขงาน 
+            
+            approve, // อนุมัติ คำขอเป็นนักออกแบบ
+            notApprove  // ไม่อนุมัติ คำขอเป็นนักออกแบบ
         }
 
-        public async void Fordesigner(ModeDesigner modeDesigner,   Guid userId,Guid JobsID)
+        public async void Fordesigner(ModeDesigner modeDesigner, Guid userId, Guid? JobsID)
         {
             NotiModel obj = new NotiModel();
-      
+
             obj.notification = new notification();
             string page = "";
             switch (modeDesigner.ToString())
             {
                 case "favorite":
-
                     obj.notification.body = "มีใบงานที่กดถูกใจคุณ ถูกสร้างขึ้นคลิ๊กเลย";
                     obj.notification.title = "มีลูกค้าสนใจคุณ!";
                     //obj.notification.icon = "";
                     page = "worksheet";
                     break;
                 case "contest":
-
                     obj.notification.body = "มีใบงานที่คุณได้รับคัดเลือกเข้าประกวดงาน อย่าลืมสอบถามรายละเอียดความต้องการละ คลิ๊กเลยเพื่อดูรายละเอียด ";
                     obj.notification.title = "คุณได้รับคัดเลือกในกวดเข้าร่วมประกวดงาน";
                     //obj.notification.icon = ""; 
                     page = "worksheet";
-
                     break;
                 case "winner":
-
                     obj.notification.body = "เราขอแสดงความยินดีด้วยงานของคุณได้รับเลือกให้เป็นผู้ชนะในครั้งนี้ อย่าลืมส่งรายละเอียดการออกแบบให้ลูกค้า คลิ๊กเลยเพื่อดูรายละเอียด ";
                     obj.notification.title = "ขอแสดงความยินดี";
                     page = "worksheet";
-
                     //obj.notification.icon = ""; 
                     break;
                 case "submit":
@@ -68,16 +66,42 @@ namespace cisApp.Function
                     page = "worksheet";
 
                     //obj.notification.icon = ""; 
-                    break; 
-            }
+                    break;
+                case "approve":
 
-            var NotiID = GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body, page, JobsID);  
+                    obj.notification.body = "ขอแสดงความยินดี ท่านได้รับการอนุมัติคำขอเป็นนักออกแบบแล้ว";
+                    obj.notification.title = "ยินดีด้วย";
+                    page = "worksheet";
+
+                    //obj.notification.icon = ""; 
+                    break;
+
+                case "notApprove":
+
+                    obj.notification.body = "คำขอของท่าน ไม่ผ่านการอนุมติคำขอเป็นนักออกแบบ";
+                    obj.notification.title = "แจ้งผลดำเนินการ";
+                    page = "worksheet";
+
+                    //obj.notification.icon = ""; 
+                    break;
+
+
+
+            }
+            var NotiID = new Core.Notification();
+
+            if (JobsID != null)
+            {
+                 NotiID = GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body, page, JobsID.Value);
+            }
             var _c = GetUserClientId.Get.GetbyUserid(userId);
             if (_c != null)
             {
                 obj.to = _c.ClientId;
-                obj.notification.click_action = string.Format("https://cloudidea.app/Notifacation/:{0}", NotiID.Id);
-
+                if (NotiID != null)
+                {
+                    obj.notification.click_action = string.Format("https://cloudidea.app/Notifacation/:{0}", NotiID.Id);
+                }
                 await NotifyAsync(obj);
             }
         }
@@ -170,8 +194,10 @@ namespace cisApp.Function
                 using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, "https://fcm.googleapis.com/fcm/send"))
                 {
                     httpRequest.Headers.TryAddWithoutValidation("Authorization", serverKey);
-                 //   httpRequest.Headers.TryAddWithoutValidation("Sender", senderId);
-                    httpRequest.Content = new StringContent(JsonConvert.SerializeObject(obj) , Encoding.UTF8, "application/json");
+                    //   httpRequest.Headers.TryAddWithoutValidation("Sender", senderId);
+
+                    string _data = JsonConvert.SerializeObject(obj);
+                    httpRequest.Content = new StringContent(_data, Encoding.UTF8, "application/json");
 
                     using (var httpClient = new HttpClient())
                     {

@@ -12,6 +12,7 @@ namespace cisApp.Function
         public string ChatName { get; set; }
         public List<ChatProfileModel> chatProfiles { get; set; }
         public List<ChatMessageModel> chatMessages { get; set; }
+        public Guid? SenderId { get; set; }
 
     }
 

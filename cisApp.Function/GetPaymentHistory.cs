@@ -66,6 +66,36 @@ namespace cisApp.Function
                 }
             }
 
+            public static List<PaymentHistoryModel> GetByMonthYear(Guid userId, int? month, int? year)
+            {
+                try
+                {
+                    SearchModel model = new SearchModel()
+                    {
+                        UserId = userId,
+                        pageSize = 99999,
+                        currentPage = 1
+                    };
+
+                    if (month != null && year != null)
+                    {
+                        DateTime dtStart = new DateTime(year.Value, month.Value, 1);
+                        DateTime dtEnd = new DateTime(year.Value, month.Value, DateTime.DaysInMonth(year.Value, month.Value));
+
+                        model.StartDate = dtStart;
+                        model.EndDate = dtEnd;
+                    }
+
+                    var data = GetBySearch(model);
+
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
         }
 
         public class Manage

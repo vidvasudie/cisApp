@@ -1,0 +1,60 @@
+﻿
+@using cisApp.Function
+
+@model List<ChatMessageModel>
+
+@{
+   
+}
+
+@foreach (var item in Model)
+{
+    <!--begin::Message Out-->
+    <div class="d-flex flex-column mb-5 align-items-end">
+        <div class="d-flex align-items-center">
+            <div>
+                <span class="text-muted font-size-sm">@item.CreatedDateStr</span>
+                <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">@item.SenderName</a>
+            </div>
+            <div class="symbol symbol-circle symbol-40 ml-3">
+                <img alt="Pic" src="https://picsum.photos/300?random=66" />
+            </div>
+        </div>
+        @if (item.Files != null && item.Files.Count > 0)
+        {
+            <div class="mt-2 rounded p-5 bg-light-primary text-dark-50 font-weight-bold font-size-lg text-right max-w-400px row gallery">
+                @*@foreach (var file in item.Files)
+                    {
+                        <img class="col-md-4" src="@file.Path"/>
+                    }*@
+                @{
+                    int idx = 0;
+                    Random rnd = new Random();
+                    var imgs = item.AttachFiles.Select(o => new FileAttachModel()
+                    {
+                        AttachFileId = o.AttachFileId,
+                        FileName = o.FileName,
+                        Size = o.Size
+                    ,
+                        TypeId = rnd.Next()
+                    });
+                    foreach (var attach in imgs)
+                    {
+                        attach.NextImg = idx;
+                        attach.IsView = true;
+                        @await Html.PartialAsync("~/Views/Shared/Common/_ImageItemChat.cshtml", attach)
+                        idx++;
+                    }
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="mt-2 rounded p-5 bg-light-primary text-dark-50 font-weight-bold font-size-lg text-right max-w-400px">@item.Message</div>
+        }
+
+    </div>
+    <!--end::Message Out-->
+
+}
