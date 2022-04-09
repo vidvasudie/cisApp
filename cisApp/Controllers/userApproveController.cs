@@ -164,9 +164,14 @@ namespace cisApp.Controllers
                 var result = GetUserDesignerRequest.Manage.UpdateRequestStatus(data);
                 if(result > 0)
                 {
+                    if (data.Status == 2)
+                    {
+                        new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.approve, data.UserId.Value, null);
+                    }
                     if (data.Status == 3)
                     {
                         GetAlbum.Manage.DeleteAlbumExample(data.UserId.Value);
+                        new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.notApprove, data.UserId.Value, null);
                     }
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "UserApprove")));
                 }
