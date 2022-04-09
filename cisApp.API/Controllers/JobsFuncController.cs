@@ -57,6 +57,7 @@ namespace cisApp.API.Controllers
                     InvAddress = value.InvAddress,
                     InvPersonalId = value.InvPersonalId,
                     Invname = value.Invname,
+                    IsAdvice = value.IsAdvice,
                     files = value.FileList.Select(o => new FileAttachModel { AttachFileId= Guid.Parse(o.FileId), FileName=o.FileName, TypeId=o.Type }).ToList()
                 };
 

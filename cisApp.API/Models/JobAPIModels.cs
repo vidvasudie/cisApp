@@ -48,6 +48,7 @@ namespace cisApp.API.Models
         public string Invname { get; set; }
         public string InvAddress { get; set; }
         public string InvPersonalId { get; set; }
+        public bool? IsAdvice { get; set; }
         public List<FileListModel> FileList { get; set; }
     }
     public class FileListModel

@@ -369,6 +369,7 @@ namespace cisApp.Function
                             obj.IsInvRequired = data.IsInvRequired;
                             obj.InvAddress = data.InvAddress;
                             obj.InvPersonalId = data.InvPersonalId;
+                            obj.IsAdvice = data.IsAdvice;
 
                             obj.JobStatus = data.JobStatus; 
                             obj.UpdatedDate = dateNow;

@@ -177,7 +177,7 @@ namespace cisApp.Core
             modelBuilder.Entity<Jobs>(entity =>
             {
                 entity.HasKey(e => e.JobId)
-                    .HasName("PK__Jobs__056690E281404330");
+                    .HasName("PK__Jobs__056690E20BDB31D5");
 
                 entity.Property(e => e.JobId)
                     .HasColumnName("JobID")
@@ -198,6 +198,8 @@ namespace cisApp.Core
                     .HasMaxLength(13);
 
                 entity.Property(e => e.Invname).HasComment("ชื่อในเอกสารขอใบกำกับภาษี");
+
+                entity.Property(e => e.IsAdvice).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.JobAreaSize)
                     .HasColumnType("decimal(10, 2)")
