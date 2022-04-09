@@ -80,6 +80,6 @@ namespace cisApp.Core
         /// ชื่อในเอกสารขอใบกำกับภาษี
         /// </summary>
         public string Invname { get; set; }
-        public bool? IsAdvice { get; set; }
+        public bool IsAdvice { get; set; }
     }
 }

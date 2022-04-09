@@ -255,7 +255,7 @@
                                         <label class="col-3">ที่อยู่ใบกำกับภาษี</label>
                                         <div class="col-9">
                                             @Html.TextBoxFor(m => m.InvAddress, "", new { @class = "form-control form-control-solid", @placeholder = "ที่อยู่ใบกำกับภาษี" })
-                                            @Html.ValidationMessageFor(m => m.InvAddress, "", new { @class = "text-danger" }) 
+                                            @Html.ValidationMessageFor(m => m.InvAddress, "", new { @class = "text-danger" })
                                         </div>
 
                                     </div>
@@ -263,8 +263,19 @@
                                         <label class="col-3">เลขประจำตัวผู้เสียใบกำกับภาษี</label>
                                         <div class="col-9">
                                             @Html.TextBoxFor(m => m.InvPersonalId, "", new { @class = "form-control form-control-solid", @placeholder = "เลขประจำตัวผู้เสียใบกำกับภาษี" })
-                                            @Html.ValidationMessageFor(m => m.InvPersonalId, "", new { @class = "text-danger" }) 
+                                            @Html.ValidationMessageFor(m => m.InvPersonalId, "", new { @class = "text-danger" })
                                         </div>
+
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-3 col-form-label">ให้มีการแนะนำนักออกแบบ</label>
+                                        <div class="col-9 col-form-label">
+                                            <label class="checkbox checkbox-success">
+                                                @Html.CheckBoxFor(m => m.IsAdvice)
+                                                <span></span>
+                                            </label>
+                                            @Html.ValidationMessageFor(m => m.IsAdvice, "", new { @class = "text-danger" })
+                                        </div> 
 
                                     </div>
                                     @{
