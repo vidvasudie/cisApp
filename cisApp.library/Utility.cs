@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -93,5 +94,14 @@ namespace cisApp.library
         }
 
 
+    }
+
+    public class Array<T> where T : IEnumerable
+    {
+        //public Array(T data)
+        //{
+        //    Data = data;
+        //}
+        public T Data { get; set; }
     }
 }
