@@ -198,7 +198,7 @@ namespace cisApp.Function
                 {
                     using (var context = new CAppContext())
                     {
-                        var data = context.Users.Where(o => o.Email == email && o.Fname == fname && o.Lname == lname);
+                        var data = context.Users.Where(o => o.Email == email && o.Fname == fname && o.Lname == lname && o.IsDeleted == false);
                         if (data.Any())
                             return data.FirstOrDefault();
                         return null;
