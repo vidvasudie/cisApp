@@ -70,7 +70,7 @@ namespace cisApp.Function
                                             item.Profiles.Add(new AttachFileAPIModel()
                                             {
                                                 Name = "default",
-                                                Path = webAdmin + _DefaultProfile,
+                                                Path = null,
                                                 Description = userModel.Fname
                                             });
                                         }
@@ -98,7 +98,7 @@ namespace cisApp.Function
                                     item.Profiles.Add(new AttachFileAPIModel()
                                     {
                                         Name = "default",
-                                        Path = webAdmin + _DefaultProfile,
+                                        Path = null,
                                         Description = userModel.Fname
                                     });
                                 }
@@ -174,7 +174,7 @@ namespace cisApp.Function
                                 item.Profile = new AttachFileAPIModel()
                                 {
                                     Name = "default",
-                                    Path = webAdmin + _DefaultProfile
+                                    Path = null
                                 };
                             }
                         }
@@ -348,7 +348,7 @@ namespace cisApp.Function
                                         messageModel.Profile = new AttachFileAPIModel()
                                         {
                                             Name = "default",
-                                            Path = webAdmin + _DefaultProfile
+                                            Path = null
                                         };
                                     }
 
@@ -398,7 +398,7 @@ namespace cisApp.Function
                                 messageModel.Profile = new AttachFileAPIModel()
                                 {
                                     Name = "default",
-                                    Path = webAdmin + _DefaultProfile
+                                    Path = null
                                 };
                             }
 
@@ -450,7 +450,7 @@ namespace cisApp.Function
                         chatListModel.Profiles.Add(new AttachFileAPIModel()
                         {
                             Name = "default",
-                            Path = webAdmin + _DefaultProfile
+                            Path = null
                         });
                     }
 
