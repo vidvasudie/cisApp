@@ -37,25 +37,25 @@ namespace cisApp.Function
                     obj.notification.body = "มีใบงานที่กดถูกใจคุณ ถูกสร้างขึ้นคลิ๊กเลย";
                     obj.notification.title = "มีลูกค้าสนใจคุณ!";
                     //obj.notification.icon = "";
-                    page = "worksheet";
+                    page = "Notifacation";
                     break;
                 case "contest":
                     obj.notification.body = "มีใบงานที่คุณได้รับคัดเลือกเข้าประกวดงาน อย่าลืมสอบถามรายละเอียดความต้องการละ คลิ๊กเลยเพื่อดูรายละเอียด ";
                     obj.notification.title = "คุณได้รับคัดเลือกในกวดเข้าร่วมประกวดงาน";
                     //obj.notification.icon = ""; 
-                    page = "worksheet";
+                    page = "Notifacation";
                     break;
                 case "winner":
                     obj.notification.body = "เราขอแสดงความยินดีด้วยงานของคุณได้รับเลือกให้เป็นผู้ชนะในครั้งนี้ อย่าลืมส่งรายละเอียดการออกแบบให้ลูกค้า คลิ๊กเลยเพื่อดูรายละเอียด ";
                     obj.notification.title = "ขอแสดงความยินดี";
-                    page = "worksheet";
+                    page = "Notifacation";
                     //obj.notification.icon = ""; 
                     break;
                 case "submit":
 
                     obj.notification.body = "เราแจ้งเตือนการส่งงานเนื่องจากงานที่ท่านได้ประกวดไว้ใกล้ถึงกำหนดส่ง คลิ๊กเลยเพื่อดูรายละเอียด";
                     obj.notification.title = "ใกล้ถึงเวลาส่งงานแล้วนะ!";
-                    page = "worksheet";
+                    page = "Notifacation";
 
                     //obj.notification.icon = ""; 
                     break;
@@ -63,7 +63,7 @@ namespace cisApp.Function
 
                     obj.notification.body = "เราขอแจ้งให้ท่านทราบว่า ใบงานของท่านได้ถูกขอแก้ไขโดยลูกค้า อย่าลืมสอบถามรายละเอียดความต้องการละ คลิ๊กเลยเพื่อดูรายละเอียด";
                     obj.notification.title = "มีใบงานถูกขอแก้ไข!";
-                    page = "worksheet";
+                    page = "Notifacation";
 
                     //obj.notification.icon = ""; 
                     break;
@@ -71,7 +71,7 @@ namespace cisApp.Function
 
                     obj.notification.body = "ขอแสดงความยินดี ท่านได้รับการอนุมัติคำขอเป็นนักออกแบบแล้ว";
                     obj.notification.title = "ยินดีด้วย";
-                    page = "worksheet";
+                    page = "Home";
 
                     //obj.notification.icon = ""; 
                     break;
@@ -80,7 +80,7 @@ namespace cisApp.Function
 
                     obj.notification.body = "คำขอของท่าน ไม่ผ่านการอนุมติคำขอเป็นนักออกแบบ";
                     obj.notification.title = "แจ้งผลดำเนินการ";
-                    page = "worksheet";
+                    page = "Home";
 
                     //obj.notification.icon = ""; 
                     break;
@@ -100,7 +100,7 @@ namespace cisApp.Function
                 obj.to = _c.ClientId;
                 if (NotiID != null)
                 {
-                    obj.notification.click_action = string.Format("https://cloudidea.app/Notifacation/:{0}", NotiID.Id);
+                    obj.notification.click_action = string.Format(page+"/:{0}", NotiID.Id);
                 }
                 await NotifyAsync(obj);
             }
@@ -142,21 +142,21 @@ namespace cisApp.Function
                     obj.notification.body = "กรุณาเลือกและคอนเฟิร์มฟรีแลนซ์เพื่อเริ่มงาน";
                     obj.notification.title = "ฟรีแลนซ์ส่งงานให้คุณแล้ว";
                     //obj.notification.icon = "";
-                    page = "worksheet";
+                    page = "Notifacation";
                     break;
                 case "regist3":
 
                     obj.notification.body = "กรุณาคอนเฟิร์มฟรีแลนซ์เพื่อเริ่มงาน";
                     obj.notification.title = "เราหาฟรีแลนซ์ให้คุณครบแล้ว";
                     //obj.notification.icon = ""; 
-                    page = "worksheet";
+                    page = "Notifacation";
                     break;
                 case "submit":
 
                     obj.notification.body = "เข้าดูงานที่ได้รับของคุณ";
                     obj.notification.title = "ฟรีแลนซ์ส่งงานให้คุณแล้ว";
                     //obj.notification.icon = ""; 
-                    page = "worksheet";
+                    page = "Notifacation";
 
                     break;
                
@@ -167,7 +167,7 @@ namespace cisApp.Function
             if (_c != null)
             {
                 obj.to = _c.ClientId;
-                obj.notification.click_action = string.Format("https://cloudidea.app/Notifacation/:{0}", NotiID.Id) ;
+                obj.notification.click_action = string.Format(page+"/:{0}", NotiID.Id) ;
                 await NotifyAsync(obj);
             }
         }
