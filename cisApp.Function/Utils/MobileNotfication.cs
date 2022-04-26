@@ -28,7 +28,9 @@ namespace cisApp.Function
         public async void Fordesigner(ModeDesigner modeDesigner, Guid userId, Guid? JobsID)
         {
             NotiModel obj = new NotiModel();
-
+            obj.data = new Data();
+            obj.data.isDesigner = true;
+            obj.data.jobId = JobsID;
             obj.notification = new notification();
             string page = "";
             switch (modeDesigner.ToString())
@@ -37,25 +39,25 @@ namespace cisApp.Function
                     obj.notification.body = "มีใบงานที่กดถูกใจคุณ ถูกสร้างขึ้นคลิ๊กเลย";
                     obj.notification.title = "มีลูกค้าสนใจคุณ!";
                     //obj.notification.icon = "";
-                    page = "Notifacation";
+                    page = "Contrat";
+                    obj.data.prevPage = "Home";
                     break;
                 case "contest":
-                    obj.notification.body = "มีใบงานที่คุณได้รับคัดเลือกเข้าประกวดงาน อย่าลืมสอบถามรายละเอียดความต้องการละ คลิ๊กเลยเพื่อดูรายละเอียด ";
+                    obj.notification.body = "มีใบงานที่คุณได้รับคัดเลือกเข้าประกวดงาน อย่าลืมสอบถามรายละเอียดความต้องการ คลิ๊กเลยเพื่อดูรายละเอียด";
                     obj.notification.title = "คุณได้รับคัดเลือกในกวดเข้าร่วมประกวดงาน";
                     //obj.notification.icon = ""; 
-                    page = "Notifacation";
+                    page = "StatusDesigner";
                     break;
                 case "winner":
-                    obj.notification.body = "เราขอแสดงความยินดีด้วยงานของคุณได้รับเลือกให้เป็นผู้ชนะในครั้งนี้ อย่าลืมส่งรายละเอียดการออกแบบให้ลูกค้า คลิ๊กเลยเพื่อดูรายละเอียด ";
+                    obj.notification.body = "เราขอแสดงความยินดีด้วยงานของคุณได้รับเลือกให้เป็นผู้ชนะในครั้งนี้ อย่าลืมส่งรายละเอียดการออกแบบให้ลูกค้า คลิ๊กเลยเพื่อดูรายละเอียด";
                     obj.notification.title = "ขอแสดงความยินดี";
-                    page = "Notifacation";
+                    page = "StatusDesigner";
                     //obj.notification.icon = ""; 
                     break;
-                case "submit":
-
+                case "submit": 
                     obj.notification.body = "เราแจ้งเตือนการส่งงานเนื่องจากงานที่ท่านได้ประกวดไว้ใกล้ถึงกำหนดส่ง คลิ๊กเลยเพื่อดูรายละเอียด";
                     obj.notification.title = "ใกล้ถึงเวลาส่งงานแล้วนะ!";
-                    page = "Notifacation";
+                    page = "StatusDesigner";
 
                     //obj.notification.icon = ""; 
                     break;
@@ -63,7 +65,7 @@ namespace cisApp.Function
 
                     obj.notification.body = "เราขอแจ้งให้ท่านทราบว่า ใบงานของท่านได้ถูกขอแก้ไขโดยลูกค้า อย่าลืมสอบถามรายละเอียดความต้องการละ คลิ๊กเลยเพื่อดูรายละเอียด";
                     obj.notification.title = "มีใบงานถูกขอแก้ไข!";
-                    page = "Notifacation";
+                    page = "StatusDesigner";
 
                     //obj.notification.icon = ""; 
                     break;
@@ -83,10 +85,7 @@ namespace cisApp.Function
                     page = "Home";
 
                     //obj.notification.icon = ""; 
-                    break;
-
-
-
+                    break; 
             }
             var NotiID = new Core.Notification();
 
@@ -98,25 +97,82 @@ namespace cisApp.Function
             if (_c != null)
             {
                 obj.to = _c.ClientId;
-                if (NotiID != null)
-                {
-                    obj.notification.click_action = string.Format(page+"/:{0}", NotiID.Id);
-                }
+                //if (NotiID != null)
+                //{
+                //    obj.notification.click_action = page;//string.Format(page+"/{0}", NotiID.Id);
+                //}
+                //obj.notification.click_action = page;
+                obj.data.action = page;
+
                 await NotifyAsync(obj);
             }
         }
-         
+        
         public class NotiModel
         { 
-         public string to { get; set; } 
-        public notification notification { get; set; }
+            public string to { get; set; } 
+            public notification notification { get; set; }
+            public Android android { get; set; }
+            public Ios apns { get; set; }
+            public Data data { get; set; }
         }
         public class notification {
             public string body { get; set; }
             public string title { get; set; }
-            public string click_action { get; set; } 
-        } 
+            //public string click_action { get; set; } 
+        }
+        #region android
+        public class Android 
+        { 
+            public Android()
+            {
+                notification = new AndroidNotification();
+            }
+            public AndroidNotification notification { get; set; }
+        }
+        public class AndroidNotification
+        {
+            public string sound { get; set; } = "default";
+        }
         #endregion
+        #region ios
+        public class Ios
+        {
+            public Ios()
+            {
+                payload = new IosPayload();
+            }
+            public IosPayload payload { get; set; }
+        }
+        public class IosPayload
+        {
+            public IosPayload()
+            {
+                aps = new PayloadData();
+            }
+            public PayloadData aps { get; set; }
+        }
+        public class PayloadData
+        {
+            public string sound { get; set; } = "default";
+        }
+        #endregion
+        public class Data
+        {
+            /// <summary>
+            /// บอกว่าดูมุมมองนักออกแบบหรือลูกค้า
+            /// </summary>
+            public bool isDesigner { get; set; }
+            public Guid? jobId { get; set; }
+            /// <summary>
+            /// หน้าก่อนหน้า สำหรับ check ว่าจะแสดงปุ่มรับงานหรือไม่
+            /// </summary>
+            public string prevPage { get; set; } = "Home";
+            public string action { get; set; }
+
+        }
+        #endregion
+
         #region สำหรับลูกค้า
         public enum Modecustomer
         {
@@ -132,7 +188,9 @@ namespace cisApp.Function
             string page = "";
 
             NotiModel obj = new NotiModel();
-       
+            obj.data = new Data();
+            obj.data.isDesigner = false;
+            obj.data.jobId = JobsID;
             obj.notification = new notification();
 
             switch (modeDesigner.ToString())
@@ -142,32 +200,34 @@ namespace cisApp.Function
                     obj.notification.body = "กรุณาเลือกและคอนเฟิร์มฟรีแลนซ์เพื่อเริ่มงาน";
                     obj.notification.title = "ฟรีแลนซ์ส่งงานให้คุณแล้ว";
                     //obj.notification.icon = "";
-                    page = "Notifacation";
+                    page = "StatusUser";
                     break;
                 case "regist3":
 
                     obj.notification.body = "กรุณาคอนเฟิร์มฟรีแลนซ์เพื่อเริ่มงาน";
                     obj.notification.title = "เราหาฟรีแลนซ์ให้คุณครบแล้ว";
                     //obj.notification.icon = ""; 
-                    page = "Notifacation";
+                    page = "StatusUser";
                     break;
                 case "submit":
 
                     obj.notification.body = "เข้าดูงานที่ได้รับของคุณ";
                     obj.notification.title = "ฟรีแลนซ์ส่งงานให้คุณแล้ว";
                     //obj.notification.icon = ""; 
-                    page = "Notifacation";
+                    page = "StatusUser";
 
                     break;
                
             }
  
-        var NotiID =     GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body, page, JobsID);
+            //var NotiID = GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body, page, JobsID);
             var _c = GetUserClientId.Get.GetbyUserid(userId);
             if (_c != null)
             {
                 obj.to = _c.ClientId;
-                obj.notification.click_action = string.Format(page+"/:{0}", NotiID.Id) ;
+                //obj.notification.click_action = page;// string.Format(page+"/{0}", NotiID.Id) ;
+                obj.data.action = page;
+
                 await NotifyAsync(obj);
             }
         }
@@ -184,12 +244,13 @@ namespace cisApp.Function
                 var serverKey = string.Format("key={0}", "AAAAqkbgFso:APA91bGczQPjYBPkej-7mhArSDDgeGGCK1pylhuSIvipTcIpt-BjRh4_7md4omhfK7g7tB7yJ6KdgtmEINpOniQ4DpCSmHy_zsaNRGZHDfkLb6QHGQMUgsX5_HPN4L3y7n0pMyu3X3wU");
 
                 // Get the sender id from FCM console
-               // var senderId = string.Format("id={0}", "477030036496");
+                // var senderId = string.Format("id={0}", "477030036496");
 
-             
+                obj.android = new Android(); 
+                obj.apns = new Ios(); 
 
                 // Using Newtonsoft.Json
-             
+
 
                 using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, "https://fcm.googleapis.com/fcm/send"))
                 {
@@ -219,6 +280,7 @@ namespace cisApp.Function
             catch (Exception ex)
             {
                 //_logger.LogError($"Exception thrown in Notify Service: {ex}");
+                //throw ex;
             }
 
             return false;
