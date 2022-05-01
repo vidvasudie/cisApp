@@ -14,7 +14,7 @@ namespace cisApp.Function
         {
             get
             {
-                return "~/Uploads" + "/" + this.AttachFileID + "/" + this.FileName;
+                return this.AttachFileID != Guid.Empty ? "~/Uploads" + "/" + this.AttachFileID + "/" + this.FileName : null; 
             }
         }
         public decimal RateAll { get; set; }
