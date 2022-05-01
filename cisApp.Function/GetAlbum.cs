@@ -332,6 +332,76 @@ namespace cisApp.Function
                 }
             }
 
+            public static List<AlbumImageModel> GetAlbumFeed(SearchModel model, string domainUrl = "")
+            {
+                try
+                {
+                    List<string> imgString = new List<string>();
+
+                    if (model.Imgs != null)
+                    {
+                        imgString = model.Imgs.Select(o => "'" + o.ToString() + "'").ToList();
+                    }
+
+                    int skip = (model.currentPage.Value - 1) * model.pageSize.Value;
+                    SqlParameter[] parameter = new SqlParameter[] {
+                        new SqlParameter("@stext", ""),
+                        new SqlParameter("@orderBy", model.Orderby),
+                        new SqlParameter("@tags", model.Tags),
+                        new SqlParameter("@categories", model.Categories),
+                        new SqlParameter("@skip", skip),
+                        new SqlParameter("@take", model.pageSize.Value),
+                        new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value),
+                        new SqlParameter("@designer", model.Designer != null ? model.Designer : (object)DBNull.Value)
+                    };
+
+                    var data = StoreProcedure.GetAllStored<AlbumImageModel>("GetAlbumFeed", parameter);
+
+                    if (data != null)
+                    {
+                        foreach (var item in data)
+                        {
+                            item.FullUrlPath = domainUrl + item.UrlPath;
+                        }
+                    }
+
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    return new List<AlbumImageModel>();
+                }
+            }
+
+            public static int GetAlbumFeedTotal(SearchModel model)
+            {
+                try
+                {
+
+                    List<string> imgString = new List<string>();
+
+                    if (model.Imgs != null)
+                    {
+                        imgString = model.Imgs.Select(o => "'" + o.ToString() + "'").ToList();
+                    }
+                    SqlParameter[] parameter = new SqlParameter[] {
+                        new SqlParameter("@stext", ""),
+                        new SqlParameter("@orderBy", model.Orderby),
+                        new SqlParameter("@tags", model.Tags),
+                        new SqlParameter("@categories", model.Categories),
+                        new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value),
+                        new SqlParameter("@designer", model.Designer != null ? model.Designer : (object)DBNull.Value)
+                    };
+
+                    var dt = StoreProcedure.GetAllStoredDataTable("GetAlbumFeedTotal", parameter);
+                    return (int)dt.Rows[0]["TotalCount"];
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+
             public static List<AlbumImageModel> GetAlbumImageByAlbumId(SearchModel model, string domainUrl = "")
             {
                 try

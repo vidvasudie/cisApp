@@ -38,7 +38,7 @@ namespace cisApp.API.Controllers
                 };
                 List<AlbumImageModel> Obj = new List<AlbumImageModel>();
 
-                Obj = GetAlbum.Get.GetAlbumImage(model, webAdmin);
+                Obj = GetAlbum.Get.GetAlbumFeed(model, webAdmin);
 
                 if (Obj.Count > 0)
                 {
@@ -73,7 +73,7 @@ namespace cisApp.API.Controllers
                 };
                 List<AlbumImageModel> Obj = new List<AlbumImageModel>();
 
-                Obj = GetAlbum.Get.GetAlbumImage(model, webAdmin);
+                Obj = GetAlbum.Get.GetAlbumFeed(model, webAdmin);
 
                 if (Obj.Count > 0)
                 {
