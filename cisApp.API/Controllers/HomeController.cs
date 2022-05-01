@@ -38,7 +38,7 @@ namespace cisApp.API.Controllers
                 };
                 List<AlbumImageModel> Obj = new List<AlbumImageModel>();
 
-                Obj = GetAlbum.Get.GetAlbumImage(model, webAdmin);
+                Obj = GetAlbum.Get.GetAlbumFeed(model, webAdmin);
 
                 if (Obj.Count > 0)
                 {
@@ -73,7 +73,7 @@ namespace cisApp.API.Controllers
                 };
                 List<AlbumImageModel> Obj = new List<AlbumImageModel>();
 
-                Obj = GetAlbum.Get.GetAlbumImage(model, webAdmin);
+                Obj = GetAlbum.Get.GetAlbumFeed(model, webAdmin);
 
                 if (Obj.Count > 0)
                 {
@@ -126,7 +126,7 @@ namespace cisApp.API.Controllers
                             LikeCount = Obj.LikeCount != null ? Obj.LikeCount : 0,
                             IsLiked = Liked == null ? false : true,
                             DesignerName = user.Fname + " " + user.Lname,
-                            ProfilePath = user.AttachFileImage != null ? webAdmin + user.AttachFileImage.UrlPathAPI : webAdmin + _DefaultProfile,
+                            ProfilePath = user.AttachFileImage != null ? webAdmin + user.AttachFileImage.UrlPathAPI : null,
                             CreateDate = Obj.CreatedDate,
                             CommentCount = comment.Count
                         }
