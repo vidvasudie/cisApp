@@ -333,6 +333,10 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
                 }
+
+                //Noti แจ้งนักออกแบบเมื่อโดนปฎิเสธ
+                new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.alertreject, caUserId, jobId);
+
                 return Ok(resultJson.success("สำเร็จ", "success", new { jobCa.JobId }));
             }
             catch (Exception ex)
@@ -627,6 +631,12 @@ namespace cisApp.API.Controllers
 
                     GetJobs.Manage.UpdateJobStatus(job.JobId, 8);
 
+                    if (job.JobCaUserId != null && job.JobCaUserId.Value != Guid.Empty)
+                    {
+                        //ส่ง Noti ให้นักออกแบบว่า ลูกค้ายืนยันผลงาน
+                        new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.complete, job.JobCaUserId.Value, job.JobId);
+                    }
+
                     return Ok(resultJson.success("สำเร็จ", "success", new { id = id }));
                 }
                 return Ok(resultJson.errors("ข้อมูลไม่ถูกต้อง ModelState Not Valid", "fail", null));
@@ -858,6 +868,9 @@ namespace cisApp.API.Controllers
             try
             {
                 var data = GetJobs.Manage.UpdateRequestInstallFileStatus(jobId);
+
+                //Noti เมื่อขอไฟล์แบบติดตั้ง
+                new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.installfile, data.JobCaUserId.Value, data.JobId);
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { data.JobId }));
             }

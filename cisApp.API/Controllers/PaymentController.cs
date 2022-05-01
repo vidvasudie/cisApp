@@ -86,6 +86,9 @@ namespace cisApp.API.Controllers
 
                 var payment = GetJobPayment.Manage.AddSlip(value.JobPaymentId.Value, 2, value.AttachId.Value, value.UserId.Value, value.Ip);
 
+                //Noti แจ้งว่าระบบกำลังเร่งตรวจสอบยอดเงิน
+                new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.payment, value.UserId.Value, payment.JobId.Value);
+
                 return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new
                 {
                     JobPaymentId = payment.JobPayId

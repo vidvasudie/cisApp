@@ -20,9 +20,14 @@ namespace cisApp.Function
             winner, // เมื่อได้รับการเลือกจากลูกค้า
             submit, //เมื่อต้อง ถึงเวล่ใกล้ส่งงาน
             alert,  // เมื่อลูกค้าแจ้งขอแก้ไขงาน 
-            
+            alertreject,  // เมื่อลูกค้าปฎิเสธนักออกแบบ
+
             approve, // อนุมัติ คำขอเป็นนักออกแบบ
-            notApprove  // ไม่อนุมัติ คำขอเป็นนักออกแบบ
+            notApprove,  // ไม่อนุมัติ คำขอเป็นนักออกแบบ
+
+            complete, //เมื่อลูกค้ายืนยันผลงาน
+            installfile // เมื่อลูกค้าขอไฟล์แบบติดตั้ง
+
         }
 
         public async void Fordesigner(ModeDesigner modeDesigner, Guid userId, Guid? JobsID)
@@ -69,6 +74,14 @@ namespace cisApp.Function
 
                     //obj.notification.icon = ""; 
                     break;
+               case "alertreject":
+
+                    obj.notification.body = "เราขอแจ้งให้ท่านทราบว่า ท่านไม่ผ่านการคัดเลือกสมัครใบงาน";
+                    obj.notification.title = "ท่านไม่ผ่านการคัดเลือก สมัครใบงาน";
+                    page = "StatusDesigner";
+
+                    //obj.notification.icon = ""; 
+                    break;
                 case "approve":
 
                     obj.notification.body = "ขอแสดงความยินดี ท่านได้รับการอนุมัติคำขอเป็นนักออกแบบแล้ว";
@@ -85,7 +98,17 @@ namespace cisApp.Function
                     page = "Home";
 
                     //obj.notification.icon = ""; 
-                    break; 
+                    break;
+                case "complete":
+                    obj.notification.body = "ขอแสดงความยินดี ลูกค้ายืนยันผลงานเรียบร้อย";
+                    obj.notification.title = "แจ้งผลดำเนินการ";
+                    page = "StatusDesigner";
+                    break;
+                case "installfile":
+                    obj.notification.body = "ลูกค้าแจ้งขอไฟล์แบบติดตั้ง";
+                    obj.notification.title = "แจ้งผลดำเนินการ";
+                    page = "StatusDesigner";
+                    break;
             }
             var NotiID = new Core.Notification();
 
@@ -179,6 +202,7 @@ namespace cisApp.Function
             regist,// เมื่อ มี ดีไซต์เนอร์สมัคร
             regist3,// เมื่อมีดีไซต์เนอร์ครบ 3 คนแจ้งให้จ่ายเงิน
             submit,// เมื่อ นักออกแบบส่งงาน
+            payment//เมื่อ ลูกค้าโอนเงินแล้ว แจ้งเตือนว่ากำลังตรวจสอบ
         }
         #endregion
 
@@ -217,7 +241,15 @@ namespace cisApp.Function
                     page = "StatusUser";
 
                     break;
-               
+                case "payment":
+
+                    obj.notification.body = "ขณะนี้ระบบได้รับข้อมูลการชำระเงินเรียบร้อย เจ้าหน้าที่กำลังเร่งตรวจสอบยอดเงินต่อไป";
+                    obj.notification.title = "ระบบกำลังเร่งตรวจสอบยอดเงิน";
+                    //obj.notification.icon = ""; 
+                    page = "StatusUser";
+
+                    break;
+
             }
  
             //var NotiID = GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body, page, JobsID);
