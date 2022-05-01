@@ -86,6 +86,8 @@ $('body').on('click', '.chat-list-item', function () {
             try {
                 chatCardInit(res)
                 _Page = 1
+                var recieverId = $('#RecieverId').val();
+                invokeReadMessage(recieverId)
             }
             catch (ex) {
                 console.log(ex)
@@ -208,6 +210,7 @@ function getChatMessage(callbackFunc, page = 1) {
         function (res) {
             try {
                 callbackFunc(res)
+                invokeReadMessage(recieverId)
             }
             catch (ex) {
                 console.log(ex)
@@ -301,6 +304,7 @@ function postMessage(text) {
                 //console.log(res)
                 replaceChatMessage();
                 invokeSendMessage(recieverId, text, null)
+                
             }
             catch (ex) {
                 console.log(ex)
@@ -383,6 +387,7 @@ function postMessageFiles(files) {
                 console.log(res)
                 replaceChatMessage();
                 invokeSendMessage(recieverId, '', res.data.imgs)
+                
             }
             catch (ex) {
                 console.log(ex)

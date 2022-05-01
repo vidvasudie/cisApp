@@ -488,6 +488,8 @@ namespace cisApp.Function
 
                             context.ChatMessage.Add(data);
 
+                            context.SaveChanges();
+
                             var chatGroup = GetChatGroup.Get.GetById(data.RecieverId);
 
                             if (chatGroup != null)
@@ -509,7 +511,8 @@ namespace cisApp.Function
                                                 CreatedDate = createDate,
                                                 ImgId = chatMessageImgId,
                                                 Message = data.Message,
-                                                Ip = data.Ip
+                                                Ip = data.Ip,
+                                                RefId = data.ChatMessageId
                                             };
 
                                             context.ChatMessage.Add(chat);

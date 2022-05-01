@@ -15,5 +15,7 @@ namespace cisApp.Core
         public string Message { get; set; }
         public Guid RealSenderId { get; set; }
         public string Ip { get; set; }
+
+        public Guid? RefId { get; set; }
     }
 }
