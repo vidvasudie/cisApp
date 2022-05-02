@@ -20,6 +20,10 @@ namespace cisApp.API.Controllers
         public object Get(Guid userId)
         {
             var result = GetNotification.Get.GetbyUserID(userId);
+            if (result != null && result.Count > 0)
+            {
+                result = result.OrderByDescending(o => o.CreatedDate).ToList();
+            }
             return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new
             {
                 result

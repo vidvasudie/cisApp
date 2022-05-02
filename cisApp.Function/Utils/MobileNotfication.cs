@@ -49,7 +49,7 @@ namespace cisApp.Function
                     break;
                 case "contest":
                     obj.notification.body = "มีใบงานที่คุณได้รับคัดเลือกเข้าประกวดงาน อย่าลืมสอบถามรายละเอียดความต้องการ คลิ๊กเลยเพื่อดูรายละเอียด";
-                    obj.notification.title = "คุณได้รับคัดเลือกในกวดเข้าร่วมประกวดงาน";
+                    obj.notification.title = "คุณได้รับคัดเลือกเข้าร่วมประกวดผลงาน";
                     //obj.notification.icon = ""; 
                     page = "StatusDesigner";
                     break;
