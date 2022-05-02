@@ -15,7 +15,10 @@ function connectSignalR() {
             var recieverId = $('#RecieverId').val();
             if (recieverId == messageObj.senderId) {
                 replaceChatMessage();
+                //invokeReadMessage(recieverId)
             }
+
+            
         }
         catch (ex) {
             console.log('on replaceChatMessage SignalR', ex)
@@ -23,6 +26,11 @@ function connectSignalR() {
 
         
         
+    });
+
+    _connection.on("ReadMessage", function (messageObj) {
+        console.log('ReadMessage', messageObj)
+
     });
 
 
@@ -40,6 +48,13 @@ function connectSignalR() {
 // สำหรับตอนส่งข้อความหาคนอื่น ต้อง trigger SendMessage กลับไปด้วย
 function invokeSendMessage(recieverId, message, imgs) {
     _connection.invoke("SendMessage", recieverId, message, imgs).catch(function (err) {
+        return console.error(err.toString());
+    });
+}
+
+function invokeReadMessage(recieverId) {
+    console.log('InvokeReadMessage', recieverId)
+    _connection.invoke("ReadMessage", recieverId).catch(function (err) {
         return console.error(err.toString());
     });
 }

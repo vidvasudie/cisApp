@@ -65,15 +65,72 @@ namespace cisApp.SignalR
                         }
                     }
                 }
-            }
-            //string messageString = "";
-            //foreach (var item in _CurrentConnection)
-            //{
-            //    messageString = messageString + "\n" + "conntectionid = " + item.ConnectionId + ", userid=" + item.User;
-            //}
+            }           
+        }
 
-            //await Clients.All.SendAsync("BoardcastMessage", name, message + " - connections = " + messageString);
-            //await Clients.Client(name).SendAsync("BoardcastMessage", name, "specific to client" + name);
+        public async Task ReadMessage(Guid recieverId)
+        {
+            var userAndCon = _CurrentConnection.Where(o => o.ConnectionId == Context.ConnectionId).FirstOrDefault();
+
+            if (userAndCon != null)
+            {
+                var chatGroup = GetChatGroup.Get.GetById(recieverId);
+
+                if (chatGroup != null)
+                {
+                    var chatGroupUsers = GetChatGroup.Get.GetUserByGroupId(chatGroup.ChatGroupId.Value);
+
+                    DateTime readDead = DateTime.Now;
+
+                    foreach(var item in chatGroupUsers)
+                    {
+                        if (item.UserId != userAndCon.UserId)
+                        {
+                            ChatReadObj obj = new ChatReadObj()
+                            {
+                                UserId = item.UserId,
+                                TargetChat = recieverId,
+                                ReadDate = readDead
+                            };
+
+                            var sendTo = _CurrentConnection.Where(o => o.UserId == item.UserId).ToList();
+                            if (sendTo.Count > 0)
+                            {
+                                foreach (var send in sendTo)
+                                {
+                                    await Clients.Client(send.ConnectionId).SendAsync("ReadMessage", obj);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    DateTime readDead = DateTime.Now;
+                    ChatReadObj obj = new ChatReadObj()
+                    {
+                        UserId = userAndCon.UserId,
+                        TargetChat = userAndCon.UserId,
+                        ReadDate = readDead
+                    };
+
+                    var sendTo = _CurrentConnection.Where(o => o.UserId == recieverId).ToList();
+                    if (sendTo.Count > 0)
+                    {
+                        foreach (var send in sendTo)
+                        {
+                            await Clients.Client(send.ConnectionId).SendAsync("ReadMessage", obj);
+                        }
+                    }
+                }
+            }
+        }
+
+        public class ChatReadObj
+        {
+            public Guid UserId { get; set; }
+            public Guid TargetChat { get; set; }
+            public DateTime ReadDate { get; set; }
         }
     }
 }
