@@ -41,7 +41,7 @@ namespace cisApp.Function
             switch (modeDesigner.ToString())
             {
                 case "favorite":
-                    obj.notification.body = "มีใบงานที่กดถูกใจคุณ ถูกสร้างขึ้นคลิ๊กเลย";
+                    obj.notification.body = "มีลูกค้าที่กดถูกใจคุณ สร้างใบงานใหม่ คลิ๊กเลย!!";
                     obj.notification.title = "มีลูกค้าสนใจคุณ!";
                     //obj.notification.icon = "";
                     page = "Contrat";
@@ -68,7 +68,7 @@ namespace cisApp.Function
                     break;
                 case "alert":
 
-                    obj.notification.body = "เราขอแจ้งให้ท่านทราบว่า ใบงานของท่านได้ถูกขอแก้ไขโดยลูกค้า อย่าลืมสอบถามรายละเอียดความต้องการละ คลิ๊กเลยเพื่อดูรายละเอียด";
+                    obj.notification.body = "เราขอแจ้งให้ท่านทราบว่า ใบงานของท่านได้ถูกขอแก้ไขโดยลูกค้า อย่าลืมสอบถามรายละเอียดความต้องการ คลิ๊กเลยเพื่อดูรายละเอียด";
                     obj.notification.title = "มีใบงานถูกขอแก้ไข!";
                     page = "StatusDesigner";
 
@@ -221,28 +221,27 @@ namespace cisApp.Function
             {
                 case "regist":
 
-                    obj.notification.body = "กรุณาเลือกและคอนเฟิร์มฟรีแลนซ์เพื่อเริ่มงาน";
-                    obj.notification.title = "ฟรีแลนซ์ส่งงานให้คุณแล้ว";
+                    obj.notification.body = "กรุณาเลือกและยืนยัน นักออกแบบเพื่อเริ่มงาน";
+                    obj.notification.title = "นักออกแบบสมัครใบงานแล้ว";
                     //obj.notification.icon = "";
                     page = "StatusUser";
                     break;
                 case "regist3":
 
-                    obj.notification.body = "กรุณาคอนเฟิร์มฟรีแลนซ์เพื่อเริ่มงาน";
-                    obj.notification.title = "เราหาฟรีแลนซ์ให้คุณครบแล้ว";
+                    obj.notification.body = "กรุณาเลือกและยืนยัน นักออกแบบเพื่อเริ่มงาน";
+                    obj.notification.title = "เราหานักออกแบบให้คุณครบแล้ว";
                     //obj.notification.icon = ""; 
                     page = "StatusUser";
                     break;
                 case "submit":
 
-                    obj.notification.body = "เข้าดูงานที่ได้รับของคุณ";
-                    obj.notification.title = "ฟรีแลนซ์ส่งงานให้คุณแล้ว";
+                    obj.notification.body = "เข้าดูผลงานนักออกแบบที่ได้รับ";
+                    obj.notification.title = "นักออกแบบส่งงานให้คุณแล้ว";
                     //obj.notification.icon = ""; 
                     page = "StatusUser";
 
                     break;
-                case "payment":
-
+                case "payment": 
                     obj.notification.body = "ขณะนี้ระบบได้รับข้อมูลการชำระเงินเรียบร้อย เจ้าหน้าที่กำลังเร่งตรวจสอบยอดเงินต่อไป";
                     obj.notification.title = "ระบบกำลังเร่งตรวจสอบยอดเงิน";
                     //obj.notification.icon = ""; 
