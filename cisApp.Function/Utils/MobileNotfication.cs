@@ -250,8 +250,13 @@ namespace cisApp.Function
                     break;
 
             }
- 
+
             //var NotiID = GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body, page, JobsID);
+            var NotiID = new Core.Notification();
+            if (JobsID != null)
+            {
+                NotiID = GetNotification.Manage.add(userId, "", obj.notification.title, obj.notification.body, page, JobsID);
+            }
             var _c = GetUserClientId.Get.GetbyUserid(userId);
             if (_c != null)
             {

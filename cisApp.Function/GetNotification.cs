@@ -50,8 +50,8 @@ namespace cisApp.Function
                         obj.CreatedDate = DateTime.Now;
                         obj.IsRead = false;
                         obj.ReadDate = null;
-                        obj.Page = null;
-                        obj.JobsId = null;
+                        obj.Page = Page;
+                        obj.JobsId = JobsID;
 
 
 
