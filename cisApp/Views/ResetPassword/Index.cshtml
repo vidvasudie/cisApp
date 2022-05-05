@@ -115,14 +115,14 @@
             if (/android/i.test(userAgent)) {
                 //return "Android";
                 console.log('android');
-                window.open('@ViewData["MobileLinkAndroid"].ToString()', '_blank')
+                window.location = '@ViewData["MobileLinkAndroid"].ToString()'
             }
 
             // iOS detection from: http://stackoverflow.com/a/9039885/177710
             if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
                 //return "iOS";
                 console.log('ios');
-                window.open('@ViewData["MobileLink"].ToString()', '_blank')
+                window.location = '@ViewData["MobileLink"].ToString()'
             }
     </script>
 </body>
