@@ -31,8 +31,8 @@ namespace cisApp.Controllers
             string mobileLink = config.GetSection("WebConfig:MobileLink").Value;
             string mobileLinkAndroid = config.GetSection("WebConfig:MobileLinkAndroid").Value;
 
-            ViewData["MobileLink"] = mobileLink + "Image/" + id.ToString();
-            ViewData["MobileLinkAndroid"] = mobileLinkAndroid + "Image/" + id.ToString();
+            ViewData["MobileLink"] = mobileLink + "PhotoGrid/" + id.ToString();
+            ViewData["MobileLinkAndroid"] = mobileLinkAndroid + "PhotoGrid/" + id.ToString();
             return View();
         }
     }
