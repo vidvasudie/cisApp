@@ -606,7 +606,7 @@ namespace cisApp.API.Controllers
                 { 
                     dpf.DesignerUserId,
                     dpf.Fullname,
-                    picUrl = dpf.UrlPath.Replace("~", Host),
+                    picUrl = dpf.UrlPath != null ? dpf.UrlPath.Replace("~", Host) : null,
                     dpf.RateAll,
                     dpf.RateCount,
                     dpf.ContestWinTotal,

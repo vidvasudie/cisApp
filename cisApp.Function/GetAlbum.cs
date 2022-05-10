@@ -204,7 +204,7 @@ namespace cisApp.Function
                             var albumImgs = GetAlbumImageByAlbumId(new SearchModel()
                             {
                                 AlbumId = item.AlbumId,
-                                pageSize = 5
+                                pageSize = 999
                             }, domainUrl);
 
                             item.Thumbnails = new List<AlbumThumbnail>();

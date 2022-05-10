@@ -1,8 +1,8 @@
 ﻿@model ChangePasswordModel
 @{
-    ViewData["Title"] = "เปลี่ยนรหัสผ่าน";
+    ViewData["Title"] = "Post";
     Layout = null;
-    ViewData["ControllerName"] = "ResetPassword";
+    ViewData["ControllerName"] = "Post";
 }
 
 
@@ -43,40 +43,7 @@
         <div class="login login-5 login-signin-on d-flex flex-row-fluid" id="kt_login">
             <div class="d-flex flex-center bgi-size-cover bgi-no-repeat flex-row-fluid" style="background-image: url(assets/media/bg/bg-2.jpg);">
                 <div class="login-form text-center text-white p-7 position-relative overflow-hidden">
-                    <!--begin::Login Header-->
-                    <div class="d-flex flex-center mb-15">
-                        <a href="#">
-                            <img src="@Url.Content("~/assets/media/logos/Asset 9@4x 1.png")" class="max-h-75px" alt="" />
-                        </a>
-                    </div>
-                    <!--end::Login Header-->
-                    <!--begin::Login Sign in form-->
-                    <div class="login-signin">
-                        <div class="mb-20">
-                            <h3 class="opacity-40 font-weight-normal">ลืมรหัสผ่าน</h3>
-                        </div>
-                        <form class="form" id="kt_form" asp-action="Index" asp-controller=@ViewData["ControllerName"] method="post" data-ajax="true" data-ajax-success="redirect">
-                            @Html.HiddenFor(m => m.Token)
-                            <div class="form-group">
-                                @Html.TextBoxFor(m => m.Password, new { @class = "form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8", @type = "password", @placeholder = "Password" })
-                            </div>
-                            <div class="form-group">
-                                @Html.TextBoxFor(m => m.PasswordConfirm, new { @class = "form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8", @type = "password", @placeholder = "Password" })
-                            </div>
-                            @*<div class="form-group d-flex flex-wrap justify-content-between align-items-center px-8 opacity-60">
-           <div class="checkbox-inline">
-               <label class="checkbox checkbox-outline checkbox-white text-white m-0">
-                   <input type="checkbox" name="remember" />
-                   <span></span>Remember me
-               </label>
-           </div>
-        </div>*@
-                            <div class="form-group text-center mt-10">
-                                <a href="javascript:void(0)" class="btn btn-pill btn-primary opacity-90 px-15 py-3 btn-submit">รีเซ็ตรหัสผ่าน</a>
-                            </div>
-                        </form>
-                    </div>
-                    <!--end::Login Sign in form-->
+                    
 
                 </div>
             </div>

@@ -31,13 +31,59 @@ namespace cisApp.API.Controllers
             {
 
                 var data = GetPaymentHistory.Get.GetByMonthYear(userId.Value, month, year);
-                return Ok(resultJson.success(null, null, data, null, data.Count, null, null));
+
+                PaymentHistorySummaryModel model = new PaymentHistorySummaryModel()
+                {
+                    PaidPayments = data.Where(o => o.IsPaid == true).ToList(),
+                    AwaitPaidPayments = data.Where(o => o.IsPaid == false).ToList()
+                };
+                return Ok(resultJson.success(null, null, model, null, data.Count, null, null));
 
             }
             catch (Exception ex)
             {
                 return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
             }
+        }
+
+        public class PaymentHistorySummaryModel
+        {
+            public decimal PaidSum { 
+                get
+                {
+                    try
+                    {
+                        decimal sum = PaidPayments.Select(o => o.Amount).Sum();
+
+                        return sum;
+                    }
+                    catch (Exception ex)
+                    {
+                        return 0m;
+                    }
+                } 
+            }
+
+
+            public decimal AwaitPaidSum
+            {
+                get
+                {
+                    try
+                    {
+                        decimal sum = AwaitPaidPayments.Select(o => o.Amount).Sum();
+
+                        return sum;
+                    }
+                    catch (Exception ex)
+                    {
+                        return 0m;
+                    }
+                }
+            }
+
+            public List<PaymentHistoryModel> PaidPayments { get; set; }
+            public List<PaymentHistoryModel> AwaitPaidPayments { get; set; }
         }
     }
 }
