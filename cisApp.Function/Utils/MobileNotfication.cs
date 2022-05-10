@@ -27,6 +27,7 @@ namespace cisApp.Function
 
             complete, //เมื่อลูกค้ายืนยันผลงาน
             installfile // เมื่อลูกค้าขอไฟล์แบบติดตั้ง
+            
 
         }
 
@@ -202,7 +203,8 @@ namespace cisApp.Function
             regist,// เมื่อ มี ดีไซต์เนอร์สมัคร
             regist3,// เมื่อมีดีไซต์เนอร์ครบ 3 คนแจ้งให้จ่ายเงิน
             submit,// เมื่อ นักออกแบบส่งงาน
-            payment//เมื่อ ลูกค้าโอนเงินแล้ว แจ้งเตือนว่ากำลังตรวจสอบ
+            payment, //เมื่อ ลูกค้าโอนเงินแล้ว แจ้งเตือนว่ากำลังตรวจสอบ
+            paymentconfirm //เมื่อเจ้าหน้าที่ยืนยันการชำระเงินของลูกค้าแล้ว
         }
         #endregion
 
@@ -244,6 +246,13 @@ namespace cisApp.Function
                 case "payment": 
                     obj.notification.body = "ขณะนี้ระบบได้รับข้อมูลการชำระเงินเรียบร้อย เจ้าหน้าที่กำลังเร่งตรวจสอบยอดเงินต่อไป";
                     obj.notification.title = "ระบบกำลังเร่งตรวจสอบยอดเงิน";
+                    //obj.notification.icon = ""; 
+                    page = "StatusUser";
+
+                    break;
+                case "paymentconfirm":
+                    obj.notification.body = "ขณะนี้ระบบได้อนุมัติการชำระเงินเรียบร้อย";
+                    obj.notification.title = "การชำระเงินได้รับอนุมัติแล้ว";
                     //obj.notification.icon = ""; 
                     page = "StatusUser";
 

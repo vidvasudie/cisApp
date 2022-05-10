@@ -8,11 +8,17 @@ using cisApp.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace cisApp.Controllers
 {
     public class BaseController : Controller
     {
+        readonly static IConfigurationRoot config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+                      .AddJsonFile("appsettings.json")
+                      .Build();
         public Guid? _UserId()
         {
             var userId = HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
@@ -134,6 +140,21 @@ namespace cisApp.Controllers
         [HttpPost]
         public PartialViewResult PreviewImage(UploadFilesModel model)
         {
+            if (model.AlbumId != null && model.AlbumId > 0)
+            {
+                var albs = GetAlbum.Get.GetAttachFileByAlbumId(model.AlbumId.Value, config.GetSection("WebConfig:AdminWebStie").Value);
+                if (albs != null && albs.Count > 0)
+                {
+                    model.files = new List<FileAttachModel>();
+                    int idx = 0;
+                    foreach (var f in albs)
+                    {
+                        model.files.Add(new FileAttachModel { NextImgSelected= idx, NextImg= idx, FileName=f.FileName, AttachFileId=f.AttachFileId });
+                        idx++;
+                    }
+                }
+
+            }
             return PartialView("~/Views/Shared/Album/_ImageItems.cshtml", model.files);
         }
     }
