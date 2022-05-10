@@ -6,6 +6,7 @@ namespace cisApp.Function
 {
     public class UploadFilesModel 
     { 
+        public Guid? AttachFileId { get; set; }
         public int? AlbumId { get; set; }
         public string ElementId { get; set; }
         public int TypeId { get; set; }

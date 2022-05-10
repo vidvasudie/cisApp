@@ -152,6 +152,14 @@ namespace cisApp.Controllers
                         model.files.Add(new FileAttachModel { NextImgSelected= idx, NextImg= idx, FileName=f.FileName, AttachFileId=f.AttachFileId });
                         idx++;
                     }
+                    var fa = model.files.Where(o => o.AttachFileId == model.AttachFileId).FirstOrDefault();
+                    if (fa != null)
+                    {
+                        foreach (var f in model.files)
+                        {
+                            f.NextImgSelected = fa.NextImg; 
+                        } 
+                    }
                 }
 
             }

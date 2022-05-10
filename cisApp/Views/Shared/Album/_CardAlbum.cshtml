@@ -114,7 +114,7 @@
                 else
                 {
                     <!--begin: Icon-->
-                    <img src="@Url.Content(Model.UrlPath)" alt="@Html.Raw(String.IsNullOrEmpty(Model.AttachFileName) ? "-" : Model.AttachFileName)" data-albid="@Model.AlbumId" style="height: 330px !important;" class="img-thumbnail" data-target="#carouselPreview">
+                    <img src="@Url.Content(Model.UrlPath)" alt="@Html.Raw(String.IsNullOrEmpty(Model.AttachFileName) ? "-" : Model.AttachFileName)" data-albid="@Model.AlbumId" data-afileid="@Model.AttachFileId" style="height: 330px !important;" class="img-thumbnail" data-target="#carouselPreview">
                     <!--end: Icon-->
                 }
                 <!--begin: Tite-->

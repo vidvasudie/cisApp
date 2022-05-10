@@ -411,6 +411,7 @@ $('body').on('click', '.contest img', function () {
     var data = {}
     data.files = [];
     data.albumId = $this.attr('data-albid'); 
+    data.attachFileId = $this.attr('data-afileid'); 
    
     var suc = function (html) {
         $('#carouselPreview').html(html);
