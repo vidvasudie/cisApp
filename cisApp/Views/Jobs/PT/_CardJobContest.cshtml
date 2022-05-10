@@ -14,11 +14,11 @@
     </div>
 
     <div class="card-body">
-        <div class="row">
+        <div class="row contest">
             @{
                 if (albumList != null && albumList.Count > 0)
                 {
-                    foreach (var item in albumList)
+                    foreach (var item in albumList.Where(o => o.AttachFileId != Guid.Empty && o.AlbumType == "1"))
                     {
                         @await Html.PartialAsync("~/Views/Shared/Album/_CardAlbum.cshtml", item)
                     }

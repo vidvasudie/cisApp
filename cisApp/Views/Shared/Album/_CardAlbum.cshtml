@@ -49,7 +49,7 @@
                                 </a>
                             </li>
                             <li class="navi-item">
-                                <a href="#" class="navi-link">
+                                <a href="@Url.Action("Album", "Files", new { id=Model.AlbumId.Value })" class="navi-link" target="_blank">
                                     <span class="navi-icon">
                                         <i class="flaticon2-drop"></i>
                                     </span>
@@ -114,7 +114,7 @@
                 else
                 {
                     <!--begin: Icon-->
-                    <img src="@Url.Content(Model.UrlPath)" alt="@Html.Raw(String.IsNullOrEmpty(Model.AttachFileName) ? "-" : Model.AttachFileName)" style="height: 330px !important;" class="img-thumbnail">
+                    <img src="@Url.Content(Model.UrlPath)" alt="@Html.Raw(String.IsNullOrEmpty(Model.AttachFileName) ? "-" : Model.AttachFileName)" data-albid="@Model.AlbumId" style="height: 330px !important;" class="img-thumbnail" data-target="#carouselPreview">
                     <!--end: Icon-->
                 }
                 <!--begin: Tite-->

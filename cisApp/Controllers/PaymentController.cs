@@ -128,6 +128,10 @@ namespace cisApp.Controllers
                 var user = GetJobPayment.Manage.Status(data.JobPayId.Value, data.PayStatus.Value, data.Comment, _UserId().Value);
                 if (data.PayStatus.Value == 3)
                 {
+                    //Noti ลูกค้า เมื่อการ ยืนยัน ชำระเงินสำเร็จ
+                    var job = GetJobs.Get.GetById(user.JobId.Value);
+                    new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.paymentconfirm, job.UserId, user.JobId.Value);
+
                     //Noti นักออกแบบปรับสถานะเป็น ประกวดงาน เมื่อการชำระเงินสำเร็จ
                     var jc = GetJobsCandidate.Get.GetByJobId(new SearchModel { gId = user.JobId });
                     if (jc != null && jc.Count > 0)

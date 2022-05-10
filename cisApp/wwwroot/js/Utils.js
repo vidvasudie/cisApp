@@ -404,3 +404,20 @@ $('body').on('click', '.gallery img', function () {
     CallAjax(_previewImgUrl, 'POST', data, suc, err);
 });
 
+$('body').on('click', '.contest img', function () {
+    var $this = $(this);
+    console.log($this)
+
+    var data = {}
+    data.files = [];
+    data.albumId = $this.attr('data-albid'); 
+   
+    var suc = function (html) {
+        $('#carouselPreview').html(html);
+        $('#previewModal').modal('show');
+    }
+    var err = function (e) {
+        alert('error carouselPreview', e);
+    }
+    CallAjax(_previewImgUrl, 'POST', data, suc, err);
+});
