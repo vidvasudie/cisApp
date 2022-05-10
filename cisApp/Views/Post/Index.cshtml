@@ -82,16 +82,16 @@
             if (/android/i.test(userAgent)) {
                 //return "Android";
                 console.log('android');
-                //window.location = '@ViewData["MobileLinkAndroid"].ToString()'
-                window.open('@ViewData["MobileLinkAndroid"].ToString()')
+                window.location = '@ViewData["MobileLinkAndroid"].ToString()'
+                //window.open('@ViewData["MobileLinkAndroid"].ToString()')
             }
 
             // iOS detection from: http://stackoverflow.com/a/9039885/177710
             if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
                 //return "iOS";
                 console.log('ios');
-                //window.location = '@ViewData["MobileLink"].ToString()'
-                window.open('@ViewData["MobileLink"].ToString()')
+                window.location = '@ViewData["MobileLink"].ToString()'
+                //window.open('@ViewData["MobileLink"].ToString()')
             }
     </script>
 </body>
