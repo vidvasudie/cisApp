@@ -47,56 +47,23 @@
                 </div>
                 <!--end::Search Form-->
                 <!--begin::Group Actions-->
-                <div class="d-flex- align-items-center flex-wrap mr-2 d-none" id="kt_subheader_group_actions">
-                    <div class="text-dark-50 font-weight-bold">
-                        <span id="kt_subheader_group_selected_rows">23</span>Selected:
-                    </div>
-                    <div class="d-flex ml-6">
-                        <div class="dropdown mr-2" id="kt_subheader_group_actions_status_change">
-                            <button type="button" class="btn btn-light-primary font-weight-bolder btn-sm dropdown-toggle" data-toggle="dropdown">Update Status</button>
-                            <div class="dropdown-menu p-0 m-0 dropdown-menu-sm">
-                                <ul class="navi navi-hover pt-3 pb-4">
-                                    <li class="navi-header font-weight-bolder text-uppercase text-primary font-size-lg pb-0">Change status to:</li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link" data-toggle="status-change" data-status="1">
-                                            <span class="navi-text">
-                                                <span class="label label-light-success label-inline font-weight-bold">Approved</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link" data-toggle="status-change" data-status="2">
-                                            <span class="navi-text">
-                                                <span class="label label-light-danger label-inline font-weight-bold">Rejected</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link" data-toggle="status-change" data-status="3">
-                                            <span class="navi-text">
-                                                <span class="label label-light-warning label-inline font-weight-bold">Pending</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="navi-item">
-                                        <a href="#" class="navi-link" data-toggle="status-change" data-status="4">
-                                            <span class="navi-text">
-                                                <span class="label label-light-info label-inline font-weight-bold">On Hold</span>
-                                            </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <button class="btn btn-light-success font-weight-bolder btn-sm mr-2" id="kt_subheader_group_actions_fetch" data-toggle="modal" data-target="#kt_datatable_records_fetch_modal">Fetch Selected</button>
-                        <button class="btn btn-light-danger font-weight-bolder btn-sm mr-2" id="kt_subheader_group_actions_delete_all">Delete All</button>
-                    </div>
-                </div>
+                
                 <!--end::Group Actions-->
             </div>
             <!--end::Details-->
             <!--begin::Toolbar-->
-            
+            <div class="d-flex align-items-center">
+                <!--begin::Button-->
+                <a href="#" class=""></a>
+                <!--end::Button-->
+                @{
+                    var jobStatus = GetJobsStatus.Get.GetAll();
+                    var list = new SelectList(jobStatus, "JobStatusId", "Name");
+                }
+                @Html.DropDownListFor(m => m.JobStatus, list, "กรุณาเลือก", new { @class = "form-control job-staus-filter " })
+                <!--begin::Dropdown-->
+                <!--end::Dropdown-->
+            </div>
             <!--end::Toolbar-->
         </div>
     </div>
@@ -128,9 +95,10 @@
         }
         CallAjax('@Url.Action("ItemList", "Jobs")', 'POST', { text: text, Id: '@Model.Id', currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
     }
-    function Search() {
+    function Search(isSearch=false) {
         var text = $('#kt_subheader_search_form').val();
-        if (text.length > 0) {
+        var status = $('.job-staus-filter').val();
+        if (text.length > 0 || isSearch) {
             var suc = function (html) {
                 $('#box_update').html(html);
                 $('#kt_subheader_total').html($('#TotalCount').val());
@@ -138,7 +106,7 @@
             var err = function (e) {
                 alert('error search', e);
             }
-            CallAjax('@Url.Action("ItemList", "Jobs")', 'POST', { text: text, Id: '@Model.Id', pageSize: $('#pageSize').val() }, suc, err);
+            CallAjax('@Url.Action("ItemList", "Jobs")', 'POST', { status: status, text: text, Id: '@Model.Id', pageSize: $('#pageSize').val() }, suc, err);
         }
     } 
 
@@ -147,6 +115,10 @@
             PagerClick(1);
         });
         PagerClick(1);
+
+        $('body').on('change', '.job-staus-filter', function () {
+            Search(true);
+        });
     });
     </script>
 
