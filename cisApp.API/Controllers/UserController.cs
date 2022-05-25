@@ -347,5 +347,21 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [HttpGet("RegisterData")]
+        public object RegisterData(Guid? userId)
+        {
+            try
+            {
+                var userRequest = GetUserDesignerRequest.Get.GetLasted(userId.Value);
+
+                //var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
+                return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", userRequest));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+            }
+        }
+
     }
 }
