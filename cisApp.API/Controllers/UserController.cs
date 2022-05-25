@@ -354,6 +354,28 @@ namespace cisApp.API.Controllers
             {
                 var userRequest = GetUserDesignerRequest.Get.GetLasted(userId.Value);
 
+                if (userRequest != null)
+                {
+                    if (userRequest.ProvinceId != null)
+                    {
+                        var province = GetTmProvince.Get.GetById(userRequest.ProvinceId.Value);
+                        userRequest.provinceName = province.NameTh;
+                    }
+
+                    if (userRequest.DistrictId != null)
+                    {
+                        var district = GetTmDistrict.Get.GetById(userRequest.DistrictId.Value);
+                        userRequest.districtName = district.NameTh;
+                    }
+
+                    if (userRequest.SubDistrictId != null)
+                    {
+                        var subDistrict = GetTmSubDistrict.Get.GetById(userRequest.SubDistrictId.Value);
+                        userRequest.subDistrictName = subDistrict.NameTh;
+                    }
+
+                }
+
                 //var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
                 return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", userRequest));
             }

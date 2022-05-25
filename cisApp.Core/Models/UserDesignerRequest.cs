@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace cisApp.Core
@@ -24,5 +25,12 @@ namespace cisApp.Core
         public Guid? CreatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public Guid? UpdatedBy { get; set; }
+
+        [NotMapped]
+        public string provinceName { get; set; }
+        [NotMapped]
+        public string districtName { get; set; }
+        [NotMapped]
+        public string subDistrictName { get; set; }
     }
 }
