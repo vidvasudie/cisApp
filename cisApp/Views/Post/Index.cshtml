@@ -81,17 +81,28 @@
 
             if (/android/i.test(userAgent)) {
                 //return "Android";
-                console.log('android');
+                try {
+                    console.log('android', '@ViewData["MobileLinkAndroid"].ToString()');
                 window.location = '@ViewData["MobileLinkAndroid"].ToString()'
                 //window.open('@ViewData["MobileLinkAndroid"].ToString()')
+                }
+                catch (ex) {
+                    window.location = 'https://apps.apple.com/th/app/cloud-idea/id1622609196?l=th'
+                }
+
             }
 
             // iOS detection from: http://stackoverflow.com/a/9039885/177710
             if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
                 //return "iOS";
-                console.log('ios');
+                try {
+                    console.log('ios', '@ViewData["MobileLink"].ToString()');
                 window.location = '@ViewData["MobileLink"].ToString()'
                 //window.open('@ViewData["MobileLink"].ToString()')
+                } catch (ex) {
+                    window.location = 'https://apps.apple.com/th/app/cloud-idea/id1622609196?l=th'
+                }
+
             }
     </script>
 </body>
