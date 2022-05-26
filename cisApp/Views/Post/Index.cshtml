@@ -1,4 +1,6 @@
-﻿@model ChangePasswordModel
+﻿@using cisApp.Function
+
+@model AlbumImageModel
 @{
     ViewData["Title"] = "Post";
     Layout = null;
@@ -15,8 +17,9 @@
     <base href="../../../../">
 
     <meta charset="utf-8" />
-    <title>@ViewData["Title"]</title>
-    <meta name="description" content="Forget Password" />
+    <title>@Model.AlbumName</title>
+    <meta name="description" content="@Model.AlbumName" />
+    <meta property="og:image" content="@Model.FullUrlPath">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     @*<link rel="canonical" href="https://keenthemes.com/metronic" />*@
     <!--begin::Fonts-->

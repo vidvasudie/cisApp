@@ -33,7 +33,10 @@ namespace cisApp.Controllers
 
             ViewData["MobileLink"] = mobileLink + "PhotoGrid/" + id.ToString();
             ViewData["MobileLinkAndroid"] = mobileLinkAndroid + "PhotoGrid/" + id.ToString();
-            return View();
+            string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+
+            var Obj = GetAlbum.Get.GetAlbumImageByAttachId(webAdmin, id);
+            return View(Obj);
         }
     }
 }
