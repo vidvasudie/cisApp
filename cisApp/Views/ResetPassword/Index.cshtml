@@ -64,13 +64,13 @@
                                 @Html.TextBoxFor(m => m.PasswordConfirm, new { @class = "form-control h-auto text-white bg-white-o-5 rounded-pill border-0 py-4 px-8", @type = "password", @placeholder = "Password" })
                             </div>
                             @*<div class="form-group d-flex flex-wrap justify-content-between align-items-center px-8 opacity-60">
-           <div class="checkbox-inline">
-               <label class="checkbox checkbox-outline checkbox-white text-white m-0">
-                   <input type="checkbox" name="remember" />
-                   <span></span>Remember me
-               </label>
-           </div>
-        </div>*@
+                                   <div class="checkbox-inline">
+                                       <label class="checkbox checkbox-outline checkbox-white text-white m-0">
+                                           <input type="checkbox" name="remember" />
+                                           <span></span>Remember me
+                                       </label>
+                                   </div>
+                                </div>*@
                             <div class="form-group text-center mt-10">
                                 <a href="javascript:void(0)" class="btn btn-pill btn-primary opacity-90 px-15 py-3 btn-submit">รีเซ็ตรหัสผ่าน</a>
                             </div>
@@ -82,6 +82,20 @@
             </div>
         </div>
         <!--end::Login-->
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalMobile" tabindex="-1" role="dialog" aria-labelledby="modalMobile" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-top modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="d-flex justify-content-between" id="box_update">
+                        <img src="@Url.Content("~/logo.png")" style="height:40px"> <span class="col-form-label">Cloud Idea</span>
+                        <a class="btn btn-primary" href="javascript:void(0)" click="onOpenAppClick">เปิด</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
     <!--end::Main-->
     @*<script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>*@
@@ -125,7 +139,33 @@
                 console.log('ios', '@ViewData["MobileLink"].ToString()');
                 window.location = '@ViewData["MobileLink"].ToString()'
                 //window.open('@ViewData["MobileLink"].ToString()')
+        }
+        function onOpenAppClick() {
+            if (/android/i.test(userAgent)) {
+                //return "Android";
+                try {
+                    console.log('android', '@ViewData["MobileLinkAndroid"].ToString()');
+                window.location = '@ViewData["MobileLinkAndroid"].ToString()'
+                //window.open('@ViewData["MobileLinkAndroid"].ToString()')
+                }
+                catch (ex) {
+                    window.location = 'https://apps.apple.com/th/app/cloud-idea/id1622609196?l=th'
+                }
+
             }
+
+            // iOS detection from: http://stackoverflow.com/a/9039885/177710
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                //return "iOS";
+                try {
+                    console.log('ios', '@ViewData["MobileLink"].ToString()');
+                    window.location = '@ViewData["MobileLink"].ToString()'
+                    //window.open('@ViewData["MobileLink"].ToString()')
+                } catch (ex) {
+                    window.location = 'https://apps.apple.com/th/app/cloud-idea/id1622609196?l=th'
+                }
+            }
+        }
     </script>
 </body>
 <!--end::Body-->

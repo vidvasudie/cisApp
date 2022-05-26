@@ -43,12 +43,26 @@
         <div class="login login-5 login-signin-on d-flex flex-row-fluid" id="kt_login">
             <div class="d-flex flex-center bgi-size-cover bgi-no-repeat flex-row-fluid" style="background-image: url(assets/media/bg/bg-2.jpg);">
                 <div class="login-form text-center text-white p-7 position-relative overflow-hidden">
-                    
+
 
                 </div>
             </div>
         </div>
         <!--end::Login-->
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalMobile" tabindex="-1" role="dialog" aria-labelledby="modalMobile" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-top modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-body">  
+                    <div class="d-flex justify-content-between" id="box_update">
+                        <img src="@Url.Content("~/logo.png")" style="height:40px"> <span class="col-form-label">Cloud Idea</span>
+                        <a class="btn btn-primary" href="javascript:void(0)" click="onOpenAppClick">เปิด</a>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
     </div>
     <!--end::Main-->
     @*<script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>*@
@@ -85,6 +99,7 @@
                     console.log('android', '@ViewData["MobileLinkAndroid"].ToString()');
                 window.location = '@ViewData["MobileLinkAndroid"].ToString()'
                 //window.open('@ViewData["MobileLinkAndroid"].ToString()')
+                    $('#modalMobile').modal('show')
                 }
                 catch (ex) {
                     window.location = 'https://apps.apple.com/th/app/cloud-idea/id1622609196?l=th'
@@ -99,11 +114,39 @@
                     console.log('ios', '@ViewData["MobileLink"].ToString()');
                 window.location = '@ViewData["MobileLink"].ToString()'
                 //window.open('@ViewData["MobileLink"].ToString()')
+                    $('#modalMobile').modal('show')
                 } catch (ex) {
                     window.location = 'https://apps.apple.com/th/app/cloud-idea/id1622609196?l=th'
                 }
 
+        }
+
+        function onOpenAppClick() {
+            if (/android/i.test(userAgent)) {
+                //return "Android";
+                try {
+                    console.log('android', '@ViewData["MobileLinkAndroid"].ToString()');
+                window.location = '@ViewData["MobileLinkAndroid"].ToString()'
+                //window.open('@ViewData["MobileLinkAndroid"].ToString()')
+                }
+                catch (ex) {
+                    window.location = 'https://apps.apple.com/th/app/cloud-idea/id1622609196?l=th'
+                }
+
             }
+
+            // iOS detection from: http://stackoverflow.com/a/9039885/177710
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                //return "iOS";
+                try {
+                    console.log('ios', '@ViewData["MobileLink"].ToString()');
+                    window.location = '@ViewData["MobileLink"].ToString()'
+                    //window.open('@ViewData["MobileLink"].ToString()')
+                } catch (ex) {
+                    window.location = 'https://apps.apple.com/th/app/cloud-idea/id1622609196?l=th'
+                }
+            }
+        }
     </script>
 </body>
 <!--end::Body-->
