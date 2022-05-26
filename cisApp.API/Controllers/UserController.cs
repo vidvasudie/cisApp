@@ -315,16 +315,15 @@ namespace cisApp.API.Controllers
                 }
                 else
                 {
-                    var userRequest = GetUserDesignerRequest.Get.GetByUserIdAndStatus(userId.Value, 1);
-                    if (userRequest.Count == 0)
+                    var lastestRequest = GetUserDesignerRequest.Get.GetLasted(userId.Value);
+                    if (lastestRequest == null)
                     {
                         registerStatus = 0;
                     }
                     else
-                    {
-                        var lastRequest = userRequest.OrderByDescending(o => o.UpdatedDate).FirstOrDefault();
+                    {                        
 
-                        if (lastRequest.Status == 3)
+                        if (lastestRequest.Status == 3)
                         {
                             registerStatus = 3;
                         }
