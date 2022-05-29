@@ -66,7 +66,7 @@
                         @{
                             if (caList != null && caList.Count > 0)
                             {
-                                foreach (var item in caList)
+                                foreach (var item in caList.OrderBy(o => o.CaStatusId).ThenBy(o => o.CreatedDate))
                                 {
                                     <tr>
                                         <td class="pl-0 py-0">
@@ -120,7 +120,7 @@
                                             <span class="label label-lg label-light-primary label-inline">@Html.Raw(item.CaStatusDesc)</span>
                                         </td>
                                         <td class="text-center pr-0">
-                                            @if (item.CaStatusId != 5 && item.CaStatusId != 4 && Model.JobStatus != 6 && Model.JobStatus != 8)
+                                            @if ((item.CaStatusId == 1 || item.CaStatusId == 2 || item.CaStatusId == 3) && Model.JobStatus != 6 && Model.JobStatus != 8)
                                             {
                                                 <a href="#" data-url="@Url.Action("CandidateDelete", "Jobs", new { id = item.JobCaId })" class="btn btn-danger btn-hover-light-danger bt-delete btn-sm">
                                                     ปฏิเสธนักออกแบบ
