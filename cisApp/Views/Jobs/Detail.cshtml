@@ -123,7 +123,7 @@
         function GetCandidateList() {
             var suc = function (html) {
                 $('#candidate_list').html(html);
-                initDataTable('#kt_datatable');
+                initDataTable('#kt_datatable', 0, [3, 'desc']);
             }
             var err = function (e) {
                 alert('error ca modal', e);
@@ -172,7 +172,11 @@
                 });  
             });
         }
-        function initDataTable(elementId, style=0) {
+        function initDataTable(elementId, style = 0, order = null) {
+            var odr = []
+            if (order != null) {
+                odr.push(order);
+            }
             _table = $(elementId).DataTable({
                 language: {
                     search: 'ค้นหา:',
@@ -184,7 +188,7 @@
                 lengthChange: false,
                 pageLength : 5,
                 dom: style == 1 ? "<f<t>ip>" : "<lf<t>ip>",
-                order: [[3, 'desc']]
+                order: odr
             });
         }
 
@@ -193,14 +197,14 @@
             _delCallback = function () {
                 var suc = function (html) {
                 $('#candidate_list').html(html);
-                initDataTable('#kt_datatable');
+                 initDataTable('#kt_datatable', 0, [3, 'desc']);
                 }
                 var err = function (e) {
                     alert('error ca modal', e);
                 }
                 CallAjax('@Url.Action("CardCandidateList", "Jobs")', 'POST', { JobId:'@Model.JobId' }, suc, err);
             }
-            initDataTable('#kt_datatable'); 
+             initDataTable('#kt_datatable', 0, [3, 'desc']);
             $('body').on('click', '.btn-modal-add-ca', function () {
                 var suc = function (html) {
                     $('#addNewCandidateModal .modal-body #table_user').html(html);
