@@ -78,6 +78,7 @@ namespace cisApp.Core
         public virtual DbSet<UsersClientId> UsersClientId { get; set; }
         public virtual DbSet<UserBookmarkImage> UserBookmarkImage { get; set; }
         public virtual DbSet<JobCadidateLock> JobCadidateLock { get; set; }
+        public virtual DbSet<PaymentHistoryDate> PaymentHistoryDate { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -964,6 +965,11 @@ namespace cisApp.Core
                 entity.Property(e => e.JobId)
                     .HasColumnName("JobID")
                     .HasComment("รหัสใบงาน");
+            });
+
+            modelBuilder.Entity<PaymentHistoryDate>(entity =>
+            {
+                entity.Property(e => e.PaymentHistoryDateId).HasDefaultValueSql("(newid())");
             });
 
             OnModelCreatingPartial(modelBuilder);

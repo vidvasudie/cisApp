@@ -32,5 +32,9 @@ namespace cisApp.Core
         public string districtName { get; set; }
         [NotMapped]
         public string subDistrictName { get; set; }
+        [NotMapped]
+        public string accountTypeName { get; set; }
+        [NotMapped]
+        public string bankName { get; set; }
     }
 }

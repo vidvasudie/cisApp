@@ -86,6 +86,37 @@ namespace cisApp.Controllers
                 return Json(new ResponseModel().ResponseError());
             }
         }
+
+        [HttpGet]
+        public IActionResult ManageDate()
+        {
+            try
+            {
+                PaymentHistoryDate data = GetPaymentHistoryDate.Get.GetDefault();
+
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        [HttpPost]
+        public JsonResult ManageDate(PaymentHistoryDate data)
+        {
+            try
+            {
+                var user = GetPaymentHistoryDate.Manage.Update(data.Day.Value, _UserId().Value);
+
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "PaymentHistory")));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
     }
 
     

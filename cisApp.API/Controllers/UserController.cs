@@ -375,6 +375,18 @@ namespace cisApp.API.Controllers
                         userRequest.subDistrictName = subDistrict.NameTh;
                     }
 
+                    if (userRequest.BankId != null)
+                    {
+                        var bank = GetTmBank.Get.GetById(userRequest.BankId.Value);
+                        userRequest.bankName = bank.Name;
+                    }
+
+                    if (userRequest.AccountType != null)
+                    {
+                        var accType = GetTmBankAccountType.Get.GetById(userRequest.AccountType.Value);
+                        userRequest.accountTypeName = accType.Name;
+                    }
+
                 }
 
                 //var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
