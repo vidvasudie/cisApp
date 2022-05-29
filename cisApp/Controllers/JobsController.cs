@@ -207,6 +207,21 @@ namespace cisApp.Controllers
                         return Json(new ResponseModel().ResponseError("ไม่สามารถเพิ่มผู้ชนะประกวดได้มากกว่า 1 คน"));
                     }
                 }
+
+                #region job candidate lock
+                var jobLock = GetJobCadidateLock.Get.GetLockByJobId(model.JobId.Value);
+                if (jobLock != null) //ต้องไม่อยู่ในช่วงจายเงิน 
+                {
+                    return Json(new ResponseModel().ResponseError("ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", null));
+                }
+
+                var jpm = GetJobPayment.Get.GetByJobId(model.JobId.Value); //order by วันล่าสุดมาแล้ว 
+                if (jpm.Count > 0 && jpm.First().PayStatus == 2) //ต้องไม่อยู่ในช่วงตรวจสอบการชำระเงิน
+                {
+                    return Json(new ResponseModel().ResponseError("ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", null));
+                }
+                #endregion
+
                 if (isCanProcess)
                 {
                     //ให้ทำการเพิ่มผู้สมัครได้ 
@@ -257,6 +272,20 @@ namespace cisApp.Controllers
         {
             try
             {
+                #region job candidate lock
+                var jobLock = GetJobCadidateLock.Get.GetLockByCaId(id); 
+                if (jobLock != null) //ต้องไม่อยู่ในช่วงจายเงิน 
+                {    
+                    return Json(new ResponseModel().ResponseError("ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", null));
+                }
+
+                var jpm = GetJobPayment.Get.GetByCandidateId(id); //order by วันล่าสุดมาแล้ว 
+                if (jpm.Count > 0 && jpm.First().PayStatus == 2) //ต้องไม่อยู่ในช่วงตรวจสอบการชำระเงิน
+                {
+                    return Json(new ResponseModel().ResponseError("ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", null));
+                }
+                #endregion
+
                 //ปฎิเสธ และคืน slot งาน
                 var user = GetJobsCandidate.Manage.Delete(id, _UserId().Value, Request.HttpContext.Connection.RemoteIpAddress.ToString()); 
 

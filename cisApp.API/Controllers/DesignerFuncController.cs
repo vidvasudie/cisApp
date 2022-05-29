@@ -104,17 +104,27 @@ namespace cisApp.API.Controllers
                 if (jobId == Guid.Empty || userId == Guid.Empty)
                 {
                     return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
-                }
+                } 
 
                 var job = GetJobs.Get.GetById(jobId);
                 if (job == null)
-                { 
+                {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "fail", null));
                 }
-                if(job.JobStatus != 2) //รอ
+                if (job.JobStatus != 2) //รอ
                 {
                     return Ok(resultJson.errors("ไม่สามารถยกเลิกได้", "fail", null));
                 }
+
+                #region job candidate lock
+                var jobLock = GetJobCadidateLock.Get.GetLockByJobId(jobId);  //ต้องไม่อยู่ในช่วงจายเงิน
+                var jpm = GetJobPayment.Get.GetByJobId(jobId); //order by วันล่าสุดมาแล้ว 
+                if( jobLock != null
+                    || (jpm.Count > 0 && jpm.First().PayStatus == 2)) //ต้องไม่อยู่ในช่วงตรวจสอบการชำระเงิน
+                {
+                    return Ok(resultJson.errors("ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", "fail", null));
+                }
+                #endregion
 
                 var jobCa = GetJobsCandidate.Manage.StatusUpdate(jobId, userId, userId, 7, ip);
                 if (jobCa == null)
@@ -282,6 +292,19 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors(jobs.FirstOrDefault().ValidMassage, "Can not submit job.", null));
                 }
+                #region job candidate lock
+                var jobLock = GetJobCadidateLock.Get.GetLockByJobId(value.JobId.Value);
+                var jpm = GetJobPayment.Get.GetByJobId(value.JobId.Value); //order by วันล่าสุดมาแล้ว 
+                if (jobs.FirstOrDefault() == null)
+                {
+                    return Ok(resultJson.errors("ไม่พบข้อมูล", "fail", null));
+                }
+                if ((jobLock != null && DateTime.Compare(DateTime.Now, jobLock.ExpireDate) < 0) //ต้องไม่อยู่ในช่วงจายเงิน
+                    || (jpm.Count > 0 && jpm.First().PayStatus == 2)) //ต้องไม่อยู่ในช่วงตรวจสอบการชำระเงิน
+                {
+                    return Ok(resultJson.errors("ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", "fail", null));
+                }
+                #endregion
 
                 var job = GetJobsCandidate.Manage.Add(value.JobId.Value, value.UserId.Value, value.Ip);
                 if (job == null)
