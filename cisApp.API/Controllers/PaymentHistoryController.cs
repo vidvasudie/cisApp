@@ -82,7 +82,37 @@ namespace cisApp.API.Controllers
                 }
             }
 
-            public decimal? PaidSumTurn { get; set; } = null;
+            public decimal? PaidSumTurn {
+                get
+                {
+                    try
+                    {
+                        var paymentHistoryDate = GetPaymentHistoryDate.Get.GetDefault();
+
+                        DateTime dateNow = DateTime.Now;
+                        DateTime dateStart = new DateTime(dateNow.Year, dateNow.Month, paymentHistoryDate.Day.Value);
+                        DateTime dateEnd = new DateTime(dateNow.Year, dateNow.Month, paymentHistoryDate.Day.Value);
+
+                        if (dateNow.Day > paymentHistoryDate.Day.Value)
+                        {
+                            dateEnd.AddMonths(1);
+                        }
+                        else
+                        {
+                            dateStart.AddMonths(-1);
+                        }
+
+                        decimal sum = AwaitPaidPayments.Select(o => o.Amount).Sum();
+                        sum += PaidPayments.Select(o => o.Amount).Sum();
+
+                        return sum;
+                    }
+                    catch (Exception ex)
+                    {
+                        return 0m;
+                    }
+                }
+            }
 
             public List<PaymentHistoryModel> PaidPayments { get; set; }
             public List<PaymentHistoryModel> AwaitPaidPayments { get; set; }

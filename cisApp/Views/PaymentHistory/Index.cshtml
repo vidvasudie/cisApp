@@ -4,6 +4,8 @@
 @{
     ViewData["Title"] = "ประวัติการจ่ายเงิน";
     ViewData["ControllerName"] = "PaymentHistory";
+
+    var paymentHistoryDate = GetPaymentHistoryDate.Get.GetDefault();
 }
 
 
@@ -98,7 +100,8 @@
             <!--begin::Toolbar-->
             <div class="d-flex align-items-center">
                 <!--begin::Button-->
-                <a href="#" class=""></a>
+                <span>รอบการจ่ายเงินวันที่ @paymentHistoryDate.Day</span>
+                <a href="@Url.Action("ManageDate",ViewData["ControllerName"])" class="btn btn-outline-primary font-weight-bold ml-2">แก้ไขรอบจ่ายเงิน</a>
                 <!--end::Button-->
                 <!--begin::Button-->
                 <a href="@Url.Action("Manage",ViewData["ControllerName"])" class="btn btn-light-primary font-weight-bold ml-2">เพิ่มประวัติการจ่ายเงิน</a>
