@@ -326,7 +326,18 @@ namespace cisApp.API.Controllers
                 if (jobId == Guid.Empty || userId == Guid.Empty)
                 {
                     return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
-                } 
+                }
+
+                #region job candidate lock
+                var jobLock = GetJobCadidateLock.Get.GetLockByJobId(jobId);
+                var jpm = GetJobPayment.Get.GetByJobId(jobId); //order by วันล่าสุดมาแล้ว 
+                 
+                if ((jobLock != null && DateTime.Compare(DateTime.Now, jobLock.ExpireDate) < 0) //ต้องไม่อยู่ในช่วงจายเงิน
+                    || (jpm.Count > 0 && jpm.First().PayStatus == 2)) //ต้องไม่อยู่ในช่วงตรวจสอบการชำระเงิน
+                {
+                    return Ok(resultJson.errors("ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", "fail", null));
+                }
+                #endregion
 
                 var jobCa = GetJobsCandidate.Manage.Reject(jobId, userId, caUserId, ip);
                 if (jobCa == null)
@@ -895,6 +906,28 @@ namespace cisApp.API.Controllers
 
                 //Noti เมื่อขอแก้ไขผลงาน 
                 new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.alert, data.JobCaUserId.Value, data.JobId);
+
+                return Ok(resultJson.success("สำเร็จ", "success", new { data.JobId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        [Route("api/jobs/candidatelock")]
+        [HttpPost]
+        public IActionResult JobCandidateLock(Guid jobId, DateTime expire)
+        {
+            try
+            {
+                if (jobId == Guid.Empty)
+                {
+                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ กรุณาระบุรหัสใบงาน", "fail", null));
+                }
+
+                //expire = DateTime.Now.AddMinutes(15);
+                var data = GetJobCadidateLock.Manage.Add(new JobCadidateLock { JobId= jobId, ExpireDate= expire, IsActive=true }); 
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { data.JobId }));
             }
