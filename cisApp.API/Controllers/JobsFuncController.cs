@@ -8,6 +8,7 @@ using cisApp.Function;
 using cisApp.Core;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.Globalization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -918,12 +919,12 @@ namespace cisApp.API.Controllers
         /// <summary>
         /// สำหรับ lock การเพิ่ม/ลบ นักออกแบบจากใบงานที่กำลังชำระเงินหรืออยู่ในกระบวนการตรวตสอบ
         /// </summary>
-        /// <param name="jobId"></param>
-        /// <param name="expire"></param>
+        /// <param name="jobId">รหัสใบงาน</param>
+        /// <param name="expire">เวลาหมดอายุ - yyyy-MM-dd HH:mm:ss</param>
         /// <returns></returns>
         [Route("api/jobs/candidatelock")]
         [HttpPost]
-        public IActionResult JobCandidateLock(Guid jobId, DateTime expire)
+        public IActionResult JobCandidateLock(Guid jobId, string expire)
         {
             try
             {
@@ -931,9 +932,14 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ กรุณาระบุรหัสใบงาน", "fail", null));
                 }
-
+                if (String.IsNullOrEmpty(expire))
+                {
+                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ กรุณาระบุเวลาหมดอายุ", "fail", null));
+                }
                 //expire = DateTime.Now.AddMinutes(15);
-                var data = GetJobCadidateLock.Manage.Add(new JobCadidateLock { JobId= jobId, ExpireDate= expire, IsActive=true }); 
+                var exp = DateTime.ParseExact(expire, new string[] { "yyyy-MM-dd HH:mm:ss" }, new CultureInfo("en-US"), DateTimeStyles.None);
+
+                var data = GetJobCadidateLock.Manage.Add(new JobCadidateLock { JobId= jobId, ExpireDate= exp, IsActive=true }); 
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { data.JobId }));
             }
