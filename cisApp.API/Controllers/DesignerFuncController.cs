@@ -111,7 +111,7 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("ไม่พบข้อมูล", "fail", null));
                 }
-                if (job.JobStatus != 2 ) //รอ
+                if (job.JobStatus != 2) //รอ
                 {
                     return Ok(resultJson.errors("ไม่สามารถยกเลิกได้", "fail", null));
                 }

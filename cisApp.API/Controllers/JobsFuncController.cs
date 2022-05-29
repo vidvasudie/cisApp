@@ -915,6 +915,12 @@ namespace cisApp.API.Controllers
             }
         }
 
+        /// <summary>
+        /// สำหรับ lock การเพิ่ม/ลบ นักออกแบบจากใบงานที่กำลังชำระเงินหรืออยู่ในกระบวนการตรวตสอบ
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="expire"></param>
+        /// <returns></returns>
         [Route("api/jobs/candidatelock")]
         [HttpPost]
         public IActionResult JobCandidateLock(Guid jobId, DateTime expire)
