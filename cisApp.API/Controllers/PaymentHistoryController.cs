@@ -82,6 +82,8 @@ namespace cisApp.API.Controllers
                 }
             }
 
+            public decimal? PaidSumTurn { get; set; } = null;
+
             public List<PaymentHistoryModel> PaidPayments { get; set; }
             public List<PaymentHistoryModel> AwaitPaidPayments { get; set; }
         }

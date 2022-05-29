@@ -108,6 +108,24 @@ namespace cisApp.Function
                 }
             }
 
+            public static UserDesignerRequest GetLasted(Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.UserDesignerRequest.Where(o => o.UserId == userId).OrderByDescending(o => o.CreatedDate).FirstOrDefault();
+
+                        return data;
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
         }
         public class Manage
         {

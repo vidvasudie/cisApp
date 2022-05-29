@@ -76,6 +76,7 @@ namespace cisApp.Core
         public virtual DbSet<ClientConfig> ClientConfig { get; set; }
         public virtual DbSet<Notification> Notification { get; set; }
         public virtual DbSet<UsersClientId> UsersClientId { get; set; }
+        public virtual DbSet<UserBookmarkImage> UserBookmarkImage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -920,6 +921,26 @@ namespace cisApp.Core
                     .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.ClientId).HasColumnName("ClientID");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+            });
+
+            modelBuilder.Entity<UserBookmarkImage>(entity =>
+            {
+                entity.HasKey(e => e.BookmarkId)
+                    .HasName("PK__Bookmark__541A3A91B0223965");
+
+                entity.Property(e => e.BookmarkId)
+                    .HasColumnName("BookmarkID")
+                    .HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.RefId).HasColumnName("RefID");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
             });

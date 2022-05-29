@@ -163,7 +163,9 @@ namespace cisApp.API.Controllers
                     return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
                 }
                 var Obj = GetUser.Get.GetById(id.Value);
-                return Ok(resultJson.success(null, null, new { Obj.Fname, Obj.Lname, Obj.Tel, Obj.Email, Obj.LikeOtherCount, Obj.OtherLikedCount  }, null, null, null, null));
+
+                var bookmarkCount = GetUserBookmarkImage.Get.Total(id.Value);
+                return Ok(resultJson.success(null, null, new { Obj.Fname, Obj.Lname, Obj.Tel, Obj.Email, Obj.LikeOtherCount, Obj.OtherLikedCount, BookmarkCount = bookmarkCount }, null, null, null, null));
             }
             catch (Exception ex)
             {
@@ -315,16 +317,15 @@ namespace cisApp.API.Controllers
                 }
                 else
                 {
-                    var userRequest = GetUserDesignerRequest.Get.GetByUserIdAndStatus(userId.Value, 1);
-                    if (userRequest.Count == 0)
+                    var lastestRequest = GetUserDesignerRequest.Get.GetLasted(userId.Value);
+                    if (lastestRequest == null)
                     {
                         registerStatus = 0;
                     }
                     else
-                    {
-                        var lastRequest = userRequest.OrderByDescending(o => o.UpdatedDate).FirstOrDefault();
+                    {                        
 
-                        if (lastRequest.Status == 3)
+                        if (lastestRequest.Status == 3)
                         {
                             registerStatus = 3;
                         }
@@ -340,6 +341,44 @@ namespace cisApp.API.Controllers
 
                 //var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
                 return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new { registerStatus }));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+            }
+        }
+
+        [HttpGet("RegisterData")]
+        public object RegisterData(Guid? userId)
+        {
+            try
+            {
+                var userRequest = GetUserDesignerRequest.Get.GetLasted(userId.Value);
+
+                if (userRequest != null)
+                {
+                    if (userRequest.ProvinceId != null)
+                    {
+                        var province = GetTmProvince.Get.GetById(userRequest.ProvinceId.Value);
+                        userRequest.provinceName = province.NameTh;
+                    }
+
+                    if (userRequest.DistrictId != null)
+                    {
+                        var district = GetTmDistrict.Get.GetById(userRequest.DistrictId.Value);
+                        userRequest.districtName = district.NameTh;
+                    }
+
+                    if (userRequest.SubDistrictId != null)
+                    {
+                        var subDistrict = GetTmSubDistrict.Get.GetById(userRequest.SubDistrictId.Value);
+                        userRequest.subDistrictName = subDistrict.NameTh;
+                    }
+
+                }
+
+                //var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
+                return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", userRequest));
             }
             catch (Exception ex)
             {
