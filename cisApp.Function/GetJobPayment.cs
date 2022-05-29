@@ -138,6 +138,25 @@ namespace cisApp.Function
                 }
             }
 
+            public static List<JobPayment> GetByCandidateId(int id)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = (from ca in context.JobsCandidate.Where(o => o.JobCaId == id)
+                                    join pm in context.JobPayment on ca.JobId equals pm.JobId
+                                    select pm).OrderByDescending(o => o.PayDate).ToList();
+
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
         }
 
         public class Manage

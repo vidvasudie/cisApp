@@ -77,6 +77,7 @@ namespace cisApp.Core
         public virtual DbSet<Notification> Notification { get; set; }
         public virtual DbSet<UsersClientId> UsersClientId { get; set; }
         public virtual DbSet<UserBookmarkImage> UserBookmarkImage { get; set; }
+        public virtual DbSet<JobCadidateLock> JobCadidateLock { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -943,6 +944,26 @@ namespace cisApp.Core
                 entity.Property(e => e.RefId).HasColumnName("RefID");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
+            });
+
+            modelBuilder.Entity<JobCadidateLock>(entity =>
+            {
+                entity.ToTable("Job_Cadiadte_Lock");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("ID")
+                    .HasComment("ลำดับ");
+
+                entity.Property(e => e.ExpireDate).HasComment("เวลาสิ้นสุดการจ่ายเงิน + 15นาที");
+
+                entity.Property(e => e.IsActive)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("สถานะรายการจ่ายเงิน ");
+
+                entity.Property(e => e.JobId)
+                    .HasColumnName("JobID")
+                    .HasComment("รหัสใบงาน");
             });
 
             OnModelCreatingPartial(modelBuilder);
