@@ -72,12 +72,12 @@ namespace cisApp.Function
                 {
                     using (var dbContextTransaction = context.Database.BeginTransaction())
                     {
-                        Notification obj = context.Notification.Find(ID);
-                        if (userId == obj.UserId)
+                        Notification obj = context.Notification.Where(o => o.Id == ID).FirstOrDefault();
+                        if (obj != null && userId == obj.UserId)
                         {
                             obj.IsRead = true;
                             obj.ReadDate = DateTime.Now;
-                            context.Notification.Add(obj);
+                            context.Notification.Update(obj);
                             context.SaveChanges();
 
                             dbContextTransaction.Commit();

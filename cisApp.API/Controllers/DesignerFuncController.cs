@@ -131,6 +131,10 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
                 }
+
+                //แจ้งลูกค้า นักออกแบบ ยกเลิกสมัครงาน
+                new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.leave, job.UserId, job.JobId);
+
                 return Ok(resultJson.success("สำเร็จ", "success", new { job.JobId }));
             }
             catch (Exception ex)

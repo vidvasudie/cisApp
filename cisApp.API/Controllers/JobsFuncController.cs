@@ -262,6 +262,18 @@ namespace cisApp.API.Controllers
                 {
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
                 }
+
+                var jobca = GetJobsCandidate.Get.GetByJobId(new SearchModel { JobId = job.JobId });
+                if (jobca != null && jobca.Count > 0)
+                {
+                    foreach (var ca in jobca.Where(o => o.CaStatusId == 1 || o.CaStatusId == 2 || o.CaStatusId == 3))
+                    {
+                        //Noti แจ้งนักออกแบบ
+                        new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.cancel, ca.UserId.Value, job.JobId);
+                    }
+                }
+
+
                 return Ok(resultJson.success("สำเร็จ", "success", new { job.JobId, job.JobNo }));
             }
             catch (Exception ex)
@@ -685,6 +697,17 @@ namespace cisApp.API.Controllers
 
                 //Noti แจ้งนักออกแบบ
                 new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.winner, value.CaUserId, value.JobId);
+
+                var jobca = GetJobsCandidate.Get.GetByJobId(new SearchModel { JobId=job.JobId });
+                if (jobca != null && jobca.Count > 0)
+                {
+                    foreach (var ca in jobca.Where(o => o.CaStatusId == 4))
+                    {
+                        //Noti แจ้งนักออกแบบ
+                        new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.notwinner, ca.UserId.Value, value.JobId);
+                    }
+                }
+                
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { JobId=job.JobId, CaUserId=job.JobCaUserId }));
             }
