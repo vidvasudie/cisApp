@@ -62,6 +62,12 @@ namespace cisApp.Function
                     page = "StatusDesigner";
                     //obj.notification.icon = ""; 
                     break;
+                case "notwinner":
+                    obj.notification.body = "เราขอแสดงความเสียใจ คุณไม่ได้รับเลือกให้เป็นผู้ชนะในครั้งนี้ คลิ๊กเพื่อดูรายละเอียด";
+                    obj.notification.title = "ขอแสดงความเสียใจ คุณไม่ได้รับเลือก";
+                    page = "StatusDesigner";
+                    //obj.notification.icon = ""; 
+                    break;
                 case "submit": 
                     obj.notification.body = "เราแจ้งเตือนการส่งงานเนื่องจากงานที่ท่านได้ประกวดไว้ใกล้ถึงกำหนดส่ง คลิ๊กเลยเพื่อดูรายละเอียด";
                     obj.notification.title = "ใกล้ถึงเวลาส่งงานแล้วนะ!";
@@ -81,6 +87,14 @@ namespace cisApp.Function
 
                     obj.notification.body = "เราขอแจ้งให้ท่านทราบว่า ท่านไม่ผ่านการคัดเลือกสมัครใบงาน";
                     obj.notification.title = "ท่านไม่ผ่านการคัดเลือก สมัครใบงาน";
+                    page = "StatusDesigner";
+
+                    //obj.notification.icon = ""; 
+                    break;
+                case "cancel":
+
+                    obj.notification.body = "เราขอแจ้งให้ท่านทราบว่า ใบงานที่ท่านสมัคร มีการยกเลิก";
+                    obj.notification.title = "ใบงานที่ท่านสมัคร มีการยกเลิก";
                     page = "StatusDesigner";
 
                     //obj.notification.icon = ""; 
@@ -224,6 +238,13 @@ namespace cisApp.Function
 
             switch (modeDesigner.ToString())
             {
+                case "leave":
+
+                    obj.notification.body = "ใบงานของท่านมีนักออกแบบ กดยกเลิกสมัครใบงานแล้ว";
+                    obj.notification.title = "นักออกแบบ กดยกเลิกสมัครใบงาน";
+                    //obj.notification.icon = "";
+                    page = "StatusUser";
+                    break;
                 case "regist":
 
                     obj.notification.body = "กรุณาเลือกและยืนยัน นักออกแบบเพื่อเริ่มงาน";
