@@ -477,6 +477,8 @@ namespace cisApp.Function
 
                             Guid? chatMessageImgId = null;
 
+                            List<ChatMessage> chatNotiList = new List<ChatMessage>();
+
                             if (imgs != null && imgs.Count > 0)
                             {
                                 data.Message = "ได้ส่งไฟล์แนบ";
@@ -516,15 +518,23 @@ namespace cisApp.Function
                                             };
 
                                             context.ChatMessage.Add(chat);
+
+                                            chatNotiList.Add(chat);
                                         }
                                         
                                     }
                                 }
                             }
+                            else
+                            {
+                                chatNotiList.Add(data);
+                            }
 
                             context.SaveChanges();
 
                             dbContextTransaction.Commit();
+
+                            PushChatNotification(chatNotiList, chatGroup);
 
                             return data;
                         }
@@ -533,6 +543,32 @@ namespace cisApp.Function
                 catch (Exception ex)
                 {
                     throw ex;
+                }
+            }
+
+            private static void PushChatNotification(List<ChatMessage> chats, ChatGroup chatGroup)
+            {
+                try
+                {
+                    string chatName = "", chatType = "singleChat";
+                    if (chatGroup != null)
+                    {
+                        chatName = chatGroup.ChatGroupName;
+                        chatType = "groupChat";
+                    }
+                    else
+                    {
+                        var user = GetUser.Get.GetById(chats.FirstOrDefault().SenderId);
+                        chatName = user.Fname + " " + user.Lname;
+                    }
+                    foreach (var item in chats)
+                    {
+                        new MobileNotfication().ForChat(item, chatName, chatType);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
                 }
             }
 
