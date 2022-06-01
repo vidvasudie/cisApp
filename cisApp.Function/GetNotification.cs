@@ -23,8 +23,9 @@ namespace cisApp.Function
                 {
                     using (var dbContextTransaction = context.Database.BeginTransaction())
                     {
-
-                         obj  = context.Notification.Where(o => o.UserId == userID && o.IsActive == true).ToList(); 
+                        //get data only last 3 month
+                        var start = DateTime.Now.AddMonths(-3);
+                        obj  = context.Notification.Where(o => o.UserId == userID && o.IsActive == true && DateTime.Compare(start, o.CreatedDate) < 0).ToList(); 
                       // obj = context.Notification.ToList();
 
                     }
