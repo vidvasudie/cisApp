@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using cisApp.Core;
 using DIGITAL_ID.library;
 using Newtonsoft.Json; 
 namespace cisApp.Function
@@ -204,6 +205,14 @@ namespace cisApp.Function
             /// </summary>
             public bool isDesigner { get; set; }
             public Guid? jobId { get; set; }
+
+            public Guid? recieverId { get; set; }
+            public Guid? senderId { get; set; }
+            public string chatName { get; set; }
+            public string chatType { get; set; } = "singleChat";
+            public Guid? chatId { get; set; }
+            public string pageBefore { get; set; }
+
             /// <summary>
             /// หน้าก่อนหน้า สำหรับ check ว่าจะแสดงปุ่มรับงานหรือไม่
             /// </summary>
@@ -301,7 +310,39 @@ namespace cisApp.Function
             }
         }
 
+        public async void ForChat(ChatMessage chat, string chatName, string chatType = "singleChat")
+        {
+            NotiModel obj = new NotiModel();
+            obj.data = new Data() {
+                recieverId = chat.RecieverId,
+                senderId = chat.SenderId,
+                chatName = chatName,
+                chatType = chatType,
+                chatId = chat.SenderId,
+            };
+            obj.notification = new notification();
+            string page = "";
+            obj.notification.body = chatName + " ส่งข้อความถึงคุณ";
+            obj.notification.title = "มีข้อความใหม่";
+            //obj.notification.icon = "";
+            page = "Chat";
+            obj.data.pageBefore = "ChatList";
+            var NotiID = new Core.Notification();
 
+            var _c = GetUserClientId.Get.GetbyUserid(chat.RecieverId);
+            if (_c != null)
+            {
+                obj.to = _c.ClientId;
+                //if (NotiID != null)
+                //{
+                //    obj.notification.click_action = page;//string.Format(page+"/{0}", NotiID.Id);
+                //}
+                //obj.notification.click_action = page;
+                obj.data.action = page;
+
+                await NotifyAsync(obj);
+            }
+        }
 
 
 
