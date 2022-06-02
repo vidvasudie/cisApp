@@ -697,6 +697,16 @@ namespace cisApp.API.Controllers
 
                 //Noti แจ้งนักออกแบบ
                 new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.winner, value.CaUserId, value.JobId);
+                if (value.CaStatusId == 7)
+                {
+                    //Noti เมื่อขอไฟล์แบบติดตั้ง
+                    new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.installfile, value.CaUserId, value.JobId);
+                }
+                else if (value.CaStatusId == 9)
+                {
+                    //Noti เมื่อขอแก้ไขผลงาน 
+                    new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.alert, value.CaUserId, value.JobId);
+                }
 
                 var jobca = GetJobsCandidate.Get.GetByJobId(new SearchModel { JobId=job.JobId });
                 if (jobca != null && jobca.Count > 0)

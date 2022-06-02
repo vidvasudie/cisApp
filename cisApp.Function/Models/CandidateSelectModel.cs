@@ -10,5 +10,6 @@ namespace cisApp.Function
         public Guid CaUserId { get; set; }
         public string ip { get; set; }
         public Guid UserId { get; set; }
+        public int CaStatusId { get; set; }
     }
 }
