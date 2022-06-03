@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using cisApp.Core;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.Globalization;
 
 namespace cisApp.API.Controllers
 { 
@@ -82,36 +83,42 @@ namespace cisApp.API.Controllers
                 }
             }
 
-            public decimal? PaidSumTurn {
+            public string PaidSumTurn {
                 get
                 {
                     try
                     {
                         var paymentHistoryDate = GetPaymentHistoryDate.Get.GetDefault();
 
-                        return paymentHistoryDate.Day;
-
                         DateTime dateNow = DateTime.Now;
                         DateTime dateStart = new DateTime(dateNow.Year, dateNow.Month, paymentHistoryDate.Day.Value);
-                        DateTime dateEnd = new DateTime(dateNow.Year, dateNow.Month, paymentHistoryDate.Day.Value);
 
-                        if (dateNow.Day > paymentHistoryDate.Day.Value)
-                        {
-                            dateEnd.AddMonths(1);
-                        }
-                        else
-                        {
-                            dateStart.AddMonths(-1);
-                        }
+                        CultureInfo cultureInfo = new CultureInfo("th-TH");
+                        string dateString = dateStart.ToString("dd/MM/yyyy", cultureInfo);
 
-                        decimal sum = AwaitPaidPayments.Select(o => o.Amount).Sum();
-                        sum += PaidPayments.Select(o => o.Amount).Sum();
+                        return dateString;
 
-                        return sum;
+                        //DateTime dateNow = DateTime.Now;
+                        //DateTime dateStart = new DateTime(dateNow.Year, dateNow.Month, paymentHistoryDate.Day.Value);
+                        //DateTime dateEnd = new DateTime(dateNow.Year, dateNow.Month, paymentHistoryDate.Day.Value);
+
+                        //if (dateNow.Day > paymentHistoryDate.Day.Value)
+                        //{
+                        //    dateEnd.AddMonths(1);
+                        //}
+                        //else
+                        //{
+                        //    dateStart.AddMonths(-1);
+                        //}
+
+                        //decimal sum = AwaitPaidPayments.Select(o => o.Amount).Sum();
+                        //sum += PaidPayments.Select(o => o.Amount).Sum();
+
+                        //return sum;
                     }
                     catch (Exception ex)
                     {
-                        return 0m;
+                        return null;
                     }
                 }
             }
