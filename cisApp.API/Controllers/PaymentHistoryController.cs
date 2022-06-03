@@ -89,6 +89,8 @@ namespace cisApp.API.Controllers
                     {
                         var paymentHistoryDate = GetPaymentHistoryDate.Get.GetDefault();
 
+                        return paymentHistoryDate.Day;
+
                         DateTime dateNow = DateTime.Now;
                         DateTime dateStart = new DateTime(dateNow.Year, dateNow.Month, paymentHistoryDate.Day.Value);
                         DateTime dateEnd = new DateTime(dateNow.Year, dateNow.Month, paymentHistoryDate.Day.Value);
