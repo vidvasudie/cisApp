@@ -51,7 +51,30 @@ namespace cisApp.Function
                     return new List<JobCandidateModel>();
                 }
             }
+            /// <summary>
+            /// ดึงรายการลูกค้่าที่ กด Like ทั้งหมด
+            /// </summary>
+            /// <param name="userId">นักออกแบบ</param>
+            /// <param name="page"></param>
+            /// <param name="limit"></param>
+            /// <returns></returns>
+            public static List<JobCandidateModel> GetCustomerFavoriteList(Guid userId, int page = 1, int limit = 10)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@userDesignerID", userId != Guid.Empty ? userId : (object)DBNull.Value),
+                       new SqlParameter("@page", page-1),
+                       new SqlParameter("@limit", limit)
+                    };
 
+                    return StoreProcedure.GetAllStored<JobCandidateModel>("GetCustomerFavoriteList", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new List<JobCandidateModel>();
+                }
+            }
 
         }
 

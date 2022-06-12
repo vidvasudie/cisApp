@@ -122,7 +122,7 @@ namespace cisApp.API.Controllers
                 if( jobLock != null
                     || (jpm.Count > 0 && jpm.First().PayStatus == 2)) //ต้องไม่อยู่ในช่วงตรวจสอบการชำระเงิน
                 {
-                    return Ok(resultJson.errors("ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", "fail", null));
+                    return Ok(resultJson.errors("ไม่สามารถยกเลิกการสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", "fail", null));
                 }
                 #endregion
 
@@ -483,6 +483,40 @@ namespace cisApp.API.Controllers
                 }
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { caUserId=fav.UserDesignerId }));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
+        /// <summary>
+        /// เรียกรายชื่อลูกค้าที่กด favorite นักออกแบบ
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [Route("api/designer/favoritelist")]
+        [HttpGet]
+        public IActionResult UserFavoriteList(Guid? userId, int page = 1, int limit = 10)
+        {
+            try
+            {
+                if (userId == Guid.Empty || userId == null)
+                {
+                    return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
+                }
+
+                var fav = GetUserFavoriteDesigner.Get.GetCustomerFavoriteList(userId.Value);
+                if (fav == null)
+                {
+                    return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
+                }
+
+                return Ok(resultJson.success("สำเร็จ", "success", fav.Select(o => new { 
+                    o.UserId,
+                    o.UserFullName,
+                    o.UrlPathAPI
+                })));
             }
             catch (Exception ex)
             {
