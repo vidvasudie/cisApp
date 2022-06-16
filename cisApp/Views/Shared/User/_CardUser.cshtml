@@ -92,6 +92,8 @@
                                     <!--end::Svg Icon-->
                                 </span>@Html.Raw(Model.Tel)
                             </a>
+
+                            
                         </div>
                         <!--end::Contacts-->
                     </div>
@@ -253,36 +255,44 @@
                 else
                 {
                     <!--begin::Content-->
-                    <div class="d-flex align-items-center flex-wrap justify-content-between">
+            <div class="d-flex align-items-center flex-wrap justify-content-between">
 
 
-                        <!--begin::Progress-->
-                        <div class="d-flex mt-4 mt-sm-0">
-                            @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
-                            {
-                                @if (Model.LastLogin != null)
-                                {
-                                    <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด @Model.LastLogin</span>
-                                }
-                                else
-                                {
-                                    <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด -</span>
-                                }
-                            }
+                <!--begin::Progress-->
+                <div class="d-flex mt-4 mt-sm-0">
+                    <span class="text-muted mr-4"> วันที่สร้าง @Model.CreatedDateStr</span>
+                </div>
+                <div class="d-flex mt-4 mt-sm-0">
+                    <span class="text-muted mr-4"> วันที่แก้ไข @Model.UpdatedDateStr</span>
+                </div>
+                <div class="d-flex mt-4 mt-sm-0">
+                    
+                    
+                    @if (!String.IsNullOrEmpty(Model.Code) && !String.IsNullOrEmpty(Model.StatusDesc))
+                    {
+                        @if (Model.LastLogin != null)
+                        {
+                            <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด @Model.LastLogin</span>
+                        }
+                        else
+                        {
+                            <span class="font-weight-bold mr-4"> เข้าใช้งานล่าสุด -</span>
+                        }
+                    }
 
-                        </div>
-                        <!--end::Progress-->
-                        <!--begin::Progress-->
-                        @*<div class="d-flex mt-4 mt-sm-0">
-                                <span class="font-weight-bold mr-4">Progress</span>
-                                <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <span class="font-weight-bolder text-dark ml-4">78%</span>
-                            </div>*@
-                        <!--end::Progress-->
-                    </div>
-                    <!--end::Content-->
+                </div>
+                <!--end::Progress-->
+                <!--begin::Progress-->
+                @*<div class="d-flex mt-4 mt-sm-0">
+            <span class="font-weight-bold mr-4">Progress</span>
+            <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-150px w-xl-250px">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 63%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <span class="font-weight-bolder text-dark ml-4">78%</span>
+        </div>*@
+                <!--end::Progress-->
+            </div>
+                <!--end::Content-->
                 }
 
             </div>

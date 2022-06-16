@@ -71,5 +71,6 @@ namespace cisApp.Function
 
         public bool? IsPaid { get; set; }
         public string RefCode { get; set; }
+        public string OrderBy { get; set; }
     }
 }

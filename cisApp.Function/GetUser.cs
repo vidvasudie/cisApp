@@ -218,6 +218,7 @@ namespace cisApp.Function
                     SqlParameter[] parameter = new SqlParameter[] {
                        new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
                        new SqlParameter("@type", model.type != null ? model.type : (object)DBNull.Value),
+                       new SqlParameter("@orderBy", !String.IsNullOrEmpty(model.OrderBy) ? model.OrderBy.Trim() : (object)DBNull.Value),
                        new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
                        new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
                     };
