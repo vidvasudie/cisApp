@@ -85,6 +85,14 @@ namespace cisApp.Function
             }
         }
         public DateTime UpdatedDate { get; set; }
+        public string UpdatedDateStr
+        {
+            get
+            {
+                DateTime? dt = UpdatedDate;
+                return dt.ToStringFormat(DateTimeFormat.FULL);
+            }
+        }
         public DateTime DeletedDate { get; set; }
         public DateTime? LastLogin { get; set; }
         public Guid? CreatedBy { get; set; }
