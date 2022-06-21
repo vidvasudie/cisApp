@@ -26,6 +26,8 @@ namespace cisApp.API.Controllers
             }
             return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new
             {
+                readTotal = result.Where(o => o.IsRead == true).Count(),
+                unreadTotal = result.Where(o => o.IsRead == false).Count(),
                 result
             }));
         }
