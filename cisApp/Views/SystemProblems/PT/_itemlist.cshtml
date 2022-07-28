@@ -1,0 +1,81 @@
+﻿@using cisApp.library;
+@using cisApp.Function;
+@model PaginatedList<SystemProblemModel>
+@{
+    ViewData["ControllerName"] = "SystemProblems";
+}
+
+
+@foreach (var item in Model)
+{
+    @await Html.PartialAsync("~/Views/SystemProblems/PT/_CardItem.cshtml", item)
+}
+
+<!--begin::Pagination-->
+@{
+    var prevDisabled = !Model.HasPrevious ? "disabled" : "";
+    var nextDisabled = !Model.HasNext ? "disabled" : "";
+}
+
+
+<div class="card-body py-7">
+    <!--begin::Pagination-->
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <div class="d-flex flex-wrap mr-3">
+            <a href="javascript: PagerClick(1);" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 @prevDisabled">
+                <i class="ki ki-bold-double-arrow-back icon-xs"></i>
+            </a>
+            <a href="javascript: PagerClick(@(Model.CurrentPage - 1));" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 @prevDisabled">
+                <i class="ki ki-bold-arrow-back icon-xs"></i>
+            </a>
+            @{
+                int maxPage = Model.TotalPages > 5 ? 5 : Model.TotalPages;
+                int start = Model.CurrentPage > maxPage ? (Model.CurrentPage - maxPage + 1) : 1;
+                bool isBDot = false;
+                bool isEDot = false;
+                if (Model.CurrentPage > maxPage && !isBDot)
+                {
+                    isBDot = true;
+                    <a href="#" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1">...</a>
+                }
+                for (int i = start; i < (maxPage + start); i++)
+                {
+
+                    var active = Model.CurrentPage == i ? "active" : "";
+                    <a href="javascript: PagerClick(@i);" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1 @active">@i</a>
+
+                }
+                if (Model.TotalPages > maxPage && !isEDot)
+                {
+                    isEDot = true;
+                    <a href="#" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1">...</a>
+                }
+            }
+            <a href="javascript: PagerClick(@(Model.CurrentPage + 1));" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 @nextDisabled">
+                <i class="ki ki-bold-arrow-next icon-xs"></i>
+            </a>
+            <a href="javascript: PagerClick(@Model.TotalPages);" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 @nextDisabled">
+                <i class="ki ki-bold-double-arrow-next icon-xs"></i>
+            </a>
+        </div>
+        <div class="d-flex align-items-center">
+            @Html.HiddenFor(m => m.CurrentPage)
+            <select id="pageSize" class="form-control form-control-sm text-primary font-weight-bold mr-4 border-0 bg-light-primary" style="width: 75px;">
+                @foreach (var val in Model.PageList)
+                {
+                    if (val == Model.PageSize)
+                    {
+                        <option value="@val" selected>@val</option>
+                    }
+                    else
+                    {
+                        <option value="@val">@val</option>
+                    }
+                }
+            </select>
+            <span class="text-muted">แสดง @Model.TotalCurrentPage จาก @Model.TotalCount รายการ</span>
+        </div>
+    </div>
+    <!--end:: Pagination-->
+</div>
+<!--end::Pagination-->

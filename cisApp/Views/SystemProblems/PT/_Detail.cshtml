@@ -1,0 +1,61 @@
+﻿@using cisApp.library;
+@using cisApp.Function;
+@model SystemProblemModel
+
+@{
+    ViewData["Title"] = "ระบบแจ้งปัญหา";
+    ViewData["ControllerName"] = "SystemProblems";
+}
+
+    <div>
+        <form class="form" id="kt_form_modal" asp-action="Manage" asp-controller=@ViewData["ControllerName"]
+              method="post" data-ajax-confirm="@MessageCommon.Confirm" data-ajax="true" data-ajax-success="redirect">
+            <div class="row">
+                <div class="col-xl-2"></div>
+                <div class="col-xl-8">
+
+                    <div class="my-5">
+                        <h3 class="text-dark font-weight-bold mb-10">แจ้งปัญหาระบบ</h3>
+                        <div class="form-group row">
+                            <label class="col-3 h4">อีเมล</label>
+                            <label class="col-9">@Model.Email</label>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-3 h4">เบอร์โทรศัพท์</label>
+                            <label class="col-9">@Model.Tel</label>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-3 h4">เนื้อหา</label>
+                            <label class="col-9">@Model.Message</label>
+
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-3 h4">สถานะ</label>
+                            <label class="col-9">@Model.StatusMsg</label>
+
+                        </div>
+                        @if(Model.Status == 1)
+                        {
+                        <div class="form-group row">
+                            <label class="col-3 h4">ข้อความตอบกลับ</label>
+                            @Html.TextAreaFor(m => m.Remark, 5, 500, new { @class = "form-control form-control-solid", @autocomplete = "off" })
+                            @Html.ValidationMessageFor(m => m.Remark, "", new { @class = "text-danger" })
+                        </div>
+                        }
+                        else
+                        {
+                        <div class="form-group row">
+                            <label class="col-3 h4">ข้อความตอบกลับ</label>
+                            <label class="col-9">@Model.Remark</label>
+
+                        </div>
+                        }
+                    </div>
+
+                </div>
+                <div class="col-xl-2"></div>
+            </div>
+        </form>
+    </div>

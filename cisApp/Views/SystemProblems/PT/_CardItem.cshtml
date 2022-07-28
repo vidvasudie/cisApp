@@ -1,0 +1,111 @@
+﻿@using cisApp.Controllers
+@model cisApp.Function.SystemProblemModel
+@{
+}
+
+<!--begin::Card-->
+<div class="card card-custom gutter-b">
+    <div class="card-body">
+        <!--begin::Top-->
+        <div class="d-flex">
+            <!--begin::Pic-->
+            <div class="flex-shrink-0 mr-7">
+                <div class="symbol symbol-50 symbol-lg-120">
+                    @*<img alt="Pic" src="@Url.Content(Model.UrlPath)" />*@
+                </div>
+            </div>
+            <!--end::Pic-->
+            <!--begin: Info-->
+            <div class="flex-grow-1">
+                <!--begin::Basic data-->
+                <div class="d-flex align-items-center justify-content-between flex-wrap mt-2">
+                    <!--begin::User-->
+                    <div class="mr-3">
+                        <!--begin::Name-->
+                        <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3" onclick="return false;">
+                            @Html.Raw(Model.Email)&nbsp;&nbsp;@Html.Raw(String.IsNullOrEmpty(Model.Tel) ? "" : "&nbsp;[<i class=\"flaticon2-phone text-success icon-md \"></i>&nbsp;" + Model.Tel + "&nbsp;]")
+                            @if (Model.Status == 1)
+                            {
+                                <i class="flaticon2-writing text-warning icon-md ml-2"></i>
+                            }
+                            else
+                            {
+                                <i class="flaticon2-correct text-success icon-md ml-2"></i>
+                            }
+
+                        </a>
+                        <!--end::Name-->
+                        <!--begin::Contacts-->
+                        <div class="d-flex flex-wrap my-2">
+
+                            <span class="" style="display: -webkit-box;max-width: 500px;-webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;">
+                                <i class="flaticon2-writing  icon-md  "></i>
+                                @Html.Raw(Model.Message)
+                            </span>
+                             
+                        </div>
+                        <!--end::Contacts-->
+                    </div>
+                    <!--begin::User-->
+                    <!--begin::Actions-->
+                    <div class="my-lg-0 my-1">
+                        @if (BaseController._RoleMenuType == 2)
+                        {
+                            if (Model.Status == 1)
+                            {
+                                <!--begin::Toolbar-->
+                                <div class="card-toolbar mb-7">
+
+                                    <a href="#" data-url="@Url.Action("Manage", ViewData["ControllerName"].ToString(), new { id = Model.Id })" data-id="@Model.Id" 
+                                       class="btn btn-sm btn-light-info font-weight-bolder text-uppercase mr-2 bt-issue-update">ดำเนินการ</a>
+
+                                </div>
+                                <!--end::Toolbar-->
+                            }
+                            else
+                            {
+                                <!--begin::Toolbar-->
+                                <div class="card-toolbar mb-7">
+
+                                    <a href="#" data-url="@Url.Action("Manage", ViewData["ControllerName"].ToString(), new { id = Model.Id })" data-id="@Model.Id" 
+                                       class="btn btn-sm btn-light-info font-weight-bolder text-uppercase mr-2 bt-issue-view">รายละเอียด</a>
+
+                                </div>
+                                <!--end::Toolbar-->
+                            }
+                        }
+
+                    </div>
+                    <!--end::Actions-->
+                     
+                </div>
+                <!--end::Basic data-->
+                <div class="d-flex align-items-start flex-wrap ">
+
+
+                    <!--begin::Progress-->
+                    <div class="d-flex mt-4 mt-sm-0">
+                        <span class="text-muted mr-4"> วันที่สร้าง @Model.CreatedDateStr</span>
+                    </div>
+                    <div class="d-flex mt-4 mt-sm-0">
+                        <span class="text-muted mr-4">&nbsp;&nbsp;&nbsp;วันที่แก้ไข @Html.Raw(String.IsNullOrEmpty(Model.UpdatedDateStr) ? "-" : Model.UpdatedDateStr)</span>
+                    </div>
+                    <div class="d-flex mt-4 mt-sm-0">
+                        <span class="text-muted mr-4">&nbsp;&nbsp;&nbsp;ตอบกลับโดย @Html.Raw(String.IsNullOrEmpty(Model.OfficerName) ? "-" : Model.OfficerName)</span>
+                    </div>
+                    <!--end::Progress-->
+                    <!--begin::Progress-->
+                    <!--end::Progress-->
+                </div>
+
+            </div>
+            <!--end::Info-->
+        </div>
+        <!--end::Top-->
+        <!--begin::Separator-->
+        <div class="separator separator-solid my-7"></div>
+        <!--end::Separator--> 
+        <h4 class="font-weight-bold mr-4">สถานะ @Html.Raw(Model.StatusMsg) </h4>
+    </div>
+</div>
+<!--end::Card-->

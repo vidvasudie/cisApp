@@ -2,12 +2,12 @@
 <div id="kt_aside_menu" class="aside-menu my-4" data-menu-vertical="1" data-menu-scroll="1" data-menu-dropdown-timeout="500">
     <!--begin::Menu Nav-->
     <ul class="menu-nav">
-        <li class="menu-item menu-item-active" aria-haspopup="true">
+        @*<li class="menu-item menu-item-active" aria-haspopup="true">
             <a href="@Url.Action("index","dashbaord")" class="menu-link">
                 <i class="menu-icon far fa-money-bill-alt"></i>
                 <span class="menu-text">Payment</span>
             </a>
-        </li>
+        </li>*@
         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
             <a href="javascript:;" class="menu-link menu-toggle">
                 <i class="menu-icon flaticon2-paper"></i>
@@ -38,7 +38,7 @@
                             <span class="menu-text">รอชำระเงิน</span>
                         </a>
                     </li>
-                    <li class="menu-item" aria-haspopup="true">
+                    @*<li class="menu-item" aria-haspopup="true">
                         <a href="@Url.Action("Index","Payment")" class="menu-link">
                             <i class="menu-bullet menu-bullet-line">
                                 <span></span>
@@ -53,7 +53,7 @@
                             </i>
                             <span class="menu-text">ยุติ</span>
                         </a>
-                    </li>
+                    </li>*@
                     <li class="menu-item" aria-haspopup="true">
                         <a href="#" class="menu-link">
                             <i class="menu-bullet menu-bullet-line">
@@ -86,15 +86,7 @@
                             </i>
                             <span class="menu-text">รายชื่อ</span>
                         </a>
-                    </li>
-                    <li class="menu-item" aria-haspopup="true">
-                        <a href="#" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">ใบงานทั้งหมด</span>
-                        </a>
-                    </li>
+                    </li> 
                     <li class="menu-item" aria-haspopup="true">
                         <a href="#" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
@@ -144,7 +136,7 @@
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
-                            <span class="menu-text">ประวัติ</span>
+                            <span class="menu-text">รายชื่อนักออกแบบ</span>
                         </a>
                     </li>
                     <li class="menu-item" aria-haspopup="true">
@@ -200,9 +192,7 @@
                 </ul>
             </div>
         </li>
-
-
-
+         
 
         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
             <a href="javascript:;" class="menu-link menu-toggle">
@@ -251,11 +241,7 @@
             </div>
         </li>
 
-
-
-
-
-
+         
         <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
             <a href="javascript:;" class="menu-link menu-toggle">
                 <i class="menu-icon flaticon2-console"></i>
@@ -264,11 +250,14 @@
             </a>
             <div class="menu-submenu">
                 <i class="menu-arrow"></i>
-                <ul class="menu-subnav">
-                    <li class="menu-item menu-item-parent" aria-haspopup="true">
-                        <span class="menu-link">
-                            <span class="menu-text">Reports</span>
-                        </span>
+                <ul class="menu-subnav"> 
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("System","Setting")" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">ตั้งค่าระบบ</span>
+                        </a>
                     </li>
                     <li class="menu-item" aria-haspopup="true">
                         <a href="@Url.Action("Index","Setting")" class="menu-link">
@@ -277,31 +266,23 @@
                             </i>
                             <span class="menu-text">ตั้งค่าข้อมูล</span>
                         </a>
-                    </li>
+                    </li> 
                     <li class="menu-item" aria-haspopup="true">
-                        <a href="#" class="menu-link">
+                        <a href="@Url.Action("Index","SystemProblems")" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
-                            <span class="menu-text">Messages</span>
+                            <span class="menu-text">แจ้งปัญหาระบบ</span>
                         </a>
                     </li>
-                    <li class="menu-item" aria-haspopup="true">
-                        <a href="#" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">Reports</span>
-                        </a>
-                    </li>
-                    <li class="menu-item" aria-haspopup="true">
+                    @*<li class="menu-item" aria-haspopup="true">
                         <a href="#" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
                             <span class="menu-text">Calendar</span>
                         </a>
-                    </li>
+                    </li>*@
                     <li class="menu-item" aria-haspopup="true">
                         <a href="#" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">

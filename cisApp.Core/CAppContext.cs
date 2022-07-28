@@ -813,6 +813,9 @@ namespace cisApp.Core
                 entity.Property(e => e.Tel)
                     .HasMaxLength(10)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Remark) 
+                    .HasComment("ตอบกลับปัญหา");
             });
 
             modelBuilder.Entity<Otp>(entity =>
