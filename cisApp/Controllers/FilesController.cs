@@ -140,6 +140,46 @@ namespace cisApp.Controllers
             }
         }
 
+        public IActionResult EditImage(Guid? id)
+        {
+            try
+            {
+                EditImageModel data = new EditImageModel();
+
+                if (id != null)
+                {
+                    data.AttachFileImage = GetAttachFile.Get.GetById(id.Value);
+                }
+
+                return View(data);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
+        [HttpPost]
+        public JsonResult EditImage(EditImageModel data)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(data.FileBase64))
+                {
+                    GetAttachFile.Manage.EditFile(data.FileBase64, data.FileName, Int32.Parse(data.FileSize), data.AttachFileImage.AttachFileId, _UserId().Value);
+                }
+                
+
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Files")));
+            }
+            catch (Exception ex)
+            {
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
+
 
 
         public IActionResult Index_bak(string Mode)

@@ -142,6 +142,51 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+
+            public static AttachFile EditFile(string base64File, string fileName, int fileSize, Guid? attachFileId, Guid userId)
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(base64File))
+                        return null;
+
+                    using (var context = new CAppContext())
+                    {
+
+                        //string uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", _UploadDir, id.ToString());
+                        string uploadPath = Path.Combine(_config.GetSection("Upload:Path").Value, _UploadDir, attachFileId.ToString());
+
+                        string virtualPath = Path.Combine(_UploadDir, attachFileId.ToString(), fileName);
+
+                        AttachFile attachFile = context.AttachFile.Find(attachFileId);
+                        
+                        attachFile.IsActive = true;
+                        attachFile.FileName = fileName;
+                        attachFile.Path = virtualPath;
+                        attachFile.Size = (int)fileSize;
+
+                        //attachFile.CreatedBy = userId;
+                        //attachFile.CreatedDate = DateTime.Now;
+                        attachFile.UpdatedBy = userId;
+                        attachFile.UpdatedDate = DateTime.Now;
+
+                        if (!Directory.Exists(uploadPath))
+                            Directory.CreateDirectory(uploadPath);
+
+                        File.WriteAllBytes(Path.Combine(uploadPath, fileName), Convert.FromBase64String(base64File.Split(",")[1]));
+
+                        context.AttachFile.Update(attachFile);
+
+                        context.SaveChanges();
+
+                        return attachFile;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
             public static bool UploadFile(IFormFile uploadFile, Guid refId, Guid userId)
             {
                 try

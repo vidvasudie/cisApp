@@ -34,15 +34,15 @@
                                     <span class="navi-text">Profile @Model.DesignerFullName</span>
                                 </a>
                             </li>
-                            @*<li class="navi-separator my-3"></li>
+                            <li class="navi-separator my-3"></li>
                             <li class="navi-item">
-                                <a href="@Url.Content("~/" + Model.UrlPath)" download="@Model.FileName" class="navi-link">
+                                <a href="@Url.Action("Album", "Files", new { id = Model.AlbumId })" target="_blank" class="navi-link">
                                     <span class="navi-icon">
                                         <i class="flaticon2-magnifier-tool"></i>
                                     </span>
-                                    <span class="navi-text">ดาวน์โหลด</span>
+                                    <span class="navi-text">เปิดอัลบั้ม</span>
                                 </a>
-                            </li>*@
+                            </li>
                             @*<li class="navi-item">
                                 <a href="#" class="navi-link">
                                     <span class="navi-icon">

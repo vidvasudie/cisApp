@@ -41,7 +41,15 @@
                                     </span>
                                     <span class="navi-text">Profile @Model.DesignerFullName</span>
                                 </a>
-                            </li>                            
+                            </li> 
+                            <li class="navi-item">
+                                <a href="@Url.Action("EditImage", ViewData["ControllerName"].ToString(), new { id = Model.AttachFileId })" target="_blank" class="navi-link">
+                                    <span class="navi-icon">
+                                        <i class="flaticon2-edit"></i>
+                                    </span>
+                                    <span class="navi-text">แก้ไขภาพ</span>
+                                </a>
+                            </li>
                             <li class="navi-item">
                                 <a href="#" data-url="@Url.Action("DeleteImage", ViewData["ControllerName"].ToString(), new { id = Model.AttachFileId })" class="navi-link bt-delete">
                                     <span class="navi-icon">
