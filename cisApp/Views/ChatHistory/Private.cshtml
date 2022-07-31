@@ -69,7 +69,15 @@
                                         </span>
                                     </span>
                                 </div>
-                                <input type="text" class="form-control py-4 h-auto" placeholder="ค้นหารายชื่อ" id="chatSearchText"/>
+                                @if (!string.IsNullOrEmpty(Model.text))
+                                {
+                                    <input type="text" value="@Html.Raw(Model.text)" class="form-control py-4 h-auto" placeholder="ค้นหารายชื่อ" id="chatSearchText" />
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control py-4 h-auto" placeholder="ค้นหารายชื่อ" id="chatSearchText" />
+                                }
+
                             </div>
                             <!--end:Search-->
                             <!--begin:Users-->
