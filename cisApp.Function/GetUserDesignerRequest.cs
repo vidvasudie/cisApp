@@ -218,11 +218,23 @@ namespace cisApp.Function
                             context.Users.Update(obj);
                             context.SaveChanges();
 
-                            //add new Designer data
                             UserDesigner objSub = new UserDesigner();
-                            //objSub.UserDesignerId = Guid.NewGuid();
-                            objSub.UserId = obj.UserId;
-                            objSub.PersonalId = data.PersonalId;
+                            var uds = context.UserDesigner.Where(o => o.UserId == obj.UserId).ToList();
+                            if (uds != null && uds.Count > 0)
+                            {
+                                objSub = uds.FirstOrDefault();
+                            }
+                            else
+                            {
+                                //add new Designer data 
+                                //objSub.UserDesignerId = Guid.NewGuid();
+                                objSub.UserId = obj.UserId;
+                                objSub.PersonalId = data.PersonalId; 
+                                objSub.AreaSqmrate = decimal.Parse("250");
+                                objSub.AreaSqmmax = 60;
+                                objSub.AreaSqmused = 0;
+                                objSub.AreaSqmremain = objSub.AreaSqmmax;
+                            }
                             objSub.BankId = data.BankId;
                             objSub.AccountNumber = data.AccountNumber;
                             objSub.AccountType = data.AccountType;
@@ -231,10 +243,6 @@ namespace cisApp.Function
                             objSub.DistrictId = data.DistrictId;
                             objSub.ProvinceId = data.ProvinceId;
                             objSub.PostCode = data.PostCode;
-                            objSub.AreaSqmrate = decimal.Parse("250");
-                            objSub.AreaSqmmax = 60;
-                            objSub.AreaSqmused = 0;
-                            objSub.AreaSqmremain = objSub.AreaSqmmax;
 
                             context.UserDesigner.Update(objSub);
                             context.SaveChanges();
