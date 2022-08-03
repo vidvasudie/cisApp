@@ -40,6 +40,17 @@ namespace cisApp.Function
                 JobEndDate = value.ToDateTimeFormat();
             }
         }
+        public string JobCreateDateStr
+        {
+            get
+            {
+                return CreatedDate.ToStringFormat();
+            }
+            //set
+            //{
+            //    CreatedDate = value.ToDateTimeFormat() != null ? value.ToDateTimeFormat().Value : DateTime.MinValue;
+            //}
+        }
         public Guid JobsExImgId { get; set; } 
         public int? JobsExTypeId { get; set; }
         public string JobsExTypeDesc { get; set; }
