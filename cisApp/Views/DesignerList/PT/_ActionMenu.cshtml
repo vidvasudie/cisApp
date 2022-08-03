@@ -9,14 +9,14 @@
         <li class="navi-header pb-1">
             <span class="text-primary text-uppercase font-weight-bold font-size-sm">Action:</span>
         </li>
-        <li class="navi-item">
+        @*<li class="navi-item">
             <a href="@Url.Action("Manage","UserApprove")" class="navi-link" target="_blank">
                 <span class="navi-icon">
                     <i class="flaticon2-document"></i>
                 </span>
                 <span class="navi-text">ดูประวัติ</span>
             </a>
-        </li>
+        </li>*@
         <li class="navi-item">
             <a href="@Url.Action("index","Jobs",new { Id = Model.UserId })" class="navi-link" target="_blank">
                 <span class="navi-icon">
@@ -41,14 +41,14 @@
                 <span class="navi-text">ประวัติการโอนเงิน</span>
             </a>
         </li>
-        <li class="navi-item">
+        @*<li class="navi-item">
             <a href="@Url.Action("Detail","Jobs")" class="navi-link" target="_blank">
                 <span class="navi-icon">
                     <i class="flaticon2-document"></i>
                 </span>
                 <span class="navi-text">Log</span>
             </a>
-        </li>
+        </li>*@
         <li class="navi-item">
             <a href="@Url.Action("Private", "ChatHistory", new { text = Html.Raw(Model.Fname)})" class="navi-link" target="_blank">
                 <span class="navi-icon">
@@ -57,14 +57,14 @@
                 <span class="navi-text">Log Chat</span>
             </a>
         </li>
-        <li class="navi-item">
+        @*<li class="navi-item">
             <a href="@Url.Action("Detail","Jobs")" class="navi-link" target="_blank">
                 <span class="navi-icon">
                     <i class="flaticon2-document"></i>
                 </span>
                 <span class="navi-text">Dashbaord รายได้</span>
             </a>
-        </li>
+        </li>*@
     </ul>
     <!--end::Navigation-->
 </div>

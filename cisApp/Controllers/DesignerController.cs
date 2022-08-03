@@ -9,11 +9,11 @@ using cisApp.library;
 namespace cisApp.Controllers
 {
     [CustomActionExecute("3D619832-0815-49BB-81F1-9C994E890666")]
-    public class DesignerController : BaseController
+    public class DesignerListController : BaseController
     {
         private Guid _PermissionMenuId;
         private int _PermissionManage;
-        public DesignerController()
+        public DesignerListController()
         {
             _PermissionMenuId = Guid.Parse("3D619832-0815-49BB-81F1-9C994E890666");
             _PermissionManage = 2;// สิทธิ์ผู้ใช้งาน

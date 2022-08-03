@@ -207,7 +207,7 @@
         var err = function (e) {
             alert('error paging', e);
         }
-        CallAjax('@Url.Action("ItemList", "Designer")', 'POST', { text: text, currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
+        CallAjax('@Url.Action("ItemList", "DesignerList")', 'POST', { text: text, currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
     }
     function Search() {
         var text = $('#kt_subheader_search_form').val();
@@ -219,7 +219,7 @@
             var err = function (e) {
                 alert('error search', e);
             }
-            CallAjax('@Url.Action("ItemList", "Designer")', 'POST', { text: text, pageSize: $('#pageSize').val() }, suc, err);
+            CallAjax('@Url.Action("ItemList", "DesignerList")', 'POST', { text: text, pageSize: $('#pageSize').val() }, suc, err);
         }
     }
 

@@ -2,7 +2,24 @@
 @model cisApp.Function.UserModel
 
 @{
+    double percentSqm = 0;
+    decimal percentRate = 0;
+    try
+    {
+        percentSqm = Math.Round(Convert.ToDouble(Model.AreaSQMUsed) / Convert.ToDouble(Model.AreaSQMMax) * 100);
+    }
+    catch (Exception ex)
+    {
 
+    }
+    try
+    {
+        percentRate = Math.Round(Model.AreaSQMRate.Value / 1500 * 100);
+    }
+    catch (Exception ex)
+    {
+
+    }
 }
 
 <!--begin::Col-->
@@ -77,6 +94,26 @@
                 <div class="d-flex justify-content-between align-items-cente my-1">
                     <span class="text-dark-75 font-weight-bolder mr-2">โทร :</span>
                     <a href="#" class="text-muted text-hover-primary">@Html.Raw(Model.Tel)</a>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-cente my-1">
+                    <span class="text-dark-75 font-weight-bolder mr-2">Slot งาน :</span>
+                    <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-75px w-xl-100px">
+                        <div class="progress-bar bg-success" role="progressbar"
+                             style="width: @percentSqm%;" aria-valuenow="@Model.AreaSQMRemain" aria-valuemin="0" aria-valuemax="@Model.AreaSQMMax"></div>
+                    </div>
+                    <a href="#" class="text-muted text-hover-primary">@Html.Raw(Model.AreaSQMUsed)/@Html.Raw(Model.AreaSQMMax)</a>
+                    @*<span class="font-weight-bolder text-dark ml-4">100%</span>*@
+                </div>
+
+                <div class="d-flex justify-content-between align-items-cente my-1">
+                    <span class="text-dark-75 font-weight-bolder mr-2">ราคางาน :</span>
+                    <div class="progress progress-xs mt-2 mb-2 flex-shrink-0 w-75px w-xl-100px">
+                        <div class="progress-bar bg-success" role="progressbar"
+                             style="width: @percentRate%;" aria-valuenow="@Model.AreaSQMRate" aria-valuemin="0" aria-valuemax="1500"></div>
+                    </div>
+                    <a href="#" class="text-muted text-hover-primary">@Html.Raw(Model.AreaSQMRate != null ? Math.Round(Model.AreaSQMRate.Value) : 0)</a>
+                    @*<span class="font-weight-bolder text-dark ml-4">100%</span>*@
                 </div>
 
             </div>

@@ -156,5 +156,17 @@ namespace cisApp.Function
                 return this.Fname + " " + this.Lname;
             }
         }
+
+        [NotMapped]
+        public decimal? AreaSQMRate { get; set; }
+
+        [NotMapped]
+        public int AreaSQMMax { get; set; }
+
+        [NotMapped]
+        public int AreaSQMUsed { get; set; }
+
+        [NotMapped]
+        public int AreaSQMRemain { get; set; }
     }
 }
