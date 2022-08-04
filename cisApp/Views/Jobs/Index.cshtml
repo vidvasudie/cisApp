@@ -19,62 +19,132 @@
                 <div class="subheader-separator subheader-separator-ver mt-2 mb-2 mr-5 bg-gray-200"></div>
                 <!--end::Separator-->
                 <!--begin::Search Form-->
-                <div class="d-flex align-items-center" id="kt_subheader_search">
-                    <span class="text-dark-50 font-weight-bold">ทั้งหมด <span id="kt_subheader_total">0</span> รายการ</span>
-                    <form class="ml-5">
-                        <div class="input-group input-group-sm input-group-solid" style="max-width: 175px">
-                            <input type="text" class="form-control" id="kt_subheader_search_form" placeholder="ค้นหา..." />
-                            <div class="input-group-append">
-                                <a href="javascript: Search();" class="navi-link">
-                                    <span class="input-group-text">
-                                        <span class="svg-icon">
-                                            <!--begin::Svg Icon | path:assets/media/svg/icons/General/Search.svg-->
-                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                    <rect x="0" y="0" width="24" height="24" />
-                                                    <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                                                    <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero" />
-                                                </g>
-                                            </svg>
-                                            <!--end::Svg Icon-->
+                @*<div class="d-flex align-items-center" id="kt_subheader_search">
+                        <span class="text-dark-50 font-weight-bold">ทั้งหมด <span id="kt_subheader_total">0</span> รายการ</span>
+                        <form class="ml-5">
+                            <div class="input-group input-group-sm input-group-solid" style="max-width: 175px">
+                                <input type="text" class="form-control" id="kt_subheader_search_form" placeholder="ค้นหา..." />
+                                <div class="input-group-append">
+                                    <a href="javascript: Search();" class="navi-link">
+                                        <span class="input-group-text">
+                                            <span class="svg-icon">
+                                                <!--begin::Svg Icon | path:assets/media/svg/icons/General/Search.svg-->
+                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24" />
+                                                        <path d="M14.2928932,16.7071068 C13.9023689,16.3165825 13.9023689,15.6834175 14.2928932,15.2928932 C14.6834175,14.9023689 15.3165825,14.9023689 15.7071068,15.2928932 L19.7071068,19.2928932 C20.0976311,19.6834175 20.0976311,20.3165825 19.7071068,20.7071068 C19.3165825,21.0976311 18.6834175,21.0976311 18.2928932,20.7071068 L14.2928932,16.7071068 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                        <path d="M11,16 C13.7614237,16 16,13.7614237 16,11 C16,8.23857625 13.7614237,6 11,6 C8.23857625,6 6,8.23857625 6,11 C6,13.7614237 8.23857625,16 11,16 Z M11,18 C7.13400675,18 4,14.8659932 4,11 C4,7.13400675 7.13400675,4 11,4 C14.8659932,4 18,7.13400675 18,11 C18,14.8659932 14.8659932,18 11,18 Z" fill="#000000" fill-rule="nonzero" />
+                                                    </g>
+                                                </svg>
+                                                <!--end::Svg Icon-->
+                                            </span>
+                                            <!--<i class="flaticon2-search-1 icon-sm"></i>-->
                                         </span>
-                                        <!--<i class="flaticon2-search-1 icon-sm"></i>-->
-                                    </span>
-                                </a>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>*@
                 <!--end::Search Form-->
                 <!--begin::Group Actions-->
-                
                 <!--end::Group Actions-->
             </div>
             <!--end::Details-->
             <!--begin::Toolbar-->
-            <div class="d-flex align-items-center">
-                <!--begin::Button-->
-                <a href="#" class=""></a>
-                <!--end::Button-->
-                @{
-                    var jobStatus = GetJobsStatus.Get.GetAll();
-                    var list = new SelectList(jobStatus, "JobStatusId", "Name");
-                }
-                @Html.DropDownListFor(m => m.JobStatus, list, "กรุณาเลือก", new { @class = "form-control job-staus-filter " })
-                <!--begin::Dropdown-->
-                <!--end::Dropdown-->
-            </div>
             <!--end::Toolbar-->
         </div>
     </div>
     <!--end::Subheader-->
     <!--begin::Entry-->
     <div class="d-flex flex-column-fluid">
-        <!--begin::Container-->
-        <div class="container" id="box_update">
+        <div class="container">
+
+            <!--begin::Card-->
+            <div class="card card-custom gutter-b">
+                <div class="card-body">
+
+                    <!--begin::Search Form-->
+                    <div class="mb-1">
+                        <div class="row align-items-center">
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="row align-items-center">
+                                    <div class="col-md-3 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <input type="text" class="form-control" id="kt_subheader_search_form" placeholder="ค้นหา..." />
+                                            <span>
+                                                <i class="flaticon2-search-1 text-muted"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 my-2 my-md-0">
+                                        <div class="input-group ">
+                                            @Html.TextBoxFor(m => m.StartDateStr, new
+                                        {
+                                            @class = "form-control form-control-solid datepicker"
+                                       ,
+                                            @placeholder = "จากวันที่",
+                                            @autocomplete = "off"
+                                        })
+
+                                            <div class="input-group-append">
+                                                <span class="btn input-group-text date-icon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 my-2 my-md-0">
+                                        <div class="input-group ">
+                                            @Html.TextBoxFor(m => m.EndDateStr, new
+                                        {
+                                            @class = "form-control form-control-solid datepicker"
+                                       ,
+                                            @placeholder = "ถึงวันที่",
+                                            @autocomplete = "off"
+                                        })
+
+                                            <div class="input-group-append">
+                                                <span class="btn input-group-text date-icon"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 my-2 my-md-0">
+                                        @{
+                                            var jobStatus = GetJobsStatus.Get.GetAll();
+                                            var list = new SelectList(jobStatus, "JobStatusId", "Name");
+                                        }
+                                        @Html.DropDownListFor(m => m.JobStatus, list, "สถานะใบงาน", new { @class = "form-control job-staus-filter " })
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row align-items-center">
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="row ">
+
+                                    <div class="col-md-3 my-2  mt-5 ">
+                                        <a href="#" class="btn btn-light-primary px-6 font-weight-bold" onclick="PagerClick(1)">Search</a>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <!--end::Search Form-->
+                        <!--begin::Separator-->
+                        @*<div class="separator separator-solid my-7"></div>*@
+                        <!--end::Separator-->
+                    </div>
+
+                </div>
+            </div>
+            <!--end::Card-->
+            <!--begin::Container-->
+            <div class="container" id="box_update">
+
+            </div>
+            <!--end::Container-->
 
         </div>
-        <!--end::Container-->
     </div>
     <!--end::Entry-->
 </div>
@@ -82,10 +152,20 @@
 
 @section Scripts {
 
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap-datepicker/css/bootstrap-datepicker.css")">
+
+
+    <script src="@Url.Content("~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap-datepicker/locales/bootstrap-datepicker.th.min.js")"></script>
+
     <script>
-  
+
     function PagerClick(index) {
         var text = $('#kt_subheader_search_form').val();
+        var startDate = $('#StartDateStr').val();
+        var endDate = $('#EndDateStr').val();
+        var status = $('#JobStatus').val();
+
         var suc = function (html) {
             $('#box_update').html(html);
             $('#kt_subheader_total').html($('#TotalCount').val());
@@ -93,22 +173,9 @@
         var err = function (e) {
             alert('error paging', e);
         }
-        CallAjax('@Url.Action("ItemList", "Jobs")', 'POST', { text: text, Id: '@Model.Id', currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
+        CallAjax('@Url.Action("ItemList", "Jobs")', 'POST', { text: text, status: status, StartDateStr: startDate, EndDateStr: endDate, Id: '@Model.Id', currentPage: index, pageSize: $('#pageSize').val() }, suc, err);
     }
-    function Search(isSearch=false) {
-        var text = $('#kt_subheader_search_form').val();
-        var status = $('.job-staus-filter').val();
-        if (text.length > 0 || isSearch) {
-            var suc = function (html) {
-                $('#box_update').html(html);
-                $('#kt_subheader_total').html($('#TotalCount').val());
-            }
-            var err = function (e) {
-                alert('error search', e);
-            }
-            CallAjax('@Url.Action("ItemList", "Jobs")', 'POST', { status: status, text: text, Id: '@Model.Id', pageSize: $('#pageSize').val() }, suc, err);
-        }
-    } 
+
 
     $(function () {
         $('body').on('change', '#pageSize', function () {
@@ -116,10 +183,27 @@
         });
         PagerClick(1);
 
-        $('body').on('change', '.job-staus-filter', function () {
-            Search(true);
-        });
+        //$('body').on('change', '.job-staus-filter', function () {
+        //    PagerClick(1);
+        //});
+
+        $('body').on('click', '.btn-search', function () {
+            PagerClick(1);
+        })
+
     });
+
+        $('.datepicker')
+            .datepicker({
+                format: "dd/mm/yyyy",
+                todayBtn: "linked",
+                clearBtn: true,
+                language: "th",
+                todayHighlight: true,
+                autoclose: true,
+                //endDate: '+1d',
+                //datesDisabled: '+1d',
+            })
     </script>
 
 }

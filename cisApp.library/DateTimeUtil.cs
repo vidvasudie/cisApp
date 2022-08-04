@@ -60,6 +60,14 @@ namespace cisApp.library
             var text = String.Format("{0} {1} {2}", dt?.Day.ToString("0"), dtList.Where(o => o.id == dt?.Month.ToString("00")).FirstOrDefault().text, year);
             return text;
         }
+        public static string ToStringFormat(this DateTime dt, DateTimeFormat format = DateTimeFormat.ABBR, Language lan = Language.TH)
+        {
+            if (dt == null) return "";
+            var dtList = GetMonthFormat(format, lan);
+            var year = dt.Year > 2500 ? dt.Year : dt.Year + 543;
+            var text = String.Format("{0} {1} {2}", dt.Day.ToString("0"), dtList.Where(o => o.id == dt.Month.ToString("00")).FirstOrDefault().text, year);
+            return text;
+        }
         public static string ToStringFormatWithTime(this DateTime? dt, DateTimeFormat format = DateTimeFormat.ABBR, Language lan = Language.TH)
         {
             if (dt == null) return "";
