@@ -398,5 +398,28 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [HttpPost("DeleteAccount")]
+        public object DeleteAccount(Guid? userId)
+        {
+            try
+            {
+                var Obj = GetUser.Get.GetById(userId.Value);
+
+                if (Obj == null)
+                {
+                    return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+                }
+
+                var result = GetUser.Manage.DeleteAccount(userId.Value);
+
+                //var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
+                return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", null));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+            }
+        }
+
     }
 }
