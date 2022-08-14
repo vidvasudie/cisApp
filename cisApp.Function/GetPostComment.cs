@@ -82,7 +82,7 @@ namespace cisApp.Function
                             var attachFile = context.AttachFile.Find(refId);
                             if (attachFile != null)
                             {
-                                var albumImage = context.AlbumImage.Where(o => o.ImgId == attachFile.AttachFileId).FirstOrDefault();
+                                var albumImage = context.AlbumImage.Where(o => o.ImgId == attachFile.RefId).FirstOrDefault();
 
                                 var album = context.Album.Find(albumImage.AlbumId);
 
