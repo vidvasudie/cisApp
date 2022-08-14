@@ -713,7 +713,7 @@ namespace cisApp.Function
                 }
             }
 
-            public static Users DeleteAccount(Guid userId)
+            public static ResultModel DeleteAccount(Guid userId)
             {
                 try
                 {
@@ -721,6 +721,31 @@ namespace cisApp.Function
                     {
                         using (var dbContextTransaction = context.Database.BeginTransaction())
                         {
+
+                            // 6 = ยกเลิก, 8 = สิ้นสุด
+                            var jobActive = context.Jobs.Where(o => o.UserId == userId && o.JobStatus != 6 && o.JobStatus != 8).ToList();
+
+                            if (jobActive.Count > 0)
+                            {
+                                return new ResultModel()
+                                {
+                                    Result = false,
+                                    Message = "ไม่สามารถลบบัญชีผู้ใช้งานได้ เนื่องจากมีใบงานว่าจ้างที่กำลังดำเนินการอยู่"
+                                };
+                            }
+
+                            var candidateActive = context.JobsCandidate.Where(o => o.UserId == userId && o.CaStatusId != 4 && o.CaStatusId != 5
+                            && o.CaStatusId != 6 && o.CaStatusId != 7).ToList();
+
+                            if (candidateActive.Count > 0)
+                            {
+                                return new ResultModel()
+                                {
+                                    Result = false,
+                                    Message = "ไม่สามารถลบบัญชีผู้ใช้งานได้ เนื่องจากมีใบงานที่ท่านกำลังดำเนินการอยู่"
+                                };
+                            }
+
                             Users obj = new Users();
 
                             obj = context.Users.Find(userId);
@@ -735,7 +760,7 @@ namespace cisApp.Function
 
                             dbContextTransaction.Commit();
 
-                            return obj;
+                            return new ResultModel() {  Result = true, Message = ""};
                         }
 
                     }

@@ -35,12 +35,13 @@ namespace cisApp.Function
 
         }
 
-        public async void Fordesigner(ModeDesigner modeDesigner, Guid userId, Guid? JobsID, string string1 = "")
+        public async void Fordesigner(ModeDesigner modeDesigner, Guid userId, Guid? JobsID, string string1 = "", Guid? id1 = null)
         {
             NotiModel obj = new NotiModel();
             obj.data = new Data();
             obj.data.isDesigner = true;
             obj.data.jobId = JobsID;
+            
             obj.notification = new notification();
             string page = "";
             switch (modeDesigner.ToString())
@@ -131,6 +132,7 @@ namespace cisApp.Function
                 case "comment":
                     obj.notification.body = "มีผู้ใช้ได้แสดงความคิดเห็นบนรูปภาพของคุณ";
                     obj.notification.title = string1 + " ได้แสดงความคิดเห็นบนรูปภาพของคุณ";
+                    obj.data.attachFileId = id1;
                     page = "PhotoGrid";
                     break;
             }
