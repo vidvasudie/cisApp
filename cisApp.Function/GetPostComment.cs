@@ -88,7 +88,7 @@ namespace cisApp.Function
 
                                 var user = GetUser.Get.GetById(userId);
 
-                                new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.comment, album.UserId.Value, null, user.FullName);
+                                new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.comment, album.UserId.Value, null, user.FullName, attachFile.AttachFileId);
                             }
                         }
                         catch (Exception ex)
