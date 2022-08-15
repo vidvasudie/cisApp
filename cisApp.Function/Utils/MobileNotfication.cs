@@ -29,17 +29,19 @@ namespace cisApp.Function
             notApprove,  // ไม่อนุมัติ คำขอเป็นนักออกแบบ
 
             complete, //เมื่อลูกค้ายืนยันผลงาน
-            installfile // เมื่อลูกค้าขอไฟล์แบบติดตั้ง
+            installfile, // เมื่อลูกค้าขอไฟล์แบบติดตั้ง
+            comment // เมื่อมีผู็ใช้มาแสดงความคิดเห็นบนรูปภาพ
             
 
         }
 
-        public async void Fordesigner(ModeDesigner modeDesigner, Guid userId, Guid? JobsID)
+        public async void Fordesigner(ModeDesigner modeDesigner, Guid userId, Guid? JobsID, string string1 = "", Guid? id1 = null)
         {
             NotiModel obj = new NotiModel();
             obj.data = new Data();
             obj.data.isDesigner = true;
             obj.data.jobId = JobsID;
+            
             obj.notification = new notification();
             string page = "";
             switch (modeDesigner.ToString())
@@ -127,6 +129,12 @@ namespace cisApp.Function
                     obj.notification.title = "แจ้งผลดำเนินการ";
                     page = "StatusDesigner";
                     break;
+                case "comment":
+                    obj.notification.body = "มีผู้ใช้ได้แสดงความคิดเห็นบนรูปภาพของคุณ";
+                    obj.notification.title = string1 + " ได้แสดงความคิดเห็นบนรูปภาพของคุณ";
+                    obj.data.attachFileId = id1;
+                    page = "PhotoGrid";
+                    break;
             }
             var NotiID = new Core.Notification();
 
@@ -205,7 +213,7 @@ namespace cisApp.Function
             /// </summary>
             public bool isDesigner { get; set; }
             public Guid? jobId { get; set; }
-
+            public Guid? attachFileId { get; set; }
             public Guid? recieverId { get; set; }
             public Guid? senderId { get; set; }
             public string chatName { get; set; }

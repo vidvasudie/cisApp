@@ -643,6 +643,8 @@ namespace cisApp.Core
                     .HasColumnName("UserID")
                     .HasDefaultValueSql("(newid())");
 
+                entity.Property(e => e.IsDeletedByUser).HasComment("1 = ผู้ใช้ทำการลบบัญชี");
+
                 entity.Property(e => e.Tel).HasMaxLength(10);
 
                 entity.Property(e => e.UserType)

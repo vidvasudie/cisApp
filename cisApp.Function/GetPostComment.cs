@@ -76,6 +76,26 @@ namespace cisApp.Function
 
                         context.SaveChanges();
 
+                        try
+                        {
+                            // notify user
+                            var attachFile = context.AttachFile.Find(refId);
+                            if (attachFile != null)
+                            {
+                                var albumImage = context.AlbumImage.Where(o => o.ImgId == attachFile.RefId).FirstOrDefault();
+
+                                var album = context.Album.Find(albumImage.AlbumId);
+
+                                var user = GetUser.Get.GetById(userId);
+
+                                new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.comment, album.UserId.Value, null, user.FullName, attachFile.AttachFileId);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
                         return obj;
                     }
                 }

@@ -713,6 +713,64 @@ namespace cisApp.Function
                 }
             }
 
+            public static ResultModel DeleteAccount(Guid userId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        using (var dbContextTransaction = context.Database.BeginTransaction())
+                        {
+
+                            // 6 = ยกเลิก, 8 = สิ้นสุด
+                            var jobActive = context.Jobs.Where(o => o.UserId == userId && o.JobStatus != 6 && o.JobStatus != 8).ToList();
+
+                            if (jobActive.Count > 0)
+                            {
+                                return new ResultModel()
+                                {
+                                    Result = false,
+                                    Message = "ไม่สามารถลบบัญชีผู้ใช้งานได้ เนื่องจากมีใบงานว่าจ้างที่กำลังดำเนินการอยู่"
+                                };
+                            }
+
+                            var candidateActive = context.JobsCandidate.Where(o => o.UserId == userId && o.CaStatusId != 4 && o.CaStatusId != 5
+                            && o.CaStatusId != 6 && o.CaStatusId != 7).ToList();
+
+                            if (candidateActive.Count > 0)
+                            {
+                                return new ResultModel()
+                                {
+                                    Result = false,
+                                    Message = "ไม่สามารถลบบัญชีผู้ใช้งานได้ เนื่องจากมีใบงานที่ท่านกำลังดำเนินการอยู่"
+                                };
+                            }
+
+                            Users obj = new Users();
+
+                            obj = context.Users.Find(userId);
+
+                            obj.IsDeleted = true;
+                            obj.IsDeletedByUser = true;
+                            obj.DeletedDate = DateTime.Now;
+                            obj.DeletedBy = userId;
+
+                            context.Users.Update(obj);
+                            context.SaveChanges();
+
+                            dbContextTransaction.Commit();
+
+                            return new ResultModel() {  Result = true, Message = ""};
+                        }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
         }
     }
 }
