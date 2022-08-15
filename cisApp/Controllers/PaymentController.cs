@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using cisApp.Core;
+using cisApp.Common;
 
 namespace cisApp.Controllers
 {
@@ -24,11 +25,13 @@ namespace cisApp.Controllers
         }
         public IActionResult Index(SearchModel model)
         {
+            LogActivityEvent(LogCommon.LogMode.PAYMENT);
             return View(model);
         }
 
         public IActionResult Detail()
         {
+            LogActivityEvent(LogCommon.LogMode.DETAIL);
             return View();
         }
 
@@ -48,6 +51,7 @@ namespace cisApp.Controllers
             List<JobPayment> _model = GetJobPayment.Get.GetBySearch(model);
             int count = GetJobPayment.Get.GetBySearchTotal(model);
 
+            LogActivityEvent(LogCommon.LogMode.SEARCH);
             return PartialView("PT/_itemlist", new PaginatedList<JobPayment>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
 
@@ -73,10 +77,12 @@ namespace cisApp.Controllers
                     throw new Exception("Error");
                 }
 
+                LogActivityEvent(LogCommon.LogMode.MANAGE);
                 return View(data);
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.MANAGE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 throw ex;
             }            
         }
@@ -88,11 +94,13 @@ namespace cisApp.Controllers
             try
             {
                 var user = GetJobPayment.Manage.Update(data, _UserId().Value);
-                
+
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Payment")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }
@@ -112,10 +120,12 @@ namespace cisApp.Controllers
                     throw new Exception("Error");
                 }
 
+                LogActivityEvent(LogCommon.LogMode.MANAGE);
                 return View(data);
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.MANAGE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 throw ex;
             }
         }
@@ -143,11 +153,12 @@ namespace cisApp.Controllers
                         }
                     }
                 }
-                    
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Payment")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }

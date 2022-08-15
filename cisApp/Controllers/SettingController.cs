@@ -1,4 +1,5 @@
-﻿using cisApp.Core;
+﻿using cisApp.Common;
+using cisApp.Core;
 using cisApp.Function;
 using cisApp.library;
 using Microsoft.AspNetCore.Authorization;
@@ -26,6 +27,7 @@ namespace cisApp.Controllers
         }
         public IActionResult Index(int pageIndex = 1)
         {
+            LogActivityEvent(LogCommon.LogMode.SETTING_DATA);
             return View(new PaginatedList<Settings>(_model, _model.Count, pageIndex, 2));
         }
 
@@ -35,6 +37,7 @@ namespace cisApp.Controllers
             List<Settings> _model = GetSettings.Get.GetAll();
             int count = _model.Count;
 
+            LogActivityEvent(LogCommon.LogMode.SEARCH);
             return PartialView("PT/_itemlist", new PaginatedList<Settings>(_model, count, 1, 10));
         }
 
@@ -42,6 +45,7 @@ namespace cisApp.Controllers
         {
             try
             {
+                
                 Settings data = new Settings();
                 
                 if (id != null)
@@ -50,18 +54,21 @@ namespace cisApp.Controllers
 
                     if (data == null)
                     {
+                        LogActivityEvent(LogCommon.LogMode.MANAGE, MessageCommon.TXT_OPERATE_ERROR);
                         throw new Exception("Wrong Url Exception");
                     }
                 }
                 else
                 {
+                    LogActivityEvent(LogCommon.LogMode.MANAGE, MessageCommon.TXT_OPERATE_ERROR);
                     throw new Exception("Wrong Url Exception");
                 }
-
+                LogActivityEvent(LogCommon.LogMode.MANAGE);
                 return View(data);
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.MANAGE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 throw ex;
             }
             
@@ -75,10 +82,12 @@ namespace cisApp.Controllers
             {
                 var user = GetSettings.Manage.Update(data, _UserId().Value);
 
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Setting")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }

@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace cisApp.Controllers
 {
-    public class ActivityLogsController : Controller
+    public class ActivityLogsController : BaseController
     {
         public IActionResult Index()
         {
+            if (_UserId() != null && _UserId() != Guid.Empty)
+            {
+                LogActivityEvent(Common.LogCommon.LogMode.LOG);
+            }
             return View();
         }
     }

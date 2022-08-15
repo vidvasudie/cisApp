@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using cisApp.library;
+using cisApp.Common;
 
 namespace cisApp.Controllers
 {
@@ -21,6 +22,7 @@ namespace cisApp.Controllers
 
         public IActionResult Index()
         {
+            LogActivityEvent(LogCommon.LogMode.DESIGNER);
             return View();
         }
 
@@ -30,6 +32,7 @@ namespace cisApp.Controllers
             List<UserModel> _model = GetUserDesigner.Get.GetDesignerItems(model);
             int count = GetUserDesigner.Get.GetDesignerItemsTotal(model);
 
+            LogActivityEvent(LogCommon.LogMode.SEARCH);
             return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
     }

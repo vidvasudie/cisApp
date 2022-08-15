@@ -1,4 +1,5 @@
-﻿using cisApp.Core;
+﻿using cisApp.Common;
+using cisApp.Core;
 using cisApp.Function;
 using cisApp.library;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,7 @@ namespace cisApp.Controllers
         }
         public IActionResult Index(SearchModel model)
         {
+            LogActivityEvent(LogCommon.LogMode.JOB);
             return View(model);
         }
 
@@ -30,6 +32,7 @@ namespace cisApp.Controllers
             List<JobModel> _model = GetJobs.Get.GetJobs(model);
             int count = GetJobs.Get.GetJobsTotal(model);
 
+            LogActivityEvent(LogCommon.LogMode.SEARCH);
             return PartialView("PT/_itemlist", new PaginatedList<JobModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
 
@@ -39,6 +42,7 @@ namespace cisApp.Controllers
             if (_model != null && _model.Count > 0)
                 return View(_model.FirstOrDefault());
 
+            LogActivityEvent(LogCommon.LogMode.DETAIL);
             return View(new JobModel());
         }
         public IActionResult LogDetail(JobModel data)
@@ -67,12 +71,15 @@ namespace cisApp.Controllers
                 var res = GetJobs.Manage.UpdateJobStatus(data.JobId, data.JobStatus, _UserId(), Request.HttpContext.Connection.RemoteIpAddress.ToString());
                 if(res != null)
                 {
+                    LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                     return Json(new { success = true, message = "success", redirectUrl = "" });
                 }
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveFail);
                 return Json(new { success = false, message = "fail", redirectUrl = "" });
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new { success=false, message= ex.ToString(), redirectUrl="" });
             }
         }
@@ -84,13 +91,15 @@ namespace cisApp.Controllers
                 var job = GetJobs.Manage.UpdateCandidate(new CandidateSelectModel { JobId = jobId, CaUserId = caUserId, UserId = _UserId().Value, ip = Request.HttpContext.Connection.RemoteIpAddress.ToString() });
                 if (job == null)
                 {
+                    LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveFail);
                     return BadRequest("บันทึกข้อมูลไม่สำเร็จ");
                 }
-
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                 return RedirectToAction("Detail", new { jobId= job.JobId });
             }
             catch(Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return BadRequest();
             }
         }
@@ -101,7 +110,9 @@ namespace cisApp.Controllers
                 List<JobModel> _model = GetJobs.Get.GetJobs(model);
                 if (_model != null && _model.Count > 0)
                     return View(_model.FirstOrDefault());
-            } 
+            }
+
+            LogActivityEvent(LogCommon.LogMode.MANAGE);
             return View(new JobModel() { UserId= model.gId.Value });
         }
 
@@ -128,15 +139,18 @@ namespace cisApp.Controllers
                 var result = GetJobs.Manage.Update(data, Request.HttpContext.Connection.RemoteIpAddress.ToString());
                 if (result != null)
                 {
+                    LogActivityEvent(data.JobId == Guid.Empty ? LogCommon.LogMode.INSERT : LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Jobs")));
                 }
                 else
                 {
+                    LogActivityEvent(data.JobId == Guid.Empty ? LogCommon.LogMode.INSERT : LogCommon.LogMode.UPDATE, MessageCommon.SaveFail);
                     return Json(new ResponseModel().ResponseError());
                 } 
             }
             catch (Exception ex)
             {
+                LogActivityEvent(data.JobId == Guid.Empty ? LogCommon.LogMode.INSERT : LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }   
              
@@ -204,6 +218,7 @@ namespace cisApp.Controllers
                     }
                     if ((job.JobStatus == 4 || job.JobStatus == 5 || job.JobStatus == 7 || job.JobStatus == 9) && (model.userCandidates != null && model.userCandidates.Count() > 1))
                     {
+                        LogActivityEvent(LogCommon.LogMode.INSERT, "ไม่สามารถเพิ่มผู้ชนะประกวดได้มากกว่า 1 คน");
                         return Json(new ResponseModel().ResponseError("ไม่สามารถเพิ่มผู้ชนะประกวดได้มากกว่า 1 คน"));
                     }
                 }
@@ -212,12 +227,14 @@ namespace cisApp.Controllers
                 var jobLock = GetJobCadidateLock.Get.GetLockByJobId(model.JobId.Value);
                 if (jobLock != null) //ต้องไม่อยู่ในช่วงจายเงิน 
                 {
+                    LogActivityEvent(LogCommon.LogMode.INSERT, "ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน");
                     return Json(new ResponseModel().ResponseError("ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", null));
                 }
 
                 var jpm = GetJobPayment.Get.GetByJobId(model.JobId.Value); //order by วันล่าสุดมาแล้ว 
                 if (jpm.Count > 0 && jpm.First().PayStatus == 2) //ต้องไม่อยู่ในช่วงตรวจสอบการชำระเงิน
                 {
+                    LogActivityEvent(LogCommon.LogMode.INSERT, "ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน");
                     return Json(new ResponseModel().ResponseError("ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", null));
                 }
                 #endregion
@@ -249,19 +266,22 @@ namespace cisApp.Controllers
                         }
                         else
                         {
+                            LogActivityEvent(LogCommon.LogMode.INSERT, "ไม่สามารถเพิ่มผู้สมัคร หรือผู้ร่วมประกวดได้มากกว่า 3 คน");
                             return Json(new ResponseModel().ResponseError("ไม่สามารถเพิ่มผู้สมัคร หรือผู้ร่วมประกวดได้มากกว่า 3 คน"));
                         }
                     }
                 }
                 else
                 {
+                    LogActivityEvent(LogCommon.LogMode.INSERT, "ไม่สามารถเพิ่มผู้สมัคร หรือผู้ร่วมประกวดได้มากกว่า 3 คน");
                     return Json(new ResponseModel().ResponseError("ไม่สามารถเพิ่มผู้สมัคร หรือผู้ร่วมประกวดได้มากกว่า 3 คน"));
                 }
-                
+                LogActivityEvent(LogCommon.LogMode.INSERT, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.INSERT, MessageCommon.SaveFail, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
 
@@ -275,24 +295,28 @@ namespace cisApp.Controllers
                 #region job candidate lock
                 var jobLock = GetJobCadidateLock.Get.GetLockByCaId(id); 
                 if (jobLock != null) //ต้องไม่อยู่ในช่วงจายเงิน 
-                {    
+                {
+                    LogActivityEvent(LogCommon.LogMode.DELETE, "ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน");
                     return Json(new ResponseModel().ResponseError("ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", null));
                 }
 
                 var jpm = GetJobPayment.Get.GetByCandidateId(id); //order by วันล่าสุดมาแล้ว 
                 if (jpm.Count > 0 && jpm.First().PayStatus == 2) //ต้องไม่อยู่ในช่วงตรวจสอบการชำระเงิน
                 {
+                    LogActivityEvent(LogCommon.LogMode.DELETE, "ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน");
                     return Json(new ResponseModel().ResponseError("ไม่สามารถยกสมัครได้ เนื่องจากอยู่ในระหว่่างการตรวจสอบการชำระเงิน", null));
                 }
                 #endregion
 
                 //ปฎิเสธ และคืน slot งาน
-                var user = GetJobsCandidate.Manage.Delete(id, _UserId().Value, Request.HttpContext.Connection.RemoteIpAddress.ToString()); 
+                var user = GetJobsCandidate.Manage.Delete(id, _UserId().Value, Request.HttpContext.Connection.RemoteIpAddress.ToString());
 
+                LogActivityEvent(LogCommon.LogMode.DELETE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.DELETE, MessageCommon.SaveFail, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }
@@ -325,6 +349,7 @@ namespace cisApp.Controllers
         //}
         public IActionResult Payment()
         {
+
             return View();
         }
 

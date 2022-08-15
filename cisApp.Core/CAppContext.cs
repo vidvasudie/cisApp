@@ -79,6 +79,7 @@ namespace cisApp.Core
         public virtual DbSet<UserBookmarkImage> UserBookmarkImage { get; set; }
         public virtual DbSet<JobCadidateLock> JobCadidateLock { get; set; }
         public virtual DbSet<PaymentHistoryDate> PaymentHistoryDate { get; set; }
+        public virtual DbSet<LogActivity> LogActivity { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -975,6 +976,33 @@ namespace cisApp.Core
             modelBuilder.Entity<PaymentHistoryDate>(entity =>
             {
                 entity.Property(e => e.PaymentHistoryDateId).HasDefaultValueSql("(newid())");
+            });
+
+            modelBuilder.Entity<LogActivity>(entity =>
+            {
+                entity.HasKey(e => e.ActivityId)
+                    .HasName("PK__Log_Acti__45F4A7F1314EC83F");
+
+                entity.ToTable("Log_Activity");
+
+                entity.Property(e => e.ActivityId).HasColumnName("ActivityID");
+
+                entity.Property(e => e.Action).IsUnicode(false);
+
+                entity.Property(e => e.Controller).IsUnicode(false);
+
+                entity.Property(e => e.Ip)
+                    .HasColumnName("IP")
+                    .HasMaxLength(20)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.RefFullname).HasComment("ชื่อผู้ใช้งาน");
+
+                entity.Property(e => e.RefUserId)
+                    .HasColumnName("RefUserID")
+                    .HasComment("รหัสผู้ใช้งาน");
+
+                entity.Property(e => e.Url).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

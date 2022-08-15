@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using cisApp.Common;
 
 namespace cisApp.Controllers
 {
@@ -32,11 +33,52 @@ namespace cisApp.Controllers
             }
         }
         //public static Guid? _UserId {get; set;}
-        public static int? _UserType { get; set; }
-        public static Guid? _RoleId { get; set; }
-        public static string _UserName { get; set; }
-        public static string _FullName { get; set; }
+        //public static int? _UserType { get; set; }
+        public Guid? _RoleId()
+        {
+            var roleId = HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "RoleId")?.Value;
+            if (!String.IsNullOrEmpty(roleId))
+            {
+                return Guid.Parse(roleId);
+            }
+            else
+            {
+                return null;
+            }
+        }
+        //public static Guid? _RoleId { get; set; }
+        public int? _UserType()
+        {
+            var userType = HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserType")?.Value;
+            if (!String.IsNullOrEmpty(userType))
+            {
+                return int.Parse(userType);
+            }
+            return null;
+        }
+        //public static string _UserName { get; set; }
+        public string _UserName()
+        {
+            //return HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == Constants.CookieFullName)?.Value;
+            return HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserName")?.Value;
+        }
+        //public static string _FullName { get; set; }
+        public string _FullName()
+        {
+            //return HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == Constants.CookieFullName)?.Value;
+            return HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
+        }
         public static int? _RoleMenuType { get; set; }
+
+
+        #region Log Activity
+
+        public async void LogActivityEvent(LogCommon.LogMode log, string msg = "", string exception = "")
+        {
+            await GetLogActivity.Manage.AddAsync(Request, _UserId(), _FullName(), log, msg, exception);
+        }
+
+        #endregion
 
         public class CustomActionExecuteAttribute : ActionFilterAttribute
         {
@@ -47,26 +89,17 @@ namespace cisApp.Controllers
                 _menuid = Guid.Parse(menuId); 
             }
             public override void OnActionExecuting(ActionExecutingContext context)
-            { 
-                _FullName = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
-                var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
-                if (!String.IsNullOrEmpty(userId))
-                {
-                    //_UserId = Guid.Parse(userId);
-                } 
+            {   
                 var roleId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "RoleId")?.Value;
                 if (!String.IsNullOrEmpty(roleId))
-                {
-                    _RoleId = Guid.Parse(roleId);
+                { 
+                    var roleMenu = GetRoleMenu.Get.GetByRoleIdAndMenuId(Guid.Parse(roleId), _menuid);
+                    _RoleMenuType = roleMenu.Type;
                 }
-                var userType = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserType")?.Value;
-                if (!String.IsNullOrEmpty(userType))
+                else
                 {
-                    _UserType = int.Parse(userType);
+                    _RoleMenuType = 1;
                 }
-                _UserName = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserName")?.Value;
-                var roleMenu = GetRoleMenu.Get.GetByRoleIdAndMenuId(_RoleId.Value, _menuid);
-                _RoleMenuType = roleMenu.Type;
 
 
                 base.OnActionExecuting(context);

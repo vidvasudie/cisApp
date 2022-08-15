@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using cisApp.Common;
 using cisApp.Core;
 using cisApp.Function;
 using cisApp.library;
@@ -24,6 +25,7 @@ namespace cisApp.Controllers
         }
         public IActionResult Index(SearchModel model)
         {
+            LogActivityEvent(LogCommon.LogMode.PAYMENT_HIST);
             return View(model);
         }
 
@@ -33,6 +35,7 @@ namespace cisApp.Controllers
             List<PaymentHistoryModel> _model = GetPaymentHistory.Get.GetBySearch(model);
             int count = GetPaymentHistory.Get.GetBySearchTotal(model);
 
+            LogActivityEvent(LogCommon.LogMode.SEARCH);
             return PartialView("PT/_itemlist", new PaginatedList<PaymentHistoryModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
 
@@ -48,10 +51,12 @@ namespace cisApp.Controllers
                     data = GetPaymentHistory.Get.GetById(id.Value);
                 }
 
+                LogActivityEvent(LogCommon.LogMode.MANAGE);
                 return View(data);
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.MANAGE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 throw ex;
             }
         }
@@ -64,10 +69,12 @@ namespace cisApp.Controllers
             {
                 var user = GetPaymentHistory.Manage.Update(data, _UserId().Value);
 
+                LogActivityEvent(LogCommon.LogMode.MANAGE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "PaymentHistory")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }
@@ -79,10 +86,12 @@ namespace cisApp.Controllers
             {
                 GetPaymentHistory.Manage.Delete(id, _UserId().Value);
 
+                LogActivityEvent(LogCommon.LogMode.DELETE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "PaymentHistory")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.DELETE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }
@@ -94,10 +103,12 @@ namespace cisApp.Controllers
             {
                 PaymentHistoryDate data = GetPaymentHistoryDate.Get.GetDefault();
 
+                LogActivityEvent(LogCommon.LogMode.MANAGE);
                 return View(data);
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.MANAGE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 throw ex;
             }
         }
@@ -110,10 +121,12 @@ namespace cisApp.Controllers
             {
                 var user = GetPaymentHistoryDate.Manage.Update(data.Day.Value, _UserId().Value);
 
+                LogActivityEvent(LogCommon.LogMode.MANAGE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "PaymentHistory")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }

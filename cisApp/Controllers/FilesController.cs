@@ -1,4 +1,5 @@
-﻿using cisApp.Function;
+﻿using cisApp.Common;
+using cisApp.Function;
 using cisApp.library;
 using cisApp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -132,10 +133,12 @@ namespace cisApp.Controllers
             {
                 GetAlbum.Manage.DeleteAttachFileImage(id, _UserId().Value);
 
+                LogActivityEvent(LogCommon.LogMode.DELETE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Files")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.DELETE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }
@@ -170,12 +173,13 @@ namespace cisApp.Controllers
                 {
                     GetAttachFile.Manage.EditFile(data.FileBase64, data.FileName, Int32.Parse(data.FileSize), data.AttachFileImage.AttachFileId, _UserId().Value);
                 }
-                
 
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Files")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }

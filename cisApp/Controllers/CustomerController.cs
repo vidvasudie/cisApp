@@ -1,4 +1,5 @@
-﻿using cisApp.Function;
+﻿using cisApp.Common;
+using cisApp.Function;
 using cisApp.library;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,7 @@ namespace cisApp.Controllers
 
         public IActionResult Index(int pageIndex = 1)
         {
+            LogActivityEvent(LogCommon.LogMode.CUSTOMER);
             return View(new PaginatedList<UserModel>(_model, _model.Count, pageIndex, 2));
         }
 
@@ -37,6 +39,7 @@ namespace cisApp.Controllers
             List<UserModel> _model = GetUser.Get.GetUserModels(model);
             int count = GetUser.Get.GetUserModelsTotal(model);
 
+            LogActivityEvent(LogCommon.LogMode.SEARCH);
             return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
 
@@ -47,10 +50,12 @@ namespace cisApp.Controllers
             {
                 var user = GetUser.Manage.Active(id, active, _UserId().Value);
 
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Customer")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }
@@ -62,10 +67,12 @@ namespace cisApp.Controllers
             {
                 var user = GetUser.Manage.Delete(id, _UserId().Value);
 
+                LogActivityEvent(LogCommon.LogMode.DELETE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Customer")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.DELETE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }
@@ -83,12 +90,19 @@ namespace cisApp.Controllers
 
                 var sendMailResult = SendMail.SendMailResetPassword(user.Email, user.Fname + " " + user.Lname, newPassword, _HostingEnvironment.WebRootPath);
 
-                if (sendMailResult == false) return Json(new ResponseModel().ResponseError(MessageCommon.AdminSendMailPasswordFail));
+                if (sendMailResult == false)
+                {
+                    LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveFail);
+                    return Json(new ResponseModel().ResponseError(MessageCommon.AdminSendMailPasswordFail));
+                }
+                    
 
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.AdminSendMailPasswordSuccess, Url.Action("Index", "Customer")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError(MessageCommon.AdminSendMailPasswordFail));
             }
         }

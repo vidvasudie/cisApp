@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using cisApp.Common;
 
 namespace cisApp.Controllers
 { 
@@ -30,7 +31,8 @@ namespace cisApp.Controllers
                       .Build();
 
         public IActionResult Index()
-        {  
+        {
+            LogActivityEvent(LogCommon.LogMode.DESIGNER_REQ);
             return View();
         }
         [HttpPost]
@@ -41,11 +43,13 @@ namespace cisApp.Controllers
             List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model);
             int count = GetUserDesignerRequest.Get.GetUserDesignerRequestModelTotal(model);
 
+            LogActivityEvent(LogCommon.LogMode.SEARCH);
             return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, count, model.currentPage.Value, model.pageSize.Value)); 
         }
 
         public IActionResult Manage(SearchModel model)
-        { 
+        {
+            LogActivityEvent(LogCommon.LogMode.MANAGE);
             List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model); //ใช้ code ในการหารายการข้อมูล
             if (_model != null && _model.Count > 0)
             {
@@ -97,21 +101,25 @@ namespace cisApp.Controllers
                 int result = GetUserDesignerRequest.Manage.AddNewRequest(data);
                 if(result > 0)
                 {
+                    LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "UserApprove")));
                 }
                 else
                 {
+                    LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR);
                     return Json(new ResponseModel().ResponseError());
                 }
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }
 
         public IActionResult ManageRequest(SearchModel model)
-        { 
+        {
+            LogActivityEvent(LogCommon.LogMode.MANAGE);
             List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model);
             if(_model != null)
             { 
@@ -173,15 +181,18 @@ namespace cisApp.Controllers
                         GetAlbum.Manage.DeleteAlbumExample(data.UserId.Value);
                         new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.notApprove, data.UserId.Value, null);
                     }
+                    LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "UserApprove")));
                 }
                 else
                 {
+                    LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR);
                     return Json(new ResponseModel().ResponseError());
                 }
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }

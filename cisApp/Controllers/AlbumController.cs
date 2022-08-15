@@ -1,4 +1,5 @@
-﻿using cisApp.Function;
+﻿using cisApp.Common;
+using cisApp.Function;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -111,6 +112,7 @@ namespace cisApp.Controllers
 
                 if (job.JobStatus >= 4 && data.UserId != job.JobCaUserId)
                 {
+                    LogActivityEvent(LogCommon.LogMode.INSERT, "บันทึกข้อมูลไม่สำเร็จ เฉพาะผู้ผ่านการประกวดเท่านั้นที่สามารถส่งงานได้");
                     return Json(new ResponseModel().ResponseError("บันทึกข้อมูลไม่สำเร็จ เฉพาะผู้ผ่านการประกวดเท่านั้นที่สามารถส่งงานได้")); ;
                 }
 
@@ -152,6 +154,7 @@ namespace cisApp.Controllers
                 }
                 else // เกินกว่านี้ เตะออก
                 {
+                    LogActivityEvent(LogCommon.LogMode.INSERT, "ไม่สามารถส่งงานดังกล่าวได้เนื่องจากสถานะงาน ไม่ได้อยู่ในสถานะที่ส่งงานได้");
                     return Json(new ResponseModel().ResponseError("ไม่สามารถส่งงานดังกล่าวได้เนื่องจากสถานะงาน ไม่ได้อยู่ในสถานะที่ส่งงานได้"));
                 }
 
@@ -190,15 +193,18 @@ namespace cisApp.Controllers
                     MobileNotfication mobileNotfication = new MobileNotfication();
                     mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId, job.JobId);
 
+                    LogActivityEvent(LogCommon.LogMode.INSERT, MessageCommon.SaveSuccess);
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Jobs")));
                 }
                 else
                 {
+                    LogActivityEvent(LogCommon.LogMode.INSERT, MessageCommon.SaveFail);
                     return Json(new ResponseModel().ResponseError());
                 }
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.INSERT, MessageCommon.SaveFail, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }
@@ -235,7 +241,7 @@ namespace cisApp.Controllers
                 return View(model);
             }
             catch (Exception ex)
-            {
+            { 
                 throw ex;
             }
         }
@@ -253,15 +259,18 @@ namespace cisApp.Controllers
                     MobileNotfication mobileNotfication = new MobileNotfication();
                     mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId, job.JobId);
 
+                    LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                     return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Jobs")));
                 }
                 else
                 {
+                    LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveFail);
                     return Json(new ResponseModel().ResponseError());
                 }
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }

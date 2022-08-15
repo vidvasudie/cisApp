@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using cisApp.library;
 using Microsoft.AspNetCore.Hosting;
+using cisApp.Common;
 
 namespace cisApp.Controllers
 {
@@ -41,6 +42,7 @@ namespace cisApp.Controllers
             {
                 if(obj.username == "admin@gmail.com" && obj.password == "12345")
                 {
+                    LogActivityEvent(LogCommon.LogMode.LOGIN, MessageCommon.LoginSuccess, "TEST USER");
                     return LoginTest(new UserModel() { 
                         UserId= Guid.Parse("F71758CF-3F30-432B-8361-5754CDE8BF26")
                         , Email= "admin@gmail.com"
@@ -52,6 +54,7 @@ namespace cisApp.Controllers
                 }
                 if (string.IsNullOrEmpty(obj.username) || string.IsNullOrEmpty(obj.password))
                 {
+                    LogActivityEvent(LogCommon.LogMode.LOGIN, MessageCommon.IncorrectData);
                     return Json(new ResponseModel().ResponseError(MessageCommon.IncorrectData)); 
                 }
                 else
@@ -61,6 +64,7 @@ namespace cisApp.Controllers
                     if (users == null || users.Count < 1)
                     {
                         string messageError = "Username หรือ Password ไม่ถูกต้อง";
+                        LogActivityEvent(LogCommon.LogMode.LOGIN, MessageCommon.TXT_NOT_DATA, messageError);
                         return Json(new ResponseModel().ResponseError(messageError));
                     }
                     else
@@ -69,12 +73,14 @@ namespace cisApp.Controllers
                         if (!user.IsActive)
                         {
                             string messageError = "ผู้ใช้งานถูกปิดการใช้งาน กรุณาติดต่อเจ้าหน้าที่ดูแลระบบ";
+                            LogActivityEvent(LogCommon.LogMode.LOGIN, messageError);
                             return Json(new ResponseModel().ResponseError(messageError)); 
                         }
                         else
                         {
                             SetCookie(user);
                             GetUser.Manage.LoginStamp(user.UserId.Value);
+                            LogActivityEvent(LogCommon.LogMode.LOGIN, MessageCommon.LoginSuccess);
                             return Json(new ResponseModel().ResponseSuccess(MessageCommon.LoginSuccess, Url.Action("Index", "Home")));
                         }
                     }
@@ -84,12 +90,14 @@ namespace cisApp.Controllers
             catch (Exception ex)
             {
                 string messageError = "พบข้อผิดพลาด กรุณาลองใหม่";
+                LogActivityEvent(LogCommon.LogMode.LOGIN, MessageCommon.TXT_ACCESS_DENIED, ex.ToString());
                 return Json(new ResponseModel().ResponseError(messageError));
             } 
         }
         [HttpGet]
         public IActionResult ForgetPassword()
         {
+            LogActivityEvent(LogCommon.LogMode.FORGETPASSWD);
             return View();
         }
 
@@ -112,11 +120,13 @@ namespace cisApp.Controllers
 
                 SendMail.SendMailResetPassword(user.Email, user.Email, newPassword, _HostingEnvironment.WebRootPath);
 
+                LogActivityEvent(LogCommon.LogMode.FORGETPASSWD, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess("ระบบได้ทำการส่งรหัสผ่านใหม่ไปยังอีเมลของท่านแล้ว", Url.Action("Index", "LogiN")));
             }
             catch (Exception ex)
             {
                 string messageError = "พบข้อผิดพลาด กรุณาลองใหม่";
+                LogActivityEvent(LogCommon.LogMode.FORGETPASSWD, MessageCommon.SaveFail, ex.ToString());
                 return Json(new ResponseModel().ResponseError(messageError));
             }
         }
@@ -154,14 +164,16 @@ namespace cisApp.Controllers
 
         public IActionResult Logout()
         {
-            Guid userCode = Guid.Empty;
-            string userName = "";
-            if (_UserId().HasValue)
-                userCode = _UserId().Value;
-            if (!string.IsNullOrEmpty(_UserName))
-                userName = _UserName;
+            //Guid userCode = Guid.Empty;
+            //string userName = "";
+            //if (_UserId().HasValue)
+            //    userCode = _UserId().Value;
+            //if (!string.IsNullOrEmpty(_UserName()))
+            //    userName = _UserName();
             HttpContext.SignOutAsync();
-           
+
+            LogActivityEvent(LogCommon.LogMode.LOGOUT, MessageCommon.LogoutSuccess);
+
             return RedirectToAction("Index", "Login");
         }
 

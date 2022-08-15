@@ -1,4 +1,5 @@
-﻿using cisApp.Core;
+﻿using cisApp.Common;
+using cisApp.Core;
 using cisApp.Function;
 using cisApp.library;
 using Microsoft.AspNetCore.Authorization;
@@ -23,7 +24,7 @@ namespace cisApp.Controllers
         }
         public IActionResult Index()
         {
-
+            LogActivityEvent(LogCommon.LogMode.PERMISSION);
             return View();
         }
         [HttpPost]
@@ -32,6 +33,7 @@ namespace cisApp.Controllers
             List<Role> _model = GetRole.Get.GetRole(model);
             int count = GetRole.Get.GetRoleTotal(model);
 
+            LogActivityEvent(LogCommon.LogMode.SEARCH);
             return PartialView("PT/_itemlist", new PaginatedList<Role>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
 
@@ -44,6 +46,8 @@ namespace cisApp.Controllers
             Role _model = GetRole.Get.GetById(model.gId.Value);
             if (_model != null)
                 return View(_model);
+
+            LogActivityEvent(LogCommon.LogMode.MANAGE);
             return View(new Role() { IsActive = true });
         }
 
@@ -57,11 +61,13 @@ namespace cisApp.Controllers
                 data.UpdatedBy = _UserId().Value;
                 GetRole.Manage.Update(data, menulist);
 
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "GroupManagement")));
                  
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }
@@ -73,10 +79,12 @@ namespace cisApp.Controllers
             {
                 GetRole.Manage.Active(id, active, _UserId().Value);
 
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "GroupManagement")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }
@@ -88,10 +96,12 @@ namespace cisApp.Controllers
             {
                 GetRole.Manage.Delete(id, _UserId().Value);
 
+                LogActivityEvent(LogCommon.LogMode.DELETE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "GroupManagement")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.DELETE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }

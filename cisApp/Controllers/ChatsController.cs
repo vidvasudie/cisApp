@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using cisApp.library;
 using Microsoft.AspNetCore.Authorization;
+using cisApp.Common;
 
 namespace cisApp.Controllers
 {
@@ -24,6 +25,7 @@ namespace cisApp.Controllers
 
         public IActionResult Index()
         {
+            
             return View();
         }
 
@@ -35,6 +37,7 @@ namespace cisApp.Controllers
 
                 ViewData["SignalRWebSite"] = webSignalR;
 
+                LogActivityEvent(LogCommon.LogMode.CHAT);
                 return View(model);
             }
             catch (Exception ex)
@@ -50,6 +53,7 @@ namespace cisApp.Controllers
 
             ViewData["SignalRWebSite"] = webSignalR;
 
+            LogActivityEvent(LogCommon.LogMode.GROUP_CHAT);
             return View(model);
         }
 
@@ -203,10 +207,12 @@ namespace cisApp.Controllers
             {
                 var user = GetChatGroup.Manage.Update(data, _UserId().Value);
 
+                LogActivityEvent(LogCommon.LogMode.INSERT, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Group", "Chats", new { Id = user.ChatGroupId })));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.INSERT, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }
@@ -218,7 +224,7 @@ namespace cisApp.Controllers
             int count = GetUser.Get.GetUserModelsTotal(model);
 
             ViewData["GroupId"] = model.GroupId;
-
+             
             return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
 
@@ -229,10 +235,12 @@ namespace cisApp.Controllers
             {
                 GetChatGroup.Manage.AddUser(model.UserId.Value, model.GroupId.Value);
 
+                LogActivityEvent(LogCommon.LogMode.INSERT, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Group", "Chats", new { Id = model.GroupId.Value })));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.INSERT, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError(ex.Message));
             }
         }

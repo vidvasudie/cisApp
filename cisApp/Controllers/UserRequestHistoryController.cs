@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using cisApp.Common;
 using cisApp.Function;
 using cisApp.library;
 using Microsoft.AspNetCore.Authorization;
@@ -22,6 +23,7 @@ namespace cisApp.Controllers
 
         public IActionResult Index()
         {
+            LogActivityEvent(LogCommon.LogMode.DESIGNER_REQ_HIST);
             return View();
         }
 
@@ -32,11 +34,13 @@ namespace cisApp.Controllers
             List<UserModel> _model = GetUserDesignerRequest.Get.GetUserDesignerRequestModel(model);
             int count = GetUserDesignerRequest.Get.GetUserDesignerRequestModelTotal(model);
 
+            LogActivityEvent(LogCommon.LogMode.SEARCH);
             return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
 
         public IActionResult Manage(SearchModel model)
         {
+            LogActivityEvent(LogCommon.LogMode.MANAGE);
             if (!String.IsNullOrEmpty(model.goBack))
             {
                 ViewBag.goBack = model.goBack;
@@ -66,6 +70,8 @@ namespace cisApp.Controllers
 
                 return View(data);
             }
+
+            LogActivityEvent(LogCommon.LogMode.MANAGE, MessageCommon.TXT_OPERATE_ERROR);
             return BadRequest();
             //return View(new UserModel());
         }

@@ -9,6 +9,7 @@ using cisApp.Function.Models;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using cisApp.library;
+using cisApp.Common;
 
 namespace cisApp.Controllers
 {
@@ -33,6 +34,7 @@ namespace cisApp.Controllers
 
                 ViewData["SignalRWebSite"] = webSignalR;
 
+                LogActivityEvent(LogCommon.LogMode.CHAT_HIST);
                 return View(model);
             }
             catch (Exception ex)
@@ -48,6 +50,7 @@ namespace cisApp.Controllers
 
             ViewData["SignalRWebSite"] = webSignalR;
 
+            LogActivityEvent(LogCommon.LogMode.GROUP_CHAT_HIST);
             return View(model);
         }
 

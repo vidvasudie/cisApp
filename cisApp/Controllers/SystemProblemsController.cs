@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using cisApp.Common;
 using cisApp.Core;
 using cisApp.Function;
 using cisApp.library;
@@ -32,6 +33,7 @@ namespace cisApp.Controllers
         // GET: SystemProblems
         public ActionResult Index(int pageIndex = 1)
         {
+            LogActivityEvent(LogCommon.LogMode.PLOBLEM);
             return View(new PaginatedList<SystemProblemModel>(_model, _model.Count, pageIndex, 2));
         }
 
@@ -42,6 +44,7 @@ namespace cisApp.Controllers
             List<SystemProblemModel> _model = GetUserHelp.Get.GetUserHelpModels(model);
             int count = GetUserHelp.Get.GetUserHelpModelsTotal(model);
 
+            LogActivityEvent(LogCommon.LogMode.SEARCH);
             return PartialView("PT/_itemlist", new PaginatedList<SystemProblemModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
 
@@ -49,6 +52,7 @@ namespace cisApp.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.MANAGE);
                 var uHelp = GetUserHelp.Get.GetUserHelpModelByID(id);
                 if (uHelp == null || uHelp.Count == 0)
                 {
@@ -58,6 +62,7 @@ namespace cisApp.Controllers
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.MANAGE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 throw ex;
             }
         }
@@ -69,10 +74,12 @@ namespace cisApp.Controllers
             {
                 var uHelp = GetUserHelp.Manage.Update(data.Id, data.Remark, _UserId().Value);
 
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "SystemProblems")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError());
             }
         }

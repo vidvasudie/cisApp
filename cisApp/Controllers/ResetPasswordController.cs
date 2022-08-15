@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Hosting;
 using cisApp.Models;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using cisApp.Common;
 
 namespace cisApp.Controllers
 {
@@ -47,13 +48,16 @@ namespace cisApp.Controllers
                         Token = token
                     };
 
+                    LogActivityEvent(LogCommon.LogMode.RESETPASSWD);
                     return View(model);
                 }
 
+                LogActivityEvent(LogCommon.LogMode.RESETPASSWD, MessageCommon.TXT_OPERATE_ERROR);
                 return RedirectToAction("Error", "ResetPassword");
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.RESETPASSWD, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return RedirectToAction("Error", "ResetPassword");
             }
         }
@@ -66,11 +70,13 @@ namespace cisApp.Controllers
             {
                 
                 var user = GetUserResetPassword.Manage.ResetPassword(clientModel.Token, clientModel.Password);
-                
+
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess("เปลี่ยนรหัสผ่านสำเร็จ", Url.Action("Success", "ResetPassword")));
             }
             catch (Exception ex)
             {
+                LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
                 return Json(new ResponseModel().ResponseError(MessageCommon.SaveFail));
             }
         }

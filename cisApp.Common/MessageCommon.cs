@@ -56,5 +56,17 @@ namespace cisApp
         public const string IncorrectData = "ข้อมูลไม่ถูกต้อง";
 
         public const string YearOfDevText = "2021";
+
+
+        public const string TXT_OPERATE_ERROR = "ดำเนินการไม่สำเร็จ!";
+        public const string TXT_SAVEDATA_ERROR = "บันทึกข้อมูลไม่สำเร็จ!";
+        public const string TXT_DELETEDATA_EROR = "ลบข้อมูลไม่สำเร็จ!";
+        public const string TXT_SOMETING_WRONG = "เกิดข้อผิดพลาดบางอย่าง!";
+        public const string TXT_NOT_DATA = "ไม่พบข้อมูล!";
+        public const string TXT_PLEASE_VALIDATE = "กรุณาตรวจสอบข้อมูล!";
+        public const string TXT_ACCESS_DENIED = "ไม่มีสิทธิ์เข้าใช้งาน";
+        public const string TXT_DUPLICATE_FIELD = "มีข้อมูลซ้ำ";
+
+
     }
 }
