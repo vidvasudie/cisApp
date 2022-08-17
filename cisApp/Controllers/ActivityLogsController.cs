@@ -1,4 +1,6 @@
-﻿using cisApp.Function;
+﻿using cisApp.Common;
+using cisApp.Core;
+using cisApp.Function;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -30,7 +32,18 @@ namespace cisApp.Controllers
         [HttpPost]
         public JsonResult Search(SearchModel model)
         {
-            return Json(new ResponseModel().ResponseSuccess());
+            try
+            {
+                List<LogActivity> _model = GetLogActivity.Get.GetBySearch(model);
+
+                LogActivityEvent(LogCommon.LogMode.SEARCH);
+                return Json(new ResponseModel().ResponseSuccess("success", _model));
+            }
+            catch (Exception ex)
+            {
+                LogActivityEvent(LogCommon.LogMode.SEARCH, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
+                return Json(new ResponseModel().ResponseError());
+            }
         }
 
         public PartialViewResult GetTable()

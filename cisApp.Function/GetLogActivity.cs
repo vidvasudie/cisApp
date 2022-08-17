@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks; 
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
+using System.Data.SqlClient;
 
 namespace cisApp.Function
 {
@@ -27,6 +28,25 @@ namespace cisApp.Function
                 catch (Exception ex)
                 {
                     throw ex;
+                }
+            }
+            public static List<LogActivity> GetBySearch(SearchModel model)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value), 
+                       new SqlParameter("@startDate", model.StartDate != null ? model.StartDate.Value : (object)DBNull.Value),
+                       new SqlParameter("@endDate", model.EndDate != null ? model.EndDate.Value : (object)DBNull.Value), 
+                       new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
+                       new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
+                    };
+
+                    return StoreProcedure.GetAllStored<LogActivity>("GetLogActivity", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new List<LogActivity>();
                 }
             }
         }

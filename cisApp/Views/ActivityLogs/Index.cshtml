@@ -9,32 +9,39 @@
 @section scripts {
 
     <!--begin::Page Scripts(used by this page)-->
-    <link rel="stylesheet" href="@Url.Content("~/assets/plugins/custom/datatables/datatables.bundle.css")" /> 
+    <link rel="stylesheet" href="@Url.Content("~/assets/plugins/custom/datatables/datatables.bundle.css")" />
     <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap-datepicker/css/bootstrap-datepicker.css")">
 
     <script src="@Url.Content("~/assets/plugins/custom/datatables/datatables.bundle.js")"></script>
     <script src="@Url.Content("~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js")"></script>
     <script src="@Url.Content("~/lib/bootstrap-datepicker/locales/bootstrap-datepicker.th.min.js")"></script>
+
+    <script src="@Url.Content("~/lib/datatable-export/buttons.html5.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/lib/datatable-export/buttons.print.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/lib/datatable-export/dataTables.buttons.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/lib/datatable-export/jszip.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/lib/datatable-export/pdfmake.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/lib/datatable-export/vfs_fonts.js")" type="text/javascript"></script>
     <!--end::Page Scripts-->
 
     <script>
         var _callback = null
         var table = null;
         var dataSource = [];
-        dataSource = [{ RefFullname: 'test1', Note: 'detail1', IP: '127.0.0.1', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-10 18:10:05' }
-            , { RefFullname: 'test2', Note: 'detail12', IP: '127.0.0.2', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-11 18:10:06' }
-            , { RefFullname: 'test3', Note: 'detail3', IP: '127.0.0.3', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-12 18:10:07' }
-            , { RefFullname: 'test4', Note: 'detail4', IP: '127.0.0.4', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-13 18:10:08' }
-            , { RefFullname: 'test5', Note: 'detail5', IP: '127.0.0.5', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-14 18:10:09' }
-            , { RefFullname: 'test6', Note: 'detail6', IP: '127.0.0.6', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-15 18:10:10' }
-            , { RefFullname: 'test7', Note: 'detail7', IP: '127.0.0.7', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-16 18:10:11' }
-            , { RefFullname: 'test12', Note: 'detail12', IP: '127.0.0.2', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-11 18:10:06' }
-            , { RefFullname: 'test13', Note: 'detail3', IP: '127.0.0.3', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-12 18:10:07' }
-            , { RefFullname: 'test14', Note: 'detail4', IP: '127.0.0.4', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-13 18:10:08' }
-            , { RefFullname: 'test15', Note: 'detail5', IP: '127.0.0.5', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-14 18:10:09' }
-            , { RefFullname: 'test16', Note: 'detail6', IP: '127.0.0.6', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-15 18:10:10' }
-            , { RefFullname: 'test17', Note: 'detail7', IP: '127.0.0.7', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-16 18:10:11' }
-        ];
+        //dataSource = [{ RefFullname: 'test1', Note: 'detail1', IP: '127.0.0.1', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-10 18:10:05' }
+        //    , { RefFullname: 'test2', Note: 'detail12', IP: '127.0.0.2', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-11 18:10:06' }
+        //    , { RefFullname: 'test3', Note: 'detail3', IP: '127.0.0.3', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-12 18:10:07' }
+        //    , { RefFullname: 'test4', Note: 'detail4', IP: '127.0.0.4', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-13 18:10:08' }
+        //    , { RefFullname: 'test5', Note: 'detail5', IP: '127.0.0.5', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-14 18:10:09' }
+        //    , { RefFullname: 'test6', Note: 'detail6', IP: '127.0.0.6', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-15 18:10:10' }
+        //    , { RefFullname: 'test7', Note: 'detail7', IP: '127.0.0.7', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-16 18:10:11' }
+        //    , { RefFullname: 'test12', Note: 'detail12', IP: '127.0.0.2', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-11 18:10:06' }
+        //    , { RefFullname: 'test13', Note: 'detail3', IP: '127.0.0.3', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-12 18:10:07' }
+        //    , { RefFullname: 'test14', Note: 'detail4', IP: '127.0.0.4', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-13 18:10:08' }
+        //    , { RefFullname: 'test15', Note: 'detail5', IP: '127.0.0.5', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-14 18:10:09' }
+        //    , { RefFullname: 'test16', Note: 'detail6', IP: '127.0.0.6', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-15 18:10:10' }
+        //    , { RefFullname: 'test17', Note: 'detail7', IP: '127.0.0.7', ExceptionNote: '--ExceptionNote--', CreatedDate: '2022-08-16 18:10:11' }
+        //];
         function GetTable() {
             var suc = function (html) {
                 $('#box_update').html(html);
@@ -72,41 +79,68 @@
 
             var suc = function (data) {
                 if (data.success) {
-                    //dataSource = data.data;
+                    dataSource = data.data;
                     GetTable();
                 }
             }
             var err = function (e) {
-                alert('error paging', e);
+                alert('error Search', e);
             }
             CallAjax('@Url.Action("Search", ViewData["ControllerName"])', 'POST', { text: text, StartDateStr: startDate, EndDateStr: endDate }, suc, err);
 
-        } 
+        }
 
         function init() {
-             table.DataTable({
+             table = $('#kt_datatable').DataTable({
 			    data: dataSource,
                 sortable: true,
                 pagination: true,
+                dom: "<'top mb-5'B>" +
+                    "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row no-gutters px-3 pb-1 justify-content-center'<'col-auto'p>>" +
+                    "<'row no-gutters thead-info align-items-center bg-light-primary my-3 rounded px-3 py-1'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                buttons: [ 
+                    {
+                        extend: 'excel', 
+                    }, {
+                        extend: 'csv',
+                        text: 'CSV',
+                        charset: 'utf-8',
+                        extension: '.csv',
+                        fieldBoundary: '',
+                        bom: true, 
+                    }, {
+                        extend: 'print', 
+                        customize: function (win) {
+                            $(win.document.body).addClass('white-bg');
+                            $(win.document.body).css('font-size', '10px');
+
+                            $(win.document.body).find('table')
+                                .addClass('compact')
+                                .css('font-size', 'inherit');
+                        }
+                    }
+                ],
 			    columns: [
 				    {
-                        data: 'RefFullname',
+                        data: 'refFullname',
                        // title: 'ชื่อผู้ใช้งาน'
                     },
                     {
-                        data: 'Note',
+                        data: 'note',
                        // title: 'รายละเอียด'
                     },
                     {
-                        data: 'IP',
+                        data: 'ip',
                      //   title: 'IP'
                     },
                     {
-                        data: 'ExceptionNote',
+                        data: 'exceptionNote',
                    //     title: 'ข้อผิดพลาด'
                     },
 				    {
-					    data: 'CreatedDate',
+					    data: 'createdDateStr',
 					//    type: 'date',
 					//    format: 'YYYY-MM-DD HH:mm:ss',
 				    }
@@ -115,10 +149,20 @@
         }
 
 
-    $(function () { 
-        table = $('#kt_datatable');
-        Search();
-    });
+        $(function () {
+            $('.datepicker')
+                .datepicker({
+                    format: "dd/mm/yyyy",
+                    todayBtn: "linked",
+                    clearBtn: true,
+                    language: "th",
+                    todayHighlight: true,
+                    autoclose: true,
+                    //endDate: '+1d',
+                    //datesDisabled: '+1d',
+                })
+            Search();
+        });
     </script>
 }
 
@@ -217,21 +261,7 @@
                             @*<div class="separator separator-solid my-7"></div>*@
                             <!--end::Separator-->
                         </div>
-                        <!--begin::Dropdown-->
-                        <button type="button" class="mr-2 btn btn-light-google font-weight-bolder float-lg-right ">
-                            <span class="svg-icon svg-icon-md">
-                                <!--begin::Svg Icon | path:assets/media/svg/icons/Design/PenAndRuller.svg-->
-                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24" />
-                                        <path d="M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z" fill="#000000" opacity="0.3" />
-                                        <path d="M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z" fill="#000000" />
-                                    </g>
-                                </svg>
-                                <!--end::Svg Icon-->
-                            </span>Export
-                        </button>
-                        <!--end::Dropdown-->
+                   
                     </div>
 
                 </div>

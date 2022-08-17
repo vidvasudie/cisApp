@@ -1,5 +1,7 @@
-﻿using System;
+﻿using cisApp.library;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace cisApp.Core
@@ -22,6 +24,15 @@ namespace cisApp.Core
         public string Url { get; set; }
         public string ExceptionNote { get; set; }
         public string RequestData { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+
+        [NotMapped]
+        public string CreatedDateStr
+        {
+            get
+            {
+                return CreatedDate.ToStringFormatWithTime();
+            }
+        }
     }
 }
