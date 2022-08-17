@@ -564,6 +564,7 @@ namespace cisApp.Function
                     foreach (var item in chats)
                     {
                         new MobileNotfication().ForChat(item, chatName, chatType);
+                        
                     }
                 }
                 catch (Exception ex)
