@@ -771,9 +771,9 @@
                             <!--end::User-->
                             <!--begin::Logout-->
                             <div class="topbar-item">
-                                @if (!String.IsNullOrEmpty(BaseController._FullName))
+                                @if (!String.IsNullOrEmpty(BaseController._Fullname))
                                 {
-                                    <span class="h4 mr-5 pt-2">@Html.Raw(BaseController._FullName)</span>
+                                    <span class="h4 mr-5 pt-2">@Html.Raw(BaseController._Fullname)</span>
                                 }
                                 <a href="@Url.Action("Logout", "Login")" class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2">
                                     <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Logout</span>

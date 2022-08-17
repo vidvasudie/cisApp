@@ -62,7 +62,7 @@ namespace cisApp.Controllers
             //return HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == Constants.CookieFullName)?.Value;
             return HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "UserName")?.Value;
         }
-        //public static string _FullName { get; set; }
+        public static string _Fullname { get; set; }
         public string _FullName()
         {
             //return HttpContext.Request.HttpContext.User.Claims.FirstOrDefault(x => x.Type == Constants.CookieFullName)?.Value;
@@ -89,7 +89,8 @@ namespace cisApp.Controllers
                 _menuid = Guid.Parse(menuId); 
             }
             public override void OnActionExecuting(ActionExecutingContext context)
-            {   
+            {
+                _Fullname = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "FullName")?.Value;
                 var roleId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "RoleId")?.Value;
                 if (!String.IsNullOrEmpty(roleId))
                 { 
