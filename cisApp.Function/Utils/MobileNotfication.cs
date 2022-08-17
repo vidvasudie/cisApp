@@ -130,8 +130,8 @@ namespace cisApp.Function
                     page = "StatusDesigner";
                     break;
                 case "comment":
-                    obj.notification.body = "มีผู้ใช้ได้แสดงความคิดเห็นบนรูปภาพของคุณ";
-                    obj.notification.title = string1 + " ได้แสดงความคิดเห็นบนรูปภาพของคุณ";
+                    obj.notification.title = "มีผู้ใช้ได้แสดงความคิดเห็นบนรูปภาพของคุณ";
+                    obj.notification.body = string1 + " ได้แสดงความคิดเห็นบนรูปภาพของคุณ";
                     obj.data.attachFileId = id1;
                     page = "PhotoGrid";
                     break;
@@ -350,6 +350,8 @@ namespace cisApp.Function
 
                 await NotifyAsync(obj);
             }
+
+            GetNotification.Manage.add(chat.RecieverId, "", "มีข้อความใหม่", chatName + " ส่งข้อความถึงคุณ", "Chat", Guid.Empty);
         }
 
 

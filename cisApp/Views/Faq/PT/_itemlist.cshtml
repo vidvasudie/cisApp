@@ -1,0 +1,144 @@
+﻿@using cisApp.library
+@using cisApp.Function
+@using cisApp.Core
+@using cisApp.Controllers
+@model PaginatedList<Faq>
+@{
+    ViewData["ControllerName"] = "Faq";
+}
+
+
+
+@foreach (var item in Model)
+{
+
+    <!--begin::Card-->
+    <div class="card card-custom gutter-b">
+        <div class="card-body">
+            <!--begin::Top-->
+            <div class="d-flex">
+                <!--begin: Info-->
+                <div class="flex-grow-1">
+                    <!--begin::Basic data-->
+                    <div class="d-flex align-items-center justify-content-between flex-wrap mt-2">
+                        <!--begin::User-->
+                        <div class="mr-3">
+                            <!--begin::Name-->
+                            <a href="#" class="d-flex align-items-center text-dark text-hover-primary font-size-h5 font-weight-bold mr-3" onclick="return false;">
+                                @Html.Raw(item.Qorder)
+                            </a>
+
+                            <!--end::Name-->
+                        </div>
+                        <!--begin::User-->
+                        <!--begin::Actions-->
+                        <div class="my-lg-0 my-1">
+                            @*<a href="#" class="btn btn-sm btn-light-primary font-weight-bolder text-uppercase mr-2">เอกสาร</a>*@
+                            @{
+                                @if (BaseController._RoleMenuType == 2)
+                                {
+                                    <a href="#" data-url="@Url.Action("Manage", ViewData["ControllerName"].ToString(), new { id = item.Id })"
+                                       class="btn btn-sm btn-warning font-weight-bolder text-uppercase bt-update">แก้ไขข้อมูล</a>
+                                    <a href="#" data-url="@Url.Action("Delete", ViewData["ControllerName"].ToString(), new { id = item.Id })"
+                                       class="btn btn-sm btn-danger font-weight-bolder text-uppercase bt-delete">ลบข้อมูล</a>
+                                }
+                            }
+
+                        </div>
+                        <!--end::Actions-->
+                    </div>
+                    <!--end::Basic data-->
+                    <!--begin::Content-->
+                    <div class="d-flex align-items-center flex-wrap justify-content-between">
+
+                        <!--begin::Description-->
+                        <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
+                            @Html.Raw(item.Question)
+                        </div>
+
+                        <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
+                            @Html.Raw(item.Answer)
+                        </div>
+                        <!--end::Description-->
+                    </div>
+                    <!--end::Content-->
+
+                </div>
+                <!--end::Info-->
+            </div>
+            <!--end::Top-->
+        </div>
+    </div>
+    <!--end::Card-->
+
+
+}
+
+<!--begin::Pagination-->
+@{
+    var prevDisabled = !Model.HasPrevious ? "disabled" : "";
+    var nextDisabled = !Model.HasNext ? "disabled" : "";
+}
+
+
+<div class="card-body py-7">
+    <!--begin::Pagination-->
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+        <div class="d-flex flex-wrap mr-3">
+            <a href="javascript: PagerClick(1);" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 @prevDisabled">
+                <i class="ki ki-bold-double-arrow-back icon-xs"></i>
+            </a>
+            <a href="javascript: PagerClick(@(Model.CurrentPage - 1));" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 @prevDisabled">
+                <i class="ki ki-bold-arrow-back icon-xs"></i>
+            </a>
+            @{
+                int maxPage = Model.TotalPages > 5 ? 5 : Model.TotalPages;
+                int start = Model.CurrentPage > maxPage ? (Model.CurrentPage - maxPage + 1) : 1;
+                bool isBDot = false;
+                bool isEDot = false;
+                if (Model.CurrentPage > maxPage && !isBDot)
+                {
+                    isBDot = true;
+                    <a href="#" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1">...</a>
+                }
+                for (int i = start; i < (maxPage + start); i++)
+                {
+
+                    var active = Model.CurrentPage == i ? "active" : "";
+                    <a href="javascript: PagerClick(@i);" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1 @active">@i</a>
+
+                }
+                if (Model.TotalPages > maxPage && !isEDot)
+                {
+                    isEDot = true;
+                    <a href="#" class="btn btn-icon btn-sm border-0 btn-hover-primary mr-2 my-1">...</a>
+                }
+            }
+            <a href="javascript: PagerClick(@(Model.CurrentPage + 1));" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 @nextDisabled">
+                <i class="ki ki-bold-arrow-next icon-xs"></i>
+            </a>
+            <a href="javascript: PagerClick(@Model.TotalPages);" class="btn btn-icon btn-sm btn-light-primary mr-2 my-1 @nextDisabled">
+                <i class="ki ki-bold-double-arrow-next icon-xs"></i>
+            </a>
+        </div>
+        <div class="d-flex align-items-center">
+            @Html.HiddenFor(m => m.CurrentPage)
+            <select id="pageSize" class="form-control form-control-sm text-primary font-weight-bold mr-4 border-0 bg-light-primary" style="width: 75px;">
+                @foreach (var val in Model.PageList)
+                {
+                    if (val == Model.PageSize)
+                    {
+                        <option value="@val" selected>@val</option>
+                    }
+                    else
+                    {
+                        <option value="@val">@val</option>
+                    }
+                }
+            </select>
+            <span class="text-muted">แสดง @Model.TotalCurrentPage จาก @Model.TotalCount รายการ</span>
+        </div>
+    </div>
+    <!--end:: Pagination-->
+</div>
+<!--end::Pagination-->

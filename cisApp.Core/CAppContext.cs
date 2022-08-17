@@ -787,8 +787,7 @@ namespace cisApp.Core
             });
             modelBuilder.Entity<Faq>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
-
+                
                 entity.Property(e => e.Answer).IsRequired();
 
                 entity.Property(e => e.CreatedDate).HasDefaultValueSql("(getdate())");

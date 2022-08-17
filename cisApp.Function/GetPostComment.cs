@@ -89,6 +89,8 @@ namespace cisApp.Function
                                 var user = GetUser.Get.GetById(userId);
 
                                 new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.comment, album.UserId.Value, null, user.FullName, attachFile.AttachFileId);
+
+                                GetNotification.Manage.add(album.UserId.Value, "", "มีผู้ใช้ได้แสดงความคิดเห็นบนรูปภาพของคุณ", user.FullName + " ได้แสดงความคิดเห็นบนรูปภาพของคุณ", "PhotoGrid", Guid.Empty);
                             }
                         }
                         catch (Exception ex)
