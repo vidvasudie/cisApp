@@ -89,5 +89,42 @@ namespace cisApp.library
 				throw ex;
 			}
 		}
+
+		public static bool SendMailProblemReply(string toMail, string username, string problem, string reply, string webRootPath)
+		{
+			string host = config.GetSection("ConfigMail:Host").Value;
+			string fromEmail = config.GetSection("ConfigMail:FromEmail").Value;
+			string passwordEmail = config.GetSection("ConfigMail:Password").Value;
+			int port = Int32.Parse(config.GetSection("ConfigMail:Port").Value);
+			bool enableSsl = Boolean.Parse(config.GetSection("ConfigMail:EnableSsl").Value);
+			string domain = config.GetSection("Domain").Value;
+			try
+			{
+				string _filePath = Path.Combine(webRootPath, "Templates/ProblemReply.htm");
+				string html = System.IO.File.ReadAllText(_filePath);
+
+				MailMessage mail = new MailMessage();
+				SmtpClient SmtpServer = new SmtpClient();
+				SmtpServer.UseDefaultCredentials = false;
+				mail.To.Add(toMail);
+				mail.From = new MailAddress(fromEmail);
+				mail.Subject = "ตอบกลับ แจ้งปัญหาระบบ";
+				mail.IsBodyHtml = true;
+				mail.Body = string.Format(html, username, problem, reply);
+				SmtpServer.EnableSsl = enableSsl;
+				ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+				SmtpServer.Host = host;
+				SmtpServer.Credentials = new System.Net.NetworkCredential(fromEmail, passwordEmail);
+				SmtpServer.Port = port;
+				SmtpServer.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
+				SmtpServer.Send(mail);
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 	}
 }
