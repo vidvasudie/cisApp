@@ -88,6 +88,30 @@ namespace cisApp.Controllers
         }
 
         [HttpPost]
+        public JsonResult Order(int faqId, int order)
+        {
+            try
+            {
+                if (order == 1)
+                {
+                    GetFaq.Manage.OrderUp(faqId);
+                }
+                else
+                {
+                    GetFaq.Manage.OrderDown(faqId);
+                }                
+
+                LogActivityEvent(LogCommon.LogMode.MANAGE, MessageCommon.SaveSuccess);
+                return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Faq")));
+            }
+            catch (Exception ex)
+            {
+                LogActivityEvent(LogCommon.LogMode.DELETE, MessageCommon.TXT_OPERATE_ERROR, ex.ToString());
+                return Json(new ResponseModel().ResponseError());
+            }
+        }
+
+        [HttpPost]
         public JsonResult Delete(int id)
         {
             try
