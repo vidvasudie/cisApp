@@ -574,6 +574,7 @@ namespace cisApp.API.Controllers
                     else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
                     {
                         GetJobs.Manage.UpdateEditCount(value.JobId.Value, 1);
+                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5, value.UserId);
                     }
                     else if (job.JobStatus == 9 && job.EditSubmitCount == 1) // แก้ครั้งแรก
                     {
@@ -583,6 +584,10 @@ namespace cisApp.API.Controllers
                     else if (job.JobStatus == 9 &&job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
                     {
                         GetJobs.Manage.UpdateEditCount(value.JobId.Value, 3);
+                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5, value.UserId);
+                    }
+                    else if (job.JobStatus == 7 && job.EditSubmitCount == 3) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
+                    { 
                         GetJobs.Manage.UpdateJobStatus(job.JobId, 5, value.UserId);
                     }
 
@@ -647,8 +652,11 @@ namespace cisApp.API.Controllers
                     
 
                     var job = GetJobs.Get.GetById(id.Value);
+                    var alb = GetAlbum.Get.GetByJobId(id.Value);
 
-                    if (job.JobStatus != 7)
+                    if ((job.JobStatus != 5 && alb.Where(o => o.AlbumType == "5").Count() == 0)
+                        || (job.JobStatus == 5 && alb.Where(o => o.AlbumType == "5").Count() == 0)
+                        || (job.JobStatus != 5 && alb.Where(o => o.AlbumType == "5").Count() > 0))
                     {
                         return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "เฉพาะงานที่อยู่ในสถานะส่งแบบเท่านั้นที่จะยื่นเสร็จงานได้", null)); ;
                     }
