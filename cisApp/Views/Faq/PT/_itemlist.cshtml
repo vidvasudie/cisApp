@@ -41,6 +41,10 @@
                                        class="btn btn-sm btn-warning font-weight-bolder text-uppercase bt-update">แก้ไขข้อมูล</a>
                                     <a href="#" data-url="@Url.Action("Delete", ViewData["ControllerName"].ToString(), new { id = item.Id })"
                                        class="btn btn-sm btn-danger font-weight-bolder text-uppercase bt-delete">ลบข้อมูล</a>
+                                    <a href="#" data-url="@Url.Action("Order", ViewData["ControllerName"].ToString(), new { faqId = item.Id, order = 1 })"
+                                       class="btn btn-sm btn-outline-info font-weight-bolder text-uppercase bt-order">ปรับลำดับขึ้น</a>
+                                    <a href="#" data-url="@Url.Action("Order", ViewData["ControllerName"].ToString(), new { faqId = item.Id, order = 0 })"
+                                       class="btn btn-sm btn-outline-info font-weight-bolder text-uppercase bt-order">ปรับลำดับลง</a>
                                 }
                             }
 

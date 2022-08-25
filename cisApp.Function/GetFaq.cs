@@ -237,12 +237,6 @@ namespace cisApp.Function
 
                             var obj = context.Faq.Find(id);
 
-                            // min 1
-                            if (obj.Qorder == 1)
-                            {
-                                return;
-                            }
-
                             var next = context.Faq.Where(o => o.IsDeleted == false && o.Qorder == (obj.Qorder + 1)).FirstOrDefault();
 
                             if (next != null)
@@ -257,8 +251,8 @@ namespace cisApp.Function
                             }
                             else
                             {
-                                obj.Qorder = obj.Qorder + 1;
-                                context.Faq.Update(obj);
+                                //obj.Qorder = obj.Qorder + 1;
+                                //context.Faq.Update(obj);
                             }
                             context.SaveChanges();
 

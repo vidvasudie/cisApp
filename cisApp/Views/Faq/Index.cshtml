@@ -42,12 +42,46 @@
         }
     }
 
+
     $(function () {
         $('body').on('change', '#pageSize', function () {
             PagerClick(1);
         });
         PagerClick(1);
     });
+
+        $('body').on('click', '.bt-order', function (e) {
+
+            var elem = $(this);
+
+            Swal.fire({
+                title: "แก้ไขข้อมูล",
+                text: "ยืนยันการแก้ไขข้อมูล",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "ใช่, ยืนยัน",
+                cancelButtonText: "ไม่, ยกเลิก",
+                reverseButtons: true
+            }).then(function (result) {
+                if (result.value) {
+                    var url = $(elem).attr(_dataUrlAttr)
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (res) {
+                            redirect(res)
+                        },
+                        error: function (err) {
+                            redirect(err)
+                        }
+                    })
+
+                } else if (result.dismiss === "cancel") {
+
+                }
+            });
+        });
     </script>
 }
 
