@@ -53,6 +53,10 @@
                         <div class="flex-grow-1 font-weight-bold text-dark-50 py-2 py-lg-2 mr-5">
                             @Html.Raw(item.Content)
                         </div>
+                        @if(item.IsImg == true && item.AttachFileImage != null)
+                {
+                    <img class="img-fluid" src="@item.FullUrlPath" />
+                }
                         <!--end::Description-->
                     </div>
                     <!--end::Content-->
