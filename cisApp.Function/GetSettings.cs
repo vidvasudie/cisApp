@@ -59,13 +59,19 @@ namespace cisApp.Function
                 }
             }
 
-            public static Settings GetByKeyword(string keyword)
+            public static Settings GetByKeyword(string keyword, string domainUrl = "")
             {
                 try
                 {
                     using (var context = new CAppContext())
                     {
                         var data = context.Settings.Where(o => o.Keyword.ToLower() == keyword.ToLower()).FirstOrDefault();
+
+                        if (data.IsImg == true)
+                        {
+                            data.AttachFileImage = GetAttachFile.Get.GetByRefId(data.SettingId.Value);
+                            data.FullUrlPath = domainUrl + data.UrlPath;
+                        }
 
                         return data;
                     }
