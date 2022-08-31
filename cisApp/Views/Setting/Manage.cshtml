@@ -7,12 +7,20 @@
 }
 
 @section scripts{
-    
+
+    <script type="text/javascript">
+
+        const _DropzoneUrl = '@Url.Action("UploadFIle", "Base")'
+        const _DropzoneFilePath = '@Url.Content(Model?.AttachFileImage?.UrlPath)'
+        const _DropzoneFileName = '@Model?.AttachFileImage?.FileName';
+        const _ModelNamePrefix = '#';
+
+    </script>
+
+    <script src="@Url.Content("~/js/dropzoneThumbnail.js")"></script>
 
     <script src="@Url.Content("~/assets/plugins/custom/uppy/uppy.bundle.js")"></script>
     <script src="@Url.Content("~/assets/js/pages/crud/file-upload/uppy.js")"></script>
-
-
 
 }
 
@@ -190,8 +198,19 @@
                                             @Html.ValidationMessageFor(m => m.Content, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
-                                    
+
                                 </div>
+
+                                @if (Model.IsImg == true)
+                                {
+                                    @Html.HiddenFor(m => m.FileBase64)
+                                    @Html.HiddenFor(m => m.FileName)
+                                    @Html.HiddenFor(m => m.FileSize)
+                                    @Html.HiddenFor(m => m.FileRemove)
+                                    @await Html.PartialAsync("Common/_DropzoneSingleFile", "รูปภาพ")
+                                }
+
+
 
                             </div>
                             <div class="col-xl-2"></div>

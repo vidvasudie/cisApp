@@ -4,8 +4,10 @@ using cisApp.Function;
 using cisApp.library;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +17,10 @@ namespace cisApp.Controllers
     [CustomActionExecute("8386A3FD-A964-4089-B102-9487519896D4")]
     public class SettingController : BaseController
     {
-
+        readonly static IConfigurationRoot config = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+                      .AddJsonFile("appsettings.json")
+                      .Build();
         private List<Settings> _model = new List<Settings>();
 
         private Guid _PermissionMenuId;
@@ -34,11 +39,12 @@ namespace cisApp.Controllers
         [HttpPost]
         public PartialViewResult ItemList()
         {
-            List<Settings> _model = GetSettings.Get.GetAll();
+            string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+            List<Settings> _model = GetSettings.Get.GetAll(webAdmin);
             int count = _model.Count;
 
             LogActivityEvent(LogCommon.LogMode.SEARCH);
-            return PartialView("PT/_itemlist", new PaginatedList<Settings>(_model, count, 1, 10));
+            return PartialView("PT/_itemlist", new PaginatedList<Settings>(_model, count, 1, 100));
         }
 
         public IActionResult Manage(Guid? id)
@@ -47,10 +53,11 @@ namespace cisApp.Controllers
             {
                 
                 Settings data = new Settings();
-                
+                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+
                 if (id != null)
                 {
-                    data = GetSettings.Get.GetById(id.Value);
+                    data = GetSettings.Get.GetById(id.Value, webAdmin);
 
                     if (data == null)
                     {

@@ -219,6 +219,28 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [Route("GetTextWithImg")]
+        [HttpGet]
+        public IActionResult GetTextWithImg(string key)
+        {
+            try
+            {
+                //var xx = Encryption.Decrypt("s9LrP8c+HjTWUbLOve8Xhg==");
+                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                var data = GetSettings.Get.GetByKeyword(key, webAdmin);
+                if (data == null)
+                {
+                    return Ok(resultJson.success("ไม่พบข้อมูล", "Data not found.", null));
+                }
+
+                return Ok(resultJson.success("ดึงข้อมูลสำเร็จ", "success", data));
+            }
+            catch (Exception ex)
+            {
+                return Ok(resultJson.errors("ดึงข้อมูลไม่สำเร็จ", "fail", ex));
+            }
+        }
+
         [Route("GetWinner")]
         [HttpGet]
         public IActionResult GetWinnerList()
