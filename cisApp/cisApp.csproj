@@ -7,6 +7,8 @@
   <ItemGroup>
     <Folder Include="html\" />
     <Folder Include="wwwroot\assets\images\bank\" />
+    <Folder Include="wwwroot\lib\select2\" />
+    <Folder Include="wwwroot\lib\TableExport\" />
   </ItemGroup>
 
   <ItemGroup>

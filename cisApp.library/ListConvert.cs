@@ -164,5 +164,12 @@ namespace cisApp.library
             table.TableName = tableName;
             return table;
         }
+
+        public static Dictionary<string, object> ToDict(this DataTable dt)
+        {
+            return dt.AsEnumerable()
+              .ToDictionary<DataRow, string, object>(row => row.Field<string>(0),
+                                        row => row.Field<object>(1));
+        }
     }
 }

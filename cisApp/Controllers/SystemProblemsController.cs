@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using cisApp.Common;
@@ -9,7 +11,7 @@ using cisApp.library;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc; 
 using static cisApp.Controllers.BaseController;
 
 namespace cisApp.Controllers
@@ -85,8 +87,15 @@ namespace cisApp.Controllers
                 return Json(new ResponseModel().ResponseError());
             }
         }
-         
 
+        [HttpPost]
+        public PartialViewResult Export(SearchModel model)
+        {
+            var dt = GetUserHelp.Get.GetExportUserHelp(model);
+
+            return PartialView("~/Views/Shared/Export/_TableDetail.cshtml", dt);
+        }
+        
 
     }
 }
