@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using cisApp.Core;
@@ -209,7 +210,23 @@ namespace cisApp.Function
                     return null;
                 }
             }
+            public static DataTable GetExportDesigner(SearchModel model)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
+                       new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
+                    };
 
+                    return StoreProcedure.GetAllStoredDataTable("GetExportDesigner", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new DataTable();
+                }
+            }
             public static List<UserModel> GetDesignerItems(SearchModel model)
             {
                 try

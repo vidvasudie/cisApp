@@ -130,6 +130,16 @@ namespace cisApp.Controllers
                 return Json(new ResponseModel().ResponseError());
             }
         }
+
+
+        [HttpPost]
+        public PartialViewResult Export(SearchModel model)
+        {
+            var dt = GetPaymentHistory.Get.GetExportPaymentHistory(model);
+
+            return PartialView("~/Views/Shared/Export/_TableDetail.cshtml", dt);
+        }
+
     }
 
     

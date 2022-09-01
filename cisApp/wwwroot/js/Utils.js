@@ -210,7 +210,7 @@ function GetDataPostCode(urlAction) {
 function GetExport(url, data = null, fileName='Report') {
     var suc = function (html) {
         $('.box-export').html(html);
-        $("#export_datatable").tableExport({ type: 'excel', fileName: fileName, mso: { fileFormat: 'xlsx'} });
+        $("#export_datatable").tableExport({ type: 'excel', fileName: fileName, mso: { fileFormat: 'xlsx', xlsx: { formatId: { numbers: 1 } }} });
     }
     var err = function (e) {
         console.log('error Export: ' + e);
