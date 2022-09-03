@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using cisApp.Core;
@@ -11,7 +12,26 @@ namespace cisApp.Function
     { 
         public class Get
         {
-            
+            public static DataTable GetExportPaymentHistory(SearchModel model)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                        new SqlParameter("@userId", model.UserId != null ? model.UserId : (object)DBNull.Value),
+                        new SqlParameter("@isPaid", model.IsPaid != null ? model.IsPaid : (object)DBNull.Value),
+                        new SqlParameter("@startDate", model.StartDate != null ? model.StartDate.Value : (object)DBNull.Value),
+                        new SqlParameter("@endDate", model.EndDate != null ? model.EndDate.Value : (object)DBNull.Value),
+                       new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
+                       new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
+                    };
+
+                    return StoreProcedure.GetAllStoredDataTable("GetExportPaymentHistory", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new DataTable();
+                }
+            }
             public static List<PaymentHistoryModel> GetBySearch(SearchModel model)
             {
                 try

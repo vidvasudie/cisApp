@@ -7,6 +7,7 @@ using cisApp.Core;
 using cisApp.library;
 using cisApp;
 using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace cisApp.Function
 {
@@ -95,6 +96,29 @@ namespace cisApp.Function
                 catch (Exception ex)
                 {
                     return new List<JobDetailModel>();
+                }
+            }
+            public static DataTable GetExportJobs(SearchModel model)
+            {
+                try
+                {
+                    SqlParameter[] parameter = new SqlParameter[] {
+                       new SqlParameter("@stext", !String.IsNullOrEmpty(model.text) ? model.text.Trim() : (object)DBNull.Value),
+                       new SqlParameter("@userId", model.Id != null && model.Id != Guid.Empty ? model?.Id : (object)DBNull.Value),
+                       new SqlParameter("@startDate", model.StartDate != null ? model.StartDate.Value : (object)DBNull.Value),
+                       new SqlParameter("@endDate", model.EndDate != null ? model.EndDate.Value : (object)DBNull.Value),
+                       new SqlParameter("@jobId", model.gId != null && model.gId != Guid.Empty ? model?.gId : (object)DBNull.Value),
+                       new SqlParameter("@jobType", model.type.HasValue ? model.type : (object)DBNull.Value),
+                       new SqlParameter("@jobStatus", model.status != 0 ? model.status : (object)DBNull.Value),
+                       new SqlParameter("@skip", model.currentPage.HasValue ? (model.currentPage-1)*model.pageSize : (object)DBNull.Value),
+                       new SqlParameter("@take", model.pageSize.HasValue ? model.pageSize.Value : (object)DBNull.Value)
+                    };
+
+                    return StoreProcedure.GetAllStoredDataTable("GetExportJobs", parameter);
+                }
+                catch (Exception ex)
+                {
+                    return new DataTable();
                 }
             }
             public static List<JobModel> GetJobs(SearchModel model)

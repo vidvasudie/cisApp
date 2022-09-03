@@ -357,6 +357,14 @@ namespace cisApp.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public PartialViewResult Export(SearchModel model)
+        {
+            var dt = GetJobs.Get.GetExportJobs(model);
+
+            return PartialView("~/Views/Shared/Export/_TableDetail.cshtml", dt);
+        }
     }
 
 

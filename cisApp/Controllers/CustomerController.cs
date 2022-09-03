@@ -106,5 +106,15 @@ namespace cisApp.Controllers
                 return Json(new ResponseModel().ResponseError(MessageCommon.AdminSendMailPasswordFail));
             }
         }
+
+        [HttpPost]
+        public PartialViewResult Export(SearchModel model)
+        {
+            model.type = 1;
+            var dt = GetUser.Get.GetExportUser(model);
+
+            return PartialView("~/Views/Shared/Export/_TableDetail.cshtml", dt);
+        }
+
     }
 }

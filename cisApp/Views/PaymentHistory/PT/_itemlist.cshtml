@@ -169,6 +169,7 @@
                 }
             </select>
             <span class="text-muted">แสดง @Model.TotalCurrentPage จาก @Model.TotalCount รายการ</span>
+            @Html.Hidden("TotalCount", @Model.TotalCount)
         </div>
     </div>
     <!--end:: Pagination-->

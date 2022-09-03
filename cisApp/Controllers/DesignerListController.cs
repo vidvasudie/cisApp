@@ -35,5 +35,13 @@ namespace cisApp.Controllers
             LogActivityEvent(LogCommon.LogMode.SEARCH);
             return PartialView("PT/_itemlist", new PaginatedList<UserModel>(_model, count, model.currentPage.Value, model.pageSize.Value));
         }
+
+        [HttpPost]
+        public PartialViewResult Export(SearchModel model)
+        {
+            var dt = GetUserDesigner.Get.GetExportDesigner(model);
+
+            return PartialView("~/Views/Shared/Export/_TableDetail.cshtml", dt);
+        }
     }
 }

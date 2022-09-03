@@ -162,5 +162,14 @@ namespace cisApp.Controllers
                 return Json(new ResponseModel().ResponseError());
             }
         }
+
+        [HttpPost]
+        public PartialViewResult Export(SearchModel model)
+        {
+            var dt = GetJobPayment.Get.GetExportJobPayment(model);
+
+            return PartialView("~/Views/Shared/Export/_TableDetail.cshtml", dt);
+        }
+
     }
 }

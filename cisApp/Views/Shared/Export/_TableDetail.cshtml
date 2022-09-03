@@ -1,0 +1,38 @@
+﻿@using System.Data
+@model DataTable
+
+
+    <div class="mx-10 my-10">
+        <!--begin::Table-->
+        <table id="export_datatable" class="table align-middle gs-0 gy-4">
+            <!--begin::Table head-->
+            <thead>
+                <tr class="fw-bold text-muted bg-light">
+                    @{
+                        foreach (DataColumn column in Model.Columns)
+                        {
+                            <th class=" text-center">@Html.Raw(column.ColumnName)</th>
+                        }
+                    }
+                </tr>
+            </thead>
+            <!--end::Table head-->
+            @{
+                foreach (DataRow row in Model.Rows)
+                {
+                    <tr>
+                        @foreach (DataColumn column in Model.Columns)
+                        {
+                        <td>@row[column.ColumnName].ToString()</td>
+                        }
+                    </tr>
+                }
+            }
+
+            <!--begin::Table body-->
+            <tbody>
+            </tbody>
+            <!--end::Table body-->
+        </table>
+        <!--end::Table-->
+    </div>
