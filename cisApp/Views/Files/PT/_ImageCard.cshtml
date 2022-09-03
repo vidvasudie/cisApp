@@ -89,7 +89,8 @@
             <div class="d-flex flex-column align-items-center">
                 <!--begin: Icon-->
                 @*<img alt="" class="max-h-65px" src="" />*@
-                <img src="@Url.Content("~/" + Model.UrlPath)" alt="@Model.AlbumName"  data-id="@Model.AttachFileId" class="img-thumbnail img-list" data-target="#carouselPreview" >
+                <img src="@Url.Content("~/" + Model.UrlPath)" alt="@Model.AlbumName"  data-id="@Model.AttachFileId"
+                     class="img-thumbnail img-popup" data-target="#carouselPreview" >
                 <!--end: Icon-->
                 <!--begin: Tite-->
                 <a href="#" class="text-dark-75 font-weight-bold mt-15 font-size-lg">@Model.FileName</a>

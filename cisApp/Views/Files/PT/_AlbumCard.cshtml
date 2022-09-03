@@ -69,7 +69,8 @@
                 {
                     var thumbnail = Model.Thumbnails.FirstOrDefault();
 
-                    <img src="@Url.Content("~/" + thumbnail.UrlPath)" alt="@Model.AlbumName" class="img-thumbnail">
+                <img src="@Url.Content("~/" + Model.UrlPath)" alt="@Model.AlbumName" data-id="@Model.AttachFileId"
+                     class="img-thumbnail img-popup" data-target="#carouselPreview">
                     <!--end: Icon-->
                     <!--begin: Tite-->
                     <a href="#" class="text-dark-75 font-weight-bold mt-15 font-size-lg">@thumbnail.FileName</a>
