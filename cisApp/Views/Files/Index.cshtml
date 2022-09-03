@@ -209,9 +209,9 @@
             data.files = [];
             var objImg = {};
             objImg.NextImgSelected = $this.attr('data-slide-to');
-            objImg.NextImg = $(value).attr('data-slide-to');
-            objImg.FileName = $(value).attr('alt');
-            objImg.AttachFileId = $(value).attr('data-id');
+            objImg.NextImg = $this.attr('data-slide-to');
+            objImg.FileName = $this.attr('alt');
+            objImg.AttachFileId = $this.attr('data-id');
 
             data.files.push(objImg);
             console.log(objImg)
