@@ -9,6 +9,7 @@ using cisApp.Core;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Globalization;
+using cisApp.Common;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,13 +18,7 @@ namespace cisApp.API.Controllers
 
     [ApiController]
     public class JobsFuncController : BaseController
-    {
-
-        readonly static IConfigurationRoot config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-                      .AddJsonFile("appsettings.json")
-                      .Build();
-
+    { 
         /// <summary>
         /// สร้างใบงาน
         /// </summary>
@@ -39,7 +34,7 @@ namespace cisApp.API.Controllers
                 {
                     return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
                 }
-
+                
                 JobModel job = new JobModel()
                 {
                     IsApi = true,
@@ -74,6 +69,7 @@ namespace cisApp.API.Controllers
                     }
                 }
 
+                LogActivityEvent(LogCommon.LogMode.JOB_CREATE, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("สร้างใบงานสำเร็จ", "success", new { result.JobId, result.JobNo }));
 
             }
@@ -272,7 +268,7 @@ namespace cisApp.API.Controllers
                         new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.cancel, ca.UserId.Value, job.JobId);
                     }
                 }
-
+                LogActivityEvent(LogCommon.LogMode.JOB_CREATE, _UserId(), MessageCommon.SaveSuccess);
 
                 return Ok(resultJson.success("สำเร็จ", "success", new { job.JobId, job.JobNo }));
             }
@@ -361,6 +357,7 @@ namespace cisApp.API.Controllers
                 //Noti แจ้งนักออกแบบเมื่อโดนปฎิเสธ
                 new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.alertreject, caUserId, jobId);
 
+                LogActivityEvent(LogCommon.LogMode.JOB_REJECT_CA, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("สำเร็จ", "success", new { jobCa.JobId }));
             }
             catch (Exception ex)
@@ -474,7 +471,7 @@ namespace cisApp.API.Controllers
 
                 var album = GetAlbum.Get.GetByJobIdWithStatus(jobId, userId, AlbumType);
 
-                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                string webAdmin = _config.GetSection("WebConfig:AdminWebStie").Value;
 
                 List<AttachFile> attachFiles = new List<AttachFile>();
 
@@ -600,6 +597,7 @@ namespace cisApp.API.Controllers
                     //นักออกแบบ ส่งงานสำเร็จ
                     new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId, job.JobId);
 
+                    LogActivityEvent(LogCommon.LogMode.SUBMIT_JOB, _UserId(), MessageCommon.SaveSuccess);
                     return Ok(resultJson.success("สำเร็จ", "success", new { result.JobId }));
                 }
                 return Ok(resultJson.errors("ข้อมูลไม่ถูกต้อง ModelState Not Valid", "fail", null));
@@ -669,6 +667,7 @@ namespace cisApp.API.Controllers
                         new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.complete, job.JobCaUserId.Value, job.JobId);
                     }
 
+                    LogActivityEvent(LogCommon.LogMode.FINISH_JOB, _UserId(), MessageCommon.SaveSuccess);
                     return Ok(resultJson.success("สำเร็จ", "success", new { id = id }));
                 }
                 return Ok(resultJson.errors("ข้อมูลไม่ถูกต้อง ModelState Not Valid", "fail", null));
@@ -725,8 +724,8 @@ namespace cisApp.API.Controllers
                         new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.notwinner, ca.UserId.Value, value.JobId);
                     }
                 }
-                
 
+                LogActivityEvent(LogCommon.LogMode.FINISH_JOB, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("สำเร็จ", "success", new { JobId=job.JobId, CaUserId=job.JobCaUserId }));
             }
             catch (Exception ex)
@@ -842,8 +841,9 @@ namespace cisApp.API.Controllers
         {
             try
             {
-                var data = GetJobDesignerReview.Manage.Add(value); 
+                var data = GetJobDesignerReview.Manage.Add(value);
 
+                LogActivityEvent(LogCommon.LogMode.JOB_REVIEW_SUBMIT, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("สำเร็จ", "success", new { data.JobId }));
             }
             catch (Exception ex)
@@ -925,6 +925,7 @@ namespace cisApp.API.Controllers
                 //Noti เมื่อขอไฟล์แบบติดตั้ง
                 new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.installfile, data.JobCaUserId.Value, data.JobId);
 
+                LogActivityEvent(LogCommon.LogMode.JOB_REQ_FILE, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("สำเร็จ", "success", new { data.JobId }));
             }
             catch (Exception ex)
@@ -949,6 +950,7 @@ namespace cisApp.API.Controllers
                 //Noti เมื่อขอแก้ไขผลงาน 
                 new MobileNotfication().Fordesigner(MobileNotfication.ModeDesigner.alert, data.JobCaUserId.Value, data.JobId);
 
+                LogActivityEvent(LogCommon.LogMode.JOB_REQ_FILE, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("สำเร็จ", "success", new { data.JobId }));
             }
             catch (Exception ex)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using cisApp.Common;
 using cisApp.Core;
 using cisApp.Function;
 using Microsoft.AspNetCore.Http;
@@ -135,6 +136,7 @@ namespace cisApp.API.Controllers
                 //แจ้งลูกค้า นักออกแบบ ยกเลิกสมัครงาน
                 new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.leave, job.UserId, job.JobId);
 
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_CANCEL, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("สำเร็จ", "success", new { job.JobId }));
             }
             catch (Exception ex)
@@ -328,6 +330,7 @@ namespace cisApp.API.Controllers
                     new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.regist, jobs.First().UserID, job.JobId.Value);
                 }
 
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_REGIST, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("สำเร็จ", "success", new { job.JobId }));
             }
             catch (Exception ex)
@@ -482,6 +485,7 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
                 }
 
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_FAV, _UserId());
                 return Ok(resultJson.success("สำเร็จ", "success", new { caUserId=fav.UserDesignerId }));
             }
             catch (Exception ex)
@@ -546,6 +550,7 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
                 }
 
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_BOOKMARK, _UserId());
                 return Ok(resultJson.success("สำเร็จ", "success", new { caUserId = fav.UserDesignerId }));
             }
             catch (Exception ex)

@@ -11,13 +11,8 @@ namespace cisApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ControllerBase
-    {
-        readonly static IConfigurationRoot config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-                      .AddJsonFile("appsettings.json")
-                      .Build();
-
+    public class HomeController : BaseController
+    { 
         static string _DefaultProfile = "assets/media/users/100_1.jpg";
 
         // GET: api/<HomeController>
@@ -26,7 +21,7 @@ namespace cisApp.API.Controllers
         {
             try
             {
-                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                string webAdmin = _config.GetSection("WebConfig:AdminWebStie").Value;
                 SearchModel model = new SearchModel()
                 {
                     Tags = tags,
@@ -62,7 +57,7 @@ namespace cisApp.API.Controllers
         {
             try
             {
-                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                string webAdmin = _config.GetSection("WebConfig:AdminWebStie").Value;
                 SearchModel model = new SearchModel()
                 {
                     Tags = tags,
@@ -99,7 +94,7 @@ namespace cisApp.API.Controllers
 
             try
             {
-                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                string webAdmin = _config.GetSection("WebConfig:AdminWebStie").Value;
 
                 var Obj = GetAlbum.Get.GetAlbumImageByAttachId(webAdmin, attachId.Value);
 

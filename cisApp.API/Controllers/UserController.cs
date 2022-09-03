@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using cisApp.Function;
 using cisApp.API.Models;
+using cisApp.Common;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace cisApp.API.Controllers
@@ -41,6 +42,8 @@ namespace cisApp.API.Controllers
                         else
                         {
                             var _result = GetUser.Manage.Update(new UserModel() { Fname = value.Fname, Lname = value.Lname, Tel = value.Tel, Email = value.Email, UserType = 1, IsActive = true }, null, value.NewPassword);
+
+                            LogActivityEvent(LogCommon.LogMode.REGISTER, _result.UserId.Value, MessageCommon.SaveSuccess);
                             return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new { ActivityID = _result.UserId, time = DateTime.Now, expire = DateTime.Now.AddDays(1) }));
                         }
                     }
@@ -75,6 +78,7 @@ namespace cisApp.API.Controllers
                 }
 
                 var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
+                 
                 return Ok(resultJson.success(null, null, new { Status = true, Message = "ระบบได้ทำการส่งลิงก์รีเซ็ตรหัสผ่านไปยังอีเมลของท่านแล้ว" }, null, null, null, null));
             }
             catch (Exception ex)
@@ -137,6 +141,7 @@ namespace cisApp.API.Controllers
                 {
                     var user = GetUserResetPassword.Manage.ResetPassword(value.Token, value.Password);
 
+                    LogActivityEvent(LogCommon.LogMode.RESETPASSWD, _UserId(), MessageCommon.SaveSuccess);
                     return Ok(resultJson.success(null, null, new { Status = true, Message = "เปลี่ยนรหัสผ่านสำเร็จ" }, null, null, null, null));
                 }
 
@@ -270,6 +275,7 @@ namespace cisApp.API.Controllers
                     GetUser.Manage.UpdateProfile(model.ApiUserImg.Value, userId, userId);
                 }
 
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_REQ, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("สำเร็จ", "success", null));
             }
             catch (Exception ex)
@@ -410,6 +416,7 @@ namespace cisApp.API.Controllers
                     return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
                 }
 
+                LogActivityEvent(LogCommon.LogMode.DELETE, _UserId(), MessageCommon.SaveSuccess);
                 var result = GetUser.Manage.DeleteAccount(userId.Value);
 
                 //var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);

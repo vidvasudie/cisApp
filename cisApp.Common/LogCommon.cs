@@ -50,7 +50,27 @@ namespace cisApp.Common
             DETAIL = 34,
             MANAGE = 35,
             PAYMENT_HIST = 36,
-            RESETPASSWD = 37
+            RESETPASSWD = 37,
+            /*API*/
+            JOB_CREATE = 38,
+            JOB_CANCEL = 39,
+            JOB_REJECT_CA = 40,
+            SUBMIT_JOB = 41,
+            FINISH_JOB = 42,
+            JOB_CA_SELECT = 43,
+            JOB_REVIEW_SUBMIT = 44,
+            JOB_REQ_FILE = 45,
+            JOB_REQ_EDIT = 46,
+
+            BANK_EDIT = 47,
+            PAYMENT_SLIP_ADD = 48,
+            REGISTER = 49,
+            DELETE_ACC = 50,
+
+            DESIGNER_CANCEL = 51,
+            DESIGNER_REGIST = 52,
+            DESIGNER_FAV = 53,
+            DESIGNER_BOOKMARK = 54
         }
         private string Message { get; set; }
         private string Controller { get; set; }
@@ -139,7 +159,46 @@ namespace cisApp.Common
                 case LogMode.FAQ:
                     message = $"[{this.Controller}][{this.Action}] FAQ {this.Message} "; break;
                 case LogMode.LOG:
-                    message = $"[{this.Controller}][{this.Action}] ประวัติการใช้งาน {this.Message} "; break; 
+                    message = $"[{this.Controller}][{this.Action}] ประวัติการใช้งาน {this.Message} "; break;
+
+                case LogMode.JOB_CREATE:
+                    message = $"[{this.Controller}][{this.Action}] สร้างใบงาน {this.Message} "; break;
+                case LogMode.JOB_CANCEL:
+                    message = $"[{this.Controller}][{this.Action}] ยกเลิกใบงาน {this.Message} "; break;
+                case LogMode.JOB_REJECT_CA:
+                    message = $"[{this.Controller}][{this.Action}] ปฏิเสธนักออกแบบ {this.Message} "; break;
+                case LogMode.SUBMIT_JOB:
+                    message = $"[{this.Controller}][{this.Action}] ส่งงาน {this.Message} "; break;
+                case LogMode.FINISH_JOB:
+                    message = $"[{this.Controller}][{this.Action}] ยืนยันรับงาน {this.Message} "; break;
+                case LogMode.JOB_CA_SELECT:
+                    message = $"[{this.Controller}][{this.Action}] เลือกนักออกแบบ {this.Message} "; break;
+                case LogMode.JOB_REVIEW_SUBMIT:
+                    message = $"[{this.Controller}][{this.Action}] แสดงความคิดเห็นนักออกแบบ {this.Message} "; break;
+                case LogMode.JOB_REQ_FILE:
+                    message = $"[{this.Controller}][{this.Action}] ขอไฟล์แบบติดตั้ง {this.Message} "; break;
+                case LogMode.JOB_REQ_EDIT:
+                    message = $"[{this.Controller}][{this.Action}] ขอแก้ไขผลงาน {this.Message} "; break;
+
+                case LogMode.BANK_EDIT:
+                    message = $"[{this.Controller}][{this.Action}] ขอแก้ไขบัญชี {this.Message} "; break;
+                case LogMode.PAYMENT_SLIP_ADD:
+                    message = $"[{this.Controller}][{this.Action}] แนบข้อมูลการชำระเงิน {this.Message} "; break;
+                case LogMode.REGISTER:
+                    message = $"[{this.Controller}][{this.Action}] ลงทะเบียน {this.Message} "; break;
+                case LogMode.DELETE_ACC:
+                    message = $"[{this.Controller}][{this.Action}] ลบผู้ใช้งาน {this.Message} "; break;
+
+                case LogMode.DESIGNER_CANCEL:
+                    message = $"[{this.Controller}][{this.Action}] ยกเลิกสมัครใบงาน {this.Message} "; break;
+                case LogMode.DESIGNER_REGIST:
+                    message = $"[{this.Controller}][{this.Action}] สมัครเข้าร่วมใบงาน {this.Message} "; break;
+                case LogMode.DESIGNER_FAV:
+                    message = $"[{this.Controller}][{this.Action}] ถูกใจนักออกแบบ {this.Message} "; break;
+                case LogMode.DESIGNER_BOOKMARK:
+                    message = $"[{this.Controller}][{this.Action}] Bookmark นักออกแบบ {this.Message} "; break;
+                     
+
                 default:
                     message = $"[{this.Controller}][{this.Action}] NO Action {this.Message} "; break;
             }

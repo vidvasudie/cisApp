@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using cisApp.Core;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using cisApp.Common;
 
 namespace cisApp.API.Controllers
 { 
@@ -89,6 +90,8 @@ namespace cisApp.API.Controllers
                 //Noti แจ้งว่าระบบกำลังเร่งตรวจสอบยอดเงิน
                 new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.payment, value.UserId.Value, payment.JobId.Value);
 
+
+                LogActivityEvent(LogCommon.LogMode.BANK_EDIT, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new
                 {
                     JobPaymentId = payment.JobPayId

@@ -9,18 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 using cisApp.Core;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using cisApp.Common;
 
 namespace cisApp.API.Controllers
 { 
     [ApiController]
     [Route("api/[controller]")]
     public class UserBookmarkController : BaseController
-    {
-
-        public static IConfigurationRoot _config = new ConfigurationBuilder()
-                                    .SetBasePath(Directory.GetCurrentDirectory())
-                                    .AddJsonFile("appsettings.json")
-                                    .Build();
+    { 
 
         [HttpPost("Add")]
         public object Add(UserBookMarkImageInputModel value)
@@ -28,7 +24,7 @@ namespace cisApp.API.Controllers
             try
             {
                 GetUserBookmarkImage.Manage.Add(value.UserId, value.RefId);
-
+                 
                 return Ok(resultJson.success(null, null, null, null, null, null, null));
             }
             catch (Exception ex)
