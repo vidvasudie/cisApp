@@ -652,6 +652,21 @@ namespace cisApp.Core
                     .HasComment(@"1 = ผู้ใข้งาน,
 2 = นักออกแบบ
 ,3 = เจ้าหน้าที่");
+
+                entity.Property(e => e.IsAppNoti)
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("1 = เปิดให้แจ้งเตือนผ่าน AppNoti");
+
+                entity.Property(e => e.IsDeletedByUser).HasComment("1 = ผู้ใช้ทำการลบบัญชี");
+
+                entity.Property(e => e.IsEmailNoti)
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("1 = เปิดให้แจ้งเตือนผ่าน Email");
+
+                entity.Property(e => e.IsSmsnoti)
+                    .HasColumnName("IsSMSNoti")
+                    .HasDefaultValueSql("((1))")
+                    .HasComment("1 = เปิดให้แจ้งเตือนผ่าน SMS");
             });
 
             modelBuilder.Entity<UsersPassword>(entity =>
@@ -666,6 +681,7 @@ namespace cisApp.Core
                     .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
+
             });
 
             modelBuilder.Entity<TmUserType>(entity =>

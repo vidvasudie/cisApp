@@ -14,6 +14,7 @@ namespace cisApp.Core
         public Guid? UpdatedBy { get; set; }
         public string Description { get; set; }
         public bool? IsImg { get; set; }
+        public int? OrderBy { get; set; }
 
         [NotMapped]
         public AttachFile AttachFileImage { get; set; }

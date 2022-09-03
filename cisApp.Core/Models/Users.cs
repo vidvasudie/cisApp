@@ -47,5 +47,17 @@ namespace cisApp.Core
         public DateTime? LastLogin { get; set; }
         public Guid? UserImgId { get; set; }
         public bool? IsDeletedByUser { get; set; }
+        /// <summary>
+        /// 1 = เปิดให้แจ้งเตือนผ่าน SMS
+        /// </summary>
+        public bool? IsSmsnoti { get; set; }
+        /// <summary>
+        /// 1 = เปิดให้แจ้งเตือนผ่าน Email
+        /// </summary>
+        public bool? IsEmailNoti { get; set; }
+        /// <summary>
+        /// 1 = เปิดให้แจ้งเตือนผ่าน AppNoti
+        /// </summary>
+        public bool? IsAppNoti { get; set; }
     }
 }
