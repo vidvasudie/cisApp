@@ -428,5 +428,51 @@ namespace cisApp.API.Controllers
             }
         }
 
+        [HttpGet("NotiSetting")]
+        public object GetNotiSetting(Guid? userId)
+        {
+            try
+            {
+                var Obj = GetUser.Get.GetById(userId.Value);
+
+                if (Obj == null)
+                {
+                    return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+                }
+
+                var result = GetUser.Get.GetById(userId.Value);
+
+                //var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
+                return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new { result.IsSmsnoti, result.IsEmailNoti, result.IsAppNoti }));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+            }
+        }
+
+        [HttpPut("NotiSetting")]
+        public object UpdateNotiSetting(bool IsSmsnoti, bool isEmailNoti, bool isAppNoti, Guid? userId)
+        {
+            try
+            {
+                var Obj = GetUser.Get.GetById(userId.Value);
+
+                if (Obj == null)
+                {
+                    return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+                }
+
+                var result = GetUser.Manage.UpdateNoti(IsSmsnoti, isEmailNoti, isAppNoti,userId.Value);
+
+                //var userResetPassword = GetUserResetPassword.Manage.Add(Obj.UserId.Value);
+                return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", new { result.IsSmsnoti, result.IsEmailNoti, result.IsAppNoti }));
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+            }
+        }
+
     }
 }

@@ -106,24 +106,24 @@
                                     <!--end::Title-->
                                     <!--begin::Navigation-->
                                     <div class="d-flex mr-3">
-                                    <!--begin::Navi-->
-                                    <div class="navi navi-hover navi-active navi-link-rounded navi-bold d-flex flex-row">
-                                    <!--begin::Item-->
-                                    <div class="navi-item mr-2">
-                                        <a href="javascript:void(0)" class="navi-link custom-search-by @albumActive" keyword-data="album">
-                                            <span class="navi-text">อัลบั้ม</span>
-                                        </a>
-                                    </div>
-                                    <!--end::Item-->
-                                    <!--begin::Item-->
-                                    <div class="navi-item mr-2">
-                                        <a href="javascript:void(0)" class="navi-link custom-search-by @imageActive" keyword-data="image">
-                                            <span class="navi-text">รายการ</span>
-                                        </a>
-                                    </div>
-                                    <!--end::Item-->
-                                    </div>
-                                    <!--end::Navi-->
+                                        <!--begin::Navi-->
+                                        <div class="navi navi-hover navi-active navi-link-rounded navi-bold d-flex flex-row">
+                                            <!--begin::Item-->
+                                            <div class="navi-item mr-2">
+                                                <a href="javascript:void(0)" class="navi-link custom-search-by @albumActive" keyword-data="album">
+                                                    <span class="navi-text">อัลบั้ม</span>
+                                                </a>
+                                            </div>
+                                            <!--end::Item-->
+                                            <!--begin::Item-->
+                                            <div class="navi-item mr-2">
+                                                <a href="javascript:void(0)" class="navi-link custom-search-by @imageActive" keyword-data="image">
+                                                    <span class="navi-text">รายการ</span>
+                                                </a>
+                                            </div>
+                                            <!--end::Item-->
+                                        </div>
+                                        <!--end::Navi-->
                                     </div>
                                     <!--end::Navigation-->
                                 </div>
@@ -153,9 +153,12 @@
 </div>
 <!--end::Content-->
 
+@await Html.PartialAsync("~/Views/Shared/Album/_ImagesViewModal.cshtml")
+
 
 @section scripts {
 
+    <link href="@Url.Content("~/css/image-modal.css")" rel="stylesheet" type="text/css" />
     <script src="@Url.Content("~/js/pages/file/file.js")"></script>
 
     <script>
@@ -197,6 +200,30 @@
             PagerClick(1);
         });
         PagerClick(1);
+
+        $('body').on('click', '.img-popup', function () {
+            var $this = $(this);
+            console.log($this)
+
+            var data = {}
+            data.files = [];
+            var objImg = {};
+            objImg.NextImgSelected = $this.attr('data-slide-to');
+            objImg.NextImg = $this.attr('data-slide-to');
+            objImg.FileName = $this.attr('alt');
+            objImg.AttachFileId = $this.attr('data-id');
+
+            data.files.push(objImg);
+            console.log(objImg)
+            var suc = function (html) {
+                $('#carouselPreview').html(html);
+                $('#previewModal').modal('show');
+            }
+            var err = function (e) {
+                alert('error carouselPreview', e);
+            }
+            CallAjax(_previewImgUrl, 'POST', data, suc, err);
+        });
     });
     </script>
 }

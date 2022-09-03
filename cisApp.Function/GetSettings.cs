@@ -16,7 +16,7 @@ namespace cisApp.Function
                 {
                     using (var context = new CAppContext())
                     {
-                        var data = context.Settings.ToList();
+                        var data = context.Settings.OrderBy(o => o.OrderBy).ToList();
 
                         foreach (var item in data)
                         {

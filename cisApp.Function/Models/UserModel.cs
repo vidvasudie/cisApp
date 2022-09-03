@@ -109,6 +109,18 @@ namespace cisApp.Function
         public int JobTotal { get; set; }
         public int LikeOtherCount { get; set; }
         public int OtherLikedCount { get; set; }
+        /// <summary>
+        /// 1 = เปิดให้แจ้งเตือนผ่าน SMS
+        /// </summary>
+        public bool? IsSmsnoti { get; set; }
+        /// <summary>
+        /// 1 = เปิดให้แจ้งเตือนผ่าน Email
+        /// </summary>
+        public bool? IsEmailNoti { get; set; }
+        /// <summary>
+        /// 1 = เปิดให้แจ้งเตือนผ่าน AppNoti
+        /// </summary>
+        public bool? IsAppNoti { get; set; }
 
 
         [NotMapped]
