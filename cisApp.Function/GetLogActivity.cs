@@ -52,7 +52,7 @@ namespace cisApp.Function
         }
         public class Manage
         {
-            public static async Task<LogActivity> AddAsync(HttpRequest request, Guid? userId, string fullname, LogCommon.LogMode mode, string msg = "", string exception = "")
+            public static async Task<LogActivity> AddAsync(HttpRequest request, Guid? userId, string fullname, LogCommon.LogMode mode, string msg = "", string exception = "", string device = "web")
             {
                 try
                 {
@@ -72,6 +72,8 @@ namespace cisApp.Function
                             data.ExceptionNote = exception;
                             data.RequestData = await GetRequestData(request);
                             data.CreatedDate = DateTime.Now;
+
+                            data.Device = device;
 
                             context.LogActivity.Add(data);
                             context.SaveChanges();

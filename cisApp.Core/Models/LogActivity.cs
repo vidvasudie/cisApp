@@ -25,6 +25,7 @@ namespace cisApp.Core
         public string ExceptionNote { get; set; }
         public string RequestData { get; set; }
         public DateTime? CreatedDate { get; set; }
+        public string Device { get; set; }
 
         [NotMapped]
         public string CreatedDateStr

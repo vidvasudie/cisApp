@@ -21,11 +21,11 @@ namespace cisApp.API.Controllers
                                     .AddJsonFile("appsettings.json")
                                     .Build();
 
-        public async void LogActivityEvent(LogCommon.LogMode log, Guid userId, string msg = "", string exception = "")
+        public async void LogActivityEvent(LogCommon.LogMode log, Guid userId, string msg = "", string exception = "", string device = "mobile")
         {
             var user = GetUser.Get.GetById(userId);
             string name = user != null && !String.IsNullOrEmpty(user.Fname) && !String.IsNullOrEmpty(user.Lname) ? user.Fname + " " + user.Lname : "ไม่ระบุ";
-            await GetLogActivity.Manage.AddAsync(Request, userId, name, log, msg, exception);
+            await GetLogActivity.Manage.AddAsync(Request, userId, name, log, msg, exception, device);
         }
 
         public Guid _UserId()
