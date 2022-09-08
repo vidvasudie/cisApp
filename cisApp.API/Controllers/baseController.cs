@@ -21,6 +21,7 @@ namespace cisApp.API.Controllers
                                     .AddJsonFile("appsettings.json")
                                     .Build();
 
+        [NonAction]
         public async void LogActivityEvent(LogCommon.LogMode log, Guid userId, string msg = "", string exception = "", string device = "mobile")
         {
             var user = GetUser.Get.GetById(userId);
@@ -28,6 +29,7 @@ namespace cisApp.API.Controllers
             await GetLogActivity.Manage.AddAsync(Request, userId, name, log, msg, exception, device);
         }
 
+        [NonAction]
         public Guid _UserId()
         {
             try
@@ -40,7 +42,7 @@ namespace cisApp.API.Controllers
             }
             catch (Exception ex)
             {
-
+                var err = ex;
             }
             return Guid.Empty;
         }
