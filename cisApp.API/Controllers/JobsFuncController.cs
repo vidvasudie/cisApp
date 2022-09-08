@@ -136,6 +136,8 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.CUSTOMER_JOB_LIST, _UserId());
+
                 if (userId == Guid.Empty)
                 {
                     return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
@@ -185,6 +187,8 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.CUSTOMER_JOB_HISTORY, _UserId());
+
                 if (userId == Guid.Empty)
                 {
                     return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));

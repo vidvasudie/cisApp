@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using cisApp.Function;
 using cisApp.Core;
 using cisApp.API.Models;
+using cisApp.Common;
 
 namespace cisApp.API.Controllers
 {
-    public class ChatController : Controller
+    public class ChatController : BaseController
     {
         [Route("api/Chat/GetChatList")]
         [HttpPost]
@@ -17,6 +18,8 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.CHAT_LIST, _UserId());
+
                 if (id == null)
                 {
                     return Ok(resultJson.errors("ModelState not valid", "fail", null));

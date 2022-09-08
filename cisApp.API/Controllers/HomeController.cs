@@ -1,4 +1,5 @@
-﻿using cisApp.Function;
+﻿using cisApp.Common;
+using cisApp.Function;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -57,6 +58,8 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.HOME, _UserId());
+
                 string webAdmin = _config.GetSection("WebConfig:AdminWebStie").Value;
                 SearchModel model = new SearchModel()
                 {
@@ -71,7 +74,7 @@ namespace cisApp.API.Controllers
                 Obj = GetAlbum.Get.GetAlbumFeed(model, webAdmin);
 
                 if (Obj.Count > 0)
-                {
+                { 
                     return Ok(resultJson.success(null, null, Obj.Select(o => new { o.AttachFileId, o.FileName, o.FullUrlPath, o.UserId, o.JobID, o.AlbumName, o.Category, o.Tags, o.AlbumRefId }).ToList(), null, null, page, page + 1));
                 }
                 else

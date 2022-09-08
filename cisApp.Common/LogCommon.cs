@@ -12,6 +12,7 @@ namespace cisApp.Common
             Action = action;
             Message = message;
         }
+        [Flags]
         public enum LogMode
         {
             INSERT = 0,
@@ -70,7 +71,23 @@ namespace cisApp.Common
             DESIGNER_CANCEL = 51,
             DESIGNER_REGIST = 52,
             DESIGNER_FAV = 53,
-            DESIGNER_BOOKMARK = 54
+            DESIGNER_BOOKMARK = 54,
+
+            HOME=55,
+            DESIGNER_JOB_HISTORY = 56,
+            DESIGNER_JOB_CONTEST = 57,
+            DESIGNER_PROFILE=58,
+            NOTIFICATION=59,
+            WINNER_LIST = 60,
+            REVIEW_LIST = 61,
+            CONTEST_SUMMARY=62,
+            DESIGNER_FAV_LIST=63,
+            BANK_PROFILE=64,
+            CUSTOMER_PROFILE=65,
+            CHAT_LIST = 66,
+            CUSTOMER_JOB_HISTORY = 67,
+            CUSTOMER_JOB_LIST = 68
+            /*API*/
         }
         private string Message { get; set; }
         private string Controller { get; set; }
@@ -197,7 +214,35 @@ namespace cisApp.Common
                     message = $"[{this.Controller}][{this.Action}] ถูกใจนักออกแบบ {this.Message} "; break;
                 case LogMode.DESIGNER_BOOKMARK:
                     message = $"[{this.Controller}][{this.Action}] Bookmark นักออกแบบ {this.Message} "; break;
-                     
+
+                case LogMode.HOME:
+                    message = $"[{this.Controller}][{this.Action}] หน้าหลัก {this.Message} "; break;
+                case LogMode.DESIGNER_JOB_HISTORY:
+                    message = $"[{this.Controller}][{this.Action}] รายการใบงานรอสถานะของนักออกแบบ {this.Message} "; break;
+                case LogMode.DESIGNER_JOB_CONTEST:
+                    message = $"[{this.Controller}][{this.Action}] รายการใบงานที่รอประกวดของนักออกแบบ {this.Message} "; break;
+                case LogMode.DESIGNER_PROFILE:
+                    message = $"[{this.Controller}][{this.Action}] ประวัตินักออกแบบ {this.Message} "; break;
+                case LogMode.NOTIFICATION:
+                    message = $"[{this.Controller}][{this.Action}] รายการแจ้งเตือน {this.Message} "; break;
+                case LogMode.WINNER_LIST:
+                    message = $"[{this.Controller}][{this.Action}] รายการผู้ชนะ 50 อันดับ {this.Message} "; break;
+                case LogMode.REVIEW_LIST:
+                    message = $"[{this.Controller}][{this.Action}] รายการรีวีวนักออกแบบ {this.Message} "; break;
+                case LogMode.CONTEST_SUMMARY:
+                    message = $"[{this.Controller}][{this.Action}] รายการชนะการประกวด {this.Message} "; break;
+                case LogMode.DESIGNER_FAV_LIST:
+                    message = $"[{this.Controller}][{this.Action}] รายการคนที่สนใจนักออกแบบ {this.Message} "; break;
+                case LogMode.BANK_PROFILE:
+                    message = $"[{this.Controller}][{this.Action}] ข้อมูลบัญชีธนาคาร {this.Message} "; break;
+                case LogMode.CUSTOMER_PROFILE:
+                    message = $"[{this.Controller}][{this.Action}] ประวัติผู้ใช้งาน {this.Message} "; break;
+                case LogMode.CHAT_LIST:
+                    message = $"[{this.Controller}][{this.Action}] รายการแชท {this.Message} "; break;
+                case LogMode.CUSTOMER_JOB_HISTORY:
+                    message = $"[{this.Controller}][{this.Action}] ประวัติสถานะใบงานลูกค้า {this.Message} "; break;
+                case LogMode.CUSTOMER_JOB_LIST:
+                    message = $"[{this.Controller}][{this.Action}] รายการใบงานลูกค้าที่กำลังดำเนินการ {this.Message} "; break;
 
                 default:
                     message = $"[{this.Controller}][{this.Action}] NO Action {this.Message} "; break;

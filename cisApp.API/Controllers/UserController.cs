@@ -163,6 +163,8 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.CUSTOMER_PROFILE, _UserId());
+
                 if (id == null)
                 {
                     return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));

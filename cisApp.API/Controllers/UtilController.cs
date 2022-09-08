@@ -1,4 +1,5 @@
-﻿using cisApp.Function;
+﻿using cisApp.Common;
+using cisApp.Function;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -241,7 +242,9 @@ namespace cisApp.API.Controllers
         public IActionResult GetWinnerList()
         {
             try
-            { 
+            {
+                LogActivityEvent(LogCommon.LogMode.WINNER_LIST, _UserId());
+
                 var wins = GetJobs.Get.GetWinnerSummary();
                 string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
                 bool removeLast = Host.Last() == '/';
