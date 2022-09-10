@@ -1,8 +1,491 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+@section scripts {
+    <script src="@Url.Content("~/lib/ApexCharts/apexcharts.js")"></script>
+     
+    <script>
+        var barOptions = {
+            series: [{
+                data: [400, 430, 448, 470, 540, 580, 690, 1100]
+            }],
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    horizontal: true,
+                    distributed: true
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                categories: ['ร่าง', 'รอ', 'ประกวด', 'ส่งแนบ', 'ขอแก้ไขผลงาน', 'ขอไฟล์แบบติดตั้ง', 'สิ้นสุด', 'ยกเลิก'],
+            },
+            //colors: ['#33b2df', '#546E7A', '#d4526e', '#13d8aa', '#A5978B', '#2b908f', '#f9a3a4', '#90ee7e'],
+            grid: {
+                show: false,
+            },
+            tooltip: { 
+                x: {
+                    show: false
+                },
+                y: {
+                    title: {
+                        formatter: function () {
+                            return ''
+                        }
+                    }
+                }
+            }
+        };
+        var chartBar = new ApexCharts(document.querySelector("#chartBar"), barOptions);
+        chartBar.render();
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        var pieOptions = {
+            series: [100, 30, 3],
+            chart: {
+                type: 'donut',
+            },
+            labels:  ['ผู้ใข้งาน', 'นักออกแบบ', 'เจ้าหน้าที่'],
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                      position: 'bottom'
+                    }
+                }
+            }]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chartPie"), pieOptions);
+        chart.render();
+    </script>
+
+}
+
+<div id="kt_app_content" class="app-content flex-column-fluid">
+    <!--begin::Content container-->
+    <div id="kt_app_content_container" class="app-container container-xxl">
+
+        <!--begin::Row-->
+        <div class="row gy-5 g-xl-10">
+            <!--begin::Col-->
+            <div class="col-sm-6 col-xl-6 mb-xl-6">
+                <!--begin::Card widget 2-->
+                <div class="card h-lg-70" style="border-color: #021ca6;border-block-end-width: 10px;">
+                    <!--begin::Body-->
+                    <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                        <!--begin::Icon-->
+                        <div class="m-0">
+                            <h4>จำนวนรายการชำระเงิน (รอตรวจสอบ)</h4>
+                        </div>
+                        <!--end::Icon-->
+                        <!--begin::Section-->
+                        <div class="d-flex flex-row  align-items-center my-5">
+                            <!--begin::Number-->
+                            <a href="#">
+                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2 ml-40" style="font-size: 60px;">327</span>
+                            </a>
+                            <!--end::Number-->
+                            <!--begin::Follower-->
+                            <div class="mx-10">
+                                <span class="fw-semibold fs-6 text-gray-400" style="font-size: 30px;">รายการ</span>
+                            </div>
+                            <!--end::Follower-->
+                        </div>
+                        <!--end::Section-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card widget 2-->
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-sm-6 col-xl-6 mb-xl-6">
+                <!--begin::Card widget 2-->
+                <div class="card h-lg-70" style="border-color: #fd9f27;border-block-end-width: 10px;">
+                    <!--begin::Body-->
+                    <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                        <!--begin::Icon-->
+                        <div class="m-0">
+                            <h4>จำนวนรายการคำขอสมัครนักออกแบบ (รอตรวจสอบ)</h4>
+                        </div>
+                        <!--end::Icon-->
+                        <!--begin::Section-->
+                        <div class="d-flex flex-row  align-items-center my-5">
+                            <!--begin::Number-->
+                            <a href="#">
+                                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2 ml-40" style="font-size: 60px;">327</span>
+                            </a>
+                            <!--end::Number-->
+                            <!--begin::Follower-->
+                            <div class="mx-10">
+                                <span class="fw-semibold fs-6 text-gray-400" style="font-size: 30px;">รายการ</span>
+                            </div>
+                            <!--end::Follower-->
+                        </div>
+                        <!--end::Section-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card widget 2-->
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Row-->
+        <!--begin::Row-->
+        <div class="row g-5 g-xl-10 mb-5 mb-xl-10">
+            <!--begin::Col-->
+            <div class="col-xl-12">
+                <!--begin::Chart widget 19-->
+                <div class="card card-flush h-xl-100">
+                    <!--begin::Header-->
+                    <div class="card-header pt-7  border-0">
+                        <!--begin::Title-->
+                        <h4 class=" align-items-start flex-column">
+                            <span class="card-label fw-bold text-gray-800">รายการแจ้งปัญหาระบบ</span>
+                            <a href="#" class="btn btn-light-info ml-10">ตรวจสอบ</a>
+                        </h4>
+                        <!--end::Title-->
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body py-3">
+                        <div class="mb-5">
+                            <span style="color: red;">*** แสดง 5 รายการ จากทั้งหมด 100 รายการ</span>
+                        </div>
+                        <!--begin::Table container-->
+                        <div class="table-responsive">
+                            <!--begin::Table-->
+                            <table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+                                <!--begin::Table head-->
+                                <thead>
+                                    <tr class="border-bottom-0">
+                                        <th class="p-0 w-50px"></th>
+                                        <th class="p-0 min-w-175px"></th>
+                                        <th class="p-0 min-w-175px"></th>
+                                        <th class="p-0 min-w-150px"></th>
+                                        <th class="p-0 min-w-150px"></th>
+                                    </tr>
+                                </thead>
+                                <!--end::Table head-->
+                                <!--begin::Table body-->
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="symbol symbol-40px">
+                                                <span class="">
+                                                    <!--begin::Svg Icon | path: icons/duotune/technology/teh008.svg-->
+                                                    <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                        <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Text/Redo.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <rect x="0" y="0" width="24" height="24" />
+                                                                <path d="M21.4451171,17.7910156 C21.4451171,16.9707031 21.6208984,13.7333984 19.0671874,11.1650391 C17.3484374,9.43652344 14.7761718,9.13671875 11.6999999,9 L11.6999999,4.69307548 C11.6999999,4.27886191 11.3642135,3.94307548 10.9499999,3.94307548 C10.7636897,3.94307548 10.584049,4.01242035 10.4460626,4.13760526 L3.30599678,10.6152626 C2.99921905,10.8935795 2.976147,11.3678924 3.2544639,11.6746702 C3.26907199,11.6907721 3.28437331,11.7062312 3.30032452,11.7210037 L10.4403903,18.333467 C10.7442966,18.6149166 11.2188212,18.596712 11.5002708,18.2928057 C11.628669,18.1541628 11.6999999,17.9721616 11.6999999,17.7831961 L11.6999999,13.5 C13.6531249,13.5537109 15.0443703,13.6779456 16.3083984,14.0800781 C18.1284272,14.6590944 19.5349747,16.3018455 20.5280411,19.0083314 L20.5280247,19.0083374 C20.6363903,19.3036749 20.9175496,19.5 21.2321404,19.5 L21.4499999,19.5 C21.4499999,19.0068359 21.4451171,18.2255859 21.4451171,17.7910156 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.254964, 11.721538) scale(-1, 1) translate(-12.254964, -11.721538) " />
+                                                            </g>
+                                                        </svg><!--end::Svg Icon-->
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="ps-0">
+                                            <span class="text-dark fw-bold d-block fs-6" style="word-wrap: break-word;">นายทดสอบ สอบงหด่</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark fw-bold d-block fs-6">รายละเอียด..................................................</span>
+                                        </td>
+                                        <td class="ps-0">
+                                            <span>test@test.cim</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark fw-bold d-block fs-6">23 Jan, 22</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="symbol symbol-40px">
+                                                <span class=" ">
+                                                    <!--begin::Svg Icon | path: icons/duotune/technology/teh008.svg-->
+                                                    <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                        <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Text/Redo.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <rect x="0" y="0" width="24" height="24" />
+                                                                <path d="M21.4451171,17.7910156 C21.4451171,16.9707031 21.6208984,13.7333984 19.0671874,11.1650391 C17.3484374,9.43652344 14.7761718,9.13671875 11.6999999,9 L11.6999999,4.69307548 C11.6999999,4.27886191 11.3642135,3.94307548 10.9499999,3.94307548 C10.7636897,3.94307548 10.584049,4.01242035 10.4460626,4.13760526 L3.30599678,10.6152626 C2.99921905,10.8935795 2.976147,11.3678924 3.2544639,11.6746702 C3.26907199,11.6907721 3.28437331,11.7062312 3.30032452,11.7210037 L10.4403903,18.333467 C10.7442966,18.6149166 11.2188212,18.596712 11.5002708,18.2928057 C11.628669,18.1541628 11.6999999,17.9721616 11.6999999,17.7831961 L11.6999999,13.5 C13.6531249,13.5537109 15.0443703,13.6779456 16.3083984,14.0800781 C18.1284272,14.6590944 19.5349747,16.3018455 20.5280411,19.0083314 L20.5280247,19.0083374 C20.6363903,19.3036749 20.9175496,19.5 21.2321404,19.5 L21.4499999,19.5 C21.4499999,19.0068359 21.4451171,18.2255859 21.4451171,17.7910156 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.254964, 11.721538) scale(-1, 1) translate(-12.254964, -11.721538) " />
+                                                            </g>
+                                                        </svg><!--end::Svg Icon-->
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="ps-0">
+                                            <span class="text-dark fw-bold d-block fs-6" style="word-wrap: break-word;">นายทดสอบ สอบงหด่</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark fw-bold d-block fs-6">รายละเอียด..................................................</span>
+                                        </td>
+                                        <td class="ps-0">
+                                            <span>test@test.cim</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark fw-bold d-block fs-6">23 Jan, 22</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="symbol symbol-40px">
+                                                <span class="">
+                                                    <!--begin::Svg Icon | path: icons/duotune/technology/teh008.svg-->
+                                                    <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                        <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Text/Redo.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <rect x="0" y="0" width="24" height="24" />
+                                                                <path d="M21.4451171,17.7910156 C21.4451171,16.9707031 21.6208984,13.7333984 19.0671874,11.1650391 C17.3484374,9.43652344 14.7761718,9.13671875 11.6999999,9 L11.6999999,4.69307548 C11.6999999,4.27886191 11.3642135,3.94307548 10.9499999,3.94307548 C10.7636897,3.94307548 10.584049,4.01242035 10.4460626,4.13760526 L3.30599678,10.6152626 C2.99921905,10.8935795 2.976147,11.3678924 3.2544639,11.6746702 C3.26907199,11.6907721 3.28437331,11.7062312 3.30032452,11.7210037 L10.4403903,18.333467 C10.7442966,18.6149166 11.2188212,18.596712 11.5002708,18.2928057 C11.628669,18.1541628 11.6999999,17.9721616 11.6999999,17.7831961 L11.6999999,13.5 C13.6531249,13.5537109 15.0443703,13.6779456 16.3083984,14.0800781 C18.1284272,14.6590944 19.5349747,16.3018455 20.5280411,19.0083314 L20.5280247,19.0083374 C20.6363903,19.3036749 20.9175496,19.5 21.2321404,19.5 L21.4499999,19.5 C21.4499999,19.0068359 21.4451171,18.2255859 21.4451171,17.7910156 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.254964, 11.721538) scale(-1, 1) translate(-12.254964, -11.721538) " />
+                                                            </g>
+                                                        </svg><!--end::Svg Icon-->
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="ps-0">
+                                            <span class="text-dark fw-bold d-block fs-6">นายทดสอบ สอบงหด่</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark fw-bold d-block fs-6">รายละเอียด..................................................</span>
+                                        </td>
+                                        <td class="ps-0">
+                                            <span>test@test.cim</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark fw-bold d-block fs-6">23 Jan, 22</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="symbol symbol-40px">
+                                                <span class=" ">
+                                                    <!--begin::Svg Icon | path: icons/duotune/technology/teh008.svg-->
+                                                    <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                        <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Text/Redo.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <rect x="0" y="0" width="24" height="24" />
+                                                                <path d="M21.4451171,17.7910156 C21.4451171,16.9707031 21.6208984,13.7333984 19.0671874,11.1650391 C17.3484374,9.43652344 14.7761718,9.13671875 11.6999999,9 L11.6999999,4.69307548 C11.6999999,4.27886191 11.3642135,3.94307548 10.9499999,3.94307548 C10.7636897,3.94307548 10.584049,4.01242035 10.4460626,4.13760526 L3.30599678,10.6152626 C2.99921905,10.8935795 2.976147,11.3678924 3.2544639,11.6746702 C3.26907199,11.6907721 3.28437331,11.7062312 3.30032452,11.7210037 L10.4403903,18.333467 C10.7442966,18.6149166 11.2188212,18.596712 11.5002708,18.2928057 C11.628669,18.1541628 11.6999999,17.9721616 11.6999999,17.7831961 L11.6999999,13.5 C13.6531249,13.5537109 15.0443703,13.6779456 16.3083984,14.0800781 C18.1284272,14.6590944 19.5349747,16.3018455 20.5280411,19.0083314 L20.5280247,19.0083374 C20.6363903,19.3036749 20.9175496,19.5 21.2321404,19.5 L21.4499999,19.5 C21.4499999,19.0068359 21.4451171,18.2255859 21.4451171,17.7910156 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.254964, 11.721538) scale(-1, 1) translate(-12.254964, -11.721538) " />
+                                                            </g>
+                                                        </svg><!--end::Svg Icon-->
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="ps-0">
+                                            <span class="text-dark fw-bold d-block fs-6">นายทดสอบ สอบงหด่</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark fw-bold d-block fs-6">รายละเอียด..................................................</span>
+                                        </td>
+                                        <td class="ps-0">
+                                            <span>test@test.cim</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark fw-bold d-block fs-6">23 Jan, 22</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="symbol symbol-40px">
+                                                <span class="">
+                                                    <!--begin::Svg Icon | path: icons/duotune/technology/teh008.svg-->
+                                                    <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                        <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo1/dist/../src/media/svg/icons/Text/Redo.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <rect x="0" y="0" width="24" height="24" />
+                                                                <path d="M21.4451171,17.7910156 C21.4451171,16.9707031 21.6208984,13.7333984 19.0671874,11.1650391 C17.3484374,9.43652344 14.7761718,9.13671875 11.6999999,9 L11.6999999,4.69307548 C11.6999999,4.27886191 11.3642135,3.94307548 10.9499999,3.94307548 C10.7636897,3.94307548 10.584049,4.01242035 10.4460626,4.13760526 L3.30599678,10.6152626 C2.99921905,10.8935795 2.976147,11.3678924 3.2544639,11.6746702 C3.26907199,11.6907721 3.28437331,11.7062312 3.30032452,11.7210037 L10.4403903,18.333467 C10.7442966,18.6149166 11.2188212,18.596712 11.5002708,18.2928057 C11.628669,18.1541628 11.6999999,17.9721616 11.6999999,17.7831961 L11.6999999,13.5 C13.6531249,13.5537109 15.0443703,13.6779456 16.3083984,14.0800781 C18.1284272,14.6590944 19.5349747,16.3018455 20.5280411,19.0083314 L20.5280247,19.0083374 C20.6363903,19.3036749 20.9175496,19.5 21.2321404,19.5 L21.4499999,19.5 C21.4499999,19.0068359 21.4451171,18.2255859 21.4451171,17.7910156 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.254964, 11.721538) scale(-1, 1) translate(-12.254964, -11.721538) " />
+                                                            </g>
+                                                        </svg><!--end::Svg Icon-->
+                                                    </span>
+                                                    <!--end::Svg Icon-->
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="ps-0">
+                                            <span class="text-dark fw-bold d-block fs-6">นายทดสอบ สอบงหด่</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark fw-bold d-block fs-6">รายละเอียด..................................................</span>
+                                        </td>
+                                        <td class="ps-0">
+                                            <span>test@test.cim</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-dark fw-bold d-block fs-6">23 Jan, 22</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <!--end::Table body-->
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                        <!--end::Table container-->
+                    </div>
+                    <!--begin::Body-->
+                </div>
+                <!--end::Chart widget 19-->
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Row-->
+        <!--begin::Row-->
+        <div class="row gy-5 g-xl-10">
+
+            <div class="col-sm-6 col-xl-6 mb-xl-6">
+                <!--begin::Chart widget 27-->
+                <div class="card card-flush h-xl-100">
+                    <!--begin::Header-->
+                    <div class="card-header py-7">
+                        <!--begin::Statistics-->
+                        <div class="m-0">
+                            <!--begin::Description-->
+                            <h4>จำนวนงาน แยกตามสถานะ</h4>
+                            <!--end::Description-->
+                        </div>
+                        <!--end::Statistics-->
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-0 pb-1">
+                        <div id="chartBar"></div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Chart widget 27-->
+            </div>
+
+            <div class="col-sm-6 col-xl-6 mb-xl-6">
+                <!--begin::Chart widget 27-->
+                <div class="card card-flush h-xl-100">
+                    <!--begin::Header-->
+                    <div class="card-header py-7">
+                        <!--begin::Statistics-->
+                        <div class="m-0">
+                            <!--begin::Description-->
+                            <h4>จำนวนผู้ใช้งาน แยกตามประเภท</h4>
+                            <!--end::Description-->
+                        </div>
+                        <!--end::Statistics-->
+                    </div>
+                    <!--end::Header-->
+                    <!--begin::Body-->
+                    <div class="card-body pt-0 pb-1">
+                        <div id="chartPie"></div>
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Chart widget 27-->
+            </div>
+
+        </div>
+        <!--end::Row-->
+        <!--begin::Row-->
+        <div class="row gy-5 g-xl-10">
+            <!--begin::Col-->
+            <div class="col-sm-4 col-xl-4 mb-xl-4 ">
+                <!--begin::Card widget 2-->
+                <div class="card h-70 border-info" style="border-left-width: 10px;background-color: #E3DBF2;">
+                    <!--begin::Body-->
+                    <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                        <!--begin::Icon-->
+                        <div class="m-0">
+                            <h4>จำนวนคนเข้าใช้งาน (วัน)</h4>
+                        </div>
+                        <!--end::Icon-->
+                        <!--begin::Section-->
+                        <div class="d-flex flex-column my-5">
+                            <!--begin::Number-->
+                            <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2 h3">327,000</span>
+                            <!--end::Number-->
+                            <!--begin::Follower-->
+                            <div class="m-0">
+                                <span class="fw-semibold fs-6 text-gray-400 h4">คน</span>
+                            </div>
+                            <!--end::Follower-->
+                        </div>
+                        <!--end::Section-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card widget 2-->
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-sm-4 col-xl-4 mb-xl-4">
+                <!--begin::Card widget 2-->
+                <div class="card h-70 border-warning" style="border-left-width: 10px;background-color: #F7EBD5;">
+                    <!--begin::Body-->
+                    <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                        <!--begin::Icon-->
+                        <div class="m-0">
+                            <h4>จำนวนคนเข้าใช้งาน (สัปดาห์)</h4>
+                        </div>
+                        <!--end::Icon-->
+                        <!--begin::Section-->
+                        <div class="d-flex flex-column my-5">
+                            <!--begin::Number-->
+                            <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2 h3">320,000</span>
+                            <!--end::Number-->
+                            <!--begin::Follower-->
+                            <div class="m-0">
+                                <span class="fw-semibold fs-6 text-gray-400 h4">คน</span>
+                            </div>
+                            <!--end::Follower-->
+                        </div>
+                        <!--end::Section-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card widget 2-->
+            </div>
+            <!--end::Col-->
+            <!--begin::Col-->
+            <div class="col-sm-4 col-xl-4 mb-xl-4 ">
+                <!--begin::Card widget 2-->
+                <div class="card h-70 border-primary " style="border-left-width: 10px;background-color: #DFEFFF;">
+                    <!--begin::Body-->
+                    <div class="card-body d-flex justify-content-between align-items-start flex-column">
+                        <!--begin::Icon-->
+                        <div class="m-0">
+                            <h4>จำนวนคนเข้าใช้งาน (เดือน)</h4>
+                        </div>
+                        <!--end::Icon-->
+                        <!--begin::Section-->
+                        <div class="d-flex flex-column my-5">
+                            <!--begin::Number-->
+                            <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2 h3">227,000</span>
+                            <!--end::Number-->
+                            <!--begin::Follower-->
+                            <div class="m-0">
+                                <span class="fw-semibold fs-6 text-gray-400 h4">คน</span>
+                            </div>
+                            <!--end::Follower-->
+                        </div>
+                        <!--end::Section-->
+                    </div>
+                    <!--end::Body-->
+                </div>
+                <!--end::Card widget 2-->
+            </div>
+            <!--end::Col-->
+        </div>
+        <!--end::Row-->
+
+    </div>
+    <!--end::Content container-->
 </div>
