@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace cisApp.Function
 {
@@ -14,6 +15,56 @@ namespace cisApp.Function
     {
         public class Get
         {
+            public static int GetDailyAccessCount()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.LogActivity.Where(o => o.CreatedDate.Value.Date == DateTime.Now.Date && o.Action == "Login").ToList();
+
+                        return data.Count();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+            public static int GetWeeklyAccessCount()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        DateTime startOfWeek = DateTime.Today.AddDays((int)CultureInfo.CurrentCulture.DateTimeFormat.FirstDayOfWeek - (int)DateTime.Today.DayOfWeek);
+                        DateTime endOfWeek = startOfWeek.AddDays(6);
+                        var data = context.LogActivity.Where(o => o.CreatedDate.Value.Date >= startOfWeek.Date && o.CreatedDate.Value.Date <= endOfWeek.Date && o.Action == "Login").ToList();
+                        
+                        return data.Count();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+            public static int GetMonthlyAccessCount()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.LogActivity.Where(o => o.CreatedDate.Value.Month == DateTime.Now.Month && o.Action == "Login").ToList();
+
+                        return data.Count();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
             public static List<LogActivity> GetByuserId(Guid id)
             {
                 try

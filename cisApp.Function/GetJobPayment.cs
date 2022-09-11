@@ -12,6 +12,22 @@ namespace cisApp.Function
     { 
         public class Get
         {
+            public static int GetWaitProcessCount()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.JobPayment.Where(o => o.PayStatus == 2).ToList(); //อยู่ระหว่างตรวจสอบ
+
+                        return data.Count();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
             public static List<JobPayment> GetAll()
             {
                 try

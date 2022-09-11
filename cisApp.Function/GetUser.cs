@@ -79,7 +79,22 @@ namespace cisApp.Function
                     throw ex;
                 }
             }
+            public static Users GetByEmailAndTel(string email, string tel)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.Users.Where(o => o.Email == email && o.Tel == tel).FirstOrDefault();
 
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
             public static List<Users> GetCutomerActive()
             {
                 try
