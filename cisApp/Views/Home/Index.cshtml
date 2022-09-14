@@ -1,8 +1,154 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    ViewData["ControllerName"] = "Home";
+}
+@section scripts {
+    <script src="@Url.Content("~/lib/ApexCharts/apexcharts.js")"></script>
+     
+
+    <script>
+        var chartPie = null;
+        var chartBar = null;
+        var bar = function () {
+            var barOptions = {
+                series: [{
+                    data: []//datasource//[400, 430, 448, 470, 540, 580, 690, 1100]
+                }],
+                chart: {
+                    type: 'bar',
+                    height: 350
+                },
+                plotOptions: {
+                    bar: {
+                        borderRadius: 4,
+                        horizontal: true,
+                        distributed: true
+                    }
+                },
+                dataLabels: {
+                    enabled: false
+                },
+                xaxis: {
+                    categories: ['ร่าง', 'รอ', 'ประกวด', 'ส่งแนบ', 'ขอแก้ไขผลงาน', 'ขอไฟล์แบบติดตั้ง', 'สิ้นสุด', 'ยกเลิก'],
+                },
+                grid: {
+                    show: false,
+                },
+                tooltip: { 
+                    x: {
+                        show: false
+                    },
+                    y: {
+                        title: {
+                            formatter: function () {
+                                return ''
+                            }
+                        }
+                    }
+                }
+            };
+            chartBar = new ApexCharts(document.querySelector("#chartBar"), barOptions);
+            chartBar.render();
+            $.getJSON('@Url.Action("GetJobStatusData", ViewData["ControllerName"])', function(response) {
+              chartBar.updateSeries([{ 
+                data: response.data
+              }])
+            });
+        }
+        
+        var pie = function () {
+            var pieOptions = {
+                series: [{
+                    data:[20,12,2]//datasource,//[100, 30, 3],
+                }],
+                chart: {
+                    type: 'donut',
+                },
+                labels:  ['ผู้ใข้งาน', 'นักออกแบบ', 'เจ้าหน้าที่'],
+                responsive: [{
+                    breakpoint: 480,
+                    options: {
+                        chart: {
+                            width: 200
+                        },
+                        legend: {
+                          position: 'bottom'
+                        }
+                    }
+                }]
+            };
+            chartPie = new ApexCharts(document.querySelector("#chartPie"), pieOptions);
+            chartPie.render();
+            $.getJSON('@Url.Action("GetUserData", ViewData["ControllerName"])', function(response) {
+              chartPie.updateSeries(response.data)
+            });
+        }
+
+        function GetItem(url, elementId, callback=null) {
+            var suc = function (html) {
+                elementId.html(html);
+                if (callback != null) {
+                    callback();
+                }
+            }
+            var err = function (e) {
+                alert('error GetItem', e);
+            } 
+
+            CallAjax(url, 'GET', null, suc, err);
+        }
+
+
+        $(function () {
+            /* waitprocess */
+            GetItem('@Url.Action("GetWaitProcess", ViewData["ControllerName"])', $('#waitprocess'));
+            /* problemlist */
+            GetItem('@Url.Action("GetProblemList", ViewData["ControllerName"])', $('#problemlist'));
+            /* jobstatus */
+            GetItem('@Url.Action("GetJobStatus", ViewData["ControllerName"])', $('#jobstatus'), bar);
+            /* user */
+            GetItem('@Url.Action("GetUser", ViewData["ControllerName"])', $('#user'), pie);
+            /* useraccess */
+            GetItem('@Url.Action("GetUserAccess", ViewData["ControllerName"])', $('#useraccess'));
+        });
+        
+    </script>
+
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div id="kt_app_content" class="app-content flex-column-fluid">
+    <!--begin::Content container-->
+    <div id="kt_app_content_container" class="app-container container-xxl">
+
+        <!--begin::Row-->
+        <div class="row gy-5 g-xl-10" id="waitprocess">
+            
+        </div>
+        <!--end::Row-->
+        <!--begin::Row-->
+        <div class="row gy-5 g-xl-10" id="problemlist">
+            
+        </div>
+        <!--end::Row-->
+        <!--begin::Row-->
+        <div class="row gy-5 g-xl-10 mt-5" >
+
+            <div class="col-sm-6 col-xl-6 mb-xl-6" id="jobstatus">
+                
+            </div>
+
+            <div class="col-sm-6 col-xl-6 mb-xl-6" id="user">
+                
+            </div>
+
+        </div>
+        <!--end::Row-->
+        <!--begin::Row-->
+        <div class="row gy-5 g-xl-10" id="useraccess">
+            
+        </div>
+        <!--end::Row-->
+
+    </div>
+    <!--end::Content container-->
 </div>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using cisApp.Common;
 using cisApp.Core;
 using cisApp.Function;
 using Microsoft.AspNetCore.Http;
@@ -30,6 +31,8 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.JOB, _UserId());
+
                 var model = new DesignerJobListSearch() { userId= userId, text= text, skip= skip, take= take };
                 //get list of jobs designer can sign
                 var jobs = GetUserDesigner.Get.GetJobListSearch(model);
@@ -135,6 +138,7 @@ namespace cisApp.API.Controllers
                 //แจ้งลูกค้า นักออกแบบ ยกเลิกสมัครงาน
                 new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.leave, job.UserId, job.JobId);
 
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_CANCEL, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("สำเร็จ", "success", new { job.JobId }));
             }
             catch (Exception ex)
@@ -328,6 +332,7 @@ namespace cisApp.API.Controllers
                     new MobileNotfication().Forcustomer(MobileNotfication.Modecustomer.regist, jobs.First().UserID, job.JobId.Value);
                 }
 
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_REGIST, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("สำเร็จ", "success", new { job.JobId }));
             }
             catch (Exception ex)
@@ -349,6 +354,8 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_JOB_CONTEST, _UserId());
+
                 var model = new DesignerJobListSearch() { userId = userId, skip = skip, take = take };
                 //get list of jobs designer contest now
                 var jobs = GetUserDesigner.Get.GetJobContestList(model);
@@ -396,6 +403,8 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.HOME, _UserId());
+
                 var model = new DesignerJobListSearch() { userId = userId, jobId = jobId, skip = skip, take = take };
                 //get list of  designer review
                 var reviews = GetUserDesigner.Get.GetReview(model);
@@ -439,6 +448,8 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.CONTEST_SUMMARY, _UserId());
+
                 //get list of  designer review
                 var summaryList = GetUserDesigner.Get.GetContestSummary(userId);
                 if (summaryList == null || summaryList.Count == 0)
@@ -482,6 +493,7 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
                 }
 
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_FAV, _UserId());
                 return Ok(resultJson.success("สำเร็จ", "success", new { caUserId=fav.UserDesignerId }));
             }
             catch (Exception ex)
@@ -501,6 +513,8 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_FAV_LIST, _UserId());
+
                 if (userId == Guid.Empty || userId == null)
                 {
                     return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
@@ -546,6 +560,7 @@ namespace cisApp.API.Controllers
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ", "fail", null));
                 }
 
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_BOOKMARK, _UserId());
                 return Ok(resultJson.success("สำเร็จ", "success", new { caUserId = fav.UserDesignerId }));
             }
             catch (Exception ex)
@@ -569,6 +584,8 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_JOB_HISTORY, _UserId());
+
                 var model = new DesignerJobListSearch() { userId = userId, skip = skip, take = take };
                 //get list of job history
                 var histList = GetUserDesigner.Get.GetJobsHistory(model);
@@ -622,7 +639,9 @@ namespace cisApp.API.Controllers
         public IActionResult GetProfile(Guid userDesignerId, Guid userId, int? skip = 0, int? take = 100)
         {
             try
-            { 
+            {
+                LogActivityEvent(LogCommon.LogMode.DESIGNER_PROFILE, _UserId());
+
                 var dpf = GetUserDesigner.Get.GetDesignerProfile(userDesignerId, userId);
                 if (dpf == null)
                 {

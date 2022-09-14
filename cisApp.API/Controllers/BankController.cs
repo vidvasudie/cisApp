@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using cisApp.API.Models;
+using cisApp.Common;
 using cisApp.Function;
 using cisApp.library;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +21,8 @@ namespace cisApp.API.Controllers
         {
             try
             {
+                LogActivityEvent(LogCommon.LogMode.BANK_PROFILE, _UserId());
+
                 if (userId == Guid.Empty)
                 {
                     return BadRequest(resultJson.errors("parameter ไม่ถูกต้อง", "Invalid Request.", null));
@@ -43,14 +46,15 @@ namespace cisApp.API.Controllers
         public IActionResult GetUpdateBank([FromBody] BankModel model)
         {
             try
-            {
+            { 
                 var data = GetUserDesigner.Manage.UpdateBankProfile(model);
                 if(data == null)
                 {
                     return Ok(resultJson.errors("บันทึกข้อมูลไม่สำเร็จ ไม่พบข้อมูลนักออกแบบ", "fail", null));
                 }
                 var dsUser = GetUserDesigner.Get.GetBankProfile(model.UserId);
-                 
+
+                LogActivityEvent(LogCommon.LogMode.BANK_EDIT, _UserId(), MessageCommon.SaveSuccess);
                 return Ok(resultJson.success("บันทึกข้อมูลสำเร็จ", "success", dsUser));
             }
             catch (Exception ex)

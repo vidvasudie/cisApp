@@ -1,0 +1,90 @@
+﻿
+@model DashboardModel
+
+<!--begin::Col-->
+<div class="col-sm-4 col-xl-4 mb-xl-4 ">
+    <!--begin::Card widget 2-->
+    <div class="card h-70 border-info" style="border-left-width: 10px;background-color: #E3DBF2;">
+        <!--begin::Body-->
+        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+            <!--begin::Icon-->
+            <div class="m-0">
+                <h4>จำนวนคนเข้าใช้งาน (วัน)</h4>
+            </div>
+            <!--end::Icon-->
+            <!--begin::Section-->
+            <div class="d-flex flex-column my-5">
+                <!--begin::Number-->
+                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2 " style="font-size: 60px;">@Model.DailyAccess</span>
+                <!--end::Number-->
+                <!--begin::Follower-->
+                <div class="m-0">
+                    <span class="fw-semibold fs-6 text-gray-400 h4">คน</span>
+                </div>
+                <!--end::Follower-->
+            </div>
+            <!--end::Section-->
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::Card widget 2-->
+</div>
+<!--end::Col-->
+<!--begin::Col-->
+<div class="col-sm-4 col-xl-4 mb-xl-4">
+    <!--begin::Card widget 2-->
+    <div class="card h-70 border-warning" style="border-left-width: 10px;background-color: #F7EBD5;">
+        <!--begin::Body-->
+        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+            <!--begin::Icon-->
+            <div class="m-0">
+                <h4>จำนวนคนเข้าใช้งาน (สัปดาห์)</h4>
+            </div>
+            <!--end::Icon-->
+            <!--begin::Section-->
+            <div class="d-flex flex-column my-5">
+                <!--begin::Number-->
+                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2 " style="font-size: 60px;">@Model.WeeklyAccess</span>
+                <!--end::Number-->
+                <!--begin::Follower-->
+                <div class="m-0">
+                    <span class="fw-semibold fs-6 text-gray-400 h4">คน</span>
+                </div>
+                <!--end::Follower-->
+            </div>
+            <!--end::Section-->
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::Card widget 2-->
+</div>
+<!--end::Col-->
+<!--begin::Col-->
+<div class="col-sm-4 col-xl-4 mb-xl-4 ">
+    <!--begin::Card widget 2-->
+    <div class="card h-70 border-primary " style="border-left-width: 10px;background-color: #DFEFFF;">
+        <!--begin::Body-->
+        <div class="card-body d-flex justify-content-between align-items-start flex-column">
+            <!--begin::Icon-->
+            <div class="m-0">
+                <h4>จำนวนคนเข้าใช้งาน (เดือน)</h4>
+            </div>
+            <!--end::Icon-->
+            <!--begin::Section-->
+            <div class="d-flex flex-column my-5">
+                <!--begin::Number-->
+                <span class="fw-semibold fs-3x text-gray-800 lh-1 ls-n2 " style="font-size: 60px;">@Model.MonthlyAccess</span>
+                <!--end::Number-->
+                <!--begin::Follower-->
+                <div class="m-0">
+                    <span class="fw-semibold fs-6 text-gray-400 h4">คน</span>
+                </div>
+                <!--end::Follower-->
+            </div>
+            <!--end::Section-->
+        </div>
+        <!--end::Body-->
+    </div>
+    <!--end::Card widget 2-->
+</div>
+<!--end::Col-->

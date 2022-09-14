@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using cisApp.Function;
 using cisApp.Core;
+using cisApp.Common;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,13 +13,15 @@ namespace cisApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NotiController : ControllerBase
+    public class NotiController : BaseController
     {
      
         // GET api/<NotiController>/5
         [HttpGet()]
         public object Get(Guid userId)
         {
+            LogActivityEvent(LogCommon.LogMode.NOTIFICATION, _UserId());
+
             var result = GetNotification.Get.GetbyUserID(userId);
             if (result != null && result.Count > 0)
             {

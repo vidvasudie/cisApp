@@ -1,4 +1,5 @@
-﻿using cisApp.Function;
+﻿using cisApp.Common;
+using cisApp.Function;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -11,13 +12,8 @@ namespace cisApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ControllerBase
-    {
-        readonly static IConfigurationRoot config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-                      .AddJsonFile("appsettings.json")
-                      .Build();
-
+    public class HomeController : BaseController
+    { 
         static string _DefaultProfile = "assets/media/users/100_1.jpg";
 
         // GET: api/<HomeController>
@@ -26,7 +22,7 @@ namespace cisApp.API.Controllers
         {
             try
             {
-                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                string webAdmin = _config.GetSection("WebConfig:AdminWebStie").Value;
                 SearchModel model = new SearchModel()
                 {
                     Tags = tags,
@@ -62,7 +58,9 @@ namespace cisApp.API.Controllers
         {
             try
             {
-                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                LogActivityEvent(LogCommon.LogMode.HOME, _UserId());
+
+                string webAdmin = _config.GetSection("WebConfig:AdminWebStie").Value;
                 SearchModel model = new SearchModel()
                 {
                     Tags = tags,
@@ -76,7 +74,7 @@ namespace cisApp.API.Controllers
                 Obj = GetAlbum.Get.GetAlbumFeed(model, webAdmin);
 
                 if (Obj.Count > 0)
-                {
+                { 
                     return Ok(resultJson.success(null, null, Obj.Select(o => new { o.AttachFileId, o.FileName, o.FullUrlPath, o.UserId, o.JobID, o.AlbumName, o.Category, o.Tags, o.AlbumRefId }).ToList(), null, null, page, page + 1));
                 }
                 else
@@ -99,7 +97,7 @@ namespace cisApp.API.Controllers
 
             try
             {
-                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                string webAdmin = _config.GetSection("WebConfig:AdminWebStie").Value;
 
                 var Obj = GetAlbum.Get.GetAlbumImageByAttachId(webAdmin, attachId.Value);
 

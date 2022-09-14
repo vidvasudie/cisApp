@@ -1018,6 +1018,8 @@ namespace cisApp.Core
                     .HasComment("รหัสผู้ใช้งาน");
 
                 entity.Property(e => e.Url).IsUnicode(false);
+
+                entity.Property(e => e.Device).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

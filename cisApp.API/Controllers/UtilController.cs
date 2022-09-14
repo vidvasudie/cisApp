@@ -1,4 +1,5 @@
-﻿using cisApp.Function;
+﻿using cisApp.Common;
+using cisApp.Function;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,13 +11,8 @@ namespace cisApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UtilController : ControllerBase
-    {
-        readonly static IConfigurationRoot config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-                      .AddJsonFile("appsettings.json")
-                      .Build();
-
+    public class UtilController : BaseController
+    { 
         // GET: api/<HomeController>
         [HttpPost("PostLike")]
         public object PostLike(Guid? refId, Guid? userId, bool isActive = true)
@@ -53,7 +49,7 @@ namespace cisApp.API.Controllers
         {
             try
             {
-                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                string webAdmin = _config.GetSection("WebConfig:AdminWebStie").Value;
 
                 var obj = GetPostComment.Get.GetByRefId(refId.Value, page, limit);
 
@@ -116,7 +112,7 @@ namespace cisApp.API.Controllers
             try
             {
                 var fav = GetUserFavoriteDesigner.Get.GetFavoriteList(userId, page, limit);
-                string Host = config.GetSection("WebConfig:AdminWebStie").Value;
+                string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
                 bool removeLast = Host.Last() == '/';
                 if (removeLast)
                 {
@@ -226,7 +222,7 @@ namespace cisApp.API.Controllers
             try
             {
                 //var xx = Encryption.Decrypt("s9LrP8c+HjTWUbLOve8Xhg==");
-                string webAdmin = config.GetSection("WebConfig:AdminWebStie").Value;
+                string webAdmin = _config.GetSection("WebConfig:AdminWebStie").Value;
                 var data = GetSettings.Get.GetByKeyword(key, webAdmin);
                 if (data == null)
                 {
@@ -246,9 +242,11 @@ namespace cisApp.API.Controllers
         public IActionResult GetWinnerList()
         {
             try
-            { 
+            {
+                LogActivityEvent(LogCommon.LogMode.WINNER_LIST, _UserId());
+
                 var wins = GetJobs.Get.GetWinnerSummary();
-                string Host = config.GetSection("WebConfig:AdminWebStie").Value;
+                string Host = _config.GetSection("WebConfig:AdminWebStie").Value;
                 bool removeLast = Host.Last() == '/';
                 if (removeLast)
                 {

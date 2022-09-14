@@ -15,13 +15,7 @@ namespace cisApp.API.Controllers
 { 
     [ApiController]
     public class PaymentHistoryController : BaseController
-    {
-
-        public static IConfigurationRoot _config = new ConfigurationBuilder()
-                                    .SetBasePath(Directory.GetCurrentDirectory())
-                                    .AddJsonFile("appsettings.json")
-                                    .Build();
-
+    { 
         
         [Route("api/PaymentHistory/Sum")]
         [HttpGet]

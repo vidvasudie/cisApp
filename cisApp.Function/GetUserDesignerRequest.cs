@@ -14,7 +14,25 @@ namespace cisApp.Function
     {
         public class Get
         {
+            public static int GetDesignerRequestCount()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.UserDesignerRequest.Where(o => o.Status == 1).ToList();//รอดำเนินการ
+                        if (data == null)
+                            return 0;
 
+                        return data.Count();
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
             public static int GetLastNumber()
             {
                 try

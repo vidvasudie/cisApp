@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using cisApp.API.Models;
+using cisApp.Common;
 using cisApp.Function;
 using cisApp.library;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +13,7 @@ namespace cisApp.API.Controllers
 {
     [Route("api/login")]
     [ApiController]
-    public class LoginController : ControllerBase
+    public class LoginController : BaseController
     {
         // POST api/login
         /// <summary>
@@ -27,10 +28,13 @@ namespace cisApp.API.Controllers
             {
                 try
                 {
+                    
                     var users = GetUser.Get.GetUserLogin(new LoginModel() { username = value.email, password = value.password, userType = -1 });
                     if (users.Count > 0)
                     {
                         GetUserClientId.Manage.Add(users.FirstOrDefault().UserId.Value, value.ClientId);
+
+                        LogActivityEvent(LogCommon.LogMode.LOGIN, _UserId(), MessageCommon.LoginSuccess);
                         return Ok(resultJson.success(null, null, new LoginResult { uSID = users.FirstOrDefault().UserId.Value, Fname = users.FirstOrDefault().Fname, Lname = users.FirstOrDefault().Lname, isDesigner = (users.FirstOrDefault().UserType == 1) ? false : true }));
                     }
                     else
