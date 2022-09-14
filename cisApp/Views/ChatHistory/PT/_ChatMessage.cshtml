@@ -17,7 +17,15 @@
                 <a href="#" class="text-dark-75 text-hover-primary font-weight-bold font-size-h6">@item.SenderName</a>
             </div>
             <div class="symbol symbol-circle symbol-40 ml-3">
-                <img alt="Pic" src="https://picsum.photos/300?random=66" />
+                @if (item.Profile != null
+                && !string.IsNullOrEmpty(item.Profile.Path))
+                {
+                    <img alt="Pic" src="@item.Profile.Path" />
+                }
+                else
+                {
+                    <img alt="Pic" src="@Url.Content("~/logo.png")" />
+                }
             </div>
         </div>
         @if (item.Files != null && item.Files.Count > 0)
