@@ -76,7 +76,8 @@ namespace cisApp.Controllers
             {
                 var uHelp = GetUserHelp.Manage.Update(data.Id, data.Remark, _UserId().Value);
 
-                SendMail.SendMailProblemReply(uHelp.Email, uHelp.Email, uHelp.Message, uHelp.Remark, _HostingEnvironment.WebRootPath);
+                SendMail.SendMailProblemReply(uHelp.Email, uHelp.Email, uHelp.Message, uHelp.Remark
+                    , _HostingEnvironment.WebRootPath, GetSystemSetting.Get.GetEmailSettingModel());
 
                 LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
                 return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "SystemProblems")));

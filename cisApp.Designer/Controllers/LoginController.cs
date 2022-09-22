@@ -105,7 +105,8 @@ namespace cisApp.Designer.Controllers
 
                 GetUser.Manage.ResetPassWord(user.UserId.Value, Encryption.Encrypt(newPassword));
 
-                SendMail.SendMailResetPassword(user.Email, user.Email, newPassword, _HostingEnvironment.WebRootPath);
+                SendMail.SendMailResetPassword(user.Email, user.Email, newPassword
+                    , _HostingEnvironment.WebRootPath, GetSystemSetting.Get.GetEmailSettingModel());
 
                 return Json(new ResponseModel().ResponseSuccess("ระบบได้ทำการส่งรหัสผ่านใหม่ไปยังอีเมลของท่านแล้ว", Url.Action("Index", "Login")));
             }

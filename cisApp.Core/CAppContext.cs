@@ -80,6 +80,7 @@ namespace cisApp.Core
         public virtual DbSet<JobCadidateLock> JobCadidateLock { get; set; }
         public virtual DbSet<PaymentHistoryDate> PaymentHistoryDate { get; set; }
         public virtual DbSet<LogActivity> LogActivity { get; set; }
+        public virtual DbSet<SystemSetting> SystemSetting { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -1020,6 +1021,15 @@ namespace cisApp.Core
                 entity.Property(e => e.Url).IsUnicode(false);
 
                 entity.Property(e => e.Device).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<SystemSetting>(entity =>
+            {
+                entity.Property(e => e.SystemSettingId).HasDefaultValueSql("(newid())");
+
+                entity.Property(e => e.Keyword)
+                    .HasMaxLength(255)
+                    .HasComment("ใช้สำหรับ where หา");
             });
 
             OnModelCreatingPartial(modelBuilder);

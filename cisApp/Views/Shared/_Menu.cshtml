@@ -250,15 +250,15 @@
             </a>
             <div class="menu-submenu">
                 <i class="menu-arrow"></i>
-                <ul class="menu-subnav"> 
+                <ul class="menu-subnav">
                     @*<li class="menu-item" aria-haspopup="true">
-                        <a href="@Url.Action("System","Setting")" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">ตั้งค่าระบบ</span>
-                        </a>
-                    </li>*@
+            <a href="@Url.Action("System","Setting")" class="menu-link">
+                <i class="menu-bullet menu-bullet-dot">
+                    <span></span>
+                </i>
+                <span class="menu-text">ตั้งค่าระบบ</span>
+            </a>
+        </li>*@
                     <li class="menu-item" aria-haspopup="true">
                         <a href="@Url.Action("Index","Setting")" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
@@ -266,7 +266,7 @@
                             </i>
                             <span class="menu-text">ตั้งค่าข้อมูล</span>
                         </a>
-                    </li> 
+                    </li>
                     <li class="menu-item" aria-haspopup="true">
                         <a href="@Url.Action("Index","SystemProblems")" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
@@ -276,19 +276,28 @@
                         </a>
                     </li>
                     @*<li class="menu-item" aria-haspopup="true">
-                        <a href="#" class="menu-link">
-                            <i class="menu-bullet menu-bullet-dot">
-                                <span></span>
-                            </i>
-                            <span class="menu-text">Calendar</span>
-                        </a>
-                    </li>*@
+            <a href="#" class="menu-link">
+                <i class="menu-bullet menu-bullet-dot">
+                    <span></span>
+                </i>
+                <span class="menu-text">Calendar</span>
+            </a>
+        </li>*@
                     <li class="menu-item" aria-haspopup="true">
                         <a href="@Url.Action("Index", "Faq")" class="menu-link">
                             <i class="menu-bullet menu-bullet-dot">
                                 <span></span>
                             </i>
                             <span class="menu-text">FAQ</span>
+                        </a>
+                    </li>
+
+                    <li class="menu-item" aria-haspopup="true">
+                        <a href="@Url.Action("Email", "SystemSetting")" class="menu-link">
+                            <i class="menu-bullet menu-bullet-dot">
+                                <span></span>
+                            </i>
+                            <span class="menu-text">ตั้งค่า Email ระบบ</span>
                         </a>
                     </li>
                 </ul>
