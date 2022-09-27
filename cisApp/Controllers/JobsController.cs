@@ -129,10 +129,10 @@ namespace cisApp.Controllers
                 data.JobStatus = data.IsDraft ? 1 : data.JobStatus;
                 //data.UserId = Guid.Parse("50BA6DDD-0D68-475B-83E4-EC83C0499BFE");
                 data.JobPrice = data.JobPricePerSqM * data.JobAreaSize;
-                data.JobProceedRatio = GetTmVatratio.Get.GetFirst().Ratio;
-                data.JobPriceProceed = data.JobPrice * data.JobProceedRatio;
-                data.JobVatratio = GetTmProceedRatio.Get.GetFirst().Ratio;
-                data.JobFinalPrice = data.JobPriceProceed * data.JobVatratio; 
+                data.JobProceedRatio = GetTmProceedRatio.Get.GetFirst().Ratio;
+                data.JobPriceProceed = (data.JobPrice * (data.JobProceedRatio / 100)) + data.JobPrice;
+                data.JobVatratio = GetTmVatratio.Get.GetFirst().Ratio;
+                data.JobFinalPrice = data.JobPriceProceed + (data.JobPriceProceed * (data.JobVatratio / 100)); 
                 data.UpdatedBy = _UserId().Value;
                 data.CreatedBy = _UserId().Value;
 
