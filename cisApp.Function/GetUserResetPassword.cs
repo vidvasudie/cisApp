@@ -105,7 +105,7 @@ namespace cisApp.Function
                             }
                             };
 
-                            SendMail.Send(emailModel);
+                            SendMail.Send(emailModel, GetSystemSetting.Get.GetEmailSettingModel());
                         }
                         else
                         {
@@ -122,7 +122,7 @@ namespace cisApp.Function
                             }
                             };
 
-                            SendMail.Send(emailModel);
+                            SendMail.Send(emailModel, GetSystemSetting.Get.GetEmailSettingModel());
                         }
                         
 

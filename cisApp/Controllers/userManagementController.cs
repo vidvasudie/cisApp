@@ -129,7 +129,8 @@ namespace cisApp.Controllers
 
                 var result = GetUser.Manage.ResetPassWord(id, Encryption.Encrypt(newPassword));
 
-                var sendMailResult = SendMail.SendMailResetPassword(user.Email, user.Fname + " " + user.Lname, newPassword, _HostingEnvironment.WebRootPath);
+                var sendMailResult = SendMail.SendMailResetPassword(user.Email, user.Fname + " " + user.Lname, newPassword
+                    , _HostingEnvironment.WebRootPath, GetSystemSetting.Get.GetEmailSettingModel());
 
                 if (sendMailResult == false)
                 {

@@ -16,13 +16,13 @@ namespace cisApp.library
 					  .AddJsonFile("appsettings.json")
 					  .Build();
 
-		public static bool Send(EmailModel emailModel)
+		public static bool Send(EmailModel emailModel, EmailSettingModel setting)
 		{
-			string host = config.GetSection("ConfigMail:Host").Value;
-			string fromEmail = config.GetSection("ConfigMail:FromEmail").Value;
-			string passwordEmail = config.GetSection("ConfigMail:Password").Value;
-			int port = Int32.Parse(config.GetSection("ConfigMail:Port").Value);
-			bool enableSsl = Boolean.Parse(config.GetSection("ConfigMail:EnableSsl").Value);
+			string host = setting.Host;
+			string fromEmail = setting.FromEmail;
+			string passwordEmail = setting.Password;
+			int port = Int32.Parse(setting.Port);
+			bool enableSsl = Boolean.Parse(setting.EnableSsl);
 
 			try
 			{
@@ -53,13 +53,13 @@ namespace cisApp.library
 			}
 		}
 
-		public static bool SendMailResetPassword(string toMail, string username, string password, string webRootPath)
+		public static bool SendMailResetPassword(string toMail, string username, string password, string webRootPath, EmailSettingModel setting)
 		{
-			string host = config.GetSection("ConfigMail:Host").Value;
-			string fromEmail = config.GetSection("ConfigMail:FromEmail").Value;
-			string passwordEmail = config.GetSection("ConfigMail:Password").Value;
-			int port = Int32.Parse(config.GetSection("ConfigMail:Port").Value);
-			bool enableSsl = Boolean.Parse(config.GetSection("ConfigMail:EnableSsl").Value);
+			string host = setting.Host;
+			string fromEmail = setting.FromEmail;
+			string passwordEmail = setting.Password;
+			int port = Int32.Parse(setting.Port);
+			bool enableSsl = Boolean.Parse(setting.EnableSsl);
 			string domain = config.GetSection("Domain").Value;
 			try
 			{
@@ -90,13 +90,13 @@ namespace cisApp.library
 			}
 		}
 
-		public static bool SendMailProblemReply(string toMail, string username, string problem, string reply, string webRootPath)
+		public static bool SendMailProblemReply(string toMail, string username, string problem, string reply, string webRootPath, EmailSettingModel setting)
 		{
-			string host = config.GetSection("ConfigMail:Host").Value;
-			string fromEmail = config.GetSection("ConfigMail:FromEmail").Value;
-			string passwordEmail = config.GetSection("ConfigMail:Password").Value;
-			int port = Int32.Parse(config.GetSection("ConfigMail:Port").Value);
-			bool enableSsl = Boolean.Parse(config.GetSection("ConfigMail:EnableSsl").Value);
+			string host = setting.Host;
+			string fromEmail = setting.FromEmail;
+			string passwordEmail = setting.Password;
+			int port = Int32.Parse(setting.Port);
+			bool enableSsl = Boolean.Parse(setting.EnableSsl);
 			string domain = config.GetSection("Domain").Value;
 			try
 			{
