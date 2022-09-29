@@ -159,7 +159,7 @@ namespace cisApp.Designer.Controllers
                 data.AlbumType = AlbumType;
 
                 var result = GetAlbum.Manage.Update(data, _UserId().Value, false);
-
+                 
                 if (job.JobStatus < 4)
                 {
 
@@ -168,22 +168,27 @@ namespace cisApp.Designer.Controllers
                 else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
                 {
                     GetJobs.Manage.UpdateEditCount(data.JobId, 1);
+                    GetJobs.Manage.UpdateJobStatus(job.JobId, 5, data.UserId);
                 }
                 else if (job.JobStatus == 9 && job.EditSubmitCount == 1) // แก้ครั้งแรก
                 {
                     GetJobs.Manage.UpdateEditCount(data.JobId, 2);
-                    GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
+                    GetJobs.Manage.UpdateJobStatus(job.JobId, 5, data.UserId);
                 }
                 else if (job.JobStatus == 9 && job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
                 {
                     GetJobs.Manage.UpdateEditCount(data.JobId, 3);
-                    GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
+                    GetJobs.Manage.UpdateJobStatus(job.JobId, 5, data.UserId);
+                }
+                else if (job.JobStatus == 7 && job.EditSubmitCount == 3) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
+                {
+                    GetJobs.Manage.UpdateJobStatus(job.JobId, 5, data.UserId);
                 }
 
                 if (job.JobStatus == 4)
                 {
                     job.JobStatus = 5;
-                    GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
+                    GetJobs.Manage.UpdateJobStatus(job.JobId, 5, data.UserId);
                 }
 
                 if (result != null)
