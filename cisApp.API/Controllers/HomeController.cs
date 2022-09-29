@@ -1,5 +1,6 @@
 ﻿using cisApp.Common;
 using cisApp.Function;
+using cisApp.library;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -59,7 +60,7 @@ namespace cisApp.API.Controllers
             try
             {
                 LogActivityEvent(LogCommon.LogMode.HOME, _UserId());
-
+                var x = Encryption.Encrypt("m5eVUMkcQPA/vi+9IRzjFg==");
                 string webAdmin = _config.GetSection("WebConfig:AdminWebStie").Value;
                 SearchModel model = new SearchModel()
                 {
