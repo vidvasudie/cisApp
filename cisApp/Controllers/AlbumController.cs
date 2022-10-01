@@ -283,16 +283,24 @@ namespace cisApp.Controllers
         {
             try
             {
+                string redirect = Url.Action("Index", "Jobs");
                 var result = GetAlbum.Manage.Update(data, _UserId().Value, false);
 
                 if (result != null)
                 {
-                    var job = GetJobs.Get.GetById(data.JobId);
-                    MobileNotfication mobileNotfication = new MobileNotfication();
-                    mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId, job.JobId);
+                    if (data.JobId != Guid.Empty)
+                    {
+                        var job = GetJobs.Get.GetById(data.JobId);
+                        MobileNotfication mobileNotfication = new MobileNotfication();
+                        mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId, job.JobId);
+                    }
+                    else
+                    {
+                        redirect = Url.Action("Index", "Files");
+                    }
 
                     LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
-                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Jobs")));
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, redirect));
                 }
                 else
                 {
