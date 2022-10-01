@@ -56,20 +56,20 @@
                                     <span class="navi-text">เปิดอัลบั้ม</span>
                                 </a>
                             </li>
-                            <li class="navi-item">
+                            @*<li class="navi-item">
                                 <a href="@Url.Action("Submitwork", "Album", new { id=Model.JobId, userId=Model.CaUserId })" class="navi-link" target="_blank">
                                     <span class="navi-icon">
-                                        <i class="flaticon2-bell-2"></i>
+                                        <i class="flaticon2-add-square"></i>
                                     </span>
                                     <span class="navi-text">เพิ่มข้อมูล</span>
                                 </a>
-                            </li>
+                            </li>*@
                             @if (Model.AlbumId != null)
                             {
                                 <li class="navi-item">
                                     <a href="@Url.Action("Editwork", "Album", new { albumId=Model.AlbumId })" class="navi-link" target="_blank">
                                         <span class="navi-icon">
-                                            <i class="flaticon2-bell-2"></i>
+                                            <i class="flaticon2-edit"></i>
                                         </span>
                                         <span class="navi-text">แก้ไขข้อมูล</span>
                                     </a>
@@ -118,7 +118,11 @@
                     <!--end: Icon-->
                 }
                 <!--begin: Tite-->
-                <a href="#" class="text-dark-75 font-weight-bold mt-15 font-size-lg" style="@selectedStyle">@Html.Raw(String.IsNullOrEmpty(Model.UserFullName) ? "-" : Model.UserFullName) @Html.Raw(selectedICON)</a>
+            <div style="width: 250px;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;">
+                <a href="#" class="text-dark-75 font-weight-bold mt-15 font-size-lg" style="@selectedStyle">
+                @Html.Raw(String.IsNullOrEmpty(Model.UserFullName) ? "-" : Model.UserFullName) @Html.Raw(selectedICON)
+                </a>
+            </div>
                 <!--end: Tite-->
             </div>
         </div>

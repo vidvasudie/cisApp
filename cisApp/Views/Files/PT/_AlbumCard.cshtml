@@ -43,17 +43,17 @@
                                     <span class="navi-text">เปิดอัลบั้ม</span>
                                 </a>
                             </li>
-                            @*<li class="navi-item">
-                                <a href="#" class="navi-link">
+                            <li class="navi-item">
+                                <a href="@Url.Action("Editwork", "Album", new { albumId=Model.AlbumId })" class="navi-link" target="_blank">
                                     <span class="navi-icon">
-                                        <i class="flaticon2-bell-2"></i>
+                                        <i class="flaticon2-add-square"></i>
                                     </span>
-                                    <span class="navi-text">ดาวโหลดอัลบั้ม</span>
-                                    <span class="navi-link-badge">
+                                    <span class="navi-text">เพิ่มรูปภาพ</span>
+                                    @*<span class="navi-link-badge">
                                         <span class="label label-light-danger label-rounded font-weight-bold">15</span>
-                                    </span>
+                                    </span>*@
                                 </a>
-                            </li>*@
+                            </li>
 
                         </ul>
                         <!--end::Navigation-->
@@ -73,7 +73,10 @@
                      class="img-thumbnail img-popup" data-target="#carouselPreview">
                     <!--end: Icon-->
                     <!--begin: Tite-->
-                    <a href="@Url.Action("Album", "Files", new { id = Model.AlbumId })" target="_blank" class="text-dark-75 font-weight-bold mt-15 font-size-lg">@thumbnail.FileName</a>
+            <div style="width: 250px;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;">
+                <a href="@Url.Action("Album", "Files", new { id = Model.AlbumId })" target="_blank" class="text-dark-75 font-weight-bold mt-15 font-size-lg">@thumbnail.FileName</a>
+            </div>
+                    
                 }
 
                 <!--end: Tite-->

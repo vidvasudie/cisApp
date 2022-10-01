@@ -93,7 +93,10 @@
                      class="img-thumbnail img-popup" data-target="#carouselPreview" >
                 <!--end: Icon-->
                 <!--begin: Tite-->
-                <a href="javascript:void(0)" src="@Url.Content("~/" + Model.UrlPath)" alt="@Model.FileName" data-id="@Model.AttachFileId"  data-target="#carouselPreview" class="text-dark-75 font-weight-bold mt-15 font-size-lg img-popup">@Model.FileName</a>
+                <div style="width: 250px;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;">
+                    <a href="javascript:void(0)" src="@Url.Content("~/" + Model.UrlPath)" alt="@Model.FileName" data-id="@Model.AttachFileId" data-target="#carouselPreview" class="text-dark-75 font-weight-bold mt-15 font-size-lg img-popup">@Model.FileName</a>
+                </div>
+                
                 <!--end: Tite-->
             </div>
         </div>
