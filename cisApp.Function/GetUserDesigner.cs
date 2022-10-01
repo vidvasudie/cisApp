@@ -11,6 +11,26 @@ namespace cisApp.Function
     {
         public class Get
         {
+            public static List<SelectValueModel> GetDesignerForSelect()
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = (from ds in context.UserDesigner
+                                        //2 = นักออกแบบ
+                                    join user in context.Users.Where(o => o.IsActive == true && o.IsDeleted == false && o.UserType == 2)
+                                        on ds.UserId equals user.UserId
+                                    select new SelectValueModel { text = user.UserId.ToString(), value = user.Fname + " " + user.Lname }).ToList();
+                        
+                        return data;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
             public static List<UserDesigner> GetAll()
             {
                 try
