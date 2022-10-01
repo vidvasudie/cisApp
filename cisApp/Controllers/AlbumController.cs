@@ -1,4 +1,5 @@
 ﻿using cisApp.Common;
+using cisApp.Core;
 using cisApp.Function;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,58 +20,74 @@ namespace cisApp.Controllers
             _PermissionManage = 2;// สิทธิ์ผู้ใช้งาน
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id">รหัสใบงาน</param>
+        /// <param name="userId">รหัสผู้ใช้งานของนักออกแบบ</param>
+        /// <param name="AlbumType">ประเภทอัลบัม</param>
+        /// <param name="albumId">รหัสอัลบัม</param>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Submitwork(Guid id, Guid userId, string AlbumType = "1")
         {
             try
             {
-                AlbumType = "1";
-
-                var job = GetJobs.Get.GetById(id);
-
-                if (job.JobStatus < 4) // ถ้า job status ไม่เท่ากับ 4 จะเป็นการประกวดทั้งหมด
+                Album album = null;
+                if (id == null || id == Guid.Empty)
+                {
+                    AlbumType = "0";
+                    id = Guid.Empty;
+                }
+                else
                 {
                     AlbumType = "1";
 
-                }
-                else if (job.JobStatus == 7) // 7 คือ ขอพิมพ์เขียวให้ type เป็น 5 คือพิมพ์เขียว
-                {
-                    AlbumType = "5";
-                }
-                else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
-                {
-                    AlbumType = "2";
+                    var job = GetJobs.Get.GetById(id);
 
-                }
-                else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
-                {
-                    if (job.JobStatus == 9)
+                    if (job.JobStatus < 4) // ถ้า job status ไม่เท่ากับ 4 จะเป็นการประกวดทั้งหมด
                     {
-                        AlbumType = "3";
+                        AlbumType = "1";
+
                     }
-                    else
+                    else if (job.JobStatus == 7) // 7 คือ ขอพิมพ์เขียวให้ type เป็น 5 คือพิมพ์เขียว
+                    {
+                        AlbumType = "5";
+                    }
+                    else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
                     {
                         AlbumType = "2";
-                    }
-                }
-                else if (job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
-                {
-                    if (job.JobStatus == 9)
-                    {
-                        AlbumType = "4";
-                    }
-                    else
-                    {
-                        AlbumType = "3";
-                    }
-                }
-                else // เกินกว่านี้ เตะออก
-                {
-                    //return Json(new ResponseModel().ResponseError("ไม่สามารถส่งงานดังกล่าวได้เนื่องจากสถานะงาน ไม่ได้อยู่ในสถานะที่ส่งงานได้"));
-                }
 
-                var album = GetAlbum.Get.GetByJobIdWithStatus(id, userId, AlbumType);
+                    }
+                    else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
+                    {
+                        if (job.JobStatus == 9)
+                        {
+                            AlbumType = "3";
+                        }
+                        else
+                        {
+                            AlbumType = "2";
+                        }
+                    }
+                    else if (job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
+                    {
+                        if (job.JobStatus == 9)
+                        {
+                            AlbumType = "4";
+                        }
+                        else
+                        {
+                            AlbumType = "3";
+                        }
+                    }
+                    else // เกินกว่านี้ เตะออก
+                    {
+                        //return Json(new ResponseModel().ResponseError("ไม่สามารถส่งงานดังกล่าวได้เนื่องจากสถานะงาน ไม่ได้อยู่ในสถานะที่ส่งงานได้"));
+                    }
+
+                    album = GetAlbum.Get.GetByJobIdWithStatus(id, userId, AlbumType);
+                }  
 
                 AlbumModel model = new AlbumModel()
                 {
@@ -106,95 +123,110 @@ namespace cisApp.Controllers
         {
             try
             {
-                string AlbumType = "1";
-
-                var job = GetJobs.Get.GetById(data.JobId);
-
-                if (job.JobStatus >= 4 && data.UserId != job.JobCaUserId)
+                Album result = null;
+                string redirect = Url.Action("Index", "Jobs");
+                if (data.JobId == null || data.JobId == Guid.Empty)
                 {
-                    LogActivityEvent(LogCommon.LogMode.INSERT, "บันทึกข้อมูลไม่สำเร็จ เฉพาะผู้ผ่านการประกวดเท่านั้นที่สามารถส่งงานได้");
-                    return Json(new ResponseModel().ResponseError("บันทึกข้อมูลไม่สำเร็จ เฉพาะผู้ผ่านการประกวดเท่านั้นที่สามารถส่งงานได้")); ;
+                    data.AlbumType = "0";
+                    data.JobId = Guid.Empty;
+                    result = GetAlbum.Manage.Update(data, _UserId().Value, false);
+                    redirect = Url.Action("Index", "Files");
                 }
+                else
+                {
+                    string AlbumType = "1";
+                    var job = GetJobs.Get.GetById(data.JobId);
 
-                if (job.JobStatus < 4) // ถ้า job status ไม่เท่ากับ 4 จะเป็นการประกวดทั้งหมด
-                {
-                    AlbumType = "1";
-
-                }
-                else if (job.JobStatus == 7) // 7 คือ ขอพิมพ์เขียวให้ type เป็น 5 คือพิมพ์เขียว
-                {
-                    AlbumType = "5";
-                }
-                else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
-                {
-                    AlbumType = "2";
-
-                }
-                else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
-                {
-                    if (job.JobStatus == 9)
+                    if (job.JobStatus >= 4 && data.UserId != job.JobCaUserId)
                     {
-                        AlbumType = "3";
+                        LogActivityEvent(LogCommon.LogMode.INSERT, "บันทึกข้อมูลไม่สำเร็จ เฉพาะผู้ผ่านการประกวดเท่านั้นที่สามารถส่งงานได้");
+                        return Json(new ResponseModel().ResponseError("บันทึกข้อมูลไม่สำเร็จ เฉพาะผู้ผ่านการประกวดเท่านั้นที่สามารถส่งงานได้")); ;
                     }
-                    else
+
+                    if (job.JobStatus < 4) // ถ้า job status ไม่เท่ากับ 4 จะเป็นการประกวดทั้งหมด
+                    {
+                        AlbumType = "1";
+
+                    }
+                    else if (job.JobStatus == 7) // 7 คือ ขอพิมพ์เขียวให้ type เป็น 5 คือพิมพ์เขียว
+                    {
+                        AlbumType = "5";
+                    }
+                    else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
                     {
                         AlbumType = "2";
+
                     }
-                }
-                else if (job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
-                {
-                    if (job.JobStatus == 9)
+                    else if (job.EditSubmitCount == 1) // แก้ครั้งแรก
                     {
-                        AlbumType = "4";
+                        if (job.JobStatus == 9)
+                        {
+                            AlbumType = "3";
+                        }
+                        else
+                        {
+                            AlbumType = "2";
+                        }
                     }
-                    else
+                    else if (job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
                     {
-                        AlbumType = "3";
+                        if (job.JobStatus == 9)
+                        {
+                            AlbumType = "4";
+                        }
+                        else
+                        {
+                            AlbumType = "3";
+                        }
+                    }
+                    else // เกินกว่านี้ เตะออก
+                    {
+                        LogActivityEvent(LogCommon.LogMode.INSERT, "ไม่สามารถส่งงานดังกล่าวได้เนื่องจากสถานะงาน ไม่ได้อยู่ในสถานะที่ส่งงานได้");
+                        return Json(new ResponseModel().ResponseError("ไม่สามารถส่งงานดังกล่าวได้เนื่องจากสถานะงาน ไม่ได้อยู่ในสถานะที่ส่งงานได้"));
+                    }
+
+                    data.AlbumType = AlbumType;
+
+                    result = GetAlbum.Manage.Update(data, _UserId().Value, false);
+
+                    if (job.JobStatus < 4)
+                    {
+
+                    }
+                    // update edit count
+                    else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
+                    {
+                        GetJobs.Manage.UpdateEditCount(data.JobId, 1);
+                    }
+                    else if (job.JobStatus == 9 && job.EditSubmitCount == 1) // แก้ครั้งแรก
+                    {
+                        GetJobs.Manage.UpdateEditCount(data.JobId, 2);
+                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
+                    }
+                    else if (job.JobStatus == 9 && job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
+                    {
+                        GetJobs.Manage.UpdateEditCount(data.JobId, 3);
+                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
+                    }
+
+                    if (job.JobStatus == 4)
+                    {
+                        job.JobStatus = 5;
+                        GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
+                    }
+
+                    if (result != null)
+                    { 
+                        MobileNotfication mobileNotfication = new MobileNotfication();
+                        mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId, job.JobId); 
                     }
                 }
-                else // เกินกว่านี้ เตะออก
-                {
-                    LogActivityEvent(LogCommon.LogMode.INSERT, "ไม่สามารถส่งงานดังกล่าวได้เนื่องจากสถานะงาน ไม่ได้อยู่ในสถานะที่ส่งงานได้");
-                    return Json(new ResponseModel().ResponseError("ไม่สามารถส่งงานดังกล่าวได้เนื่องจากสถานะงาน ไม่ได้อยู่ในสถานะที่ส่งงานได้"));
-                }
 
-                data.AlbumType = AlbumType;
-
-                var result = GetAlbum.Manage.Update(data, _UserId().Value, false);
-
-                if (job.JobStatus < 4)
-                {
-
-                }
-                // update edit count
-                else if (job.EditSubmitCount == 0) // ส่งผลงานครั้งแรก
-                {
-                    GetJobs.Manage.UpdateEditCount(data.JobId, 1);
-                }
-                else if (job.JobStatus == 9 && job.EditSubmitCount == 1) // แก้ครั้งแรก
-                {
-                    GetJobs.Manage.UpdateEditCount(data.JobId, 2);
-                    GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
-                }
-                else if (job.JobStatus == 9 && job.EditSubmitCount == 2) // แก้ครั้งที่ 2 ครั้งสุดท้ายแล้ว
-                {
-                    GetJobs.Manage.UpdateEditCount(data.JobId, 3);
-                    GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
-                }
-
-                if (job.JobStatus == 4)
-                {
-                    job.JobStatus = 5;
-                    GetJobs.Manage.UpdateJobStatus(job.JobId, 5);
-                }
 
                 if (result != null)
-                {
-                    MobileNotfication mobileNotfication = new MobileNotfication();
-                    mobileNotfication.Forcustomer(MobileNotfication.Modecustomer.submit, job.UserId, job.JobId);
-
+                { 
                     LogActivityEvent(LogCommon.LogMode.INSERT, MessageCommon.SaveSuccess);
-                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, Url.Action("Index", "Jobs")));
+                    return Json(new ResponseModel().ResponseSuccess(MessageCommon.SaveSuccess, redirect));
                 }
                 else
                 {
