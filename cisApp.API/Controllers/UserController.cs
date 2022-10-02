@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using cisApp.Function;
 using cisApp.API.Models;
 using cisApp.Common;
+using cisApp.library;
+using Microsoft.AspNetCore.Hosting;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace cisApp.API.Controllers
@@ -14,6 +16,12 @@ namespace cisApp.API.Controllers
     [ApiController]
     public class UserController : BaseController
     {
+        private readonly IWebHostEnvironment _HostingEnvironment;
+        public UserController(IWebHostEnvironment environment)
+        {            
+            _HostingEnvironment = environment;
+        }
+
         /// <summary>
         /// สมัครสมาชิก
         /// </summary>
@@ -151,6 +159,49 @@ namespace cisApp.API.Controllers
             {
                 return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
             }
+        }
+
+        /// <summary>
+        /// reset pass แบบ gen ให้เลย
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPost("resetpassGenerate")]
+        public object resetpassGenerate([FromBody] string value)
+        {
+            try
+            {
+                
+
+                var user = GetUser.Get.GetByEmail(value);
+
+                string newPassword = Utility.RandomPassword();
+
+                var result = GetUser.Manage.ResetPassWord(user.UserId.Value, Encryption.Encrypt(newPassword));
+
+                var sendMailResult = SendMail.SendMailResetPassword(user.Email, user.Fname + " " + user.Lname, newPassword
+                    , _HostingEnvironment.WebRootPath, GetSystemSetting.Get.GetEmailSettingModel());
+
+                if (sendMailResult == false)
+                {
+                    //LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveFail);
+                    return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+                }
+
+
+                //LogActivityEvent(LogCommon.LogMode.UPDATE, MessageCommon.SaveSuccess);
+                return Ok(resultJson.success(null, null, new { Status = true, Message = "ระบบได้ทำการส่งลิงก์รีเซ็ตรหัสผ่านไปยังอีเมลของท่านแล้ว" }, null, null, null, null));
+                
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(resultJson.errors("ไม่พบข้อมูล", "ไม่พบข้อมูล", null));
+            }
+        }
+
+        private void LogActivityEvent(LogCommon.LogMode uPDATE, string saveFail)
+        {
+            throw new NotImplementedException();
         }
 
 
