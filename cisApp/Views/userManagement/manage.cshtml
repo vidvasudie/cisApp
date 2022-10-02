@@ -25,7 +25,8 @@
     <script src="@Url.Content("~/assets/js/pages/crud/file-upload/uppy.js")"></script>
 
     <script>
-        var suc = function (html) {
+        function PagerClick(index) {
+            var suc = function (html) {
             $('#box_update').html(html);
         }
         var err = function (e) {
@@ -48,11 +49,44 @@
                 , searchBy: searchBy
                 , designer: designer
                 , albumId: albumId
-                ,currentPage: 1
+                , currentPage: index
                 , pageSize: 3
             }
             , suc, err);
         }
+        }
+
+        $(function () {
+            $('body').on('change', '#pageSize', function () {
+                PagerClick(1);
+            });
+            PagerClick(1);
+
+            $('body').on('click', '.img-popup', function () {
+                var $this = $(this);
+                console.log($this)
+
+                var data = {}
+                data.files = [];
+                var objImg = {};
+                objImg.NextImgSelected = $this.attr('data-slide-to');
+                objImg.NextImg = $this.attr('data-slide-to');
+                objImg.FileName = $this.attr('alt');
+                objImg.AttachFileId = $this.attr('data-id');
+
+                data.files.push(objImg);
+                console.log(objImg)
+                var suc = function (html) {
+                    $('#carouselPreview').html(html);
+                    $('#previewModal').modal('show');
+                }
+                var err = function (e) {
+                    alert('error carouselPreview', e);
+                }
+                CallAjax(_previewImgUrl, 'POST', data, suc, err);
+            });
+        });
+
 
 
 
@@ -249,7 +283,7 @@
 
                     </div>
                     <div class="content d-flex justify-content-end">
-                        <span> <a href="@Url.Action("DesignerProfile", "Files", new { id = Model.UserId.Value })">>>ดูทั้งหมด</a></span>
+                        <span> <a href="@Url.Action("Index", "Files", new { designer = Model.UserId.Value })">>>ดูทั้งหมด</a></span>
                     </div>
                 </div>
             </div>
