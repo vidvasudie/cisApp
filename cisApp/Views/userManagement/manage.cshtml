@@ -24,7 +24,39 @@
     <script src="@Url.Content("~/assets/plugins/custom/uppy/uppy.bundle.js")"></script>
     <script src="@Url.Content("~/assets/js/pages/crud/file-upload/uppy.js")"></script>
 
+    <script>
+        var suc = function (html) {
+            $('#box_update').html(html);
+        }
+        var err = function (e) {
+            alert('error paging', e);
+        }
 
+        //var text = $('#kt_datatable_search_query').val()
+        //var active = $('#kt_datatable_search_status').val()
+        var tag = ''
+        var category = ''
+        var searchBy = 'album'
+        var designer = '@Model.UserId.Value.ToString()'
+        var albumId = null
+
+        if ('@Model.UserType.Value.ToString()' == '2' || '@Model.UserType.Value.ToString()' == '3') {
+            CallAjax('@Url.Action("ItemList", "Files")', 'POST'
+            , {
+                categories: category
+                , tags: tag
+                , searchBy: searchBy
+                , designer: designer
+                , albumId: albumId
+                ,currentPage: 1
+                , pageSize: 3
+            }
+            , suc, err);
+        }
+
+
+
+    </script>
 
 }
 
@@ -212,6 +244,13 @@
                         </div>
                     </form>
                     <!--end::Form-->
+
+                    <div class="row" id="box_update">
+
+                    </div>
+                    <div class="content d-flex justify-content-end">
+                        <span> <a href="@Url.Action("DesignerProfile", "Files", new { id = Model.UserId.Value })">>>ดูทั้งหมด</a></span>
+                    </div>
                 </div>
             </div>
             <!--end::Card-->
