@@ -20,6 +20,7 @@ namespace cisApp.Function
         public bool? active { get; set; }
         public string statusOpt { get; set; }
         public string statusStr { get; set; }
+        public string searchText { get; set; }
 
         public int? jobType { get; set; }
         public int? PaymentStatus { get; set; }

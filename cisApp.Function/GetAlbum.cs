@@ -352,7 +352,8 @@ namespace cisApp.Function
                         new SqlParameter("@skip", skip),
                         new SqlParameter("@take", model.pageSize.Value),
                         new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value),
-                        new SqlParameter("@designer", model.Designer != null ? model.Designer : (object)DBNull.Value)
+                        new SqlParameter("@designer", model.Designer != null ? model.Designer : (object)DBNull.Value),
+                        new SqlParameter("@searchText", model.searchText != null ? model.searchText : (object)DBNull.Value)
                     };
 
                     var data = StoreProcedure.GetAllStored<AlbumImageModel>("GetAlbumFeed", parameter);
@@ -390,7 +391,8 @@ namespace cisApp.Function
                         new SqlParameter("@tags", model.Tags),
                         new SqlParameter("@categories", model.Categories),
                         new SqlParameter("@imgs", model.Imgs != null ? String.Join(",", imgString) : (object)DBNull.Value),
-                        new SqlParameter("@designer", model.Designer != null ? model.Designer : (object)DBNull.Value)
+                        new SqlParameter("@designer", model.Designer != null ? model.Designer : (object)DBNull.Value),
+                        new SqlParameter("@searchText", model.searchText != null ? model.searchText : (object)DBNull.Value)
                     };
 
                     var dt = StoreProcedure.GetAllStoredDataTable("GetAlbumFeedTotal", parameter);

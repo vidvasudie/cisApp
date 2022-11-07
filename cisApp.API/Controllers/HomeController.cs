@@ -19,7 +19,7 @@ namespace cisApp.API.Controllers
 
         // GET: api/<HomeController>
         [HttpPost]
-        public object Post( string tags, string categories , string orderby = "", int? page = 1, int limit = 10, List<Guid> imgs = null)
+        public object Post( string searchText, string tags, string categories , string orderby = "", int? page = 1, int limit = 10, List<Guid> imgs = null)
         {
             try
             {
@@ -31,7 +31,8 @@ namespace cisApp.API.Controllers
                     Orderby = orderby,
                     currentPage = page,
                     pageSize = limit,
-                    Imgs = imgs
+                    Imgs = imgs,
+                    searchText = searchText
                 };
                 List<AlbumImageModel> Obj = new List<AlbumImageModel>();
 
