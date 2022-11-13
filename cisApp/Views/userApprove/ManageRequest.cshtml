@@ -235,10 +235,20 @@
                                         @{
                                             if (Model.Images != null && Model.Images.Count > 0)
                                             {
-                                                int idx = 0;
+                                                @*int idx = 0;
                                                 foreach (var item in Model.Images)
-                                                {                                                    
+                                                {
                                                     @await Html.PartialAsync("PT/_ImageCard", item)
+                                                }*@
+
+                                                int idx = 0;
+                                                foreach (var item in Model.previewFiles)
+                                                {
+                                                    item.NextImg = idx;
+                                                    item.IsView = true;
+                                                    item.col = 3;
+                                                    @await Html.PartialAsync("~/Views/Shared/Common/_ImageItem.cshtml", item)
+                                                    idx++;
                                                 }
                                             }
                                             else
@@ -316,6 +326,31 @@
             $('.req-approve select').on('select2:opening', function (e) {
                 e.preventDefault();
             });
+        });
+
+
+        $('body').on('click', '.img-popup', function () {
+            var $this = $(this);
+            console.log($this)
+
+            var data = {}
+            data.files = [];
+            var objImg = {};
+            objImg.NextImgSelected = $this.attr('data-slide-to');
+            objImg.NextImg = $this.attr('data-slide-to');
+            objImg.FileName = $this.attr('alt');
+            objImg.AttachFileId = $this.attr('data-id');
+
+            data.files.push(objImg);
+            console.log(objImg)
+            var suc = function (html) {
+                $('#carouselPreview').html(html);
+                $('#previewModal').modal('show');
+            }
+            var err = function (e) {
+                alert('error carouselPreview', e);
+            }
+            CallAjax(_previewImgUrl, 'POST', data, suc, err);
         });
     </script>
 

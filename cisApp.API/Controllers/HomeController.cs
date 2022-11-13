@@ -109,6 +109,15 @@ namespace cisApp.API.Controllers
 
                 var user = GetUser.Get.GetById(Obj.UserId.Value);
 
+                bool isBookmark = false;
+
+                if (userId != null)
+                {
+                    isBookmark = GetUserBookmarkImage.Get.IsImageBokkmark(userId.Value, attachId.Value);
+                }
+
+                
+
                 if (Obj != null)
                 {
                     return Ok(resultJson.success(null, null,
@@ -128,7 +137,8 @@ namespace cisApp.API.Controllers
                             DesignerName = user.Fname + " " + user.Lname,
                             ProfilePath = user.AttachFileImage != null ? webAdmin + user.AttachFileImage.UrlPathAPI : null,
                             CreateDate = Obj.CreatedDate,
-                            CommentCount = comment.Count
+                            CommentCount = comment.Count,
+                            isBookmark = isBookmark
                         }
                        ));
                 }

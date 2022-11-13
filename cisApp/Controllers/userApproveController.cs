@@ -148,6 +148,12 @@ namespace cisApp.Controllers
                         currentPage = 1
                     };
                     data.Images = GetAlbum.Get.GetAlbumImageByAlbumId(searchModel, webAdmin);
+                    data.previewFiles = data.Images.Select(o => new FileAttachModel
+                    {
+                        AttachFileId = o.AttachFileId,
+                        FileName = o.FileName,
+                        Path = o.Path
+                    }).ToList();
                 }
                 catch (Exception ex) { }
 

@@ -63,6 +63,27 @@ namespace cisApp.Function
                     return 0;
                 }
             }
+
+            public static bool IsImageBokkmark(Guid userId, Guid refId)
+            {
+                try
+                {
+                    using (var context = new CAppContext())
+                    {
+                        var data = context.UserBookmarkImage.Where(o => o.UserId == userId && o.RefId == refId).FirstOrDefault();
+
+                        if (data == null)
+                        {
+                            return false;
+                        }
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
         public class Manage
         {

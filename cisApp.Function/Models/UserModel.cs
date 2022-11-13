@@ -128,6 +128,8 @@ namespace cisApp.Function
 
         [NotMapped]
         public List<AlbumImageModel> Images { get; set; }
+        [NotMapped]
+        public List<FileAttachModel> previewFiles { get; set; }
 
         [NotMapped]
         public AttachFile AttachFileImage { get; set; }
