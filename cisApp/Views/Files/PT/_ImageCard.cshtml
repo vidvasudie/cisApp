@@ -86,15 +86,15 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="d-flex flex-column align-items-center">
+            <div class="d-flex flex-column align-items-center single-img">
                 <!--begin: Icon-->
                 @*<img alt="" class="max-h-65px" src="" />*@
                 <img src="@Url.Content("~/" + Model.UrlPath)" alt="@Model.FileName"  data-id="@Model.AttachFileId"
-                     class="img-thumbnail img-popup" data-target="#carouselPreview" >
+                     class="img-thumbnail image-slide-list img-list" data-target="#carouselPreview" data-slide-to="@Model.NextImg">
                 <!--end: Icon-->
                 <!--begin: Tite-->
                 <div style="width: 250px;white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;">
-                    <a href="javascript:void(0)" src="@Url.Content("~/" + Model.UrlPath)" alt="@Model.FileName" data-id="@Model.AttachFileId" data-target="#carouselPreview" class="text-dark-75 font-weight-bold mt-15 font-size-lg img-popup">@Model.FileName</a>
+                    <a href="javascript:void(0)" src="@Url.Content("~/" + Model.UrlPath)" alt="@Model.FileName" data-id="@Model.AttachFileId" data-target="#carouselPreview" class="text-dark-75 font-weight-bold mt-15 font-size-lg image-slide-list">@Model.FileName</a>
                 </div>
                 
                 <!--end: Tite-->

@@ -4,14 +4,19 @@
 
 @if (Model != null)
 {
+    int idx = 0;
     foreach (var item in Model)
     {
+
         if (ViewData["FileMode"].ToString() == "image")
         {
+            item.NextImg = idx;
+            idx++;
             @await Html.PartialAsync("PT/_ImageCard", item)
         }
         else
         {
+            
             @await Html.PartialAsync("PT/_AlbumCard", item)
         }
     }

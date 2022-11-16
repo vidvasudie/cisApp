@@ -49,6 +49,8 @@ namespace cisApp.Function
 
         public List<AlbumThumbnail> Thumbnails { get; set; }
 
+        public int NextImg { get; set; }
+
     }
 
     public class AlbumThumbnail
