@@ -23,7 +23,8 @@
     <script src="@Url.Content("~/assets/js/pages/crud/file-upload/uppy.js")"></script>
 
 
-    @if (Model.Keyword == "ContractTerm")
+    @if (Model.Keyword == "ContractTerm" || Model.Keyword == "DesignTerm"
+        || Model.Keyword == "UserTerm" || Model.Keyword == "DeleteTerm")
     {
         <script>
             $(document).ready(function () {
