@@ -70,7 +70,7 @@ namespace cisApp.Function
                 {
                     using (var context = new CAppContext())
                     {
-                        var data = context.UserBookmarkImage.Where(o => o.UserId == userId && o.RefId == refId).FirstOrDefault();
+                        var data = context.UserBookmarkImage.Where(o => o.UserId == userId && o.RefId == refId && o.IsDeleted == false).FirstOrDefault();
 
                         if (data == null)
                         {
