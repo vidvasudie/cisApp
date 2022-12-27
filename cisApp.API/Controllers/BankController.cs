@@ -15,6 +15,33 @@ namespace cisApp.API.Controllers
     [ApiController]
     public class BankController : BaseController
     {
+        [Route("api/mail")]
+        [HttpGet]
+        public IActionResult Get(string mail)
+        {
+            //string webAdmin = config.GetSection("WebConfig:MobileLink").Value;
+
+            EmailModel emailModel = new EmailModel()
+            {
+                ToMail = mail,//"vidvasudie@gmail.com",
+                Subject = "คำขอรีเซ็ตรหัสผ่าน",
+                TemplateFileName = "UserResetPassword.htm",
+                Body = new List<string>()
+                            {
+                                " test mail ", "ResetPassword/ChangPassword/" 
+                            }
+            };
+            try
+            {
+                SendMail.Send(emailModel, GetSystemSetting.Get.GetEmailSettingModel());
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { status = true, msg=ex.ToString() });
+            }
+
+            return Ok(new { status=true });
+        }
         [Route("api/bank/profile")]
         [HttpGet]
         public IActionResult GetProfileBank(Guid userId)
