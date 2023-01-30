@@ -310,10 +310,10 @@ namespace cisApp.API.Controllers
         {
             try
             {
-                if (model.ApiAttachFileImg.Count == 0)
-                {
-                    return Ok(resultJson.errors("กรุณาอัพโหลดหลักฐาน", "fail", null));
-                }
+                //if (model.ApiAttachFileImg.Count == 0)
+                //{
+                //    return Ok(resultJson.errors("กรุณาอัพโหลดหลักฐาน", "fail", null));
+                //}
 
                 model.Status = 1;
                 model.CreatedBy = model.UserId.Value;
